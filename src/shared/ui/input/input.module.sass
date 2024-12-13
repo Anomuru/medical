@@ -3,6 +3,7 @@
   flex-direction: column
   gap: 8px
   min-width: 240px
+  position: relative
   &__title
     font-size: 14px
     font-family: sans-serif, Montserrat
@@ -15,3 +16,9 @@
     color: #B3B3B3
     &:focus-visible
       outline: none
+  &__icon
+    position: absolute
+    right: 2rem
+    top: 50%
+    transform: translateY(-50%)
+    font-size: 1.5rem
