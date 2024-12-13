@@ -1,7 +1,9 @@
-import React, {Suspense} from 'react';
-import {createRoutesFromElements, Navigate, Route, RouterProvider} from "react-router";
+import {Suspense} from 'react';
+import {createRoutesFromElements, Route, RouterProvider} from "react-router";
 import {createBrowserRouter} from "react-router-dom";
-import classNames from "classnames";
+
+import {Layout} from "app/layout";
+import {routersConfigProfile} from "../config/routerConfigProfiles";
 
 import {LogInPage} from "pages/logInPage";
 
@@ -13,15 +15,28 @@ export const AppRouter = () => {
                     path={"login"}
                     element={<LogInPage/>}
                 />
+
+                <Route element={<Layout/>} path={"platform"}>
+                    {
+                        routersConfigProfile.map(item => {
+                            return (
+                                <Route
+                                    id={item.name}
+                                    path={item.path}
+                                    element={item.element}
+                                />
+                            )
+                        })
+                    }
+                </Route>
+
             </>
         )
     );
 
     return (
-        <div className={classNames("app")}>
-            <Suspense>
-                <RouterProvider router={router}/>
-            </Suspense>
-        </div>
+        <Suspense>
+            <RouterProvider router={router}/>
+        </Suspense>
     );
 };

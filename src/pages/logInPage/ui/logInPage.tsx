@@ -7,6 +7,7 @@ import {Button} from "shared/ui/button";
 
 import cls from "./logInPage.module.sass";
 import image from "shared/assets/images/loginImage.png";
+import logo from "shared/assets/logo/medicalLogo.png";
 
 interface ILogData {
     name: string,
@@ -27,6 +28,7 @@ export const LogInPage = () => {
     return (
         <div className={cls.loginPage}>
             <div className={cls.loginPage__content}>
+                <img className={cls.loginPage__logo} src={logo} alt=""/>
                 <h1 className={cls.loginPage__title}>Login</h1>
                 <Form
                     extraClass={cls.loginPage__form}
