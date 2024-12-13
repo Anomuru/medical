@@ -1,5 +1,5 @@
 import React from 'react';
-import {useForm} from "react-hook-form";
+import {useForm, FieldValues} from "react-hook-form";
 
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
@@ -10,8 +10,8 @@ import image from "shared/assets/images/loginImage.png";
 import logo from "shared/assets/logo/medicalLogo.png";
 
 interface ILogData {
-    name: string,
-    password: string
+    email: string,
+    password: string | number
 }
 
 export const LogInPage = () => {
@@ -19,12 +19,13 @@ export const LogInPage = () => {
     const {
         register,
         handleSubmit
-    } = useForm<ILogData>()
+    } = useForm<FieldValues>()
 
     const onSubmit = (data: ILogData) => {
 
     }
 
+    
     return (
         <div className={cls.loginPage}>
             <div className={cls.loginPage__content}>
@@ -32,7 +33,7 @@ export const LogInPage = () => {
                 <h1 className={cls.loginPage__title}>Login</h1>
                 <Form
                     extraClass={cls.loginPage__form}
-                    onSubmit={handleSubmit(onSubmit)}
+                    // onSubmit={handleSubmit(onSubmit)}
                 >
                     <div className={cls.loginPage__wrapper}>
                         <Input
