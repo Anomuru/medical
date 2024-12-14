@@ -1,6 +1,7 @@
 import dashboardImage from "shared/assets/icon/dashboard.png";
 import registerImage from "shared/assets/icon/register.png";
-import tableImage from "shared/assets/icon/table.png"
+import profileImage from "shared/assets/icon/setting.png"
+import jobListImage from "shared/assets/icon/list.png"
 
 export const menuConfig = [
     {
@@ -12,7 +13,11 @@ export const menuConfig = [
         image: registerImage
     },
     {
-        to: "table",
-        image: tableImage
+        to: "profile",
+        image: profileImage
+    },
+    {
+        to: "jobList",
+        image: jobListImage
     },
 ]

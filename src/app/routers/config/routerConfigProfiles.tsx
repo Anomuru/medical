@@ -1,8 +1,9 @@
 import {JSX} from "react";
 
 import {RegisterPage} from "pages/registerPage";
-import {WorkTablePage} from "pages/workTablePage";
-import {getDashboardRoute, getRegisterRoute, getWorkTableRoute} from "shared/const/routers";
+import {getDashboardRoute, getJobListRoute, getProfileRoute, getRegisterRoute} from "shared/const/routers";
+import {ProfilePage} from "pages/profilePage";
+import {JobListPage} from "pages/jobListPage";
 
 
 interface IRouterConfigProfiles {
@@ -23,9 +24,14 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         path: getDashboardRoute()
     },
     {
-        name: "table",
-        element: <WorkTablePage/>,
-        path: getWorkTableRoute()
+        name: "profile",
+        element: <ProfilePage/>,
+        path: getProfileRoute()
+    },
+    {
+        name: "jobList",
+        element: <JobListPage/>,
+        path: getJobListRoute()
     },
 
 ]
