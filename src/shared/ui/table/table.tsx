@@ -3,19 +3,15 @@ import classNames from "classnames";
 
 import cls from "./table.module.sass";
 
-interface tableProps {
+interface ITableProps {
     extraClass?: string,
-    children: JSX.Element|JSX.Element[]
+    children: JSX.Element[] | JSX.Element
 }
 
-export const Table = (props: tableProps) => {
-    const {
-        extraClass,
-        children
-    } = props
+export const Table: React.FC<ITableProps> = ({extraClass, children}) => {
     return (
         <table className={classNames(cls.table, extraClass)}>
             {children}
         </table>
     );
-};
+}

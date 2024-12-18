@@ -12,7 +12,9 @@ export const Layout = () => {
             <MenuBar/>
             <main className={cls.layout__content}>
                 <Header/>
-                <Outlet/>
+                <div className={cls.wrapper}>
+                    <Outlet/>
+                </div>
             </main>
         </div>
     );

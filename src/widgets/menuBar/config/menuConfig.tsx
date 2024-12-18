@@ -20,4 +20,17 @@ export const menuConfig = [
         to: "jobList",
         image: jobListImage
     },
+    {
+        to: "staff",
+        image: dashboardImage
+    },{
+        to: "hospitalReg",
+        image: dashboardImage
+    },{
+        to: "platformHomePage",
+        image: dashboardImage
+    },{
+        to: "pricePage",
+        image: dashboardImage
+    },
 ]

@@ -1,1 +1,40 @@
+@import "app/styles/abstracts/variables"
+
 .registerPage
+  display: flex
+  align-items: center
+  justify-content: space-around
+  gap: 4.5rem
+  &__form
+    width: 57rem
+    display: flex
+    flex-direction: column
+    gap: 4.5rem
+    h1
+      font-size: 2.4rem
+      color: $medical-color
+    .container
+      display: flex
+      flex-direction: column
+      gap: 1.5rem
+  &__btn
+    width: 100%
+    padding: 1.5rem 0
+  &__image
+    background: $medical-color
+    padding: 6.8rem 3.7rem 7rem 5rem
+    border-radius: 1.2rem
+    position: relative
+    .circle
+      width: 70.5rem
+      height: 66.3rem
+      border-radius: 50%
+      border: 63.69px solid #E2F6FC4A
+      position: absolute
+      z-index: 1
+      img
+        z-index: 2
+  &__wrapper
+    display: flex
+    justify-content: center
+    gap: 5rem

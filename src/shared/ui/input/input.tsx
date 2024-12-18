@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     FieldValues,
     UseFormRegister,
@@ -12,6 +12,7 @@ interface InputProps {
     type?: string,
     placeholder?: string,
     extraClass?: string,
+    extraLabelClass?: string,
     title?: string,
     onChange?: (arg: string) => void,
     name: string,
@@ -25,6 +26,7 @@ export const Input: React.FC<InputProps> = (props) => {
         type = "text",
         placeholder,
         extraClass,
+        extraLabelClass,
         title,
         onChange,
         name,
@@ -35,21 +37,32 @@ export const Input: React.FC<InputProps> = (props) => {
     const textField =
         register && register(name, rules)
 
+    const [passwordActive, setPasswordActive] = useState<boolean>(false)
+
     return (
-        <label className={cls.label}>
+        <label className={classNames(cls.label, extraLabelClass)}>
             {title && <span className={cls.label__title}>{title}</span>}
             <input
                 id={name}
                 {...textField}
                 className={classNames(cls.label__input, extraClass)}
-                type={type}
+                type={(type === "password" && passwordActive) ? "text" : type}
                 placeholder={placeholder}
                 onChange={(e) => {
                     onChange && onChange(e.target.value)
                     textField && textField.onChange(e)
                 }}
             />
-            {type === "password" && <i className={classNames("fas fa-eye-slash", cls.label__icon)}/>}
+            {
+                type === "password" &&
+                <i
+                    onClick={() => setPasswordActive(!passwordActive)}
+                    className={classNames(
+                        `fas ${passwordActive ? "fa-eye" : "fa-eye-slash"}`,
+                        cls.label__icon
+                    )}
+                />
+            }
         </label>
     );
 }
