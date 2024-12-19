@@ -9,7 +9,7 @@ interface IPriceAccordionListProps {
     subtitle: string | JSX.Element,
     clazz?: string,
     btns?: [],
-    number: number | string,
+    number?: number | string,
     children: JSX.Element | JSX.Element[]
 }
 

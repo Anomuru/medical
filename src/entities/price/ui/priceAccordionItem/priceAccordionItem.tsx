@@ -32,7 +32,7 @@ export const PriceAccordionItem: React.FC<IPriceAccordionItemProps> = (props) =>
     }, [])
 
     return (
-        <Table>
+        <Table extraClass={cls.item}>
             <tbody>
             {renderItems()}
             </tbody>
