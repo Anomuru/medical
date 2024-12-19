@@ -11,7 +11,7 @@ interface IAccordionProps {
     setBackOpen: (arg: boolean) => void,
     clazz?: string,
     btns?: [],
-    number: string | number
+    number?: string | number
 }
 
 export const Accordion: React.FC<IAccordionProps> = (props) => {

@@ -8,7 +8,7 @@ import {
 import cls from "./input.module.sass";
 import classNames from "classnames";
 
-interface InputProps {
+export interface InputProps {
     type?: string,
     placeholder?: string,
     extraClass?: string,

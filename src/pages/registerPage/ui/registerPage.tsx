@@ -7,7 +7,21 @@ import {Select} from "shared/ui/select";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
+import {Form} from "../../../shared/ui/form";
+import {useForm} from "react-hook-form";
+import {InputProps} from "../../../shared/ui/input/input";
 
+interface ISubmitData {
+    name: string,
+    surname: string,
+    job: number | string,
+    pasport_seria: string,
+    pasport_number: string,
+    birth_date: string,
+    phone: string,
+    unknown: number,
+    password: string
+}
 
 export const RegisterPage = () => {
 
@@ -57,6 +71,10 @@ export const RegisterPage = () => {
         },
     ], [])
 
+    const {
+        register,
+        handleSubmit
+    } = useForm<ISubmitData>()
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
 
@@ -65,6 +83,8 @@ export const RegisterPage = () => {
             if (item.isInput) {
                 return (
                     <Input
+                        // @ts-ignore
+                        register={register}
                         placeholder={item.label}
                         type={item.type}
                         name={item.name}
@@ -100,15 +120,19 @@ export const RegisterPage = () => {
         })
     }, [registerStaff])
 
+    const onSubmit = (data: ISubmitData) => {
+        console.log(data)
+    }
+
     return (
         <div className={cls.registerPage}>
-            <div className={cls.registerPage__form}>
+            <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
                 <h1>Register Staff</h1>
                 <div className={cls.container}>
                     {render()}
                 </div>
                 <Button extraClass={cls.registerPage__btn}>Register</Button>
-            </div>
+            </Form>
             <div className={cls.registerPage__image}>
                 <img src={image} alt=""/>
             </div>
