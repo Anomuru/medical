@@ -1,0 +1,87 @@
+
+
+.mainBox
+  display: flex
+  gap: 3rem
+  width: 100%
+  justify-content: space-between
+  &__leftSight
+    width: 30%
+    max-height: 80vh
+    background: #00ABB2
+    display: flex
+    flex-direction: column
+    border-radius: 2rem
+    align-items: center
+    padding: 1rem
+
+    gap: 3rem
+    &__calendar
+      width: 100%
+      font-size: 1.4rem
+      border-radius: 1.6rem
+    &__content
+      color: white
+      align-self: start
+      margin-left: 10px
+      font-family: Montserrat
+    &__staffList
+      width: 100%
+      max-height: 40vh
+      overflow: auto
+      display: flex
+      flex-direction: column
+      gap: 2rem
+      padding: 1rem
+      &__box
+        width: 100%
+        background: #FFF7C3
+        border-radius: 1.6rem
+        display: flex
+        justify-content: space-between
+        padding: 1rem
+        align-items: center
+        &__nameBox
+          display: flex
+          gap: 1rem
+          align-items: center
+          justify-content: center
+          &__img
+            width: 6rem
+            height: 6rem
+            object-fit: cover
+            border-radius: 1.6rem
+          &__content
+            font-size: 1.5rem
+            font-family: Montserrat
+            color: black
+            font-weight: 500
+        &__typeBox
+          display: flex
+          align-items: center
+          width: 30%
+          height: fit-content
+          padding: 1rem
+          justify-content: center
+          background: #E3FEFF
+          border-radius: 1.2rem
+          &__type
+            font-family: Montserrat
+            font-weight: 500
+            font-size: 1.4rem
+            color: #00ABB2
+  &__rightSight
+    width: 100%
+    max-height: 77vh
+    overflow: hidden
+    overflow-y: auto
+    .sx-react-calendar-wrapper
+      width: 100px
+      max-width: 100vw
+      height: 800px
+      max-height: 90vh
+
+
+
+
+

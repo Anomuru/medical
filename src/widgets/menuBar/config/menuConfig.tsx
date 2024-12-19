@@ -17,7 +17,7 @@ export const menuConfig = [
         image: profileImage
     },
     {
-        to: "jobList",
+        to: "jobPage",
         image: jobListImage
     },
     {
@@ -31,6 +31,14 @@ export const menuConfig = [
         image: dashboardImage
     },{
         to: "pricePage",
+        image: dashboardImage
+    },
+    {
+        to: "devicePage",
+        image: dashboardImage
+    },
+    {
+        to: "table",
         image: dashboardImage
     },
 ]

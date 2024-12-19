@@ -1,214 +1,177 @@
-import React from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Table} from "../../../shared/ui/table";
 import cls from './jobList.module.sass'
-
-interface IDoctors {
-    id: number,
-    name: string,
-    age: number,
-    phone_number: string,
-    type: string
-}
+import classNames from "classnames";
+import {Pagination} from "../../../features/pagination";
 
 
-const list: IDoctors[] = [
+
+const list = [
     {
-        id: 1,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
+    }, {
+        user: {
+            name: "John",
+            surname: "Smith",
+            job: "Surgeon",
+            image: ""
+        },
+        age: 33,
+        phone: "+998 90 123-45-67"
     },
-    {
-        id: 2,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 3,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 4,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 5,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 6,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 7,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 8,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 9,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 10,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 11,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 12,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 13,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 14,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 15,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 16,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 17,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 18,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 19,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 20,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 21,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 22,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 23,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    },
-    {
-        id: 24,
-        name: "Doctor D",
-        age: 43,
-        phone_number: "+99899 784 45 25",
-        type: 'urolog'
-    }
 ]
 
-export const JobList = () => {
+type listType = typeof list
 
-    const renderDoctors = () => {
+
+export const JobList = () => {
+    const [currentPage, setCurrentPage] = useState<number>(1)
+    const [currentTableData, setCurrentTableData] = useState<listType>([])
+    const pageSize = useMemo(() => 10, [])
+
+
+    const renderDoctors = useCallback(() => {
         return list.map((item, index) => (
-            <tr key={index + 1}>
+            <tr>
                 <td>{index + 1}</td>
-                <td className={cls.name}>{item.name} <br/> {item.type}</td>
+                <td>
+                    <div className={cls.profile}>
+                        <img className={cls.profile__img} src={item.user.image} alt=""/>
+                        <div className={cls.profile__info}>
+                            <p className={cls.profile__title}>
+                                {item.user.name} {item.user.surname}
+                            </p>
+                            <span className={cls.profile__job}>{item.user.job}</span>
+                        </div>
+                    </div>
+                </td>
                 <td>{item.age}</td>
-                <td>{item.phone_number}</td>
-                {/*<td>{item.type}</td>*/}
+                <td>{item.phone}</td>
+                <td>
+                    Edit
+                </td>
             </tr>
         ))
-    }
+    }, [currentTableData])
 
     return (
-        <Table>
-            <thead className={cls.theadBody}>
-            <tr>
-                <th>№</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Phone number</th>
-            </tr>
-            </thead>
-            <tbody className={cls.thBody}>
-            {renderDoctors()}
-            </tbody>
-        </Table>
+        <>
+            <div className={cls.tableBox}>
+                <Table>
+                    <thead className={cls.theadBody}>
+                    <tr>
+                        <th>№</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Phone number</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody className={cls.thBody}>
+                    {renderDoctors()}
+                    </tbody>
+                </Table>
+            </div>
+
+            <Pagination
+                users={list}
+                onPageChange={page => {
+                    setCurrentPage(page)
+                }}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                setCurrentTableData={setCurrentTableData}
+            />
+        </>
+
+
     );
 };
