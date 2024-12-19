@@ -1,0 +1,1 @@
+export {PlatformHomePage} from "./ui/platformHomePage";
