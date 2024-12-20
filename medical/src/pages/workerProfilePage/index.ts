@@ -1,0 +1,1 @@
+export {WorkerProfilePage} from "./ui/workerProfilePage"
