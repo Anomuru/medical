@@ -23,6 +23,7 @@ interface ISubmitData {
     password: string
 }
 
+
 export const RegisterPage = () => {
 
     const registerStaff = useMemo(() => [
