@@ -1,1 +1,0 @@
-export {HospitalRegPage} from "./ui/hospitalRegPage";

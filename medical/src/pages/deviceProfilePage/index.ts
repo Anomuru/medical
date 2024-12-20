@@ -1,1 +1,0 @@
-export {DeviceProfilePage} from "./ui/deviceProfilePage"

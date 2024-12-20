@@ -1,1 +1,0 @@
-export {WorkerProfile} from "./ui/workerProfile"
