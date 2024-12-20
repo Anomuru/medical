@@ -76,7 +76,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 {title ? <option disabled value={""}>{title}</option> : <option value={""} disabled>Tanlang</option>}
                 {renderedOptions}
             </select>
-            {status === "error" ? <span className={cls.label__error}>Error</span> : null}
+            {status === "error" ? <span className={cls.label__error}>Tanlanmagan</span> : null}
         </label>
     );
 }

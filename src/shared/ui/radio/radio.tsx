@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import classNames from "classnames";
 
 import cls from "./radio.module.sass";
+import {Simulate} from "react-dom/test-utils";
+import change = Simulate.change;
 
 interface IRadioProps {
     name: string,
@@ -11,7 +13,8 @@ interface IRadioProps {
     children: string,
     extraClass?: string,
     value: number,
-    checked?: boolean
+    checked: boolean,
+    required?: boolean
 }
 
 export const Radio: React.FC<IRadioProps> = (props) => {
@@ -24,14 +27,18 @@ export const Radio: React.FC<IRadioProps> = (props) => {
         extraClass,
         children,
         value,
-        checked
+        checked,
+        required
     } = props
 
     const [active, setActive] = useState<boolean>(false)
 
+    useEffect(() => setActive(checked), [checked])
+
     return (
         <label htmlFor={id} className={classNames(cls.radioLabel , extraClass)}>
             <input
+                required={required}
                 disabled={disabled}
                 className={cls.radioInput}
                 type="radio"
