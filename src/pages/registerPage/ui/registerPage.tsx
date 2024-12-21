@@ -1,15 +1,16 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {useForm} from "react-hook-form";
+import React, {useCallback, useMemo, useState} from 'react';
 
 import {Button} from "shared/ui/button";
 import {Input} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
 import {Select} from "shared/ui/select";
-import {Form} from "shared/ui/form";
-import {API_URL, useHttp} from "shared/api/api";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
+import {Form} from "../../../shared/ui/form";
+import {useForm} from "react-hook-form";
+import {InputProps} from "../../../shared/ui/input/input";
+import {headers, useHttp} from "../../../shared/api/base";
 
 interface ISubmitData {
     name: string,
@@ -76,17 +77,14 @@ export const RegisterPage = () => {
         register,
         handleSubmit
     } = useForm<ISubmitData>()
-    const {request} = useHttp()
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
-    // const [error, setError] = useState<boolean>(false)
-    //
-    // useEffect(() => {
-    //     if (error) {
-    //         alert("Radio tanlang")
-    //         setError(false)
-    //     }
-    // }, [error])
+
+
+
+    const {request} = useHttp()
+
+
 
     const render = useCallback(() => {
         return registerStaff.map(item => {
@@ -98,7 +96,6 @@ export const RegisterPage = () => {
                         placeholder={item.label}
                         type={item.type}
                         name={item.name}
-                        required
                     />
                 )
             } else if (item.isRadio) {
@@ -108,11 +105,9 @@ export const RegisterPage = () => {
                             item.label.map(inner => {
                                 return (
                                     <Radio
-                                        name={"radio"}
+                                        name={"1_1"}
                                         value={inner.id}
                                         onChange={setSelectedRadio}
-                                        checked={inner.id === selectedRadio}
-                                        // required
                                     >
                                         {inner.label}
                                     </Radio>
@@ -127,26 +122,22 @@ export const RegisterPage = () => {
                         title={item.label}
                         setSelectOption={setSelectedSelect}
                         optionsData={[]}
-                        // required
                     />
                 )
             }
         })
-    }, [register, registerStaff, selectedRadio])
+    }, [registerStaff])
 
     const onSubmit = (data: ISubmitData) => {
-        if (selectedRadio) {
-            const res = {
-                ...data,
-                selectedSelect,
-                selectedRadio
-            }
-            request(`${API_URL}`, "POST", JSON.stringify(res))
-                .then(res => console.log(res, "post res"))
-                .catch(err => console.log(err))
-        } else {}
-            // setError(true)
+        console.log(data)
+
+
+        request({url: "", method: "GET" ,body: null,headers: headers()})
+
     }
+
+
+
 
     return (
         <div className={cls.registerPage}>

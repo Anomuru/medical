@@ -1,1 +1,0 @@
-export {JobListPage} from './ui/jobListPage'
