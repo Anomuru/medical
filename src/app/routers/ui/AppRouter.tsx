@@ -1,6 +1,6 @@
 import {Suspense} from 'react';
 import {createRoutesFromElements, Route, RouterProvider} from "react-router";
-import {createBrowserRouter} from "react-router-dom";
+import {createBrowserRouter,Navigate} from "react-router-dom";
 
 import {Layout} from "app/layout";
 import {routersConfigProfile} from "../config/routerConfigProfiles";
@@ -30,6 +30,10 @@ export const AppRouter = () => {
                     }
                 </Route>
 
+                <Route
+                    index
+                    element={<Navigate to={"platform"}/>}
+                />
             </>
         )
     );
