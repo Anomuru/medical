@@ -10,6 +10,7 @@ import image from "shared/assets/images/registerImage.png";
 import {Form} from "../../../shared/ui/form";
 import {useForm} from "react-hook-form";
 import {InputProps} from "../../../shared/ui/input/input";
+import {headers, useHttp} from "../../../shared/api/base";
 
 interface ISubmitData {
     name: string,
@@ -79,6 +80,12 @@ export const RegisterPage = () => {
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
 
+
+
+    const {request} = useHttp()
+
+
+
     const render = useCallback(() => {
         return registerStaff.map(item => {
             if (item.isInput) {
@@ -123,7 +130,14 @@ export const RegisterPage = () => {
 
     const onSubmit = (data: ISubmitData) => {
         console.log(data)
+
+
+        request({url: "", method: "GET" ,body: null,headers: headers()})
+
     }
+
+
+
 
     return (
         <div className={cls.registerPage}>
