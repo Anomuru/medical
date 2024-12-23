@@ -1,0 +1,49 @@
+@import "app/styles/abstracts/variables"
+
+.header
+  width: 100%
+  display: flex
+  justify-content: space-between
+  .setting
+    display: flex
+    align-items: center
+    gap: 3.5rem
+    &__search
+      display: flex
+      align-items: center
+      background: #E5E5E5
+      border-radius: 1.7rem
+      padding-left: 1.5rem
+    &__icon
+      font-size: 1.4rem
+    &__input
+      color: black
+      background: none
+      border-radius: 1.7rem
+    &__notifications
+      position: relative
+    &__notification
+      color: #8B8B8B
+      font-size: 2.5rem
+    &__newMessage
+      top: .3rem
+      right: .13rem
+      background: $medical-color
+      position: absolute
+      width: 5.5px
+      height: 5.5px
+      border-radius: 50%
+    .profile
+      display: flex
+      align-items: center
+      gap: .6rem
+      padding: 1rem 1.6rem
+      border: 1.02px solid #D9D9D9
+      border-radius: 1.6rem
+      &__image
+        width: 3.7rem
+        height: 3.7rem
+        border-radius: 50%
+      &__surname
+        font-size: 1.7rem
+        color: #23262F
