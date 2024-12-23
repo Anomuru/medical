@@ -17,7 +17,8 @@ export interface InputProps {
     onChange?: (arg: string) => void,
     name: string,
     register?: UseFormRegister<FieldValues>,
-    rules?: RegisterOptions
+    rules?: RegisterOptions,
+    required? :boolean
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -31,7 +32,8 @@ export const Input: React.FC<InputProps> = (props) => {
         onChange,
         name,
         register,
-        rules
+        rules,
+        required
     } = props
 
     const textField =
@@ -43,6 +45,7 @@ export const Input: React.FC<InputProps> = (props) => {
         <label className={classNames(cls.label, extraLabelClass)}>
             {title && <span className={cls.label__title}>{title}</span>}
             <input
+                required={required}
                 id={name}
                 {...textField}
                 className={classNames(cls.label__input, extraClass)}

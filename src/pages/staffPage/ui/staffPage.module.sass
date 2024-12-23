@@ -22,35 +22,6 @@
     border-radius: 50%
     padding: .8rem 1.5rem
     font-size: 2.4rem
-  &__content
-    overflow-y: scroll
-    max-height: 55vh
-  .profile
-    display: flex
-    gap: 1rem
-    &__img
-      width: 4.5rem
-      height: 4.5rem
-      border-radius: .6rem
-    &__info
-      display: flex
-      flex-direction: column
-      gap: .2rem
-    &__title
-      font-family: sans-serif, Montserrat
-      font-size: 14px
-      font-weight: 400
-      line-height: 21px
-      text-underline-position: from-font
-      text-decoration-skip-ink: none
-    &__job
-      font-family: sans-serif, Montserrat
-      font-size: 12px
-      font-weight: 600
-      line-height: 18px
-      text-underline-position: from-font
-      text-decoration-skip-ink: none
-      color: $medical-color
   &__delete
     padding: .5rem 1.1rem
     border-radius: .4rem
@@ -61,7 +32,10 @@
     text-underline-position: from-font
     text-decoration-skip-ink: none
 
-
+@media (max-width: 1440px)
+  .staffPage
+    &__content
+      height: 49vh
 
 
 

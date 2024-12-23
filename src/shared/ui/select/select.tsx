@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {SetStateAction, useCallback} from 'react';
 import classNames from "classnames";
 
 import cls from "./select.module.sass";
@@ -9,7 +9,7 @@ interface ISelectProps {
     required?: boolean,
     selectOption?: string,
     setSelectOption: (arg: string) => void,
-    optionsData: { id?: number, value?: string, name?: string, disabled: boolean }[],
+    optionsData?: any[],
     keyValue?: string,
     status?: string
 }
@@ -50,15 +50,15 @@ export const Select: React.FC<ISelectProps> = (props) => {
 
     return (
         <label className={classNames(cls.label, extraClass)}>
-            {/*{*/}
-            {/*    title ?*/}
-            {/*        <div className={cls.info}>*/}
-            {/*            <span className={cls.info__inner}>*/}
-            {/*                {title}*/}
-            {/*            </span>*/}
-            {/*        </div>*/}
-            {/*        : null*/}
-            {/*}*/}
+            {
+                title ?
+                    <div className={cls.info}>
+                        <span className={cls.info__inner}>
+                            {title}
+                        </span>
+                    </div>
+                    : null
+            }
             <select
                 disabled={status === "disabled"}
                 className={classNames(cls.label__inner, extraClass, {
@@ -67,6 +67,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 required={required}
                 value={selectOption}
                 onChange={(e) => {
+                    // @ts-ignore
                     setSelectOption(e.target.value);
                     // setIsChanged(true);
                 }}
@@ -76,7 +77,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 {title ? <option disabled value={""}>{title}</option> : <option value={""} disabled>Tanlang</option>}
                 {renderedOptions}
             </select>
-            {status === "error" ? <span className={cls.label__error}>Error</span> : null}
+            {status === "error" ? <span className={cls.label__error}>Tanlanmagan</span> : null}
         </label>
     );
 }

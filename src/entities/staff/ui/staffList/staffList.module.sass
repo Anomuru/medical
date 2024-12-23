@@ -1,0 +1,31 @@
+@import "app/styles/abstracts/variables"
+
+.staffList
+  overflow-y: scroll
+  max-height: 52vh
+  .profile
+    display: flex
+    gap: 1rem
+    &__img
+      width: 4.5rem
+      height: 4.5rem
+      border-radius: .6rem
+    &__info
+      display: flex
+      flex-direction: column
+      gap: .2rem
+    &__title
+      font-family: sans-serif, Montserrat
+      font-size: 14px
+      font-weight: 400
+      line-height: 21px
+      text-underline-position: from-font
+      text-decoration-skip-ink: none
+    &__job
+      font-family: sans-serif, Montserrat
+      font-size: 12px
+      font-weight: 600
+      line-height: 18px
+      text-underline-position: from-font
+      text-decoration-skip-ink: none
+      color: $medical-color
