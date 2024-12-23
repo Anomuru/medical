@@ -10,8 +10,7 @@ interface IItem {
 }
 
 interface IPriceAccordionItemProps {
-    list: IItem[],
-
+    list: IItem[]
 }
 
 export const PriceAccordionItem: React.FC<IPriceAccordionItemProps> = (props) => {
@@ -25,7 +24,7 @@ export const PriceAccordionItem: React.FC<IPriceAccordionItemProps> = (props) =>
                     <td>{item.name}</td>
                     <td>{item.price}</td>
                     <td>
-                        <i  className="fas fa-pen"/>
+                        <i className="fas fa-pen"/>
                     </td>
                 </tr>
             )

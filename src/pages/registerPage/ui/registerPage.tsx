@@ -1,37 +1,46 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 
+import {fetchJobsData, getJobsData} from "entities/oftenUsed";
 import {Button} from "shared/ui/button";
 import {Input} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
 import {Select} from "shared/ui/select";
-
-import {API_URL, useHttp} from "shared/api/api";
+import {Form} from "shared/ui/form";
+import {API_URL, API_URL_DOC, header, headers, useHttp} from "shared/api/base";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
 
-import {Form} from "shared/ui/form";
-
-
 interface ISubmitData {
     name: string,
     surname: string,
-    // jobs: {name: string , id: number},
+    job: number | string,
     pasport_seria: string,
     pasport_number: string,
     birth_date: string,
     phone: string,
     unknown: number,
-    password: string,
-
+    password: string
 }
 
-
-const job =[{name: "job", id: 1} , {name: "job1", id: 2}]
-
-
 export const RegisterPage = () => {
+
+    const dispatch = useDispatch()
+    const {request} = useHttp()
+
+    useEffect(() => {
+        console.log("useEffect")
+        // @ts-ignore
+        dispatch(fetchJobsData())
+        // request({url: "job_info/job_get/job_list/", headers: header()})
+        //     .then(res => console.log(res))
+        // request(`${API_URL_DOC}job_info/job_get/job_list/`)
+        //     .then(res => console.log(res))
+    }, [])
+
+    const jobsList = useSelector(getJobsData)
 
     const registerStaff = useMemo(() => [
         {
@@ -46,8 +55,6 @@ export const RegisterPage = () => {
             name: "job",
             label: "Job",
             isSelect: true,
-            jobs: job
-
         }, {
             name: "pasport_seria",
             label: "Pasport seria (A B)",
@@ -87,17 +94,8 @@ export const RegisterPage = () => {
     } = useForm<ISubmitData>()
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
-    // const [error, setError] = useState<boolean>(false)
-    //
-    // useEffect(() => {
-    //     if (error) {
-    //         alert("Radio tanlang")
-    //         setError(false)
-    //     }
-    // }, [error])
 
 
-    const {request} = useHttp()
 
 
     const render = useCallback(() => {
@@ -110,7 +108,6 @@ export const RegisterPage = () => {
                         placeholder={item.label}
                         type={item.type}
                         name={item.name}
-                        required
                     />
                 )
             } else if (item.isRadio) {
@@ -120,11 +117,10 @@ export const RegisterPage = () => {
                             item.label.map(inner => {
                                 return (
                                     <Radio
-                                        name={"radio"}
+                                        name={"1_1"}
                                         value={inner.id}
                                         onChange={setSelectedRadio}
                                         checked={inner.id === selectedRadio}
-                                        // required
                                     >
                                         {inner.label}
                                     </Radio>
@@ -134,35 +130,36 @@ export const RegisterPage = () => {
                     </div>
                 )
             } else if (item.isSelect) {
-
                 return (
                     <Select
                         title={item.label}
                         setSelectOption={setSelectedSelect}
-
-                        // @ts-ignore
-                        optionsData={item.jobs}
-                        // required
+                        optionsData={jobsList}
                     />
                 )
             }
         })
-    }, [register, registerStaff, selectedRadio])
+    }, [jobsList, register, registerStaff, selectedRadio])
 
     const onSubmit = (data: ISubmitData) => {
-
-
         const res = {
             ...data,
-            job: selectedSelect,
-            gender: selectedRadio
+            selectedRadio,
+            selectedSelect
         }
-        request(`${API_URL}`, "POST", JSON.stringify(res))
-            .then(res => console.log(res, "post res"))
-            .catch(err => console.log(err))
 
-        // setError(true)
-
+        console.log(res, "res")
+        
+        // request({
+        //     url: "",
+        //     method: "POST",
+        //     body: JSON.stringify(res),
+        //     headers: headers()
+        // })
+        //     .then(res => {
+        //         console.log(res)
+        //     })
+        //     .catch(err => console.log(err))
     }
 
 
