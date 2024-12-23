@@ -1,4 +1,4 @@
-import React, {JSX} from 'react';
+import React, {JSX, SetStateAction} from 'react';
 
 import cls from "./button.module.sass";
 import classNames from "classnames";
@@ -6,7 +6,8 @@ import classNames from "classnames";
 interface buttonProps {
     children: string | JSX.Element,
     id?: string,
-    extraClass?: string
+    extraClass?: string,
+    onClick?: SetStateAction<any>
 }
 
 export const Button = (props: buttonProps) => {
@@ -14,13 +15,15 @@ export const Button = (props: buttonProps) => {
     const {
         children,
         id,
-        extraClass
+        extraClass,
+        onClick
     } = props
 
     return (
         <button
             id={id}
             className={classNames(cls.button, extraClass)}
+            onClick={onClick}
         >
             {children}
         </button>

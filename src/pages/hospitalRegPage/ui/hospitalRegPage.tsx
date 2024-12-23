@@ -5,7 +5,7 @@ import {Button} from "shared/ui/button";
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
-import {API_URL, useHttp} from "shared/api/api";
+import {API_URL, headers, useHttp} from "shared/api/base";
 
 import cls from "./hospitalRegPage.module.sass";
 
@@ -167,18 +167,18 @@ export const HospitalRegPage = () => {
             selectedRadio
         }
         console.log(res)
-        request(`${API_URL}`, "POST", JSON.stringify(res))
-            .then(res => {
-                console.log(res)
-                // list.map(item => {
-                //     if (item.isDouble) {
-                //
-                //     } else {
-                //         setValue(item.name, "")
-                //     }
-                // })
-            })
-            .catch(err => console.log(err))
+        // request({url: "", method: "POST", body: JSON.stringify(res), headers: headers()})
+        //     .then(res => {
+        //         console.log(res)
+        //         // list.map(item => {
+        //         //     if (item.isDouble) {
+        //         //
+        //         //     } else {
+        //         //         setValue(item.name, "")
+        //         //     }
+        //         // })
+        //     })
+        //     .catch(err => console.log(err))
     }
 
     return (

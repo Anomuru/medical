@@ -1,7 +1,11 @@
 import {WorkTableSchema} from "entities/workTable";
+import {StaffSchema} from "entities/staff";
+import {OftenUsedSchemas} from "entities/oftenUsed";
 
 export interface StateSchema {
-    workTableSlice: WorkTableSchema
+    workTableSlice: WorkTableSchema,
+    staffSlice: StaffSchema,
+    oftenUsedSlice: OftenUsedSchemas
 }
 
 // export interface ReducerManager {

@@ -1,12 +1,9 @@
 
-
-// export const API_URL_DOC = `http://192.168.1.61:8000`
-
+export const API_URL_DOC = `http://192.168.1.61:8000/`
 
 
-export const API_URL_DOC: string  = `https://school.gennis.uz/`
 export const API_URL: string = `${API_URL_DOC}api/`
-export const CLASSROOM_API_URL : string = `https://classroom.gennis.uz/`
+export const CLASSROOM_API_URL: string = `https://classroom.gennis.uz/`
 export const CLASSROOM_API_URL_DOC: string = `https://classroom.gennis.uz/`
 
 
@@ -52,30 +49,30 @@ export const branchQueryId = () => {
 }
 
 
-export type Methods =  'GET' | 'POST' | 'PUT' | 'DELETE'
-
+export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 
 interface UseHttpProps {
     url: string,
     method?: Methods,
-    body: any,
+    body?: BodyInit,
     headers: {
         "Content-Type": string
     },
     typeUrl?: "auto" | "hand"
 }
 
+export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } = () => {
+    const request = async (props: UseHttpProps): Promise<any> => {
 
-
-export const useHttp = ()  => {
-    const request = async ({
+        const {
             url = "",
             method = 'GET',
-            body = null,
+            body = undefined,
             headers = {'Content-Type': 'application/json'},
             typeUrl = "auto"
-        }: UseHttpProps ): Promise<any>  => {
+        } = props
+
         try {
 
 

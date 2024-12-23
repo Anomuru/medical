@@ -12,7 +12,7 @@ interface IUser {
 }
 
 interface IPaginationProps {
-    users: IUser[],
+    users: any[],
     onPageChange: (arg: number) => void,
     siblingCount?: number,
     currentPage: number,

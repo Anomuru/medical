@@ -1,16 +1,17 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {useForm} from "react-hook-form";
 
+import {fetchJobsData, getJobsData} from "entities/oftenUsed";
 import {Button} from "shared/ui/button";
 import {Input} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
 import {Select} from "shared/ui/select";
+import {Form} from "shared/ui/form";
+import {API_URL, API_URL_DOC, header, headers, useHttp} from "shared/api/base";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
-import {Form} from "../../../shared/ui/form";
-import {useForm} from "react-hook-form";
-import {InputProps} from "../../../shared/ui/input/input";
-import {headers, useHttp} from "../../../shared/api/base";
 
 interface ISubmitData {
     name: string,
@@ -24,8 +25,22 @@ interface ISubmitData {
     password: string
 }
 
-
 export const RegisterPage = () => {
+
+    const dispatch = useDispatch()
+    const {request} = useHttp()
+
+    useEffect(() => {
+        console.log("useEffect")
+        // @ts-ignore
+        dispatch(fetchJobsData())
+        // request({url: "job_info/job_get/job_list/", headers: header()})
+        //     .then(res => console.log(res))
+        // request(`${API_URL_DOC}job_info/job_get/job_list/`)
+        //     .then(res => console.log(res))
+    }, [])
+
+    const jobsList = useSelector(getJobsData)
 
     const registerStaff = useMemo(() => [
         {
@@ -82,9 +97,6 @@ export const RegisterPage = () => {
 
 
 
-    const {request} = useHttp()
-
-
 
     const render = useCallback(() => {
         return registerStaff.map(item => {
@@ -108,6 +120,7 @@ export const RegisterPage = () => {
                                         name={"1_1"}
                                         value={inner.id}
                                         onChange={setSelectedRadio}
+                                        checked={inner.id === selectedRadio}
                                     >
                                         {inner.label}
                                     </Radio>
@@ -121,22 +134,33 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={setSelectedSelect}
-                        optionsData={[]}
+                        optionsData={jobsList}
                     />
                 )
             }
         })
-    }, [registerStaff])
+    }, [jobsList, register, registerStaff, selectedRadio])
 
     const onSubmit = (data: ISubmitData) => {
-        console.log(data)
+        const res = {
+            ...data,
+            selectedRadio,
+            selectedSelect
+        }
 
-
-        request({url: "", method: "GET" ,body: null,headers: headers()})
-
+        console.log(res, "res")
+        
+        // request({
+        //     url: "",
+        //     method: "POST",
+        //     body: JSON.stringify(res),
+        //     headers: headers()
+        // })
+        //     .then(res => {
+        //         console.log(res)
+        //     })
+        //     .catch(err => console.log(err))
     }
-
-
 
 
     return (
