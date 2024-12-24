@@ -1,88 +1,142 @@
-import React, {useCallback, useMemo, useState} from 'react';
-import cls from "./deviceList.module.sass"
-import {Box} from "shared/ui/box";
-import deviceImg from "shared/assets/images/device.png"
-import deviceIcon from "shared/assets/icon/device.png"
-import {Pagination} from "features/pagination";
+// import React, {useCallback, useEffect, useMemo, useState} from 'react';
+// import cls from "./deviceList.module.sass"
+// import {Box} from "shared/ui/box";
+// import deviceImg from "shared/assets/images/device.png"
+// import deviceIcon from "shared/assets/icon/device.png"
+// import {Pagination} from "features/pagination";
+// import {useDispatch, useSelector} from "react-redux";
+// import {deviceListThunk} from "../model/thunk/deviceListThunk";
+// import {getDeviceList} from "entities/deviceList/model/selector/deviceListSelector";
+//
+// interface IList {
+//     id: number,
+//     name: string,
+//     img?: string
+// }
+//
+// interface IDeviceList {
+//     count: number,
+//     next?: string,
+//     previous?: string,
+//     results?: IList[]
+// }
+//
+// export const DeviceList = () => {
+//     const getData: any = useSelector(getDeviceList);
+//     const [currentPage, setCurrentPage] = useState(1);
+//     const [currentTableData, setCurrentTableData] = useState([]);
+//     const pageSize = useMemo(() =>14, []);
+//
+//     const dispatch: any = useDispatch();
+//
+//     console.log(currentPage)
+//
+//     useEffect(() => {
+//         dispatch(deviceListThunk(currentPage));
+//     }, []);
+//
+//     console.log(getData, 'wdewdww')
+//     const devices = useCallback(() => {
+//         return currentTableData?.map((item: any, index) => (
+//             <Box extraClass={cls.deviceBox} key={index}>
+//                 <div className={cls.deviceBox__content}>
+//                     <div className={cls.deviceBox__content__imgBox}>
+//                         <img className={cls.deviceBox__content__imgBox__img} src={item.img || `${deviceImg}`} alt=""/>
+//                     </div>
+//                     <h1 className={cls.deviceBox__content__text}>
+//                         <img src={deviceIcon} alt=""/>
+//                         {item.name}
+//                     </h1>
+//                 </div>
+//             </Box>
+//         ));
+//     }, [currentTableData]);
+//
+//     return (
+//         <div className={cls.arounderBox}>
+//             <div className={cls.listBox}>
+//                 {devices()}
+//             </div>
+//
+//             <div className={cls.paginationBox}>
+//
+//             <Pagination
+//                 users={getData.results}
+//                 onPageChange={(page) => {
+//                     setCurrentPage(page);
+//                 }}
+//                 currentPage={currentPage}
+//                 pageSize={pageSize}
+//                 setCurrentTableData={setCurrentTableData}
+//             />
+//
+//             </div>
+//         </div>
+//     );
+// };
+//
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import cls from './deviceList.module.sass';
+import { Box } from 'shared/ui/box';
+import deviceImg from 'shared/assets/images/device.png';
+import deviceIcon from 'shared/assets/icon/device.png'
+import { Pagination } from 'features/pagination';
+import { deviceListThunk } from '../model/thunk/deviceListThunk';
+import { getDeviceList } from 'entities/deviceList/model/selector/deviceListSelector';
 
-const list = [
-    {
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },{
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },{
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },{
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },{
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },{
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },{
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },{
-        user: {
-            name: "Ventilator",
-            img: deviceImg
-        },
-    },
-];
+interface IList {
+    id: number;
+    name: string;
+    img?: string;
+}
 
-type listType = typeof list
-export const DeviceList = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1)
-    const [currentTableData, setCurrentTableData] = useState<listType>([])
-    const pageSize = useMemo(() => 10, [])
+interface IDeviceListResponse {
+    count: number;
+    next?: string;
+    previous?: string;
+    results?: IList[];
+}
+
+export const DeviceList: React.FC = () => {
+    const dispatch = useDispatch();
+    // @ts-ignore
+    const getData = useSelector(getDeviceList) as IDeviceListResponse;
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const pageSize = useMemo(() => 50, []);
+
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(deviceListThunk(currentPage));
+    }, [currentPage, dispatch]);
 
     const devices = useCallback(() => {
-        return list.map((item) => (
-            <Box extraClass={cls.deviceBox}>
+        return getData.results?.map((item, index) => (
+            <Box extraClass={cls.deviceBox} key={index}>
                 <div className={cls.deviceBox__content}>
-                    <div className={cls.deviceBox__content__imgBox} >
-                        <img className={cls.deviceBox__content__imgBox__img} src={item.user.img} alt=""/>
+                    <div className={cls.deviceBox__content__imgBox}>
+                        <img className={cls.deviceBox__content__imgBox__img} loading={"lazy"} src={item.img || deviceImg} alt={item.name} />
                     </div>
                     <h1 className={cls.deviceBox__content__text}>
-                        <img src={deviceIcon} alt=""/>
-                        {item.user.name}</h1>
+                        <img src={deviceIcon} alt="" />
+                        {item.name}
+                    </h1>
                 </div>
             </Box>
-        ))
-    }, [currentTableData])
-
+        ));
+    }, [getData.results]);
 
     return (
-        <>
-            {devices()}
-            {/*<Pagination*/}
-            {/*    users={list}*/}
-            {/*    onPageChange={page => {*/}
-            {/*        setCurrentPage(page)*/}
-            {/*    }}*/}
-            {/*    currentPage={currentPage}*/}
-            {/*    pageSize={pageSize}*/}
-            {/*    setCurrentTableData={setCurrentTableData}*/}
-            {/*/>*/}
-        </>
+        <div className={cls.arounderBox}>
+            <div className={cls.listBox}>
+                {devices()}
+            </div>
+            <Pagination
+                totalCount={getData.count}
+                onPageChange={setCurrentPage}
+                currentPage={currentPage}
+                pageSize={pageSize}
+            />
+        </div>
     );
 };
