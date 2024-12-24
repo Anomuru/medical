@@ -5,7 +5,7 @@ export const fetchStaffListData = createAsyncThunk(
     "staffSlice/fetchStaffListData",
     () => {
         const {request} = useHttp()
-        // return request({url: "", headers: headers()})
+        return request({url: "user/staff/crud/get_list/", headers: headers()})
     }
 )
 
@@ -14,6 +14,6 @@ export const deleteStaffData = createAsyncThunk(
     // @ts-ignore
     ({id}) => {
         const {request} = useHttp()
-        // return request({url: "", method: "DELETE", headers: headers()})
+        return request({url: `user/staff/crud/delete/${id}`, method: "DELETE", headers: headers()})
     }
 )

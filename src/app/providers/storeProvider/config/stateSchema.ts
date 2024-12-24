@@ -1,10 +1,11 @@
 import {WorkTableSchema} from "entities/workTable";
-import {StaffSchema} from "entities/staff";
+import {StaffListSchema, StaffProfileSchema} from "entities/staff";
 import {OftenUsedSchemas} from "entities/oftenUsed";
 
 export interface StateSchema {
     workTableSlice: WorkTableSchema,
-    staffSlice: StaffSchema,
+    staffSlice: StaffListSchema,
+    staffProfileSlice: StaffProfileSchema,
     oftenUsedSlice: OftenUsedSchemas
 }
 

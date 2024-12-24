@@ -56,7 +56,7 @@ interface UseHttpProps {
     url: string,
     method?: Methods,
     body?: BodyInit,
-    headers: {
+    headers?: {
         "Content-Type": string
     },
     typeUrl?: "auto" | "hand"

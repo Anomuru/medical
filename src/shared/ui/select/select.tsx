@@ -43,22 +43,22 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 </option>
             )
         });
-    }, [optionsData, keyValue]);
+    }, [optionsData]);
 
 
     const renderedOptions = renderOptionsOfSelect();
 
     return (
         <label className={classNames(cls.label, extraClass)}>
-            {
-                title ?
-                    <div className={cls.info}>
-                        <span className={cls.info__inner}>
-                            {title}
-                        </span>
-                    </div>
-                    : null
-            }
+            {/*{*/}
+            {/*    title ?*/}
+            {/*        <div className={cls.info}>*/}
+            {/*            <span className={cls.info__inner}>*/}
+            {/*                {title}*/}
+            {/*            </span>*/}
+            {/*        </div>*/}
+            {/*        : null*/}
+            {/*}*/}
             <select
                 disabled={status === "disabled"}
                 className={classNames(cls.label__inner, extraClass, {
@@ -74,7 +74,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
             >
                 {/*<option value={""} disabled>Tanlang</option>*/}
 
-                {title ? <option disabled value={""}>{title}</option> : <option value={""} disabled>Tanlang</option>}
+                {title ? <option value={""} disabled>{title}</option> : <option value={""} disabled>Tanlang</option>}
                 {renderedOptions}
             </select>
             {status === "error" ? <span className={cls.label__error}>Tanlanmagan</span> : null}

@@ -1,123 +1,22 @@
-import {useMemo, useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 
 import {Pagination} from "features/pagination";
-import {StaffList, Staff, deleteStaffData} from "entities/staff";
+import {StaffList, Staff, deleteStaffData, fetchStaffListData, getStaffListData} from "entities/staff";
 import {Button} from "shared/ui/button";
 
 import cls from "./staffPage.module.sass";
 
-const list = [
-    {
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },
-]
-
 export const StaffPage = () => {
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchStaffListData())
+    }, [])
+
+    const staffList = useSelector(getStaffListData)
 
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [currentTableData, setCurrentTableData] = useState<Staff[]>([])
@@ -136,17 +35,20 @@ export const StaffPage = () => {
             </div>
             <StaffList
                 onDelete={onDelete}
-                currentTableData={currentTableData}
+                currentTableData={staffList}
             />
-            <Pagination
-                users={list}
-                onPageChange={page => {
-                    setCurrentPage(page)
-                }}
-                currentPage={currentPage}
-                pageSize={pageSize}
-                setCurrentTableData={setCurrentTableData}
-            />
+            {/*{*/}
+            {/*    staffList &&*/}
+            {/*    <Pagination*/}
+            {/*        users={staffList}*/}
+            {/*        onPageChange={page => {*/}
+            {/*            setCurrentPage(page)*/}
+            {/*        }}*/}
+            {/*        currentPage={currentPage}*/}
+            {/*        pageSize={pageSize}*/}
+            {/*        setCurrentTableData={setCurrentTableData}*/}
+            {/*    />*/}
+            {/*}*/}
         </div>
     );
 }

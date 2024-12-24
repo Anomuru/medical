@@ -1,24 +1,33 @@
 import {useCallback} from 'react';
 import classNames from "classnames";
+import {useNavigate} from "react-router";
 
 import {Table} from "shared/ui/table";
 import {Staff} from "../../model/types/staffSchema";
 
 import cls from "./staffList.module.sass";
+import {useDispatch} from "react-redux";
+import {getStaffProfileId} from "../../model/slice/staffProfileSlice";
 
 interface StaffListProps {
-    currentTableData: Staff[],
+    currentTableData?: Staff[],
     onDelete: (arg: number) => void
 }
 
 export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete}) => {
 
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
     const renderList = useCallback(() => {
-        return currentTableData.map((item, index) => {
+        return currentTableData?.map((item, index) => {
             return (
                 <tr>
                     <td>{index + 1}</td>
-                    <td>
+                    <td onClick={() => {
+                        dispatch(getStaffProfileId(item.id))
+                        navigate(`profile/${item.id}`)
+                    }}>
                         <div className={cls.profile}>
                             <img className={cls.profile__img} src={item.image} alt=""/>
                             <div className={cls.profile__info}>
@@ -30,7 +39,7 @@ export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete}
                         </div>
                     </td>
                     <td>{item.age}</td>
-                    <td>{item.phone}</td>
+                    <td>{item.phone_number}</td>
                     <td>
                         <i
                             className={classNames(
@@ -43,7 +52,7 @@ export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete}
                 </tr>
             )
         })
-    }, [currentTableData])
+    }, [currentTableData, onDelete])
 
     return (
         <div className={cls.staffList}>

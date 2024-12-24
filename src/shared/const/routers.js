@@ -5,7 +5,7 @@ export const getHospitalRegRoute = () => `hospitalReg`
 export const getPlatformHomePage = () => `platformHomePage`
 export const getPricePageRoute = () => `pricePage`
 
-export const getProfileRoute = (id) => `profile`
+export const getProfileRoute = (id) => `staff/profile/${id}`
 export const getJobListRoute = () => `jobPage`
 export const getDevicePageRoute = () => `devicePage`
 export const getDeviceProfileRoute = (id) => `devicePage/deviceProfile`

@@ -44,9 +44,9 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         path: getDashboardRoute()
     },
     {
-        name: "profile",
+        name: "staffPage/profile",
         element: <ProfilePage/>,
-        path: getProfileRoute()
+        path: getProfileRoute(":id")
     },
     {
         name: "jobPage",

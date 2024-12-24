@@ -1,7 +1,7 @@
 @import "app/styles/abstracts/variables"
 
 .staffList
-  overflow-y: scroll
+  overflow-y: auto
   max-height: 52vh
   .profile
     display: flex
@@ -29,3 +29,8 @@
       text-underline-position: from-font
       text-decoration-skip-ink: none
       color: $medical-color
+
+@media (max-width: 1440px)
+  .staffList
+    height: 49vh
+

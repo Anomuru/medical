@@ -1,11 +1,29 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-import {StaffSchema} from "../types/staffSchema";
+import {StaffListSchema} from "../types/staffSchema";
 import {fetchStaffListData} from "../thunk/staffThunk";
 
-const initialState: StaffSchema = {
+const initialState: StaffListSchema = {
     loading: false,
     data: [],
+    detail: {
+        id: NaN,
+        name: "",
+        surname: "",
+        image: "",
+        job: "",
+        age: NaN,
+        phone_number: "",
+        sex: "",
+        birth_date: "",
+        address: "",
+        branch: NaN,
+        email: "",
+        passport_number: "",
+        passport_series: "",
+        password: "",
+        username: ""
+    },
     error: undefined
 }
 
@@ -24,7 +42,8 @@ const staffSlice = createSlice({
                 state.error = undefined
             })
             .addCase(fetchStaffListData.fulfilled, (state, action) => {
-                // state.data = action.payload
+                console.log(action.payload)
+                state.data = action.payload?.results
                 state.loading = false
                 state.error = undefined
             })

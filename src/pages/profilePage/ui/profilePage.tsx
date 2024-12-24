@@ -1,13 +1,26 @@
-import React, {useState} from 'react';
-import cls from './profilePage.module.sass'
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+
+import {ProfileModal} from "features/profile";
+import {getStaffId, fetchStaffProfileData} from "entities/staff";
 import {Box} from "shared/ui/box";
 import {Button} from "shared/ui/button";
+import {Form} from "shared/ui/form";
+import {Input} from "shared/ui/input";
+
+import cls from './profilePage.module.sass'
 import profileImg from 'shared/assets/images/profileImage.png'
-import {Form} from "../../../shared/ui/form";
-import {Input} from "../../../shared/ui/input";
-import {ProfileModal} from "../../../features/profile";
+
 export const ProfilePage = () => {
 
+    const dispatch = useDispatch()
+    const staffId = useSelector(getStaffId)
+
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchStaffProfileData(staffId))
+    }, [dispatch, staffId])
+    
     const [isTimeTable, setIsTimeTable] = useState<boolean>(false)
 
     return (

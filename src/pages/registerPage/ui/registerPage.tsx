@@ -44,6 +44,10 @@ export const RegisterPage = () => {
 
     const registerStaff = useMemo(() => [
         {
+            name: "username",
+            label: "Username",
+            isInput: true,
+        },{
             name: "name",
             label: "Name",
             isInput: true,
@@ -51,16 +55,20 @@ export const RegisterPage = () => {
             name: "surname",
             label: "Surname",
             isInput: true,
+        },{
+            name: "address",
+            label: "Address",
+            isInput: true,
         }, {
             name: "job",
             label: "Job",
             isSelect: true,
         }, {
-            name: "pasport_seria",
+            name: "passport_series",
             label: "Pasport seria (A B)",
             isInput: true,
         }, {
-            name: "pasport_number",
+            name: "passport_number",
             label: "Password seria number",
             isInput: true,
         }, {
@@ -69,7 +77,7 @@ export const RegisterPage = () => {
             isInput: true,
             type: "date"
         }, {
-            name: "phone",
+            name: "phone_number",
             label: "Phone number",
             isInput: true,
         }, {
@@ -144,22 +152,23 @@ export const RegisterPage = () => {
     const onSubmit = (data: ISubmitData) => {
         const res = {
             ...data,
-            selectedRadio,
-            selectedSelect
+            sex: selectedRadio,
+            job_id: selectedSelect,
+            branch: 1
         }
-
-        console.log(res, "res")
         
-        // request({
-        //     url: "",
-        //     method: "POST",
-        //     body: JSON.stringify(res),
-        //     headers: headers()
-        // })
-        //     .then(res => {
-        //         console.log(res)
-        //     })
-        //     .catch(err => console.log(err))
+        request({
+            url: "user/staff/crud/create/",
+            method: "POST",
+            body: JSON.stringify(res),
+            headers: headers()
+        })
+            .then(res => {
+                console.log(res)
+                setSelectedRadio(NaN)
+                setSelectedSelect("")
+            })
+            .catch(err => console.log(err))
     }
 
 

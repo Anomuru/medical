@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import classNames from "classnames";
 
 import {usePagination, DOTS} from "shared/lib/hooks/usePagination";
@@ -12,7 +12,7 @@ interface IUser {
 }
 
 interface IPaginationProps {
-    users: any[],
+    users: IUser[],
     onPageChange: (arg: number) => void,
     siblingCount?: number,
     currentPage: number,
@@ -36,14 +36,11 @@ export const Pagination: React.FC<IPaginationProps> = (props) => {
     } = props;
 
 
-    useEffect(() => {
-        // @ts-ignore
-        setCurrentTableData(() => {
-            const firstPageIndex = (currentPage - 1) * pageSize;
-            const lastPageIndex = firstPageIndex + pageSize;
-            return users.slice(firstPageIndex, lastPageIndex);
-        })
-    }, [pageSize, currentPage, users, setCurrentTableData])
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * pageSize;
+        const lastPageIndex = firstPageIndex + pageSize;
+        return users.slice(firstPageIndex, lastPageIndex);
+    }, [pageSize, currentPage, users]);
 
     // @ts-ignore
     const paginationRange: number[] | (string & number)[] = usePagination({
@@ -73,7 +70,7 @@ export const Pagination: React.FC<IPaginationProps> = (props) => {
                 </li>
             );
         });
-    }, [currentPage, onPageChange, paginationRange]);
+    }, [currentPage, onPageChange, paginationRange, type]);
 
     if (currentPage === 0 || paginationRange.length < 2) {
         return null;
