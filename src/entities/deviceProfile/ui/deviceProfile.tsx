@@ -164,15 +164,15 @@ export const DeviceProfile = () => {
                     </Table>
                 </div>
 
-                <Pagination
-                    users={list}
-                    onPageChange={page => {
-                        setCurrentPage(page)
-                    }}
-                    currentPage={currentPage}
-                    pageSize={pageSize}
-                    setCurrentTableData={setCurrentTableData}
-                />
+                {/*<Pagination*/}
+                {/*    users={list}*/}
+                {/*    onPageChange={page => {*/}
+                {/*        setCurrentPage(page)*/}
+                {/*    }}*/}
+                {/*    currentPage={currentPage}*/}
+                {/*    pageSize={pageSize}*/}
+                {/*    setCurrentTableData={setCurrentTableData}*/}
+                {/*/>*/}
             </div>
             <Box extraClass={cls.profileContainer__rightContainer}>
                 <h1 className={cls.profileContainer__rightContainer__content}>Analiz</h1>

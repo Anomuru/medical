@@ -22,14 +22,17 @@
       width: 12rem
       height: 12rem
       border-radius: 50%
-      border: 2rem solid white
       display: flex
+      align-items: center
       justify-content: center
       &__img
-        width: 12rem
-        height: 12rem
+        width: 9rem
+        height: 8rem
         border-radius: 50%
-        margin-top: -7px
+        margin-top: 6px
+        border: 1rem solid white
+        object-fit: cover
+
     &__text
       margin-top: -10px
       color: #00ABB2
@@ -42,3 +45,26 @@
     @include btn-active
     user-select: none
 
+.arounderBox
+  display: flex
+  height: 62rem
+  flex-direction: column
+  justify-content: space-between
+.paginationBox
+  width: 100%
+.listBox
+  width: 100%
+  display: flex
+  flex-wrap: wrap
+  gap: 1rem
+
+.addItemBtn
+  width: 29rem
+  height: 17rem
+.addItemBox
+  width: 500px
+  display: flex !important
+  gap: 4rem
+  &__input
+    width: 90%
+    margin-top: 5%

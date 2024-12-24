@@ -1,5 +1,5 @@
 
-export const API_URL_DOC = `http://192.168.1.61:8000/`
+export const API_URL_DOC = `http://192.168.1.14:8000/`
 
 
 export const API_URL: string = `${API_URL_DOC}api/`
@@ -64,22 +64,26 @@ interface UseHttpProps {
 
 export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } = () => {
     const request = async (props: UseHttpProps): Promise<any> => {
-
-        const {
+        let {
             url = "",
             method = 'GET',
             body = undefined,
             headers = {'Content-Type': 'application/json'},
             typeUrl = "auto"
-        } = props
+        } = props;
+
+        let finalHeaders = headers;
+
+        if (body instanceof FormData) {
+            finalHeaders = { ...headers };
+            // @ts-ignore
+            delete finalHeaders['Content-Type'];
+        }
 
         try {
+            let newUrl = typeUrl === "auto" ? API_URL + url : url;
 
-
-            let newUrl = typeUrl === "auto" ? API_URL + url : url
-
-
-            const response = await fetch(newUrl, {method, mode: 'cors', body, headers});
+            const response = await fetch(newUrl, { method, mode: 'cors', body, headers: finalHeaders });
 
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
@@ -92,5 +96,5 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
         }
     }
 
-    return {request}
-}
+    return { request };
+};
