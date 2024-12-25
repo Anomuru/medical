@@ -12,5 +12,5 @@ const workTableSlice = createSlice({
     reducers: {}
 })
 
-export default workTableSlice.reducer
-
+export const { actions: workTableActions } = workTableSlice;
+export const { reducer: workTableReducer } = workTableSlice;

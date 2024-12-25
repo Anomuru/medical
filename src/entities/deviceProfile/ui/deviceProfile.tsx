@@ -17,7 +17,8 @@ const list = [
         },
         age: 33,
         phone: "+998 90 123-45-67"
-    }, {
+    },
+    {
         user: {
             name: "John",
             surname: "Smith",
@@ -135,6 +136,9 @@ export const DeviceProfile = () => {
             </tr>
         ))
     }, [currentTableData])
+
+
+
 
     return (
         <div className={cls.profileContainer}>

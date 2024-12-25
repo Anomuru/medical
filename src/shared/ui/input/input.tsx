@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-    FieldValues,
     UseFormRegister,
     RegisterOptions,
 } from "react-hook-form";
@@ -8,17 +7,17 @@ import {
 import cls from "./input.module.sass";
 import classNames from "classnames";
 
-export interface InputProps {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type?: string,
     placeholder?: string,
     extraClass?: string,
     extraLabelClass?: string,
     title?: string,
-    onChange?: (arg: string) => void,
+    // onChange?: (arg: string) => void,
     name: string,
-    register?: UseFormRegister<FieldValues>,
+    register?: UseFormRegister<any>,
     rules?: RegisterOptions,
-    required? :boolean
+    required? :boolean,
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -36,8 +35,7 @@ export const Input: React.FC<InputProps> = (props) => {
         required
     } = props
 
-    const textField =
-        register && register(name, rules)
+    const textField = register && register(name, rules)
 
     const [passwordActive, setPasswordActive] = useState<boolean>(false)
 
@@ -51,10 +49,11 @@ export const Input: React.FC<InputProps> = (props) => {
                 className={classNames(cls.label__input, extraClass)}
                 type={(type === "password" && passwordActive) ? "text" : type}
                 placeholder={placeholder}
-                onChange={(e) => {
-                    onChange && onChange(e.target.value)
-                    textField && textField.onChange(e)
-                }}
+                // onChange={(e) => {
+                //     onChange && onChange(e.target.value)
+                //     textField && textField.onChange(e)
+                // }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>  onChange?(e.target.value) : null}
             />
             {
                 type === "password" &&
