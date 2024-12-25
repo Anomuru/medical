@@ -93,7 +93,7 @@ export const HospitalRegPage = () => {
     const [selectedRadio, setSelectedRadio] = useState<number>(NaN)
     const [progress, setProgress] = useState<IProgress[]>([])
 
-    const onProgress = (data: { name: string, value: string }) => {
+    const onProgress = (data: { name: string, value: any }) => {
         setProgress(
             prev =>
                 prev.map(item => item.name === data.name ? {name: item.name, status: true} : item)
