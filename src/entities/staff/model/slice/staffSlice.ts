@@ -53,4 +53,5 @@ const staffSlice = createSlice({
             })
 })
 
-export default staffSlice.reducer
+export const {reducer: staffReducer} = staffSlice
+export const {actions: staffActions} = staffSlice

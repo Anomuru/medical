@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, InputHTMLAttributes, SetStateAction, useState} from 'react';
 import {
     UseFormRegister,
     RegisterOptions,
@@ -7,17 +7,23 @@ import {
 import cls from "./input.module.sass";
 import classNames from "classnames";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type HTMLInputProps = Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'value' | 'onChange' | 'readOnly'
+>;
+
+export interface InputProps extends HTMLInputProps {
     type?: string,
     placeholder?: string,
     extraClass?: string,
     extraLabelClass?: string,
     title?: string,
-    // onChange?: (arg: string) => void,
+    onChangeState?: Dispatch<SetStateAction<string|undefined>>,
+    onChange?: (value: string) => void,
     name: string,
     register?: UseFormRegister<any>,
     rules?: RegisterOptions,
-    required? :boolean,
+    required?: boolean,
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -32,10 +38,14 @@ export const Input: React.FC<InputProps> = (props) => {
         name,
         register,
         rules,
-        required
+        required,
+        onChangeState
     } = props
 
     const textField = register && register(name, rules)
+
+    console.log(rules, "rules")
+
 
     const [passwordActive, setPasswordActive] = useState<boolean>(false)
 
@@ -53,7 +63,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 //     onChange && onChange(e.target.value)
                 //     textField && textField.onChange(e)
                 // }}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>  onChange?(e.target.value) : null}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? (e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
             />
             {
                 type === "password" &&
@@ -61,7 +71,10 @@ export const Input: React.FC<InputProps> = (props) => {
                     onClick={() => setPasswordActive(!passwordActive)}
                     className={classNames(
                         `fas ${passwordActive ? "fa-eye" : "fa-eye-slash"}`,
-                        cls.label__icon
+                        cls.label__icon,
+                        {
+                            [cls.title]: title
+                        }
                     )}
                 />
             }

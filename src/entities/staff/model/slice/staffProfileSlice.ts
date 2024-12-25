@@ -49,8 +49,9 @@ const staffProfileSlice = createSlice({
             })
 })
 
-export default staffProfileSlice.reducer
-export const {
-    getStaffProfileId
-} = staffProfileSlice.actions
+export const {reducer: staffProfileReducer} = staffProfileSlice
+export const {actions: staffProfileActions} = staffProfileSlice
+// export const {
+//     getStaffProfileId
+// } = staffProfileSlice.actions
 

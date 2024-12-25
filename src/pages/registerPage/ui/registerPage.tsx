@@ -31,13 +31,8 @@ export const RegisterPage = () => {
     const {request} = useHttp()
 
     useEffect(() => {
-        console.log("useEffect")
         // @ts-ignore
         dispatch(fetchJobsData())
-        // request({url: "job_info/job_get/job_list/", headers: header()})
-        //     .then(res => console.log(res))
-        // request(`${API_URL_DOC}job_info/job_get/job_list/`)
-        //     .then(res => console.log(res))
     }, [])
 
     const jobsList = useSelector(getJobsData)
@@ -102,9 +97,6 @@ export const RegisterPage = () => {
     } = useForm<ISubmitData>()
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
-
-
-
 
     const render = useCallback(() => {
         return registerStaff.map(item => {

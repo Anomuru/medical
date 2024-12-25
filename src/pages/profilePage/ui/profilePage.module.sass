@@ -73,6 +73,20 @@
         flex-wrap: wrap !important
         gap: 2rem
         justify-content: space-between
-
+        position: relative
         &__input
           width: 120%
+        &__error
+          left: 42.5%
+          color: red
+          font-size: 1.6rem
+          position: absolute
+          top: 7rem
+
+@media (max-width: 1440px)
+  .profileBox
+    &__rigthSide
+      &__profileSetBox
+        &__formBox
+          &__error
+            left: 60%

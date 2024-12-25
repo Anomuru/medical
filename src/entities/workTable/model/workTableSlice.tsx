@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {WorkTableSchema} from "./config/workTableSchema";
 
-const initialState = {
+const initialState: WorkTableSchema = {
     data: [],
     loading: false,
     error: null

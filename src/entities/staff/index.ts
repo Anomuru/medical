@@ -1,9 +1,9 @@
 export {StaffList} from "./ui/staffList/staffList";
 
-export {default as staffSlice} from "./model/slice/staffSlice";
+export {staffReducer, staffActions} from "./model/slice/staffSlice";
 export {
-    default as staffProfileSlice,
-    getStaffProfileId
+    staffProfileReducer,
+    staffProfileActions
 } from "./model/slice/staffProfileSlice";
 
 export {

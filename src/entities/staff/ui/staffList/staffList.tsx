@@ -7,7 +7,6 @@ import {Staff} from "../../model/types/staffSchema";
 
 import cls from "./staffList.module.sass";
 import {useDispatch} from "react-redux";
-import {getStaffProfileId} from "../../model/slice/staffProfileSlice";
 
 interface StaffListProps {
     currentTableData?: Staff[],
@@ -24,10 +23,7 @@ export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete}
             return (
                 <tr>
                     <td>{index + 1}</td>
-                    <td onClick={() => {
-                        dispatch(getStaffProfileId(item.id))
-                        navigate(`profile/${item.id}`)
-                    }}>
+                    <td onClick={() => navigate(`profile/${item.id}`)}>
                         <div className={cls.profile}>
                             <img className={cls.profile__img} src={item.image} alt=""/>
                             <div className={cls.profile__info}>

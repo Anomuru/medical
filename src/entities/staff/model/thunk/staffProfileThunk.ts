@@ -13,8 +13,8 @@ export const fetchStaffProfileData = createAsyncThunk(
 export const changeStaffDetails = createAsyncThunk(
     "staffProfileSlice/changeStaffDetails",
     // @ts-ignore
-    ({staffId}) => {
+    ({staffId, data}) => {
         const {request} = useHttp()
-        return request({url: `user/staff/crud/update/${staffId}`, method: "PATCH"})
+        return request({url: `user/staff/crud/update/${staffId}`, method: "PATCH", body: JSON.stringify(data)})
     }
 )

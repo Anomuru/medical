@@ -1,15 +1,23 @@
 import {WorkTableSchema} from "entities/workTable";
-import {StaffSchema} from "entities/staff";
-import {OftenUsedSchemas} from "entities/oftenUsed";
+// import {StaffSchema} from "entities/staff";
+// import {OftenUsedSchemas} from "entities/oftenUsed";
 import {UserSchema} from "entities/user";
 import {EnhancedStore, Reducer, ReducersMapObject} from "@reduxjs/toolkit";
+import {OftenUsedSchemas} from "entities/oftenUsed";
+import {StaffListSchema, StaffProfileSchema} from "entities/staff";
+import {DeviceListSchema} from "../../../../entities/deviceList";
 
 
 export interface StateSchema {
 
     userSlice: UserSchema;
+    oftenUsedSlice: OftenUsedSchemas;
 
     workTableSlice?: WorkTableSchema;
+    staffSlice? : StaffListSchema;
+    staffProfileSlice?: StaffProfileSchema;
+    deviceListSlice?: DeviceListSchema;
+
 
 
 

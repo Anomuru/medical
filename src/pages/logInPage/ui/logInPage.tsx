@@ -18,6 +18,7 @@ interface ILogData {
 }
 const reducers: ReducersList = {
     workTableSlice: workTableReducer,
+    // userSlice:
 };
 export const LogInPage = () => {
 
@@ -43,7 +44,7 @@ export const LogInPage = () => {
 
     
     return (
-        <DynamicModuleLoader reducers={reducers} removeAfterUnmount={false}>
+        // <DynamicModuleLoader reducers={{}} removeAfterUnmount={false}>
             <div className={cls.loginPage}>
                 <div className={cls.loginPage__content}>
                     <img className={cls.loginPage__logo} src={logo} alt=""/>
@@ -78,7 +79,7 @@ export const LogInPage = () => {
                     <img src={image} alt=""/>
                 </div>
             </div>
-        </DynamicModuleLoader>
+        // </DynamicModuleLoader>
 
     );
 }

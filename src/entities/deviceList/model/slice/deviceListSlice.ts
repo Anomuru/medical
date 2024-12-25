@@ -35,4 +35,5 @@ const deviceListSlice = createSlice({
     }
 })
 
-export default deviceListSlice.reducer
+export const {reducer: deviceListReducer} = deviceListSlice
+export const {actions: deviceListActions} = deviceListSlice
