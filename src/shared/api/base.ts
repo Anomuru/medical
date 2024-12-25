@@ -1,5 +1,5 @@
 
-export const API_URL_DOC = `http://192.168.1.14:8000/`
+export const API_URL_DOC = `http://192.168.1.61:8000/`
 
 
 export const API_URL: string = `${API_URL_DOC}api/`
@@ -49,7 +49,7 @@ export const branchQueryId = () => {
 }
 
 
-export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 
 interface UseHttpProps {

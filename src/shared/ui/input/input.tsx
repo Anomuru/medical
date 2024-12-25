@@ -36,8 +36,12 @@ export const Input: React.FC<InputProps> = (props) => {
         required
     } = props
 
+    console.log(rules)
+
     const textField =
         register && register(name, rules)
+
+    console.log(textField, "textField")
 
     const [passwordActive, setPasswordActive] = useState<boolean>(false)
 
