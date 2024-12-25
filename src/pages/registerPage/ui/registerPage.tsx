@@ -134,7 +134,7 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={setSelectedSelect}
-                        optionsData={jobsList}
+                        optionsData={[]}
                     />
                 )
             }

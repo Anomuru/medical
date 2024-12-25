@@ -5,10 +5,10 @@ import {Button} from "shared/ui/button";
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
-import {API_URL, useHttp} from "shared/api/api";
+
 
 import cls from "./hospitalRegPage.module.sass";
-import {headers} from "shared/api/base";
+import {headers, useHttp} from "shared/api/base";
 
 interface IHospitalRegPageData {
 
@@ -191,8 +191,13 @@ export const HospitalRegPage = () => {
             branch: 1
 
         }
-        console.log(res)
-        request(`${API_URL}user/users/crud/create/`, "POST", JSON.stringify(res), headers())
+
+        request({
+            url: "user/users/crud/create/",
+            method: "POST",
+            body: JSON.stringify(res),
+            headers: headers()
+        })
             .then(res => {
                 console.log(res)
                 setErrorUserName(false)
@@ -207,7 +212,9 @@ export const HospitalRegPage = () => {
             .catch(err => {
                 console.log(err)
                 if (err) {
-                    setErrorUserName(true)
+                    if (err.username) {
+                        setErrorUserName(true)
+                    }
                 }
             })
     }

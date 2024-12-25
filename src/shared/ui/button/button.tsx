@@ -10,7 +10,8 @@ interface buttonProps {
     children: string | JSX.Element,
     id?: string,
     extraClass?: string,
-    onClick?: React.MouseEventHandler<HTMLButtonElement>
+    onClick?: React.MouseEventHandler<HTMLButtonElement>,
+    type?: string
 }
 
 export const Button = (props: buttonProps) => {
@@ -19,14 +20,17 @@ export const Button = (props: buttonProps) => {
         children,
         id,
         extraClass,
-        onClick
+        onClick,
+        type
     } = props
 
     return (
         <button
             onClick={onClick}
             id={id}
-            className={classNames(cls.button, extraClass)}
+            className={classNames(cls.button, extraClass , {
+                [cls.denger]: type === "danger"
+            })}
         >
             {children}
         </button>

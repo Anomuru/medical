@@ -6,25 +6,39 @@ import cls from "./priceAccordionItem.module.sass";
 
 interface IItem {
     name: string,
-    price: string
+    price: string,
+    device: string,
+    type: number,
+    id: number
 }
 
 interface IPriceAccordionItemProps {
-    list: IItem[]
+    list?: IItem[],
+    setIsEditItem: boolean,
+    setActiveAnalysis: string
 }
 
 export const PriceAccordionItem: React.FC<IPriceAccordionItemProps> = (props) => {
 
-    const {list} = props
+    const {list , setIsEditItem , setActiveAnalysis} = props
+
+
 
     const renderItems = useCallback(() => {
-        return list.map(item => {
+        return list?.map(item => {
+
             return (
                 <tr>
                     <td>{item.name}</td>
                     <td>{item.price}</td>
                     <td>
-                        <i className="fas fa-pen"/>
+
+                        <i onClick={() => {
+                            {/*// @ts-ignore*/}
+                            setIsEditItem(true)
+                            {/*// @ts-ignore*/}
+                            setActiveAnalysis(item.id)
+                        }} className="fas fa-pen"/>
                     </td>
                 </tr>
             )
