@@ -1,6 +1,7 @@
 
 
-import React, {JSX, SetStateAction} from 'react';
+
+import React, {JSX} from 'react';
 
 
 import cls from "./button.module.sass";

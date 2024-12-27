@@ -138,15 +138,15 @@ export const StaffPage = () => {
                 onDelete={onDelete}
                 currentTableData={currentTableData}
             />
-            <Pagination
-                users={list}
-                onPageChange={page => {
-                    setCurrentPage(page)
-                }}
-                currentPage={currentPage}
-                pageSize={pageSize}
-                setCurrentTableData={setCurrentTableData}
-            />
+            {/*<Pagination*/}
+            {/*    users={list}*/}
+            {/*    onPageChange={page => {*/}
+            {/*        setCurrentPage(page)*/}
+            {/*    }}*/}
+            {/*    currentPage={currentPage}*/}
+            {/*    pageSize={pageSize}*/}
+            {/*    setCurrentTableData={setCurrentTableData}*/}
+            {/*/>*/}
         </div>
     );
 }

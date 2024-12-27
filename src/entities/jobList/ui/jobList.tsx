@@ -161,15 +161,15 @@ export const JobList = () => {
                 </Table>
             </div>
 
-            <Pagination
-                users={list}
-                onPageChange={page => {
-                    setCurrentPage(page)
-                }}
-                currentPage={currentPage}
-                pageSize={pageSize}
-                setCurrentTableData={setCurrentTableData}
-            />
+            {/*<Pagination*/}
+            {/*    users={list}*/}
+            {/*    onPageChange={page => {*/}
+            {/*        setCurrentPage(page)*/}
+            {/*    }}*/}
+            {/*    currentPage={currentPage}*/}
+            {/*    pageSize={pageSize}*/}
+            {/*    setCurrentTableData={setCurrentTableData}*/}
+            {/*/>*/}
         </>
 
 
