@@ -80,7 +80,7 @@ export const HospitalRegPage = () => {
             type: "email"
         }, {
             name: "unknown",
-            value: [{label: "Man", id: 1}, {label: "Woman", id: 2}],
+            value: [{label: "Man", id: "man"}, {label: "Woman", id: "woman"}],
             isRadio: true,
         }, {
             name: "password",
@@ -93,7 +93,8 @@ export const HospitalRegPage = () => {
     const {
         register,
         handleSubmit,
-        setValue
+        setValue,
+        reset
     } = useForm<IHospitalRegPageData>()
     const {request} = useHttp()
 
@@ -107,7 +108,7 @@ export const HospitalRegPage = () => {
         }))
     }, [list])
 
-    const [selectedRadio, setSelectedRadio] = useState<number>(NaN)
+    const [selectedRadio, setSelectedRadio] = useState<string>("")
     const [progress, setProgress] = useState<IProgress[]>([])
 
 
@@ -152,10 +153,10 @@ export const HospitalRegPage = () => {
                                         <Radio
                                             name={"radio"}
                                             // @ts-ignore
-                                            value={inner.label}
+                                            value={inner.id}
+                                            // @ts-ignore
                                             onChange={setSelectedRadio}
                                             checked={inner.id === selectedRadio}
-                                            // required
                                         >
                                             {inner.label}
                                         </Radio>
@@ -193,7 +194,7 @@ export const HospitalRegPage = () => {
         }
 
         request({
-            url: "user/users/crud/create/",
+            url: "api/user/users/crud/create/",
             method: "POST",
             body: JSON.stringify(res),
             headers: headers()
@@ -201,6 +202,7 @@ export const HospitalRegPage = () => {
             .then(res => {
                 console.log(res)
                 setErrorUserName(false)
+
                 // list.map(item => {
                 //     if (item.isDouble) {
                 //
@@ -208,19 +210,20 @@ export const HospitalRegPage = () => {
                 //         setValue(item.name, "")
                 //     }
                 // })
+
+                reset()
             })
             .catch(err => {
                 console.log(err)
-                if (err) {
-                    if (err.username) {
-                        setErrorUserName(true)
-                    }
-                }
+
+
+                    setErrorUserName(true)
+
+
             })
     }
 
 
-    console.log(errorUserName)
     return (
         <div className={cls.wrapper}>
             <div className={cls.hospital}>

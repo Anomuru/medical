@@ -8,7 +8,7 @@ export const CLASSROOM_API_URL_DOC: string = `https://classroom.gennis.uz/`
 
 
 export const headers = () => {
-    const token = sessionStorage.getItem("token")
+    // const token = sessionStorage.getItem("token")
     return {
         // "Authorization": "JWT " + token,
         'Content-Type': 'application/json'

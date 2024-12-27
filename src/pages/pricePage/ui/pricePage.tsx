@@ -21,11 +21,8 @@ import {
     editAnalysisName,
     onAddAnalysis,
     onAddPriceType,
-    onDeleteAnalysisType
+    onDeleteAnalysisType, onEditAnalysesName, onRemoveAnalysis
 } from "entities/price/model/slice/priceSlice";
-
-
-
 
 
 interface ISubmitData {
@@ -53,7 +50,6 @@ export const PricePage = () => {
     const deviceSelect = useSelector(getPriceDevice)
 
 
-
     useEffect(() => {
 
         // @ts-ignore
@@ -68,8 +64,6 @@ export const PricePage = () => {
     }, [])
 
 
-
-
     const [selectOption, setSelectedOption] = useState<number | string>()
 
 
@@ -82,6 +76,8 @@ export const PricePage = () => {
 
 
     const {request} = useHttp()
+
+
 
 
     const {handleSubmit, register, setValue} = useForm<ISubmitData>()
@@ -102,9 +98,12 @@ export const PricePage = () => {
                     // number={index + 1}
                 >
                     <div className={cls.pricePage__item}>
-                        {/*// @ts-ignore*/}
-                        <PriceAccordionItem setActiveAnalysis={setActiveAnalysis} setIsEditItem={setIsEditItem}
-                                            list={item?.analyses}/>
+                        <div className={cls.pricePage__item_accordion}>
+
+                            <PriceAccordionItem setValue={setValue} setActiveAnalysis={setActiveAnalysis} setIsEditItem={setIsEditItem}
+                                                list={item?.analyses}/>
+                        </div>
+
                         <Button onClick={() => {
                             setIsAddItem(true)
                             setActiveType(item?.id)
@@ -144,6 +143,7 @@ export const PricePage = () => {
         setIsEdit(false)
         setValue("name", "")
 
+        // dispatch(editAnalysisName({id: activeType, data: data}))
 
         request({
             url: `api/analysis/analysis_type/crud/update/${activeType}/`,
@@ -152,7 +152,6 @@ export const PricePage = () => {
             headers: headers()
         })
             .then(res => {
-                console.log(res)
                 dispatch(editAnalysisName({id: activeType, data: res}))
             })
             .catch(err => {
@@ -162,8 +161,9 @@ export const PricePage = () => {
 
 
     const onDeleteType = () => {
-        dispatch(onDeleteAnalysisType(activeType))
+
         setIsEdit(false)
+        dispatch(onDeleteAnalysisType(activeType))
         request({
             url: `api/analysis/analysis_type/crud/delete/${activeType}/`,
             method: "DELETE",
@@ -182,10 +182,13 @@ export const PricePage = () => {
         const res = {
             ...data,
             device: selectOption,
-            type: activeType
+            type: activeType,
         }
 
         setIsAddItem(false)
+        // dispatch(onAddAnalysis({id: activeType, analyses: res}))
+        // dispatch(onAddAnalysis({id: activeType, analyses: res}))
+
         request({
             url: "api/analysis/analysis/crud/create/",
             method: "POST",
@@ -195,6 +198,9 @@ export const PricePage = () => {
             .then(res => {
                 dispatch(onAddAnalysis({id: activeType, analyses: res}))
 
+                setValue("name" , "")
+                setValue("price" , "")
+                console.log(res)
 
             })
             .catch(err => {
@@ -203,13 +209,19 @@ export const PricePage = () => {
     }
 
 
+
+
+
     const onEditAnalysisItem = (data: ISubmitData) => {
 
         const res = {
             ...data,
-            type: selectType,
+            type: Number(selectType),
             device: deviceType
         }
+
+
+        // dispatch(onEditAnalysesName({id: Number(selectType) , analyses: {id: activeAnalysis, ...res}}))
 
         request({
             url: `api/analysis/analysis/crud/update/${activeAnalysis}/`,
@@ -218,7 +230,9 @@ export const PricePage = () => {
             headers: headers()
         })
             .then(res => {
-                console.log(res)
+                dispatch(onEditAnalysesName({id: Number(selectType) , analyses: {id: activeAnalysis, ...res}}))
+                setValue("name" , "")
+                setValue("price" , "")
                 setIsEditItem(false)
             })
             .catch(err => {
@@ -228,26 +242,19 @@ export const PricePage = () => {
 
     const onDeleteAnalysisItem = () => {
 
-
+        // dispatch(onRemoveAnalysis({id: activeType , analyses: activeAnalysis}))
+        dispatch(onRemoveAnalysis({id: activeType , analyses: activeAnalysis}))
+        setIsEditItem(false)
         request({
             url: `api/analysis/analysis/crud/delete/${activeAnalysis}/`,
             method: "DELETE",
             headers: headers()
         })
-            .then(res => {
-                console.log(res)
-                setIsEditItem(false)
-            })
+
             .catch(err => {
                 console.log(err)
             })
     }
-
-
-
-
-
-
 
     return (
         <>
@@ -291,9 +298,10 @@ export const PricePage = () => {
                     <Select setSelectOption={setDeviceType} optionsData={deviceSelect}/>
                     {/*// @ts-ignore*/}
 
-                    <Select setSelectOption={setSelectType} optionsData={type}/>
+                    <Select setSelectOption={setSelectType} selectOption={selectType}  optionsData={type}/>
                     <div className={cls.btns}>
-                        <Button type={"danger"} onClick={handleSubmit(onDeleteAnalysisItem)} extraClass={cls.itemEdit__btn}>
+                        <Button type={"danger"} onClick={handleSubmit(onDeleteAnalysisItem)}
+                                extraClass={cls.itemEdit__btn}>
                             Delete
                         </Button>
                         <Button onClick={handleSubmit(onEditAnalysisItem)} extraClass={cls.itemEdit__btn}>

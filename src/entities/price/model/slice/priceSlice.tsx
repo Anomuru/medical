@@ -41,29 +41,60 @@ const priceSlice = createSlice({
             state.data = state.data.filter(item => item.id !== action.payload)
         },
 
+
         onAddAnalysis: (state, action) => {
-            console.log(action.payload, "action payload");
 
             state.data = state.data.map((item) => {
                 if (item.id === action.payload.id) {
-                    console.log(action.payload.analyses, "action.payload.analyses");
-
-
-                    // const newAnalyses = Array.isArray(action.payload.analyses)
-                    //     ? action.payload.analyses
-                    //     : [action.payload.analyses];
-
                     return {
-                        ...item,
+                        id: item.id,
+                        name: item.name,
                         analyses: [
-                            ...(item.analyses || []),
                             action.payload.analyses,
-                        ],
+                            ...item.analyses
+                        ]
+                    }
+                }
+                return item;
+            });
+        },
+
+
+        onEditAnalysesName: (state, action) => {
+
+            state.data = state.data.map((item) => {
+                if (item.id === action.payload.id) {
+                    return {
+                        id: item.id,
+
+                        name: item.name,
+
+                        analyses: [...item.analyses.filter(analysis => analysis.id !== action.payload.analyses.id) , action.payload.analyses,]
+
                     };
                 }
                 return item;
             });
         },
+        onRemoveAnalysis: (state, action) => {
+
+
+            state.data = state.data.map((item) => {
+
+                if (item.id === action.payload.id) {
+
+                    return {
+                        ...item,
+                        analyses: item.analyses.filter(
+                            // @ts-ignore
+
+                            analysis => analysis.id !== action.payload.analyses
+                        )
+                    };
+                }
+                return item;
+            });
+        }
 
 
     },
@@ -98,7 +129,6 @@ const priceSlice = createSlice({
             })
 
 
-
             .addCase(fetchDeviceList.pending, state => {
                 state.loading = true
                 state.error = null
@@ -117,5 +147,12 @@ const priceSlice = createSlice({
 })
 
 
-export const {onAddPriceType, onAddAnalysis, editAnalysisName, onDeleteAnalysisType} = priceSlice.actions
+export const {
+    onAddPriceType,
+    onAddAnalysis,
+    editAnalysisName,
+    onDeleteAnalysisType,
+    onEditAnalysesName,
+    onRemoveAnalysis
+} = priceSlice.actions
 export default priceSlice.reducer

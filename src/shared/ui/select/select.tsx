@@ -31,7 +31,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
         return optionsData?.map((item, index) => {
             const value = item.id || item.value || item.name;
             // const key = item?.name || item?.number || item.old_id || item?.days || item.num || item?.user && `${item.user?.name} ${item.user?.surname}` || item.branch || item;
-            const key = item.name
+            const key = item.name || item.id
 
             return (
                 <option

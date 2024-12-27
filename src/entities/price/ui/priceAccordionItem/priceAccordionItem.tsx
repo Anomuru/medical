@@ -3,6 +3,7 @@ import React, {useCallback} from 'react';
 import {Table} from "shared/ui/table";
 
 import cls from "./priceAccordionItem.module.sass";
+import {a} from "@fullcalendar/core/internal-common";
 
 interface IItem {
     name: string,
@@ -14,13 +15,14 @@ interface IItem {
 
 interface IPriceAccordionItemProps {
     list?: IItem[],
-    setIsEditItem: boolean,
-    setActiveAnalysis: string
+    setIsEditItem: (arg: boolean) => void,
+    setActiveAnalysis: (arg: number) => void,
+    setValue?: any
 }
 
 export const PriceAccordionItem: React.FC<IPriceAccordionItemProps> = (props) => {
 
-    const {list , setIsEditItem , setActiveAnalysis} = props
+    const {list , setIsEditItem , setActiveAnalysis , setValue} = props
 
 
 
@@ -34,16 +36,20 @@ export const PriceAccordionItem: React.FC<IPriceAccordionItemProps> = (props) =>
                     <td>
 
                         <i onClick={() => {
-                            {/*// @ts-ignore*/}
+
                             setIsEditItem(true)
-                            {/*// @ts-ignore*/}
+
+                            setValue("name" , item.name)
+
+                            setValue("price" , item.price)
+
                             setActiveAnalysis(item.id)
                         }} className="fas fa-pen"/>
                     </td>
                 </tr>
             )
         })
-    }, [])
+    }, [list])
 
     return (
         <Table extraClass={cls.item}>
