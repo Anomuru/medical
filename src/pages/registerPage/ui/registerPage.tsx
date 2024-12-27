@@ -4,12 +4,11 @@ import {useForm} from "react-hook-form";
 
 import {fetchJobsData, getJobsData} from "entities/oftenUsed";
 import {Button} from "shared/ui/button";
-import {Input} from "shared/ui/input";
+import {Input, ErrorType} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
 import {Select} from "shared/ui/select";
 import {Form} from "shared/ui/form";
 import {headers, useHttp} from "shared/api/base";
-import {useDebounce} from "shared/lib/hooks/useDebounce";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
@@ -94,11 +93,14 @@ export const RegisterPage = () => {
 
     const {
         register,
-        handleSubmit
+        handleSubmit,
+        reset
     } = useForm<ISubmitData>()
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
-    // const [isCheckUsername, setIsCheckUsername] = useState<{message: string}>(false)
+    const [isCheckUsername, setIsCheckUsername] = useState<ErrorType>()
+
+    const getSelectedRadio = useCallback((data: number) => setSelectedRadio(data), [])
 
     const render = useCallback(() => {
         return registerStaff.map(item => {
@@ -111,7 +113,7 @@ export const RegisterPage = () => {
                         type={item.type}
                         name={item.name}
                         onChange={item.name === "username" ? onCheckUsername : undefined}
-                        // error={isCheckUsername ? ""}
+                        error={item.name === "username" ? isCheckUsername : undefined}
                     />
                 )
             } else if (item.isRadio) {
@@ -123,7 +125,7 @@ export const RegisterPage = () => {
                                     <Radio
                                         name={"1_1"}
                                         value={inner.id}
-                                        onChange={setSelectedRadio}
+                                        onChange={getSelectedRadio}
                                         checked={inner.id === selectedRadio}
                                     >
                                         {inner.label}
@@ -143,7 +145,7 @@ export const RegisterPage = () => {
                 )
             }
         })
-    }, [jobsList, register, registerStaff, selectedRadio])
+    }, [jobsList, register, registerStaff, selectedRadio, isCheckUsername])
 
     const onSubmit = (data: ISubmitData) => {
         const res = {
@@ -163,6 +165,7 @@ export const RegisterPage = () => {
                 console.log(res)
                 setSelectedRadio(NaN)
                 setSelectedSelect("")
+                reset()
             })
             .catch(err => console.log(err))
     }
@@ -174,7 +177,10 @@ export const RegisterPage = () => {
             method: "POST",
             body: JSON.stringify({username: data})
         })
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res)
+                setIsCheckUsername(res)
+            })
             .catch(err => console.log(err))
     }
 

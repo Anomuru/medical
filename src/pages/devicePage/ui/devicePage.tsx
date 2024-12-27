@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {DeviceList, deviceListReducer, deviceListThunk} from 'entities/deviceList';
 import cls from './devicePage.module.sass';
 import {Modal} from 'shared/ui/modal';
@@ -43,6 +43,9 @@ export const DevicePage = () => {
 
     };
 
+    const getName = useCallback((data: string) => setName(data), [])
+    const getIpAddress = useCallback((data: string) => setIpAddress(data), [])
+
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.deviceBox}>
@@ -54,9 +57,9 @@ export const DevicePage = () => {
                 <Modal extraClass={cls.addItemBox} active={addItem} setActive={setAddItem}>
                     <Form onSubmit={handleFormSubmit}>
                         <Input extraClass={cls.addItemBox__input} name="name" placeholder="Name device"
-                               onChangeState={setName}/>
+                               onChange={getName}/>
                         <Input extraClass={cls.addItemBox__input} name="ip_address" placeholder="Enter IP Address"
-                               onChangeState={setIpAddress}/>
+                               onChange={getIpAddress}/>
                         <Input extraClass={cls.addItemBox__input} name="img" type="file"/>
                         <Button>Add Device</Button>
                     </Form>

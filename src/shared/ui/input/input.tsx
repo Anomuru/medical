@@ -12,19 +12,23 @@ type HTMLInputProps = Omit<
     'value' | 'onChange' | 'readOnly'
 >;
 
+export interface ErrorType {
+    message: string,
+    status: boolean
+}
+
 export interface InputProps extends HTMLInputProps {
     type?: string,
     placeholder?: string,
     extraClass?: string,
     extraLabelClass?: string,
     title?: string,
-    onChangeState?: Dispatch<SetStateAction<string|undefined>>,
     onChange?: (value: string) => void,
     name: string,
     register?: UseFormRegister<any>,
     rules?: RegisterOptions,
     required?: boolean,
-    error?: string
+    error?: ErrorType,
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -40,7 +44,6 @@ export const Input: React.FC<InputProps> = (props) => {
         register,
         rules,
         required,
-        onChangeState,
         error
     } = props
 
@@ -65,9 +68,18 @@ export const Input: React.FC<InputProps> = (props) => {
                 //     onChange && onChange(e.target.value)
                 //     textField && textField.onChange(e)
                 // }}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : null}
             />
-            {error && <span className={cls.label__title}>{error}</span>}
+            {
+                error &&
+                <span
+                    className={classNames(cls.label__success, {
+                        [cls.isError]: error.status
+                    })}
+                >
+                    {error.message}
+                </span>
+            }
             {
                 type === "password" &&
                 <i

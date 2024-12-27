@@ -18,7 +18,6 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {useParams} from "react-router";
-import {useDebounce} from "../../../shared/lib/hooks/useDebounce";
 
 const reducers: ReducersList = {
     staffProfileSlice: staffProfileReducer
@@ -95,9 +94,9 @@ export const ProfilePage = () => {
     const onCheckUsername = (data: string) => {
         console.log(data, "data")
         request({
-            url: `user/username-check/${details?.id}/`,
+            url: `user/username-check-authorized/`,
             method: "POST",
-            body: JSON.stringify({username: data})
+            body: JSON.stringify({username: data, pk: details?.id})
         })
             .then(res => console.log(res))
             .catch(err => console.log(err))
