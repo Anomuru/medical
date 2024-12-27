@@ -121,7 +121,7 @@ export const PricePage = () => {
 
 
         request({
-            url: "api/analysis/analysis_type/crud/create/",
+            url: "analysis/analysis_type/crud/create/",
             method: "POST",
             body: JSON.stringify(data),
             headers: headers()
@@ -146,7 +146,7 @@ export const PricePage = () => {
         // dispatch(editAnalysisName({id: activeType, data: data}))
 
         request({
-            url: `api/analysis/analysis_type/crud/update/${activeType}/`,
+            url: `analysis/analysis_type/crud/update/${activeType}/`,
             method: "PUT",
             body: JSON.stringify(data),
             headers: headers()
@@ -165,7 +165,7 @@ export const PricePage = () => {
         setIsEdit(false)
         dispatch(onDeleteAnalysisType(activeType))
         request({
-            url: `api/analysis/analysis_type/crud/delete/${activeType}/`,
+            url: `analysis/analysis_type/crud/delete/${activeType}/`,
             method: "DELETE",
             headers: headers()
         })
@@ -190,7 +190,7 @@ export const PricePage = () => {
         // dispatch(onAddAnalysis({id: activeType, analyses: res}))
 
         request({
-            url: "api/analysis/analysis/crud/create/",
+            url: "analysis/analysis/crud/create/",
             method: "POST",
             body: JSON.stringify(res),
             headers: headers()
@@ -224,7 +224,7 @@ export const PricePage = () => {
         // dispatch(onEditAnalysesName({id: Number(selectType) , analyses: {id: activeAnalysis, ...res}}))
 
         request({
-            url: `api/analysis/analysis/crud/update/${activeAnalysis}/`,
+            url: `analysis/analysis/crud/update/${activeAnalysis}/`,
             method: "PUT",
             body: JSON.stringify(res),
             headers: headers()
@@ -246,7 +246,7 @@ export const PricePage = () => {
         dispatch(onRemoveAnalysis({id: activeType , analyses: activeAnalysis}))
         setIsEditItem(false)
         request({
-            url: `api/analysis/analysis/crud/delete/${activeAnalysis}/`,
+            url: `analysis/analysis/crud/delete/${activeAnalysis}/`,
             method: "DELETE",
             headers: headers()
         })

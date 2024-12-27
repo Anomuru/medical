@@ -194,7 +194,7 @@ export const HospitalRegPage = () => {
         }
 
         request({
-            url: "api/user/users/crud/create/",
+            url: "user/users/crud/create/",
             method: "POST",
             body: JSON.stringify(res),
             headers: headers()
