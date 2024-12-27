@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import cls from "./deviceProfile.module.sass";
 import {Box} from "shared/ui/box";
 import deviceImg from "shared/assets/images/device.png";
@@ -6,149 +6,96 @@ import deviceIcon from "shared/assets/icon/device.png";
 import {Table} from "shared/ui/table";
 import {Pagination} from "features/pagination";
 import {Input} from "shared/ui/input";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    deviceAnalisThunk,
+    deviceProfileThunk,
+    deviceProfileUsersThunk
+} from "entities/deviceProfile/model/thunk/deviceProfileThunk";
+import {getProfile, getProfileUsers} from "entities/deviceProfile/model/selector/deviceProfileSelector";
+import classNames from "classnames";
+import {Modal} from "shared/ui/modal";
+import {Form} from "shared/ui/form";
+import {Button} from "shared/ui/button";
 
-const list = [
-    {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "Joooohn",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },
-]
 
-type listType = typeof list
+interface IList {
+    id: number,
+    name: string,
+    surname: string,
+    user_analysis: string
+}
+
+interface IDeviceUserResponse {
+    count: number;
+    next?: string;
+    previous?: string;
+    results?: IList[];
+}
 
 export const DeviceProfile = () => {
 
+
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [currentTableData, setCurrentTableData] = useState<listType>([])
     const pageSize = useMemo(() => 10, [])
+    const [userId, setUserId] = useState<number | undefined>()
+    const [portal, setPortal] = useState<boolean>(false)
+    const [name, setName] = useState<string>('')
+    const [ip, setIp] = useState<string>('')
+    const [img, setImg] = useState<string>('')
+
+    const dispatch: any = useDispatch()
+    const getData: any = useSelector(getProfile)
+    //@ts-ignore
+    const getUsers = useSelector(getProfileUsers) as IDeviceUserResponse
+    const id = 1
+    useEffect(() => {
+        dispatch(deviceProfileThunk(id))
+        dispatch(deviceProfileUsersThunk(id))
+    }, [id])
+
+    useEffect(() => {
+        dispatch(deviceAnalisThunk(userId))
+    }, [userId])
+
+    const onClick = (portal: boolean) => {
+        setPortal(!portal)
+        console.log(portal)
+    }
 
     const renderPatientsData = useCallback(() => {
-        return list.map((item, index) => (
-            <tr>
+        return getUsers.results?.map((item, index) => (
+            <tr onClick={() => setUserId(item.id)}  className={cls.profileContainer__leftSight__arounder__head__users}>
                 <td>{index + 1}</td>
                 <td>
                     <div className={cls.profile}>
-                        <img className={cls.profile__img} src={item.user.image} alt=""/>
+                        <img className={cls.profile__img} src="" alt=""/>
                         <div className={cls.profile__info}>
                             <p className={cls.profile__title}>
-                                {item.user.name} {item.user.surname}
+                                {item.name} {item.surname}
                             </p>
                         </div>
                     </div>
                 </td>
             </tr>
         ))
-    }, [currentTableData])
+    }, [getUsers])
 
     return (
         <div className={cls.profileContainer}>
             <div className={cls.profileContainer__leftSight}>
-                <Box extraClass={cls.profileContainer__leftSight__deviceBox}>
-                    <div className={cls.profileContainer__leftSight__deviceBox__content}>
-                        <div className={cls.profileContainer__leftSight__deviceBox__content__imgBox} >
-                            <img className={cls.profileContainer__leftSight__deviceBox__content__imgBox__img} src={deviceImg} alt=""/>
-                        </div>
-                        <h1 className={cls.profileContainer__leftSight__deviceBox__content__text}>
-                            <img src={deviceIcon} alt=""/>
-                            Ventilator</h1>
-                    </div>
-                </Box>
+                        <Box extraClass={cls.profileContainer__leftSight__deviceBox}>
+                            <div className={cls.profileContainer__leftSight__deviceBox__content}>
+                                <div className={cls.profileContainer__leftSight__deviceBox__content__imgBox} >
+                                    <img className={cls.profileContainer__leftSight__deviceBox__content__imgBox__img} src={getData?.img || deviceImg} alt=""/>
+                                </div>
+                                <h1 className={cls.profileContainer__leftSight__deviceBox__content__text}>
+                                    <img src={deviceIcon} alt=""/>
+                                    {getData?.name}</h1>
+                            </div>
+                            <i onClick={() => {onClick(portal)}} className={classNames("fas fa-list", cls.colorsEd)}/>
+                            <i className={classNames("fas fa-trash", cls.colors)}/>
+                        </Box>
                 <h1 className={cls.profileContainer__leftSight__content}>Patients</h1>
                 <div className={cls.profileContainer__leftSight__arounder}>
                     <Table>
@@ -162,17 +109,12 @@ export const DeviceProfile = () => {
                         {renderPatientsData()}
                         </tbody>
                     </Table>
+                    <Pagination
+                        totalCount={getUsers.count}
+                        onPageChange={setCurrentPage}
+                        currentPage={currentPage}
+                        pageSize={pageSize}/>
                 </div>
-
-                {/*<Pagination*/}
-                {/*    users={list}*/}
-                {/*    onPageChange={page => {*/}
-                {/*        setCurrentPage(page)*/}
-                {/*    }}*/}
-                {/*    currentPage={currentPage}*/}
-                {/*    pageSize={pageSize}*/}
-                {/*    setCurrentTableData={setCurrentTableData}*/}
-                {/*/>*/}
             </div>
             <Box extraClass={cls.profileContainer__rightContainer}>
                 <h1 className={cls.profileContainer__rightContainer__content}>Analiz</h1>
@@ -250,6 +192,17 @@ export const DeviceProfile = () => {
                         title="Nafas olish tezligi (RR)"/>
                 </div>
             </Box>
+            <Modal extraClass={cls.profileContainer__modal} active={portal} setActive={setPortal}>
+                <Form extraClass={cls.profileContainer__modal__form}>
+                    <label className={cls.profileContainer__modal__form__label} htmlFor="img">
+                        <Input onChange={setImg} extraClass={cls.profileContainer__modal__form__label__input} name="img" type="file" />
+                        <i className={classNames("fas fa-upload", cls.upload)}></i>
+                    </label>
+                    <Input title={"Change name"} extraClass={cls.profileContainer__modal__form__input} name={"name"} onChange={setName}/>
+                    <Input title={"Change address"} extraClass={cls.profileContainer__modal__form__input} name={"ip_address"} onChange={setIp}/>
+                    <Button extraClass={cls.profileContainer__modal__form__input}>Apply changes</Button>
+                </Form>
+            </Modal>
         </div>
     );
 };

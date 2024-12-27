@@ -1,20 +1,22 @@
-import React, {JSX} from "react";
+import React, {JSX, SetStateAction} from "react";
 import cls from "./box.module.sass"
 
 
 interface boxProps {
     children: JSX.Element|JSX.Element[],
-    extraClass?: string
+    extraClass?: string,
+    onClick?: SetStateAction<any> | React.MouseEventHandler<HTMLButtonElement>
 }
 
 export const Box = (props: boxProps) => {
 
     const {
         children,
-        extraClass
+        extraClass,
+        onClick
     } = props
     return (
-        <div className={`${cls.box} ${extraClass}`}>
+        <div onClick={onClick} className={`${cls.box} ${extraClass}`}>
             {children}
         </div>
     );

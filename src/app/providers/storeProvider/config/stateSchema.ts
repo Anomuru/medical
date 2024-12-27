@@ -3,13 +3,15 @@ import {StaffSchema} from "entities/staff";
 import {OftenUsedSchemas} from "entities/oftenUsed";
 import {DeviceListSchema} from "entities/deviceList";
 import {DeviceAddSchema} from "entities/device";
+import {DeviceProfileSchema} from "entities/deviceProfile";
 
 export interface StateSchema {
     workTableSlice: WorkTableSchema,
     staffSlice: StaffSchema,
     oftenUsedSlice: OftenUsedSchemas,
     deviceListSlice: DeviceListSchema,
-    deviceSlice: DeviceAddSchema
+    deviceSlice: DeviceAddSchema,
+    deviceProfileSlice: DeviceProfileSchema
 }
 
 // export interface ReducerManager {
