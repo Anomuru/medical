@@ -11,6 +11,7 @@ import {Input} from "shared/ui/input";
 import cls from './profilePage.module.sass'
 import profileImg from 'shared/assets/images/profileImage.png'
 import {useForm, useWatch} from "react-hook-form";
+import {useHttp} from "shared/api/base";
 import {changeStaffDetails} from "../../../entities/staff/model/thunk/staffProfileThunk";
 import {
     DynamicModuleLoader,
@@ -25,6 +26,7 @@ const reducers: ReducersList = {
 
 export const ProfilePage = () => {
 
+    const {request} = useHttp()
     const dispatch = useDispatch()
     const {register, handleSubmit, setValue} = useForm()
     const {id: staffId} = useParams()
@@ -32,6 +34,11 @@ export const ProfilePage = () => {
 
     const staffDetails = useMemo(() => [
         {
+            name: "username",
+            placeholder: "Enter username",
+            title: "Username",
+            rules: {value: details?.username}
+        },{
             name: "name",
             placeholder: "Enter name",
             title: "Name",
@@ -85,6 +92,17 @@ export const ProfilePage = () => {
         }
     }
 
+    const onCheckUsername = (data: string) => {
+        console.log(data, "data")
+        request({
+            url: `user/username-check/${details?.id}/`,
+            method: "POST",
+            body: JSON.stringify({username: data})
+        })
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+    }
+
     // const onSubmitPassword = useDebounce(async (data: any) => {
     //     await console.log(data, "data")
     // }, 500)
@@ -102,6 +120,7 @@ export const ProfilePage = () => {
                     // rules={item.rules}
                     register={register}
                     type={item.type}
+                    onChange={item.name === "username" ? onCheckUsername : undefined}
                 />
             )
         })
@@ -123,6 +142,7 @@ export const ProfilePage = () => {
                         <Button onClick={() => setIsTimeTable(true)}
                                 extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Time table"}/>
                         <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Choose plan"}/>
+                        <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Analyses"}/>
                     </div>
                 </div>
                 <div className={cls.profileBox__rigthSide}>
@@ -146,7 +166,7 @@ export const ProfilePage = () => {
                             <>
                                 {render}
                             </>
-                            <Button children={"Save changes"}/>
+                            <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn} children={"Save changes"}/>
                         </Form>
                         <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
                         <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
@@ -193,7 +213,7 @@ export const ProfilePage = () => {
                             {/*    name={"phone"}*/}
                             {/*    type={'number'}*/}
                             {/*/>*/}
-                            <Button children={"Save changes"}/>
+                            <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn} children={"Save changes"}/>
                         </Form>
 
                     </Box>

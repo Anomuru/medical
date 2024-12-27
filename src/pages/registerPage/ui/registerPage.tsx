@@ -8,7 +8,8 @@ import {Input} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
 import {Select} from "shared/ui/select";
 import {Form} from "shared/ui/form";
-import {API_URL, API_URL_DOC, header, headers, useHttp} from "shared/api/base";
+import {headers, useHttp} from "shared/api/base";
+import {useDebounce} from "shared/lib/hooks/useDebounce";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
@@ -42,7 +43,7 @@ export const RegisterPage = () => {
             name: "username",
             label: "Username",
             isInput: true,
-        },{
+        }, {
             name: "name",
             label: "Name",
             isInput: true,
@@ -50,7 +51,7 @@ export const RegisterPage = () => {
             name: "surname",
             label: "Surname",
             isInput: true,
-        },{
+        }, {
             name: "address",
             label: "Address",
             isInput: true,
@@ -97,6 +98,7 @@ export const RegisterPage = () => {
     } = useForm<ISubmitData>()
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
+    // const [isCheckUsername, setIsCheckUsername] = useState<{message: string}>(false)
 
     const render = useCallback(() => {
         return registerStaff.map(item => {
@@ -108,6 +110,8 @@ export const RegisterPage = () => {
                         placeholder={item.label}
                         type={item.type}
                         name={item.name}
+                        onChange={item.name === "username" ? onCheckUsername : undefined}
+                        // error={isCheckUsername ? ""}
                     />
                 )
             } else if (item.isRadio) {
@@ -148,7 +152,7 @@ export const RegisterPage = () => {
             job_id: selectedSelect,
             branch: 1
         }
-        
+
         request({
             url: "user/staff/crud/create/",
             method: "POST",
@@ -160,6 +164,17 @@ export const RegisterPage = () => {
                 setSelectedRadio(NaN)
                 setSelectedSelect("")
             })
+            .catch(err => console.log(err))
+    }
+
+    const onCheckUsername = (data: string) => {
+        console.log(data, "data")
+        request({
+            url: "user/username-check/",
+            method: "POST",
+            body: JSON.stringify({username: data})
+        })
+            .then(res => console.log(res))
             .catch(err => console.log(err))
     }
 

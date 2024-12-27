@@ -24,6 +24,7 @@ export interface InputProps extends HTMLInputProps {
     register?: UseFormRegister<any>,
     rules?: RegisterOptions,
     required?: boolean,
+    error?: string
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -39,7 +40,8 @@ export const Input: React.FC<InputProps> = (props) => {
         register,
         rules,
         required,
-        onChangeState
+        onChangeState,
+        error
     } = props
 
     const textField = register && register(name, rules)
@@ -63,8 +65,9 @@ export const Input: React.FC<InputProps> = (props) => {
                 //     onChange && onChange(e.target.value)
                 //     textField && textField.onChange(e)
                 // }}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? (e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
             />
+            {error && <span className={cls.label__title}>{error}</span>}
             {
                 type === "password" &&
                 <i
