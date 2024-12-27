@@ -1,8 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Table} from "../../../shared/ui/table";
+import {Table} from "shared/ui/table";
 import cls from './jobList.module.sass'
-import classNames from "classnames";
-import {Pagination} from "../../../features/pagination";
 
 
 
