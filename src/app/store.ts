@@ -5,6 +5,7 @@ import {staffSlice} from "entities/staff";
 import {oftenUsedSlice} from "entities/oftenUsed";
 import {deviceListSlice} from "../entities/deviceList";
 import {deviceSlice} from "entities/device";
+import {deviceProfileSlice} from "entities/deviceProfile";
 import {priceSlice} from "../entities/price";
 
 export const store = configureStore({
@@ -14,7 +15,8 @@ export const store = configureStore({
         oftenUsedSlice,
         deviceListSlice,
         deviceSlice,
-        priceSlice
+        priceSlice,
+        deviceProfileSlice
     },
     devTools: process.env.NODE_ENV !== "production",
 })
