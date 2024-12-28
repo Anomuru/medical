@@ -1,4 +1,4 @@
-export {default as oftenUsedSlice} from "./model/slice/oftenUsedSlice";
+export {oftenUsedReducer, oftenUsedActions} from "./model/slice/oftenUsedSlice";
 
 export {
     type JobSchema,

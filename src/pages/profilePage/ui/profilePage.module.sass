@@ -71,8 +71,25 @@
         display: flex !important
         flex-direction: revert !important
         flex-wrap: wrap !important
-        gap: 2rem
-        justify-content: space-between
-
+        gap: 2rem 6rem
+        //justify-content: space-between
+        position: relative
+        &__btn
+          align-self: flex-end
         &__input
           width: 120%
+        &__error
+          left: 42.5%
+          color: red
+          font-size: 1.6rem
+          position: absolute
+          top: 7rem
+
+@media (max-width: 1440px)
+  .profileBox
+    &__rigthSide
+      &__profileSetBox
+        &__formBox
+          gap: 2rem 10rem
+          &__error
+            left: 60%

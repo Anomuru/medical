@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, {Dispatch, InputHTMLAttributes, SetStateAction, useState} from 'react';
 import {
-    FieldValues,
     UseFormRegister,
     RegisterOptions,
 } from "react-hook-form";
@@ -8,17 +7,28 @@ import {
 import cls from "./input.module.sass";
 import classNames from "classnames";
 
-export interface InputProps {
+type HTMLInputProps = Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'value' | 'onChange' | 'readOnly'
+>;
+
+export interface ErrorType {
+    message: string,
+    status: boolean
+}
+
+export interface InputProps extends HTMLInputProps {
     type?: string,
     placeholder?: string,
     extraClass?: string,
     extraLabelClass?: string,
     title?: string,
-    onChange?: (arg: string) => void,
+    onChange?: (value: string) => void,
     name: string,
-    register?: UseFormRegister<FieldValues>,
+    register?: UseFormRegister<any>,
     rules?: RegisterOptions,
-    required? :boolean
+    required?: boolean,
+    error?: ErrorType,
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -33,11 +43,14 @@ export const Input: React.FC<InputProps> = (props) => {
         name,
         register,
         rules,
-        required
+        required,
+        error
     } = props
 
-    const textField =
-        register && register(name, rules)
+    const textField = register && register(name, rules)
+
+    console.log(rules, "rules")
+
 
     const [passwordActive, setPasswordActive] = useState<boolean>(false)
 
@@ -51,18 +64,32 @@ export const Input: React.FC<InputProps> = (props) => {
                 className={classNames(cls.label__input, extraClass)}
                 type={(type === "password" && passwordActive) ? "text" : type}
                 placeholder={placeholder}
-                onChange={(e) => {
-                    onChange && onChange(e.target.value)
-                    textField && textField.onChange(e)
-                }}
+                // onChange={(e) => {
+                //     onChange && onChange(e.target.value)
+                //     textField && textField.onChange(e)
+                // }}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : null}
             />
+            {
+                error &&
+                <span
+                    className={classNames(cls.label__success, {
+                        [cls.isError]: error.status
+                    })}
+                >
+                    {error.message}
+                </span>
+            }
             {
                 type === "password" &&
                 <i
                     onClick={() => setPasswordActive(!passwordActive)}
                     className={classNames(
                         `fas ${passwordActive ? "fa-eye" : "fa-eye-slash"}`,
-                        cls.label__icon
+                        cls.label__icon,
+                        {
+                            [cls.title]: title
+                        }
                     )}
                 />
             }

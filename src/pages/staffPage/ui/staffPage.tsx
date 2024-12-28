@@ -1,123 +1,40 @@
-import {useMemo, useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 
 import {Pagination} from "features/pagination";
-import {StaffList, Staff, deleteStaffData} from "entities/staff";
+import {
+    StaffList,
+    Staff,
+    deleteStaffData,
+    fetchStaffListData,
+    getStaffListData,
+    staffReducer,
+    staffProfileReducer
+} from "entities/staff";
 import {Button} from "shared/ui/button";
 
 import cls from "./staffPage.module.sass";
+import {
+    DynamicModuleLoader,
+    ReducersList
+} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {useNavigate} from "react-router";
 
-const list = [
-    {
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },{
-        id: 1,
-        name: "John",
-        surname: "Smith",
-        job: "Surgeon",
-        image: "",
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },
-]
+const reducers: ReducersList = {
+    staffSlice: staffReducer
+}
 
 export const StaffPage = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchStaffListData())
+    }, [])
+
+    const staffList = useSelector(getStaffListData)
 
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [currentTableData, setCurrentTableData] = useState<Staff[]>([])
@@ -129,24 +46,29 @@ export const StaffPage = () => {
     }
 
     return (
-        <div className={cls.staffPage}>
-            <div className={cls.staffPage__header}>
-                <h2 className={cls.staffPage__title}>Staff list</h2>
-                <Button extraClass={cls.staffPage__btn}>+</Button>
+        <DynamicModuleLoader reducers={reducers}>
+            <div className={cls.staffPage}>
+                <div className={cls.staffPage__header}>
+                    <h2 className={cls.staffPage__title}>Staff list</h2>
+                    <Button extraClass={cls.staffPage__btn} onClick={() => navigate("/platform/register")}>+</Button>
+                </div>
+                <StaffList
+                    onDelete={onDelete}
+                    currentTableData={staffList}
+                />
+                {/*{*/}
+                {/*    staffList &&*/}
+                {/*    <Pagination*/}
+                {/*        users={staffList}*/}
+                {/*        onPageChange={page => {*/}
+                {/*            setCurrentPage(page)*/}
+                {/*        }}*/}
+                {/*        currentPage={currentPage}*/}
+                {/*        pageSize={pageSize}*/}
+                {/*        setCurrentTableData={setCurrentTableData}*/}
+                {/*    />*/}
+                {/*}*/}
             </div>
-            <StaffList
-                onDelete={onDelete}
-                currentTableData={currentTableData}
-            />
-            {/*<Pagination*/}
-            {/*    users={list}*/}
-            {/*    onPageChange={page => {*/}
-            {/*        setCurrentPage(page)*/}
-            {/*    }}*/}
-            {/*    currentPage={currentPage}*/}
-            {/*    pageSize={pageSize}*/}
-            {/*    setCurrentTableData={setCurrentTableData}*/}
-            {/*/>*/}
-        </div>
+        </DynamicModuleLoader>
     );
 }

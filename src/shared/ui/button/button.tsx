@@ -1,17 +1,18 @@
 
 
 
-import React, {JSX} from 'react';
+import React, {JSX, SetStateAction} from 'react';
 
 
 import cls from "./button.module.sass";
 import classNames from "classnames";
 
+
 interface buttonProps {
     children: string | JSX.Element,
     id?: string,
     extraClass?: string,
-    onClick?: React.MouseEventHandler<HTMLButtonElement>,
+    onClick?: SetStateAction<any> | React.MouseEventHandler<HTMLButtonElement>
     type?: string
 }
 

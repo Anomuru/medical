@@ -70,5 +70,8 @@ const deviceProfileSlice = createSlice({
 
 })
 
-export const {onEditName} = deviceProfileSlice.actions
-export default deviceProfileSlice.reducer
+// export const {onEditName} = deviceProfileSlice.actions
+// export default deviceProfileSlice.reducer
+
+export const {reducer: deviceProfileReducer} = deviceProfileSlice
+export const {actions: deviceProfileActions} = deviceProfileSlice

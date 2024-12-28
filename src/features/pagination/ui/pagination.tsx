@@ -125,7 +125,7 @@
 
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { usePagination, DOTS } from 'shared/lib/hooks/usePagination';
+import { usePagination, DOTS } from 'shared/lib/hooks/usePagination/usePagination';
 import cls from './pagination.module.sass';
 
 interface IPaginationProps {

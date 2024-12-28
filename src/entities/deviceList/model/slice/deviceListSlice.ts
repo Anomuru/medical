@@ -46,7 +46,7 @@ const deviceListSlice = createSlice({
             .addCase(deviceListThunk.fulfilled, (state, action) => {
                 state.loading = false
                 state.data = action.payload
-                console.log(action.payload)
+
                 state.error = "error"
             })
             .addCase(deviceListThunk.rejected, (state) => {
@@ -69,6 +69,9 @@ const deviceListSlice = createSlice({
     }
 })
 
-export const {onDeleteDevice , onEditDevice} = deviceListSlice.actions
+// export const {onDeleteDevice , onEditDevice} = deviceListSlice.actions
+//
+// export default deviceListSlice.reducer
 
-export default deviceListSlice.reducer
+export const {reducer: deviceListReducer} = deviceListSlice
+export const {actions: deviceListActions} = deviceListSlice

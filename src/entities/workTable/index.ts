@@ -1,8 +1,8 @@
 export {WorkTable} from "./ui/workTable"
 
-export {default as workTableSlice} from "./model/workTableSlice";
+export {   workTableReducer , workTableActions } from './model/workTableSlice';
 
-export {
-    type WorkTableSchema,
-    type IWorkTable
+export type {
+    WorkTableSchema,
+    IWorkTable
 } from "./model/config/workTableSchema";

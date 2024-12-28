@@ -43,7 +43,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 </option>
             )
         });
-    }, [optionsData, keyValue]);
+    }, [optionsData]);
 
 
     const renderedOptions = renderOptionsOfSelect();
@@ -73,7 +73,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
             >
                 {/*<option value={""} disabled>Tanlang</option>*/}
 
-                {title ? <option disabled value={""}>{title}</option> : <option value={""} disabled>Tanlang</option>}
+                {title ? <option value={""} disabled>{title}</option> : <option value={""} disabled>Tanlang</option>}
                 {renderedOptions}
             </select>
             {status === "error" ? <span className={cls.label__error}>Tanlanmagan</span> : null}
