@@ -1,8 +1,5 @@
+import {JobSchema} from "shared/types/oftenUsedTypes";
 
-export interface JobSchema {
-    id: number,
-    name: string
-}
 
 export interface OftenUsedSchemas {
     jobs?: JobSchema[],

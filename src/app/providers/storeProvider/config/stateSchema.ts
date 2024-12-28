@@ -7,6 +7,7 @@ import {OftenUsedSchemas} from "entities/oftenUsed";
 import {StaffListSchema, StaffProfileSchema} from "entities/staff";
 import {DeviceListSchema} from "../../../../entities/deviceList";
 import {LoginSchema} from "pages/logInPage";
+import {JobListSchema} from "entities/jobList/model/types/jobListSchema";
 
 
 export interface StateSchema {
@@ -19,7 +20,7 @@ export interface StateSchema {
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
-
+    jobList?: JobListSchema
 
 
 

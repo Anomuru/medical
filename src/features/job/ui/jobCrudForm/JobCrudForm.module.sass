@@ -1,5 +1,30 @@
+@import "app/styles/abstracts/_mixins.sass"
+
+
 
 
 .jobCrud
   width: 64rem
-  height: 35rem
+  //height: 35rem
+
+  .image
+    width: 146px
+    height: 126px
+    display: flex
+    border-radius: 10px
+    align-items: center
+    justify-content: center
+    background-color:  #D1D1D6
+    transition: all .4s
+    user-select: none
+    @include btn-active
+    input
+      display: none
+
+  .form
+    display: flex
+    flex-direction: column
+    gap: 2rem
+    .btn
+      display: flex
+      justify-content: flex-end

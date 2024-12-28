@@ -63,7 +63,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 //     onChange && onChange(e.target.value)
                 //     textField && textField.onChange(e)
                 // }}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? (e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
             />
             {
                 type === "password" &&
