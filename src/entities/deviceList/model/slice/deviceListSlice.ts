@@ -54,6 +54,9 @@ const deviceListSlice = createSlice({
     }
 })
 
-export const {onDeleteDevice , onEditDevice} = deviceListSlice.actions
+// export const {onDeleteDevice , onEditDevice} = deviceListSlice.actions
+//
+// export default deviceListSlice.reducer
 
-export default deviceListSlice.reducer
+export const {reducer: deviceListReducer} = deviceListSlice
+export const {actions: deviceListActions} = deviceListSlice

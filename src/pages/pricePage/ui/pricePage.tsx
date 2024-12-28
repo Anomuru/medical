@@ -18,11 +18,13 @@ import {getPriceDevice, getPriceType, getPriceTypes} from "../../../entities/pri
 import {fetchDeviceList, fetchPriceType, fetchPriceTypes} from "../../../entities/price/model/thunk/priceThunk";
 
 import {
-    editAnalysisName,
-    onAddAnalysis,
-    onAddPriceType,
-    onDeleteAnalysisType, onEditAnalysesName, onRemoveAnalysis
+   priceActions, priceReducer
 } from "entities/price/model/slice/priceSlice";
+import {
+    DynamicModuleLoader,
+    ReducersList
+} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+
 
 
 interface ISubmitData {
@@ -32,6 +34,12 @@ interface ISubmitData {
     device: string | number
 }
 
+
+const reducers: ReducersList = {
+    priceSlice: priceReducer,
+
+    // userSlice:
+};
 
 export const PricePage = () => {
 
@@ -127,7 +135,7 @@ export const PricePage = () => {
             headers: headers()
         })
             .then(res => {
-                dispatch(onAddPriceType(res))
+                dispatch(priceActions.onAddPriceType(res))
                 setIsAdd(false)
                 setValue("name", "")
                 console.log(res)
@@ -152,7 +160,7 @@ export const PricePage = () => {
             headers: headers()
         })
             .then(res => {
-                dispatch(editAnalysisName({id: activeType, data: res}))
+                dispatch(priceActions.editAnalysisName({id: activeType, data: res}))
             })
             .catch(err => {
                 console.log(err)
@@ -163,7 +171,7 @@ export const PricePage = () => {
     const onDeleteType = () => {
 
         setIsEdit(false)
-        dispatch(onDeleteAnalysisType(activeType))
+        dispatch(priceActions.onDeleteAnalysisType(activeType))
         request({
             url: `analysis/analysis_type/crud/delete/${activeType}/`,
             method: "DELETE",
@@ -196,7 +204,7 @@ export const PricePage = () => {
             headers: headers()
         })
             .then(res => {
-                dispatch(onAddAnalysis({id: activeType, analyses: res}))
+                dispatch(priceActions.onAddAnalysis({id: activeType, analyses: res}))
 
                 setValue("name" , "")
                 setValue("price" , "")
@@ -230,7 +238,7 @@ export const PricePage = () => {
             headers: headers()
         })
             .then(res => {
-                dispatch(onEditAnalysesName({id: Number(selectType) , analyses: {id: activeAnalysis, ...res}}))
+                dispatch(priceActions.onEditAnalysesName({id: Number(selectType) , analyses: {id: activeAnalysis, ...res}}))
                 setValue("name" , "")
                 setValue("price" , "")
                 setIsEditItem(false)
@@ -243,7 +251,7 @@ export const PricePage = () => {
     const onDeleteAnalysisItem = () => {
 
         // dispatch(onRemoveAnalysis({id: activeType , analyses: activeAnalysis}))
-        dispatch(onRemoveAnalysis({id: activeType , analyses: activeAnalysis}))
+        dispatch(priceActions.onRemoveAnalysis({id: activeType , analyses: activeAnalysis}))
         setIsEditItem(false)
         request({
             url: `analysis/analysis/crud/delete/${activeAnalysis}/`,
@@ -257,7 +265,7 @@ export const PricePage = () => {
     }
 
     return (
-        <>
+        <DynamicModuleLoader reducers={reducers}>
             <div className={cls.pricePage}>
                 <h1 className={cls.pricePage__title}>Analysis price list</h1>
                 <Button onClick={() => setIsAdd(true)} extraClass={cls.pricePage__btn}>
@@ -346,6 +354,6 @@ export const PricePage = () => {
             </Modal>
 
 
-        </>
+        </DynamicModuleLoader>
     );
 }

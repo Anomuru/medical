@@ -147,12 +147,15 @@ const priceSlice = createSlice({
 })
 
 
-export const {
-    onAddPriceType,
-    onAddAnalysis,
-    editAnalysisName,
-    onDeleteAnalysisType,
-    onEditAnalysesName,
-    onRemoveAnalysis
-} = priceSlice.actions
-export default priceSlice.reducer
+// export const {
+//     onAddPriceType,
+//     onAddAnalysis,
+//     editAnalysisName,
+//     onDeleteAnalysisType,
+//     onEditAnalysesName,
+//     onRemoveAnalysis
+// } = priceSlice.actions
+// export default priceSlice.reducer
+
+export const {reducer: priceReducer} = priceSlice
+export const {actions: priceActions} = priceSlice
