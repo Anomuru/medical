@@ -9,7 +9,7 @@ import {
 
 const initialState: DeviceProfileSchema = {
     loading: false,
-    data: [],
+    data: undefined,
     users: [],
     analis: [],
     error: undefined
@@ -18,7 +18,14 @@ const initialState: DeviceProfileSchema = {
 const deviceProfileSlice = createSlice({
     name: "deviceProfileSlice",
     initialState,
-    reducers: {},
+    reducers: {
+
+        onEditName: (state , action) => {
+            console.log(action.payload)
+            state.data = action.payload
+        }
+
+    },
     extraReducers: builder =>
         builder
             .addCase(deviceProfileThunk.pending, (state) => {
@@ -63,4 +70,5 @@ const deviceProfileSlice = createSlice({
 
 })
 
+export const {onEditName} = deviceProfileSlice.actions
 export default deviceProfileSlice.reducer

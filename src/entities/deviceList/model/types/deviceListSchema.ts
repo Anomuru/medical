@@ -6,8 +6,15 @@ export interface Device {
 
 
 
+export interface DeviceProps {
+    results?: Device[]
+    count?: number
+    next?: string
+    previous?: string
+}
+
 export interface DeviceListSchema {
-    data?: Device[],
+    data?: DeviceProps,
     error?: "error",
     loading: boolean
 }

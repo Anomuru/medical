@@ -21,7 +21,7 @@ export interface IUserAnalis {
 
 
 export interface DeviceProfileSchema {
-    data?: IDeviceProfile[],
+    data?: IDeviceProfile,
     users?: IDeviceProfileUsers[],
     analis?: IUserAnalis[],
     error?: "error",

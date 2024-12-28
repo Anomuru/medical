@@ -41,7 +41,7 @@ export const headersImg = () => {
 
 
 
-export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE' | "PATCH"
 
 
 interface UseHttpProps {

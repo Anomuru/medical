@@ -112,26 +112,28 @@ export const DeviceList: React.FC = () => {
         // @ts-ignore
         dispatch(deviceListThunk(currentPage));
     }, [currentPage, dispatch]);
-    useEffect(() => {
-        //@ts-ignore
-        dispatch(deviceProfileThunk())
-    }, [])
+
+
+            // useEffect(() => {
+            //     //@ts-ignore
+            //     dispatch(deviceProfileThunk())
+            // }, [])
 
     const devices = useCallback(() => {
-        return getData.results?.map((item, index) => (
-            <Box onClick={() => navigate(`deviceProfile`)} extraClass={cls.deviceBox} key={index}>
+        return getData?.results?.map((item, index) => (
+            <Box onClick={() => navigate(`deviceProfile/${item.id}`)} extraClass={cls.deviceBox} key={index}>
                 <div className={cls.deviceBox__content}>
                     <div className={cls.deviceBox__content__imgBox}>
-                        <img className={cls.deviceBox__content__imgBox__img} loading={"lazy"} src={item.img || deviceImg} alt={item.name} />
+                        <img className={cls.deviceBox__content__imgBox__img} loading={"lazy"} src={item?.img || deviceImg} alt={item?.name} />
                     </div>
                     <h1 className={cls.deviceBox__content__text}>
                         <img src={deviceIcon} alt="" />
-                        {item.name}
+                        {item?.name}
                     </h1>
                 </div>
             </Box>
         ));
-    }, [getData.results]);
+    }, [getData?.results]);
 
     return (
         <div className={cls.arounderBox}>
@@ -139,7 +141,7 @@ export const DeviceList: React.FC = () => {
                 {devices()}
             </div>
             <Pagination
-                totalCount={getData.count}
+                totalCount={getData?.count}
                 onPageChange={setCurrentPage}
                 currentPage={currentPage}
                 pageSize={pageSize}

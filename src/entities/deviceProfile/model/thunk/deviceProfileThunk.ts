@@ -5,7 +5,7 @@ import {headers, useHttp} from "shared/api/base";
 
 export const deviceProfileThunk = createAsyncThunk(
     'deviceProfileSlice/deviceProfileThunk',
-    async (id: number) => {
+    async (id) => {
         const {request} = useHttp()
         return await request({url: `device/get/profile/${id}`, method: "GET", headers: headers()})
     }
@@ -13,7 +13,7 @@ export const deviceProfileThunk = createAsyncThunk(
 
 export const deviceProfileUsersThunk = createAsyncThunk(
     'deviceProfileSlice/deviceProfileUsersThunk',
-    async (id: number) => {
+    async (id) => {
         const {request} = useHttp()
         return await request({url: `device/get/user-analysis/${id}`, method: "GET", headers: headers()})
     }

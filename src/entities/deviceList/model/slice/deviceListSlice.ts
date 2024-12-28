@@ -5,7 +5,7 @@ import {deviceListThunk} from "../thunk/deviceListThunk";
 
 const initialState: DeviceListSchema = {
     loading: false,
-    data: [],
+    data: undefined,
     error: undefined
 }
 
@@ -14,8 +14,26 @@ const deviceListSlice = createSlice({
     initialState,
     reducers: {
         addDevice: (state, action) => {
-            state.data = state.data && [action.payload, ...state.data]
-        }
+            // state.data = state.data && [action.payload, ...state.data]
+        },
+        onDeleteDevice: (state, action) => {
+            console.log(action.payload)
+            state.data = {
+                results: state.data?.results?.filter(item => item.id !== action.payload),
+                next: state.data?.next,
+                previous: state.data?.previous,
+                count: state.data?.count
+            }
+        },
+        onEditDevice: (state, action) => {
+            console.log(action.payload)
+            state.data = {
+                results: state.data?.results?.map(item => item.id === action.payload.id ? action.payload : item),
+                next: state.data?.next,
+                previous: state.data?.previous,
+                count: state.data?.count
+            }
+        },
     },
     extraReducers: builder => {
         builder
@@ -26,6 +44,7 @@ const deviceListSlice = createSlice({
             .addCase(deviceListThunk.fulfilled, (state, action) => {
                 state.loading = false
                 state.data = action.payload
+                console.log(action.payload)
                 state.error = "error"
             })
             .addCase(deviceListThunk.rejected, (state) => {
@@ -34,5 +53,7 @@ const deviceListSlice = createSlice({
             })
     }
 })
+
+export const {onDeleteDevice , onEditDevice} = deviceListSlice.actions
 
 export default deviceListSlice.reducer

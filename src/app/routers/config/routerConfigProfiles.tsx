@@ -74,7 +74,7 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         path: getDevicePageRoute()
     },
     {
-        name: "devicePage/deviceProfile",
+        name: "devicePage/deviceProfile/:id",
         element: <DeviceProfilePage/>,
         path: getDeviceProfileRoute()
     },

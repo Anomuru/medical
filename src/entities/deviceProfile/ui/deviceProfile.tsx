@@ -17,6 +17,13 @@ import classNames from "classnames";
 import {Modal} from "shared/ui/modal";
 import {Form} from "shared/ui/form";
 import {Button} from "shared/ui/button";
+import {useNavigate, useParams} from "react-router";
+import {ConfirmModal} from "../../../shared/ui/confirm";
+import {headers, useHttp} from "../../../shared/api/base";
+import {onDeleteDevice, onEditDevice} from "../../deviceList/model/slice/deviceListSlice";
+
+import {useDropzone} from "react-dropzone";
+import {onEditName} from "../model/slice/deviceProfileSlice";
 
 
 interface IList {
@@ -44,13 +51,28 @@ export const DeviceProfile = () => {
     const [ip, setIp] = useState<string>('')
     const [img, setImg] = useState<string>('')
 
+    const formData = new FormData()
+
+    const navigate = useNavigate()
+
+    const [files, setFiles] = useState<any>(null);
+    const [currentFiles, setCurrentFiles] = useState<any>(null);
+
+
+    const [activeDelete, setActiveDelete] = useState<boolean>(false)
+
+
     const dispatch: any = useDispatch()
     const getData: any = useSelector(getProfile)
     //@ts-ignore
     const getUsers = useSelector(getProfileUsers) as IDeviceUserResponse
-    const id = 1
+    const {id} = useParams()
+    const {request} = useHttp()
+
     useEffect(() => {
+        // @ts-ignore
         dispatch(deviceProfileThunk(id))
+        // @ts-ignore
         dispatch(deviceProfileUsersThunk(id))
     }, [id])
 
@@ -63,9 +85,73 @@ export const DeviceProfile = () => {
         console.log(portal)
     }
 
+
+    const onEditModal = (e: React.MouseEvent) => {
+
+
+        formData.append("img", files[0])
+
+        formData.append("name", name)
+        if (ip) formData.append("ip_address", ip)
+
+
+        e.preventDefault()
+        console.log(files[0], name, ip)
+
+        request({
+            url: `device/crud/update/${id}/`,
+            method: "PATCH",
+            body: formData,
+            headers: headers()
+        })
+            .then(res => {
+                dispatch(onEditDevice({id: id, data: res}))
+                dispatch(onEditName(res))
+                console.log(res)
+                setPortal(false)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    const onDelete = () => {
+
+
+        request({
+            url: `device/crud/delete/${id}/`,
+            method: "DELETE",
+            headers: headers()
+        })
+            .then(res => {
+                dispatch(onDeleteDevice(id))
+                navigate(-1)
+
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
+
+    const {getRootProps, getInputProps} = useDropzone({
+        accept: {
+            'image/*': [],
+        },
+        onDrop: (acceptedFiles) => {
+            setFiles(
+                acceptedFiles.map((file) =>
+                    Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                    })
+                )
+            );
+        },
+    });
     const renderPatientsData = useCallback(() => {
         return getUsers.results?.map((item, index) => (
-            <tr onClick={() => setUserId(item.id)}  className={cls.profileContainer__leftSight__arounder__head__users}>
+            <tr onClick={() => setUserId(item.id)} className={cls.profileContainer__leftSight__arounder__head__users}>
                 <td>{index + 1}</td>
                 <td>
                     <div className={cls.profile}>
@@ -81,21 +167,26 @@ export const DeviceProfile = () => {
         ))
     }, [getUsers])
 
+
     return (
         <div className={cls.profileContainer}>
             <div className={cls.profileContainer__leftSight}>
-                        <Box extraClass={cls.profileContainer__leftSight__deviceBox}>
-                            <div className={cls.profileContainer__leftSight__deviceBox__content}>
-                                <div className={cls.profileContainer__leftSight__deviceBox__content__imgBox} >
-                                    <img className={cls.profileContainer__leftSight__deviceBox__content__imgBox__img} src={getData?.img || deviceImg} alt=""/>
-                                </div>
-                                <h1 className={cls.profileContainer__leftSight__deviceBox__content__text}>
-                                    <img src={deviceIcon} alt=""/>
-                                    {getData?.name}</h1>
-                            </div>
-                            <i onClick={() => {onClick(portal)}} className={classNames("fas fa-list", cls.colorsEd)}/>
-                            <i className={classNames("fas fa-trash", cls.colors)}/>
-                        </Box>
+                <Box extraClass={cls.profileContainer__leftSight__deviceBox}>
+                    <div className={cls.profileContainer__leftSight__deviceBox__content}>
+                        <div className={cls.profileContainer__leftSight__deviceBox__content__imgBox}>
+                            <img className={cls.profileContainer__leftSight__deviceBox__content__imgBox__img}
+                                 src={getData?.img || deviceImg} alt=""/>
+                        </div>
+                        <h1 className={cls.profileContainer__leftSight__deviceBox__content__text}>
+                            <img src={deviceIcon} alt=""/>
+                            {getData?.name}</h1>
+                    </div>
+                    <i onClick={() => {
+                        onClick(portal)
+                    }} className={classNames("fas fa-list", cls.colorsEd)}/>
+                    {getData?.can_delete &&
+                        <i onClick={() => setActiveDelete(true)} className={classNames("fas fa-trash", cls.colors)}/>}
+                </Box>
                 <h1 className={cls.profileContainer__leftSight__content}>Patients</h1>
                 <div className={cls.profileContainer__leftSight__arounder}>
                     <Table>
@@ -194,15 +285,29 @@ export const DeviceProfile = () => {
             </Box>
             <Modal extraClass={cls.profileContainer__modal} active={portal} setActive={setPortal}>
                 <Form extraClass={cls.profileContainer__modal__form}>
-                    <label className={cls.profileContainer__modal__form__label} htmlFor="img">
-                        <Input onChange={setImg} extraClass={cls.profileContainer__modal__form__label__input} name="img" type="file" />
-                        <i className={classNames("fas fa-upload", cls.upload)}></i>
-                    </label>
-                    <Input title={"Change name"} extraClass={cls.profileContainer__modal__form__input} name={"name"} onChange={setName}/>
-                    <Input title={"Change address"} extraClass={cls.profileContainer__modal__form__input} name={"ip_address"} onChange={setIp}/>
-                    <Button extraClass={cls.profileContainer__modal__form__input}>Apply changes</Button>
+                    <div {...getRootProps({className: cls.dropzone})}>
+                        <input  {...getInputProps()}/>
+
+                        {!files ? <div className={cls.editDrop}>
+                                <i className={classNames("fas fa-upload",)}></i>
+                            </div> :
+
+                            <img style={{width: "30rem", height: "20rem"}}
+                                 src={files?.map((item: { preview: any; }) => item?.preview)}
+                                 alt=""/>
+
+                        }
+                    </div>
+                    <Input title={"Change name"} extraClass={cls.profileContainer__modal__form__input} name={"name"}
+                           onChange={setName}/>
+                    <Input title={"Change address"} extraClass={cls.profileContainer__modal__form__input}
+                           name={"ip_address"} onChange={setIp}/>
+                    <Button extraClass={cls.profileContainer__modal__form__input} onClick={onEditModal}>Apply
+                        changes</Button>
                 </Form>
             </Modal>
+            <ConfirmModal setActive={setActiveDelete} active={activeDelete} type={"delete"}
+                          title={"Rostanham o'chirmoqchimisiz"} onClick={onDelete}/>
         </div>
     );
 };
