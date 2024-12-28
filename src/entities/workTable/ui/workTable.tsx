@@ -63,7 +63,7 @@ export const WorkTable = () => {
                 <Calendar className={cls.mainBox__leftSight__calendar}/>
                 <div className={cls.mainBox__leftSight__arounder}>
                     <h1 className={cls.mainBox__leftSight__arounder__content}>Staff list</h1>
-                    <Button onClick={handleClick} extraClass={cls.mainBox__leftSight__arounder__btn} children={ <i className={classNames("fas fa-plus")} />}/>
+                    <Button onClick={handleClick} extraClass={cls.mainBox__leftSight__arounder__btn} children={ <i className={classNames("fa-solid fa-plus")} />}/>
                 </div>
 
                 <div className={cls.mainBox__leftSight__staffList}>

@@ -49,7 +49,7 @@ export const Modal: React.FC<IModalProps> = memo((props) => {
                             {!typeIcon ?
                                 <i
                                     onClick={(e) => onClick(e.target)}
-                                    className={classNames(cls.modal__close, "innerClose", "fas fa-times")}
+                                    className={classNames(cls.modal__close, "innerClose", "fa-solid fa-times")}
                                 />
                                 // <img
                                 //     className={classNames(cls.modal__close, "innerClose")}

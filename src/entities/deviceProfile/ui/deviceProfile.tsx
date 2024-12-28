@@ -159,7 +159,7 @@ export const DeviceProfile = () => {
         },
     });
     const renderPatientsData = useCallback(() => {
-        return getUsers.results?.map((item, index) => (
+        return getUsers?.results?.map((item, index) => (
             <tr onClick={() => setUserId(item.id)} className={cls.profileContainer__leftSight__arounder__head__users}>
                 <td>{index + 1}</td>
                 <td>
@@ -193,9 +193,9 @@ export const DeviceProfile = () => {
                        </div>
                        <i onClick={() => {
                            onClick(portal)
-                       }} className={classNames("fas fa-list", cls.colorsEd)}/>
+                       }} className={classNames("fa-solid fa-list", cls.colorsEd)}/>
                        {getData?.can_delete &&
-                           <i onClick={() => setActiveDelete(true)} className={classNames("fas fa-trash", cls.colors)}/>}
+                           <i onClick={() => setActiveDelete(true)} className={classNames("fa-solid fa-trash", cls.colors)}/>}
                    </Box>
                    <h1 className={cls.profileContainer__leftSight__content}>Patients</h1>
                    <div className={cls.profileContainer__leftSight__arounder}>
@@ -211,7 +211,7 @@ export const DeviceProfile = () => {
                            </tbody>
                        </Table>
                        <Pagination
-                           totalCount={getUsers.count}
+                           totalCount={getUsers?.count}
                            onPageChange={setCurrentPage}
                            currentPage={currentPage}
                            pageSize={pageSize}/>
@@ -299,7 +299,7 @@ export const DeviceProfile = () => {
                            <input  {...getInputProps()}/>
 
                            {!files ? <div className={cls.editDrop}>
-                                   <i className={classNames("fas fa-upload",)}></i>
+                                   <i className={classNames("fa-solid fa-upload",)}></i>
                                </div> :
 
                                <img style={{width: "30rem", height: "20rem"}}

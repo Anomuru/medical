@@ -101,7 +101,7 @@ export const PricePage = () => {
                         setActiveType(item?.id)
                         setValue("name", item?.name)
                     }}
-                                 className={classNames("fas fa-pen", cls.pricePage__icon)}/>}
+                                 className={classNames("fas-solid fa-pen", cls.pricePage__icon)}/>}
 
                     // number={index + 1}
                 >
@@ -116,7 +116,7 @@ export const PricePage = () => {
                             setIsAddItem(true)
                             setActiveType(item?.id)
                         }}>
-                            <i className={classNames("fas fa-plus")}/>
+                            <i className={classNames("fa-solid fa-plus")}/>
                         </Button>
                     </div>
                 </PriceAccordionList>
@@ -269,7 +269,7 @@ export const PricePage = () => {
             <div className={cls.pricePage}>
                 <h1 className={cls.pricePage__title}>Analysis price list</h1>
                 <Button onClick={() => setIsAdd(true)} extraClass={cls.pricePage__btn}>
-                    <i className={classNames("fas fa-plus")}/>
+                    <i className={classNames("fa-solid fa-plus")}/>
                 </Button>
                 <div className={cls.pricePage__container}>
                     {renderList()}

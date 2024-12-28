@@ -49,7 +49,7 @@ export const DevicePage = () => {
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.deviceBox}>
                 <Button extraClass={cls.addItemBtn} onClick={onPortal}>
-                    <i className={classNames("fas fa-plus")}/>
+                    <i className={classNames("fa-solid fa-plus")}/>
                 </Button>
                 <DeviceList/>
 
