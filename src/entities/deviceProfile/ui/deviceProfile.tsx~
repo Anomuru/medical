@@ -90,8 +90,8 @@ export const DeviceProfile = () => {
     useEffect(() => {
 
         // @ts-ignore
-        if (userId) dispatch(deviceAnalisThunk(userId))
-    }, [userId])
+        dispatch(deviceAnalisThunk(userId))
+    }, [userId.length])
 
     const onClick = (portal: boolean) => {
         setPortal(!portal)

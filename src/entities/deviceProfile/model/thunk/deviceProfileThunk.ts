@@ -21,7 +21,7 @@ export const deviceProfileUsersThunk = createAsyncThunk(
 
 export const deviceAnalisThunk = createAsyncThunk(
     'deviceProfileSlice/deviceAnalisThunk',
-    async (useId: number | undefined) => {
+    async (useId) => {
         const {request} = useHttp()
         return await request({url: `device/get/analysis-result/${useId}`, method: "GET", headers: headers()})
     }
