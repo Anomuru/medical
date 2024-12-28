@@ -1,4 +1,4 @@
-import React, {SetStateAction, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import classNames from "classnames";
 
 import cls from "./select.module.sass";
@@ -9,7 +9,7 @@ interface ISelectProps {
     required?: boolean,
     selectOption?: string,
     setSelectOption: (arg: string) => void,
-    optionsData?: any[],
+    optionsData: { id?: number, value?: string, name?: string, disabled: boolean }[],
     keyValue?: string,
     status?: string
 }
@@ -31,7 +31,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
         return optionsData?.map((item, index) => {
             const value = item.id || item.value || item.name;
             // const key = item?.name || item?.number || item.old_id || item?.days || item.num || item?.user && `${item.user?.name} ${item.user?.surname}` || item.branch || item;
-            const key = item.name
+            const key = item.name || item.id
 
             return (
                 <option
@@ -67,7 +67,6 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 required={required}
                 value={selectOption}
                 onChange={(e) => {
-                    // @ts-ignore
                     setSelectOption(e.target.value);
                     // setIsChanged(true);
                 }}

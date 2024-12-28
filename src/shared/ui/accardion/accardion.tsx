@@ -77,7 +77,7 @@ export const Accordion: React.FC<IAccordionProps> = (props) => {
                     <div onClick={toggleOpen} className={classNames(cls.arrow, {
                         [cls.active]: backOpen || open
                     })}>
-                        <i className="fas fa-angle-down"></i>
+                        <i className="fa-solid fa-angle-down"></i>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import cls from "./workTable.module.sass"
 import Calendar from "react-calendar";
 import {ScheduleXCalendar, useCalendarApp} from '@schedule-x/react';
@@ -8,6 +8,10 @@ import '@schedule-x/theme-default/dist/index.css'
 import {createDragAndDropPlugin} from "@schedule-x/drag-and-drop";
 
 import img from "shared/assets/images/dailyImage.png"
+import {Button} from "../../../shared/ui/button";
+import classNames from "classnames";
+import {Modal} from "../../../shared/ui/modal";
+import {Select} from "../../../shared/ui/select";
 
 
 const list = [
@@ -26,6 +30,13 @@ const list = [
     },
 ]
 export const WorkTable = () => {
+
+    const [active, setActive] = useState<boolean>(false)
+    const [select, setSelected] = useState<number | string>()
+
+    const handleClick = () => {
+        setActive(!active)
+    }
 
     const calendar = useCalendarApp({
         views: [
@@ -50,7 +61,11 @@ export const WorkTable = () => {
         <div className={cls.mainBox}>
             <div className={cls.mainBox__leftSight}>
                 <Calendar className={cls.mainBox__leftSight__calendar}/>
-                <h1 className={cls.mainBox__leftSight__content}>Staff list</h1>
+                <div className={cls.mainBox__leftSight__arounder}>
+                    <h1 className={cls.mainBox__leftSight__arounder__content}>Staff list</h1>
+                    <Button onClick={handleClick} extraClass={cls.mainBox__leftSight__arounder__btn} children={ <i className={classNames("fa-solid fa-plus")} />}/>
+                </div>
+
                 <div className={cls.mainBox__leftSight__staffList}>
                     {
                         list.map((item) => (
@@ -71,7 +86,9 @@ export const WorkTable = () => {
             <div className={cls.mainBox__rightSight}>
                 <ScheduleXCalendar calendarApp={calendar} />
             </div>
-
+            <Modal  active={active} setActive={handleClick}>
+                {/*<Select setSelectOption={setSelected} optionsData={}/>*/}
+            </Modal>
         </div>
     );
 };

@@ -17,11 +17,11 @@ export const Header = () => {
             />
             <div className={cls.setting}>
                 <div className={cls.setting__search}>
-                    <i className={classNames("fas fa-search", cls.setting__icon)}/>
+                    <i className={classNames("fa-solid fa-search", cls.setting__icon)}/>
                     <Input extraClass={cls.setting__input} name={"search"}/>
                 </div>
                 <div className={cls.setting__notifications}>
-                    <i className={classNames("fas fa-bell", cls.setting__notification)}/>
+                    <i className={classNames("fa-solid fa-bell", cls.setting__notification)}/>
                     <div className={cls.setting__newMessage}/>
                 </div>
                 <div className={cls.profile}>

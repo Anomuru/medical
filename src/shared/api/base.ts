@@ -8,9 +8,9 @@ export const CLASSROOM_API_URL_DOC: string = `https://classroom.gennis.uz/`
 
 
 export const headers = () => {
-    const token = sessionStorage.getItem("token")
+    // const token = sessionStorage.getItem("token")
     return {
-        "Authorization": "JWT " + token,
+        // "Authorization": "JWT " + token,
         'Content-Type': 'application/json'
     }
 }
@@ -37,19 +37,12 @@ export const headersImg = () => {
 }
 
 
-export const branchQuery = () => {
-    const branch = localStorage.getItem("selectedBranch")
-    return `branch=${branch}`
-
-}
-
-export const branchQueryId = () => {
-    return localStorage.getItem("selectedBranch")
-
-}
 
 
-export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+
+
+export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE' | "PATCH"
+
 
 
 interface UseHttpProps {
@@ -80,6 +73,7 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
             delete finalHeaders['Content-Type'];
         }
 
+
         try {
             let newUrl = typeUrl === "auto" ? API_URL + url : url;
 
@@ -96,5 +90,6 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
         }
     }
 
-    return { request };
-};
+    return {request}
+
+}

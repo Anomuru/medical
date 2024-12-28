@@ -44,7 +44,7 @@ export const PlatformHomeRecent = () => {
                             </p>
                         </div>
                     </div>
-                    <i className={classNames("fas fa-ellipsis-v", cls.item__icon)}/>
+                    <i className={classNames("fa-solid fa-ellipsis-v", cls.item__icon)}/>
                 </div>
             )
         })

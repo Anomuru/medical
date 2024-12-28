@@ -1,28 +1,34 @@
 import {WorkTableSchema} from "entities/workTable";
 // import {StaffSchema} from "entities/staff";
 // import {OftenUsedSchemas} from "entities/oftenUsed";
-import {UserSchema} from "entities/user";
+import {userReducer, UserSchema} from "entities/user";
 import {EnhancedStore, Reducer, ReducersMapObject} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "entities/oftenUsed";
 import {StaffListSchema, StaffProfileSchema} from "entities/staff";
 import {DeviceListSchema} from "../../../../entities/deviceList";
+import {LoginSchema} from "pages/logInPage";
+import {JobListSchema} from "entities/jobList/model/types/jobListSchema";
+import {DeviceProfileSchema} from "../../../../entities/deviceProfile";
+import {IPriceSchema} from "../../../../entities/price/model/types/priceSchemas";
 
 
 export interface StateSchema {
 
-    userSlice: UserSchema;
+    user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
 
     workTableSlice?: WorkTableSchema;
     staffSlice? : StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
+    loginForm?: LoginSchema;
+    jobList?: JobListSchema
 
 
 
 
-
-
+    deviceProfileSlice?: DeviceProfileSchema;
+    priceSlice?: IPriceSchema;
 
 
 }
@@ -50,7 +56,7 @@ export type MountedReducers = OptionalRecord<StateSchemaKey, boolean>;
 
 export interface ReducerManager {
     getReducerMap: () => ReducersMapObject<StateSchema>;  // Retrieves the map of reducers
-    reduce: (state: StateSchema , action: any) => CustomCombinedState<StateSchema>;  // Reducer function
+    reduce: (state: StateSchema, action: any) => CustomCombinedState<StateSchema>;  // Reducer function
     add: (key: StateSchemaKey, reducer: Reducer) => void;  // Adds a reducer
     remove: (key: StateSchemaKey) => void;  // Removes a reducer
     getMountedReducers: () => MountedReducers;  // Gets the mounted reducers

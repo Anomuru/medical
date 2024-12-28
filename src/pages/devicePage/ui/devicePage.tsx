@@ -6,9 +6,9 @@ import {Form} from 'shared/ui/form';
 import {Input} from 'shared/ui/input';
 import {Button} from 'shared/ui/button';
 import classNames from 'classnames';
-import {API_URL} from "shared/api/base";
+
 import {useDispatch} from "react-redux";
-import {deviceThunk} from "entities/device";
+import {deviceThunk} from "entities/deviceList";
 import {
     DynamicModuleLoader,
     ReducersList
@@ -27,7 +27,6 @@ export const DevicePage = () => {
         setAddItem(!addItem);
     };
 
-    console.log(name, ipAddress, 'wdwdwdw')
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -37,7 +36,7 @@ export const DevicePage = () => {
         formData.append('name', name);
         formData.append('ip_address', ipAddress);
         formData.append('img', event.currentTarget.img.files[0]);
-        console.log(formData, 'edeefe')
+
         dispatch(deviceThunk(formData))
 
 
@@ -50,7 +49,7 @@ export const DevicePage = () => {
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.deviceBox}>
                 <Button extraClass={cls.addItemBtn} onClick={onPortal}>
-                    <i className={classNames("fas fa-plus")}/>
+                    <i className={classNames("fa-solid fa-plus")}/>
                 </Button>
                 <DeviceList/>
 

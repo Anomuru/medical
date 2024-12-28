@@ -1,4 +1,3 @@
-declare module "*.module.sass";
 declare module '*.jpg';
 declare module '*.png';
 declare module '*.svg';
@@ -15,3 +14,10 @@ type DeepPartial<T> = T extends object
         [P in keyof T]?: DeepPartial<T[P]>;
     }
     : T;
+
+
+
+declare module '*.sass' {
+    const content: Record<string, string>;
+    export default content;
+}

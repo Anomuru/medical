@@ -84,6 +84,8 @@ import deviceIcon from 'shared/assets/icon/device.png'
 import { Pagination } from 'features/pagination';
 import { deviceListThunk } from '../model/thunk/deviceListThunk';
 import { getDeviceList } from 'entities/deviceList/model/selector/deviceListSelector';
+import {useNavigate} from "react-router";
+import {deviceProfileThunk} from "entities/deviceProfile";
 
 interface IList {
     id: number;
@@ -104,27 +106,36 @@ export const DeviceList: React.FC = () => {
     const getData = useSelector(getDeviceList) as IDeviceListResponse;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pageSize = useMemo(() => 50, []);
+    const navigate = useNavigate()
 
     useEffect(() => {
         // @ts-ignore
         dispatch(deviceListThunk(currentPage));
     }, [currentPage, dispatch]);
 
+
+            // useEffect(() => {
+            //     //@ts-ignore
+            //     dispatch(deviceProfileThunk())
+            // }, [])
+
+    console.log(getData)
+
     const devices = useCallback(() => {
-        return getData.results?.map((item, index) => (
-            <Box extraClass={cls.deviceBox} key={index}>
+        return getData?.results?.map((item, index) => (
+            <Box onClick={() => navigate(`deviceProfile/${item.id}`)} extraClass={cls.deviceBox} key={index}>
                 <div className={cls.deviceBox__content}>
                     <div className={cls.deviceBox__content__imgBox}>
-                        <img className={cls.deviceBox__content__imgBox__img} loading={"lazy"} src={item.img || deviceImg} alt={item.name} />
+                        <img className={cls.deviceBox__content__imgBox__img} loading={"lazy"} src={item?.img || deviceImg} alt={item?.name} />
                     </div>
                     <h1 className={cls.deviceBox__content__text}>
                         <img src={deviceIcon} alt="" />
-                        {item.name}
+                        {item?.name}
                     </h1>
                 </div>
             </Box>
         ));
-    }, [getData.results]);
+    }, [getData?.results]);
 
     return (
         <div className={cls.arounderBox}>
@@ -132,7 +143,7 @@ export const DeviceList: React.FC = () => {
                 {devices()}
             </div>
             <Pagination
-                totalCount={getData.count}
+                totalCount={getData?.count}
                 onPageChange={setCurrentPage}
                 currentPage={currentPage}
                 pageSize={pageSize}

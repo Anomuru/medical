@@ -5,9 +5,10 @@ import {Button} from "shared/ui/button";
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
-import {API_URL, headers, useHttp} from "shared/api/base";
+
 
 import cls from "./hospitalRegPage.module.sass";
+import {headers, useHttp} from "shared/api/base";
 
 interface IHospitalRegPageData {
 
@@ -15,12 +16,21 @@ interface IHospitalRegPageData {
 
 interface IProgress {
     name: string,
-    status: boolean
+    status: boolean,
+
 }
 
 export const HospitalRegPage = () => {
 
+    const [errorUserName, setErrorUserName] = useState<boolean>(false)
+
+
     const list = useMemo(() => [
+        {
+            isInput: true,
+            name: "username",
+            label: "Username",
+        },
         {
             name: "name_surname",
             isInput: true,
@@ -37,9 +47,15 @@ export const HospitalRegPage = () => {
         },
         {
             isInput: true,
+            name: "address",
+            label: "Address",
+        },
+        {
+            isInput: true,
             name: "pasport_seria",
             label: "Pasport Seria (AB or AD)",
-        }, {
+        },
+        {
             isInput: true,
             name: "pasport_number",
             label: "Password Seria (Number)",
@@ -53,7 +69,7 @@ export const HospitalRegPage = () => {
                     name: "birth_date",
                     label: "Birth Date",
                 }, {
-                    name: "phone",
+                    name: "phone_number",
                     label: "Phone",
                 },
             ]
@@ -61,9 +77,10 @@ export const HospitalRegPage = () => {
             isInput: true,
             name: "email",
             label: "Email Adress",
+            type: "email"
         }, {
             name: "unknown",
-            value: [{label: "Man", id: 1}, {label: "Woman", id: 2}],
+            value: [{label: "Man", id: "man"}, {label: "Woman", id: "woman"}],
             isRadio: true,
         }, {
             name: "password",
@@ -76,7 +93,8 @@ export const HospitalRegPage = () => {
     const {
         register,
         handleSubmit,
-        setValue
+        setValue,
+        reset
     } = useForm<IHospitalRegPageData>()
     const {request} = useHttp()
 
@@ -90,10 +108,11 @@ export const HospitalRegPage = () => {
         }))
     }, [list])
 
-    const [selectedRadio, setSelectedRadio] = useState<number>(NaN)
+    const [selectedRadio, setSelectedRadio] = useState<string>("")
     const [progress, setProgress] = useState<IProgress[]>([])
 
-    const onProgress = (data: { name: string, value: any }) => {
+
+    const onProgress = (data: { name: string, value: string }) => {
         setProgress(
             prev =>
                 prev.map(item => item.name === data.name ? {name: item.name, status: true} : item)
@@ -115,6 +134,7 @@ export const HospitalRegPage = () => {
                                         name={inner.name}
                                         onChange={(value) => onProgress({name: inner.name, value})}
                                         register={register}
+                                        required
                                     />
                                 )
                             })
@@ -127,10 +147,14 @@ export const HospitalRegPage = () => {
                         <div className={cls.radios}>
                             {
                                 item.value.map(inner => {
+
+
                                     return (
                                         <Radio
-                                            name={"1_1"}
+                                            name={"radio"}
+                                            // @ts-ignore
                                             value={inner.id}
+                                            // @ts-ignore
                                             onChange={setSelectedRadio}
                                             checked={inner.id === selectedRadio}
                                         >
@@ -157,48 +181,70 @@ export const HospitalRegPage = () => {
     const calc = useMemo(() =>
         Math.floor((progress.filter(item => item.status).length / progress.length) * 100), [progress])
 
-    console.log(calc, "calc")
-    console.log(progress.filter(item => item.status).length, "calc")
-    console.log(progress.length, "calc")
+    // console.log(calc, "calc")
+    // console.log(progress.filter(item => item.status).length, "calc")
+    // console.log(progress.length, "calc")
 
     const onSubmit = (data: IHospitalRegPageData) => {
         const res = {
             ...data,
-            selectedRadio
+            sex: selectedRadio,
+            branch: 1
+
         }
-        console.log(res)
-        // request({url: "", method: "POST", body: JSON.stringify(res), headers: headers()})
-        //     .then(res => {
-        //         console.log(res)
-        //         // list.map(item => {
-        //         //     if (item.isDouble) {
-        //         //
-        //         //     } else {
-        //         //         setValue(item.name, "")
-        //         //     }
-        //         // })
-        //     })
-        //     .catch(err => console.log(err))
+
+        request({
+            url: "user/users/crud/create/",
+            method: "POST",
+            body: JSON.stringify(res),
+            headers: headers()
+        })
+            .then(res => {
+                console.log(res)
+                setErrorUserName(false)
+
+                // list.map(item => {
+                //     if (item.isDouble) {
+                //
+                //     } else {
+                //         setValue(item.name, "")
+                //     }
+                // })
+
+                reset()
+            })
+            .catch(err => {
+                console.log(err)
+
+
+                    setErrorUserName(true)
+
+
+            })
     }
+
 
     return (
         <div className={cls.wrapper}>
             <div className={cls.hospital}>
-                <div className={cls.hospital__progress}>
-                    <div style={{width: `${calc}%`}} className={cls.info}/>
-                </div>
+
+
+                {/*<div className={cls.hospital__progress}>*/}
+                {/*    <div style={{width: `${calc}%`}} className={cls.info}/>*/}
+                {/*</div>*/}
                 <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.hospital__wrapper}>
                     <div className={cls.hospital__from}>
                         <div className={cls.info}>
-                            <div className={cls.info__percent}>
-                                <h2 className={cls.text}>Patient Information</h2>
-                                <p className={cls.percent}>{calc}%</p>
-                            </div>
+                            {/*<div className={cls.info__percent}>*/}
+                            {/*    <h2 className={cls.text}>Patient Information</h2>*/}
+                            {/*    <p className={cls.percent}>{calc}%</p>*/}
+                            {/*</div>*/}
                             <h1 className={cls.info__title}>Hospital Registration Form</h1>
                             <h2 className={cls.info__text}>Lorem Ipsum has been the industry's standard dummy.</h2>
                         </div>
                     </div>
                     <div className={cls.content}>
+                        <h2> {errorUserName ? "Username already exist" : null}</h2>
                         {renderInput()}
                     </div>
                     <Button extraClass={cls.hospital__btn}>Add</Button>

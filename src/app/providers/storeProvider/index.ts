@@ -8,13 +8,11 @@ import type {
 
 
 export { StoreProvider } from './ui/StoreProvider';
-export { createReduxStore, type AppDispatch } from './config/store';
+export * from './config/store';
 
-// export { StoreProvider, createReduxStore };
 
 export {
     StateSchema,
-    // AppDispatch,
     ThunkConfig,
     ReduxStoreWithManager,
     StateSchemaKey,
