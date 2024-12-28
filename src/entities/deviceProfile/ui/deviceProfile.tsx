@@ -161,15 +161,15 @@ export const DeviceProfile = () => {
         },
     });
     const renderPatientsData = useCallback(() => {
-        return getUsers.results?.map((item, index) => (
-            <tr onClick={() => setUserId(item.id)} className={cls.profileContainer__leftSight__arounder__head__users}>
+        return getUsers?.results?.map((item, index) => (
+            <tr onClick={() => setUserId(item?.id)} className={cls.profileContainer__leftSight__arounder__head__users}>
                 <td>{index + 1}</td>
                 <td>
                     <div className={cls.profile}>
                         <img className={cls.profile__img} src="" alt=""/>
                         <div className={cls.profile__info}>
                             <p className={cls.profile__title}>
-                                {item.name} {item.surname}
+                                {item?.name} {item?.surname}
                             </p>
                         </div>
                     </div>
@@ -213,7 +213,7 @@ export const DeviceProfile = () => {
                            </tbody>
                        </Table>
                        <Pagination
-                           totalCount={getUsers.count}
+                           totalCount={getUsers?.count}
                            onPageChange={setCurrentPage}
                            currentPage={currentPage}
                            pageSize={pageSize}/>
