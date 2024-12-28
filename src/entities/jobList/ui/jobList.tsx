@@ -1,162 +1,92 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Table} from "../../../shared/ui/table";
+import {Table} from "shared/ui/table";
 import cls from './jobList.module.sass'
-import classNames from "classnames";
-import {Pagination} from "../../../features/pagination";
+import {JobSchema} from "shared/types/oftenUsedTypes";
+import {useSelector} from "react-redux";
+import {getJobList} from "entities/jobList/model/selectors/jobListSelector";
+import {DynamicModuleLoader, ReducersList} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {jobsListReducer} from "../model/slice/jobListSlice";
 
 
 
-const list = [
-    {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    }, {
-        user: {
-            name: "John",
-            surname: "Smith",
-            job: "Surgeon",
-            image: ""
-        },
-        age: 33,
-        phone: "+998 90 123-45-67"
-    },
-]
-
-type listType = typeof list
 
 
-export const JobList = () => {
+interface JobListProps {
+    setChangeActive: () => void;
+    setDeleteActive: () => void;
+    setChangingData: (item: JobSchema ) => void;
+}
+
+const initialReducers: ReducersList = {
+    jobList: jobsListReducer,
+};
+export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobListProps) => {
+
+
+
+    const jobs = useSelector(getJobList) || []
+
+
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [currentTableData, setCurrentTableData] = useState<listType>([])
+    const [currentTableData, setCurrentTableData] = useState<JobSchema[]>([])
     const pageSize = useMemo(() => 10, [])
 
 
+
+    const onClickChange = (item: JobSchema) => {
+        setChangeActive()
+        setChangingData(item)
+    }
+
+
+    const onClickDelete = (item: JobSchema) => {
+        setDeleteActive()
+        setChangingData(item)
+    }
+
+
     const renderDoctors = useCallback(() => {
-        return list.map((item, index) => (
+        return jobs.map((item, index) => (
             <tr>
                 <td>{index + 1}</td>
                 <td>
-                    <div className={cls.profile}>
-                        <img className={cls.profile__img} src={item.user.image} alt=""/>
-                        <div className={cls.profile__info}>
-                            <p className={cls.profile__title}>
-                                {item.user.name} {item.user.surname}
-                            </p>
-                            <span className={cls.profile__job}>{item.user.job}</span>
-                        </div>
+                    <span className={cls.profile__job}>{item.name}</span>
+                </td>
+
+                <td onClick={() => onClickChange(item)}>
+
+                    <div className={cls.edit}>
+                        Edit
                     </div>
                 </td>
-                <td>{item.age}</td>
-                <td>{item.phone}</td>
-                <td>
-                    Edit
+
+
+                <td onClick={() => onClickDelete(item)}>
+
+                    <div className={cls.delete}>
+                        <i className="fa-solid fa-xmark"></i>
+                    </div>
                 </td>
             </tr>
         ))
-    }, [currentTableData])
+    }, [jobs])
 
     return (
-        <>
+        <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount={true} >
             <div className={cls.tableBox}>
                 <Table>
                     <thead className={cls.theadBody}>
                     <tr>
                         <th>№</th>
                         <th>Name</th>
-                        <th>Age</th>
-                        <th>Phone number</th>
-                        <th></th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody className={cls.thBody}>
-                    {renderDoctors()}
+                    {
+                        renderDoctors()
+                    }
                     </tbody>
                 </Table>
             </div>
@@ -170,7 +100,7 @@ export const JobList = () => {
             {/*    pageSize={pageSize}*/}
             {/*    setCurrentTableData={setCurrentTableData}*/}
             {/*/>*/}
-        </>
+        </DynamicModuleLoader>
 
 
     );

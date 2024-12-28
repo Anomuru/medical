@@ -23,6 +23,8 @@ export interface InputProps extends HTMLInputProps {
     extraClass?: string,
     extraLabelClass?: string,
     title?: string,
+    onChangeState?: Dispatch<SetStateAction<string|undefined>>,
+
     onChange?: (value: string) => void,
     name: string,
     register?: UseFormRegister<any>,
@@ -44,7 +46,9 @@ export const Input: React.FC<InputProps> = (props) => {
         register,
         rules,
         required,
-        error
+        error,
+        onChangeState
+
     } = props
 
     const textField = register && register(name, rules)
@@ -68,7 +72,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 //     onChange && onChange(e.target.value)
                 //     textField && textField.onChange(e)
                 // }}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : null}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
             />
             {
                 error &&

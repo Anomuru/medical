@@ -18,7 +18,7 @@ export function createReduxStore(
 ) {
     const rootReducers: ReducersMapObject<StateSchema> = {
         ...asyncReducers,
-        userSlice: userReducer,
+        user: userReducer,
         oftenUsedSlice: oftenUsedReducer
 
         // workTable:

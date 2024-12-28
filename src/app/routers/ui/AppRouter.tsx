@@ -6,6 +6,7 @@ import {Layout} from "app/layout";
 import {routersConfigProfile} from "../config/routerConfigProfiles";
 
 import {LogInPage} from "pages/logInPage";
+import {RequireAuth} from "./RequireAuth";
 
 export const AppRouter = () => {
     const router = createBrowserRouter(
@@ -15,20 +16,24 @@ export const AppRouter = () => {
                     path={"login"}
                     element={<LogInPage/>}
                 />
+                {/*<Route element={<RequireAuth/>}>*/}
+                    <Route element={<Layout/>} path={"platform"}>
+                        {
+                            routersConfigProfile.map(item => {
+                                return (
+                                    <Route
+                                        id={item.name}
+                                        path={item.path}
+                                        element={item.element}
+                                    />
+                                )
+                            })
+                        }
+                    </Route>
 
-                <Route element={<Layout/>} path={"platform"}>
-                    {
-                        routersConfigProfile.map(item => {
-                            return (
-                                <Route
-                                    id={item.name}
-                                    path={item.path}
-                                    element={item.element}
-                                />
-                            )
-                        })
-                    }
-                </Route>
+
+                {/*</Route>*/}
+
 
                 <Route
                     index

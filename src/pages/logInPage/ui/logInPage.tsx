@@ -1,5 +1,5 @@
 import React from 'react';
-import {useForm, FieldValues, SubmitHandler} from "react-hook-form";
+import {useForm, SubmitHandler} from "react-hook-form";
 
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
@@ -8,18 +8,23 @@ import {Button} from "shared/ui/button";
 import cls from "./logInPage.module.sass";
 import image from "shared/assets/images/loginImage.png";
 import logo from "shared/assets/logo/medicalLogo.png";
-import {headers, useHttp} from "shared/api/base";
+import { loginThunk} from "../model/thunk/loginThunk";
+import { loginReducer} from "../model/slice/loginSlice";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {DynamicModuleLoader, ReducersList} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {workTableReducer} from "entities/workTable";
+import {useNavigate} from "react-router";
+
 
 interface ILogData {
-    email: string,
+    username: string,
     password: string
 }
-const reducers: ReducersList = {
-    workTableSlice: workTableReducer,
-    // userSlice:
+
+
+const initialReducers: ReducersList = {
+    loginForm: loginReducer,
 };
+
 export const LogInPage = () => {
 
     const {
@@ -27,24 +32,33 @@ export const LogInPage = () => {
         handleSubmit
     } = useForm<ILogData>()
 
+    const dispatch = useAppDispatch();
 
 
-    const {request} = useHttp()
-
+    const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<ILogData> = (data) => {
-        console.log(data)
 
 
-        request({url: "login", method: "POST", body: JSON.stringify(data), headers: headers()})
+        dispatch(loginThunk(data))
             .then(res => {
+                if (res.meta.requestStatus === "fulfilled") {
+                    navigate("/platform")
+                }
 
             })
+        // request({url: "token/", method: "POST", body: JSON.stringify(data), headers: headers()})
+        //     .then(res => {
+        //
+        //
+        //
+        //         console.log(res)
+        //     })
     }
 
     
     return (
-        // <DynamicModuleLoader reducers={{}} removeAfterUnmount={false}>
+        <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount={false}>
             <div className={cls.loginPage}>
                 <div className={cls.loginPage__content}>
                     <img className={cls.loginPage__logo} src={logo} alt=""/>
@@ -58,11 +72,12 @@ export const LogInPage = () => {
                                 title={"E-mail"}
                                 placeholder={"Enter your Email"}
                                 register={register}
-                                name={"email"}
+                                name={"username"}
                             />
                             <Input
                                 type={"password"}
                                 title={"Password"}
+
                                 placeholder={"Enter your password"}
                                 register={register}
                                 name={"password"}
@@ -79,7 +94,7 @@ export const LogInPage = () => {
                     <img src={image} alt=""/>
                 </div>
             </div>
-        // </DynamicModuleLoader>
+         </DynamicModuleLoader>
 
     );
 }
