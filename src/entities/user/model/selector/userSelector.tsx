@@ -1,3 +1,6 @@
+import {StateSchema} from "app/providers/storeProvider";
 
-// export const getUserData = (state) =>
-//     state.
+export const getUserLoading = (state: StateSchema) =>
+    state?.user?.isLoading
+export const getUserError = (state: StateSchema) =>
+    state?.user?.error

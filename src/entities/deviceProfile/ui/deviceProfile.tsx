@@ -56,7 +56,7 @@ export const DeviceProfile = () => {
 
     const [currentPage, setCurrentPage] = useState<number>(1)
     const pageSize = useMemo(() => 10, [])
-    const [userId, setUserId] = useState<number | undefined>()
+    const [userId, setUserId] = useState<string>("")
     const [portal, setPortal] = useState<boolean>(false)
     const [name, setName] = useState<string>('')
     const [ip, setIp] = useState<string>('')
@@ -86,7 +86,9 @@ export const DeviceProfile = () => {
     }, [id])
 
     useEffect(() => {
-        dispatch(deviceAnalisThunk(userId))
+
+        // @ts-ignore
+        if (userId) dispatch(deviceAnalisThunk(userId))
     }, [userId])
 
     const onClick = (portal: boolean) => {
@@ -160,14 +162,14 @@ export const DeviceProfile = () => {
     });
     const renderPatientsData = useCallback(() => {
         return getUsers?.results?.map((item, index) => (
-            <tr onClick={() => setUserId(item.id)} className={cls.profileContainer__leftSight__arounder__head__users}>
+            <tr onClick={() => setUserId(item?.user_analysis)} className={cls.profileContainer__leftSight__arounder__head__users}>
                 <td>{index + 1}</td>
                 <td>
                     <div className={cls.profile}>
                         <img className={cls.profile__img} src="" alt=""/>
                         <div className={cls.profile__info}>
                             <p className={cls.profile__title}>
-                                {item.name} {item.surname}
+                                {item?.name} {item?.surname}
                             </p>
                         </div>
                     </div>

@@ -119,6 +119,8 @@ export const DeviceList: React.FC = () => {
             //     dispatch(deviceProfileThunk())
             // }, [])
 
+    console.log(getData)
+
     const devices = useCallback(() => {
         return getData?.results?.map((item, index) => (
             <Box onClick={() => navigate(`deviceProfile/${item.id}`)} extraClass={cls.deviceBox} key={index}>

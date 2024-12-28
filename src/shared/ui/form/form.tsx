@@ -7,7 +7,7 @@ interface formProps {
     id?: string,
     children: JSX.Element | JSX.Element[],
     onSubmit?: (arg: any) => void,
-    extraClass?: string
+    extraClass?: string,
 }
 
 export const Form = (props: formProps) => {
@@ -16,7 +16,7 @@ export const Form = (props: formProps) => {
         id,
         children,
         onSubmit,
-        extraClass
+        extraClass,
     } = props
 
     return (

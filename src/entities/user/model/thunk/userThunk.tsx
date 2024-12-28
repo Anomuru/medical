@@ -1,32 +1,48 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {ThunkConfig} from "app/providers/storeProvider";
+import {headers} from "shared/api/base";
+import {USER_LOCALSTORAGE_REFRESH_TOKEN, USER_LOCALSTORAGE_TOKEN} from "shared/const/localstorage";
+import {userActions} from "entities/user/model/slice/userSlice";
 
-interface LoginProps {
-    email: string;
-    password: string;
+
+
+interface RefreshProps {
+    refresh: string | null;
 }
 
-// export const login = createAsyncThunk<
-//     User,
-//     LoginProps,
-//     ThunkConfig<string>
-// >('login/loginByUsername', async (authData, thunkApi) => {
-//     const { extra, dispatch, rejectWithValue } = thunkApi;
-//
-//     try {
-//         const response = await extra.api.post<User>('/login', authData);
-//
-//         if (!response.data) {
-//             throw new Error();
-//         }
-//
-//         localStorage.setItem(
-//             USER_LOCALSTORAGE_KEY,
-//             JSON.stringify(response.data),
-//         );
-//         dispatch(userActions.setAuthData(response.data));
-//         return response.data;
-//     } catch (e) {
-//         console.log(e);
-//         return rejectWithValue('error');
-//     }
-// });
+
+
+
+export const fetchRefresh = createAsyncThunk<
+    void,
+    RefreshProps,
+    ThunkConfig<string>
+>('user/fetchRefresh', async (data, thunkApi) => {
+    const { extra, dispatch, rejectWithValue } = thunkApi;
+    try {
+        const response = await extra.api({
+            url: "token/refresh/", method: "POST", body: JSON.stringify(data), headers: headers()
+        })
+
+        console.log(response, "response")
+        if (!response) {
+            throw new Error();
+        }
+
+        sessionStorage.setItem(
+            USER_LOCALSTORAGE_TOKEN,
+            response.access,
+        );
+        sessionStorage.setItem(
+            USER_LOCALSTORAGE_REFRESH_TOKEN,
+            response.refresh,
+        );
+
+        dispatch(userActions.setAuthData(response.user));
+
+        return response.data;
+    } catch (e) {
+        console.log(e);
+        return rejectWithValue('error');
+    }
+});

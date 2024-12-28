@@ -3,9 +3,11 @@
 
 
 export interface UserSchema {
-    user: object;
-    userId: number;
-    loading: boolean;
-    error: string;
+    id: number | null,
+    name: string | null,
+    surname: string | null,
+    branch: number | null,
+    isLoading: boolean,
+    error?: string,
 }
 
