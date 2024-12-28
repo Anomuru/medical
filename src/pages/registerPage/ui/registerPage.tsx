@@ -140,7 +140,7 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={setSelectedSelect}
-                        optionsData={[]}
+                        optionsData={jobsList}
                     />
                 )
             }

@@ -1,5 +1,3 @@
-
-
 export interface Staff {
     id: number,
     username: string,
@@ -20,7 +18,12 @@ export interface Staff {
 }
 
 export interface StaffListSchema {
-    data?: Staff[],
+    data?: {
+        results?: Staff[]
+        count?: number,
+        previous?: number,
+        next?: number
+    },
     detail?: Staff,
     error?: "error",
     loading: boolean

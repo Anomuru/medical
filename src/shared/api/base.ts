@@ -1,4 +1,3 @@
-
 export const API_URL_DOC = `http://192.168.1.14:8000/`
 
 
@@ -37,12 +36,7 @@ export const headersImg = () => {
 }
 
 
-
-
-
-
 export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE' | "PATCH"
-
 
 
 interface UseHttpProps {
@@ -52,7 +46,8 @@ interface UseHttpProps {
     headers?: {
         "Content-Type": string
     },
-    typeUrl?: "auto" | "hand"
+    typeUrl?: "auto" | "hand",
+    isJson?: boolean
 }
 
 export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } = () => {
@@ -62,13 +57,14 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
             method = 'GET',
             body = undefined,
             headers = {'Content-Type': 'application/json'},
-            typeUrl = "auto"
+            typeUrl = "auto",
+            isJson = true
         } = props;
 
         let finalHeaders = headers;
 
         if (body instanceof FormData) {
-            finalHeaders = { ...headers };
+            finalHeaders = {...headers};
             // @ts-ignore
             delete finalHeaders['Content-Type'];
         }
@@ -77,13 +73,15 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
         try {
             let newUrl = typeUrl === "auto" ? API_URL + url : url;
 
-            const response = await fetch(newUrl, { method, mode: 'cors', body, headers: finalHeaders });
+            const response = await fetch(newUrl, {method, mode: 'cors', body, headers: finalHeaders});
 
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
             }
 
-            return await response.json();
+            if (isJson) {
+                return await response?.json();
+            } else return await response
 
         } catch (e) {
             throw e;

@@ -9,7 +9,7 @@ import {
     fetchStaffListData,
     getStaffListData,
     staffReducer,
-    staffProfileReducer
+    staffProfileReducer, staffActions
 } from "entities/staff";
 import {Button} from "shared/ui/button";
 
@@ -19,6 +19,7 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {useNavigate} from "react-router";
+import {headers, useHttp} from "../../../shared/api/base";
 
 const reducers: ReducersList = {
     staffSlice: staffReducer
@@ -26,8 +27,10 @@ const reducers: ReducersList = {
 
 export const StaffPage = () => {
 
+    const {request} = useHttp()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const {deleteStaff} = staffActions
 
     useEffect(() => {
         // @ts-ignore
@@ -42,7 +45,8 @@ export const StaffPage = () => {
 
     const onDelete = (id: number) => {
         // @ts-ignore
-        dispatch(deleteStaffData({id}))
+        request({url: `user/staff/crud/delete/${id}`, method: "DELETE", headers: headers(), isJson: false})
+            .finally(()=>dispatch(deleteStaff(id)))
     }
 
     return (

@@ -9,7 +9,7 @@ interface ISelectProps {
     required?: boolean,
     selectOption?: string,
     setSelectOption: (arg: string) => void,
-    optionsData: { id?: number, value?: string, name?: string, disabled: boolean }[],
+    optionsData?: any[],
     keyValue?: string,
     status?: string
 }
