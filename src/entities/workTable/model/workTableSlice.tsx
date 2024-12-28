@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {WorkTableSchema} from "./config/workTableSchema";
 
-const initialState = {
+const initialState: WorkTableSchema = {
     data: [],
     loading: false,
     error: null
@@ -12,5 +13,5 @@ const workTableSlice = createSlice({
     reducers: {}
 })
 
-export default workTableSlice.reducer
-
+export const { actions: workTableActions } = workTableSlice;
+export const { reducer: workTableReducer } = workTableSlice;

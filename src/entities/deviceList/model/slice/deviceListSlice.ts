@@ -44,7 +44,7 @@ const deviceListSlice = createSlice({
             .addCase(deviceListThunk.fulfilled, (state, action) => {
                 state.loading = false
                 state.data = action.payload
-                console.log(action.payload)
+
                 state.error = "error"
             })
             .addCase(deviceListThunk.rejected, (state) => {

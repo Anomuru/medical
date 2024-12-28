@@ -4,11 +4,11 @@ import {useForm} from "react-hook-form";
 
 import {fetchJobsData, getJobsData} from "entities/oftenUsed";
 import {Button} from "shared/ui/button";
-import {Input} from "shared/ui/input";
+import {Input, ErrorType} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
 import {Select} from "shared/ui/select";
 import {Form} from "shared/ui/form";
-import {API_URL, API_URL_DOC, header, headers, useHttp} from "shared/api/base";
+import {headers, useHttp} from "shared/api/base";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
@@ -31,19 +31,18 @@ export const RegisterPage = () => {
     const {request} = useHttp()
 
     useEffect(() => {
-        console.log("useEffect")
         // @ts-ignore
         dispatch(fetchJobsData())
-        // request({url: "job_info/job_get/job_list/", headers: header()})
-        //     .then(res => console.log(res))
-        // request(`${API_URL_DOC}job_info/job_get/job_list/`)
-        //     .then(res => console.log(res))
     }, [])
 
     const jobsList = useSelector(getJobsData)
 
     const registerStaff = useMemo(() => [
         {
+            name: "username",
+            label: "Username",
+            isInput: true,
+        }, {
             name: "name",
             label: "Name",
             isInput: true,
@@ -52,15 +51,19 @@ export const RegisterPage = () => {
             label: "Surname",
             isInput: true,
         }, {
+            name: "address",
+            label: "Address",
+            isInput: true,
+        }, {
             name: "job",
             label: "Job",
             isSelect: true,
         }, {
-            name: "pasport_seria",
+            name: "passport_series",
             label: "Pasport seria (A B)",
             isInput: true,
         }, {
-            name: "pasport_number",
+            name: "passport_number",
             label: "Password seria number",
             isInput: true,
         }, {
@@ -69,7 +72,7 @@ export const RegisterPage = () => {
             isInput: true,
             type: "date"
         }, {
-            name: "phone",
+            name: "phone_number",
             label: "Phone number",
             isInput: true,
         }, {
@@ -90,13 +93,14 @@ export const RegisterPage = () => {
 
     const {
         register,
-        handleSubmit
+        handleSubmit,
+        reset
     } = useForm<ISubmitData>()
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [selectedSelect, setSelectedSelect] = useState<string>()
+    const [isCheckUsername, setIsCheckUsername] = useState<ErrorType>()
 
-
-
+    const getSelectedRadio = useCallback((data: number) => setSelectedRadio(data), [])
 
     const render = useCallback(() => {
         return registerStaff.map(item => {
@@ -108,6 +112,8 @@ export const RegisterPage = () => {
                         placeholder={item.label}
                         type={item.type}
                         name={item.name}
+                        onChange={item.name === "username" ? onCheckUsername : undefined}
+                        error={item.name === "username" ? isCheckUsername : undefined}
                     />
                 )
             } else if (item.isRadio) {
@@ -119,7 +125,7 @@ export const RegisterPage = () => {
                                     <Radio
                                         name={"1_1"}
                                         value={inner.id}
-                                        onChange={setSelectedRadio}
+                                        onChange={getSelectedRadio}
                                         checked={inner.id === selectedRadio}
                                     >
                                         {inner.label}
@@ -139,27 +145,43 @@ export const RegisterPage = () => {
                 )
             }
         })
-    }, [jobsList, register, registerStaff, selectedRadio])
+    }, [jobsList, register, registerStaff, selectedRadio, isCheckUsername])
 
     const onSubmit = (data: ISubmitData) => {
         const res = {
             ...data,
-            selectedRadio,
-            selectedSelect
+            sex: selectedRadio,
+            job_id: selectedSelect,
+            branch: 1
         }
 
-        console.log(res, "res")
-        
-        // request({
-        //     url: "",
-        //     method: "POST",
-        //     body: JSON.stringify(res),
-        //     headers: headers()
-        // })
-        //     .then(res => {
-        //         console.log(res)
-        //     })
-        //     .catch(err => console.log(err))
+        request({
+            url: "user/staff/crud/create/",
+            method: "POST",
+            body: JSON.stringify(res),
+            headers: headers()
+        })
+            .then(res => {
+                console.log(res)
+                setSelectedRadio(NaN)
+                setSelectedSelect("")
+                reset()
+            })
+            .catch(err => console.log(err))
+    }
+
+    const onCheckUsername = (data: string) => {
+        console.log(data, "data")
+        request({
+            url: "user/username-check/",
+            method: "POST",
+            body: JSON.stringify({username: data})
+        })
+            .then(res => {
+                console.log(res)
+                setIsCheckUsername(res)
+            })
+            .catch(err => console.log(err))
     }
 
 

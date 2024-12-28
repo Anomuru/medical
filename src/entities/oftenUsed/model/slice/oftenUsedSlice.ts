@@ -20,7 +20,7 @@ const oftenUsedSlice = createSlice({
             })
             .addCase(fetchJobsData.fulfilled, (state, action) => {
                 console.log("ready")
-                // state.jobs = action.payload
+                state.jobs = action.payload.results
                 state.loading = false
                 state.error = undefined
             })
@@ -30,6 +30,7 @@ const oftenUsedSlice = createSlice({
             })
 })
 
-export default oftenUsedSlice.reducer
+export const {reducer: oftenUsedReducer} = oftenUsedSlice
+export const {actions: oftenUsedActions} = oftenUsedSlice
 
 

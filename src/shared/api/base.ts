@@ -44,11 +44,12 @@ export const headersImg = () => {
 export type Methods = 'GET' | 'POST' | 'PUT' | 'DELETE' | "PATCH"
 
 
+
 interface UseHttpProps {
     url: string,
     method?: Methods,
     body?: BodyInit,
-    headers: {
+    headers?: {
         "Content-Type": string
     },
     typeUrl?: "auto" | "hand"
