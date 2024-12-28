@@ -1,11 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {DeviceListSchema} from "../types/deviceListSchema";
 import {deviceListThunk} from "../thunk/deviceListThunk";
+import {deviceThunk} from "../thunk/deviceListThunk";
 
 
 const initialState: DeviceListSchema = {
     loading: false,
     data: undefined,
+    list: [],
     error: undefined
 }
 
@@ -48,6 +50,19 @@ const deviceListSlice = createSlice({
                 state.error = "error"
             })
             .addCase(deviceListThunk.rejected, (state) => {
+                state.loading = false
+                state.error = "error"
+            })
+            .addCase(deviceThunk.pending, (state) => {
+                state.loading = true
+                state.error = undefined
+            })
+            .addCase(deviceThunk.fulfilled, (state,action) => {
+                state.loading = false
+                state.list = action.payload
+                state.error = "error"
+            })
+            .addCase(deviceThunk.rejected, (state) => {
                 state.loading = false
                 state.error = "error"
             })

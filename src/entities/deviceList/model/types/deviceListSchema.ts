@@ -15,6 +15,13 @@ export interface DeviceProps {
 
 export interface DeviceListSchema {
     data?: DeviceProps,
+    list?: DeviceAdd[],
     error?: "error",
     loading: boolean
+}
+
+export interface DeviceAdd {
+    id: number,
+    name: string,
+    img: string
 }

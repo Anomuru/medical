@@ -4,7 +4,6 @@ import {workTableSlice} from "entities/workTable";
 import {staffSlice} from "entities/staff";
 import {oftenUsedSlice} from "entities/oftenUsed";
 import {deviceListSlice} from "../entities/deviceList";
-import {deviceSlice} from "entities/device";
 import {deviceProfileSlice} from "entities/deviceProfile";
 import {priceSlice} from "../entities/price";
 
@@ -14,7 +13,6 @@ export const store = configureStore({
         staffSlice,
         oftenUsedSlice,
         deviceListSlice,
-        deviceSlice,
         priceSlice,
         deviceProfileSlice
     },

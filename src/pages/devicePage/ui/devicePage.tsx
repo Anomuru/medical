@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {DeviceList, deviceListThunk} from 'entities/deviceList';
+import {DeviceList} from 'entities/deviceList';
 import cls from './devicePage.module.sass';
 import { Modal } from 'shared/ui/modal';
 import { Form } from 'shared/ui/form';
@@ -8,7 +8,7 @@ import { Button } from 'shared/ui/button';
 import classNames from 'classnames';
 
 import {useDispatch} from "react-redux";
-import {deviceThunk} from "entities/device";
+import {deviceThunk} from "entities/deviceList";
 
 export const DevicePage = () => {
     const [addItem, setAddItem] = useState<boolean>(false);

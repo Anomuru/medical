@@ -56,8 +56,6 @@ export const DeviceProfile = () => {
     const navigate = useNavigate()
 
     const [files, setFiles] = useState<any>(null);
-    const [currentFiles, setCurrentFiles] = useState<any>(null);
-
 
     const [activeDelete, setActiveDelete] = useState<boolean>(false)
 
