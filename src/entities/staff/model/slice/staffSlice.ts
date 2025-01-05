@@ -5,7 +5,7 @@ import {fetchStaffListData} from "../thunk/staffThunk";
 
 const initialState: StaffListSchema = {
     loading: false,
-    data: [],
+    data: undefined,
     detail: {
         id: NaN,
         name: "",
@@ -31,8 +31,13 @@ const staffSlice = createSlice({
     name: "staffSlice",
     initialState,
     reducers: {
-        addStaff: (state, action) => {
-            state.data = state.data && [action.payload, ...state.data]
+        deleteStaff: (state, action) => {
+            state.data = {
+                count: state.data?.count,
+                next: state.data?.next,
+                previous: state.data?.previous,
+                results: state.data?.results?.filter(item => item.id !== action.payload)
+            }
         }
     },
     extraReducers: builder =>
@@ -43,7 +48,7 @@ const staffSlice = createSlice({
             })
             .addCase(fetchStaffListData.fulfilled, (state, action) => {
                 console.log(action.payload)
-                state.data = action.payload?.results
+                state.data = action.payload
                 state.loading = false
                 state.error = undefined
             })
