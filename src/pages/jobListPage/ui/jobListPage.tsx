@@ -5,6 +5,7 @@ import plusImage from 'shared/assets/icon/plus.png'
 import {JobList} from "entities/jobList";
 import {AddJobModal,ChangeJobModal} from "features/job";
 import {JobSchema} from "shared/types/oftenUsedTypes";
+import {DeleteModal} from "../../../features/deleteModal/ui/DeleteModal";
 
 
 
@@ -38,6 +39,11 @@ export const JobListPage = () => {
     }, []);
 
 
+    const onCloseDeleteModal = useCallback(() => {
+        setIsActiveDelete(false);
+    }, []);
+
+
 
 
      const onShowDeleteModal = () => {
@@ -50,6 +56,11 @@ export const JobListPage = () => {
     }
 
 
+
+
+    const onConfirmDelete = () => {
+
+    }
 
     return (
         <div className={cls.tableBox}>
@@ -71,6 +82,8 @@ export const JobListPage = () => {
 
             <AddJobModal active={isActiveAdd} setActive={onCloseModal}/>
             <ChangeJobModal active={isActiveChange} setActive={onCloseChangeModal}/>
+
+            <DeleteModal onConfirm={onConfirmDelete} active={isActiveDelete} setActive={onCloseDeleteModal}/>
 
         </div>
     );
