@@ -49,6 +49,8 @@ export const StaffPage = () => {
             .finally(()=>dispatch(deleteStaff(id)))
     }
 
+    console.log(staffList, 'wdwededed')
+
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.staffPage}>

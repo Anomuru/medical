@@ -1,14 +1,13 @@
 
 export interface IWorkTable {
-    name: string,
-    surname: string,
-    job: string,
-    phone: string,
-    age: number
+    doctor: number,
+    date: string,
+    from_date: string,
+    to_date: string
 }
 
 export interface WorkTableSchema {
     data: IWorkTable[],
     loading: true | false,
-    error: null | "error"
+    error: undefined | "error"
 }
