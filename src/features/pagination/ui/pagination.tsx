@@ -192,7 +192,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
                         className={classNames(cls.pagination_item, cls.arrow)}
                         onClick={onPrevious}
                     >
-                        <i className="fas fa-arrow-left"></i>
+                        <i className="fa-solid fa-arrow-left"></i>
                     </li>
                 )}
                 {renderPageNumbers()}
@@ -201,7 +201,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
                         className={classNames(cls.pagination_item, cls.arrow)}
                         onClick={onNext}
                     >
-                        <i className="fas fa.arrow-right"></i>
+                        <i className="fa-solid fa.arrow-right"></i>
                     </li>
                 )}
             </ul>

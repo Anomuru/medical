@@ -140,7 +140,7 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={setSelectedSelect}
-                        optionsData={[]}
+                        optionsData={jobsList}
                     />
                 )
             }
@@ -148,26 +148,28 @@ export const RegisterPage = () => {
     }, [jobsList, register, registerStaff, selectedRadio, isCheckUsername])
 
     const onSubmit = (data: ISubmitData) => {
-        const res = {
-            ...data,
-            sex: selectedRadio,
-            job_id: selectedSelect,
-            branch: 1
-        }
+        if (selectedRadio && selectedSelect) {
+            const res = {
+                ...data,
+                sex: selectedRadio,
+                job_id: selectedSelect,
+                branch: 1
+            }
 
-        request({
-            url: "user/staff/crud/create/",
-            method: "POST",
-            body: JSON.stringify(res),
-            headers: headers()
-        })
-            .then(res => {
-                console.log(res)
-                setSelectedRadio(NaN)
-                setSelectedSelect("")
-                reset()
+            request({
+                url: "user/staff/crud/create/",
+                method: "POST",
+                body: JSON.stringify(res),
+                headers: headers()
             })
-            .catch(err => console.log(err))
+                .then(res => {
+                    console.log(res)
+                    setSelectedRadio(NaN)
+                    setSelectedSelect("")
+                    reset()
+                })
+                .catch(err => console.log(err))
+        }
     }
 
     const onCheckUsername = (data: string) => {

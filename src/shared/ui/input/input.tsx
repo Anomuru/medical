@@ -88,7 +88,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 <i
                     onClick={() => setPasswordActive(!passwordActive)}
                     className={classNames(
-                        `fas ${passwordActive ? "fa-eye" : "fa-eye-slash"}`,
+                        `fa-solid ${passwordActive ? "fa-eye" : "fa-eye-slash"}`,
                         cls.label__icon,
                         {
                             [cls.title]: title

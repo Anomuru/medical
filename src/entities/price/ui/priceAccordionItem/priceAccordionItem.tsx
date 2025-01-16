@@ -44,7 +44,7 @@ export const PriceAccordionItem: React.FC<IPriceAccordionItemProps> = (props) =>
                             setValue("price" , item.price)
 
                             setActiveAnalysis(item.id)
-                        }} className="fas fa-pen"/>
+                        }} className="fa-solid fa-pen"/>
                     </td>
                 </tr>
             )

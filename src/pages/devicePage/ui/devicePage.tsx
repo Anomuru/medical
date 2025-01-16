@@ -8,7 +8,7 @@ import {Button} from 'shared/ui/button';
 import classNames from 'classnames';
 
 import {useDispatch} from "react-redux";
-import {deviceThunk} from "entities/device";
+import {deviceThunk} from "entities/deviceList";
 import {
     DynamicModuleLoader,
     ReducersList
@@ -63,7 +63,7 @@ export const DevicePage = () => {
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.deviceBox}>
                 <Button extraClass={cls.addItemBtn} onClick={onPortal}>
-                    <i className={classNames("fas fa-plus")}/>
+                    <i className={classNames("fa-solid fa-plus")}/>
                 </Button>
                 <DeviceList/>
 

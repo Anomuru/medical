@@ -39,7 +39,7 @@ export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete}
                     <td>
                         <i
                             className={classNames(
-                                "fas fa-times",
+                                "fa-solid fa-times",
                                 cls.staffPage__delete
                             )}
                             onClick={() => onDelete(item.id)}
