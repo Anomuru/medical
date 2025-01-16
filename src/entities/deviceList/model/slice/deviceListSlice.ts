@@ -5,7 +5,7 @@ import {deviceListThunk} from "../thunk/deviceListThunk";
 
 const initialState: DeviceListSchema = {
     loading: false,
-    data: undefined,
+    data: {},
     error: undefined
 }
 
@@ -14,8 +14,18 @@ const deviceListSlice = createSlice({
     initialState,
     reducers: {
         addDevice: (state, action) => {
-            // state.data = state.data && [action.payload, ...state.data]
+            console.log(action.payload)
+
+
+            state.data = {
+                // @ts-ignore
+                results: [...state.data.results, action.payload],
+                next: state.data?.next,
+                previous: state.data?.previous,
+                count: state.data?.count
+            }
         },
+
         onDeleteDevice: (state, action) => {
             console.log(action.payload)
             state.data = {

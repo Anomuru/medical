@@ -218,7 +218,8 @@ export const DeviceProfile = () => {
                            totalCount={getUsers?.count}
                            onPageChange={setCurrentPage}
                            currentPage={currentPage}
-                           pageSize={pageSize}/>
+                           pageSize={pageSize}
+                       />
                    </div>
                </div>
                <Box extraClass={cls.profileContainer__rightContainer}>

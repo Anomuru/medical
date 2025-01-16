@@ -8,7 +8,7 @@ export const fetchPriceType = createAsyncThunk(
         const {request} = useHttp()
 
         return await request({
-            url: "api/analysis/analysis_type/get/list/",
+            url: "analysis/analysis_type/get/list/",
             method: "GET",
             body: undefined,
             headers: headers()
@@ -25,7 +25,7 @@ export const fetchPriceTypes = createAsyncThunk(
         const {request} = useHttp()
 
         return await request({
-            url: "api/analysis/analysis_type/get/list/?type=analyses",
+            url: "analysis/analysis_type/get/list/?type=analyses",
             method: "GET",
             body: undefined,
             headers: headers()
@@ -41,7 +41,7 @@ export const fetchDeviceList = createAsyncThunk(
         const {request} = useHttp()
 
         return await request({
-            url: "api/device/get/list/",
+            url: "device/get/list/",
             method: "GET",
             body: undefined,
             headers: headers()

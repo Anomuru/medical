@@ -6,6 +6,6 @@ export const deviceListThunk = createAsyncThunk(
     "deviceListSlice/deviceListThunk",
     (page: number) => {
         const {request} = useHttp()
-        return request({url: `device/get/list/?offset=${(page-1)*50} `, method: "GET", headers: headers()})
+        return request({url: `device/get/list/?offset=${(page-1)*50}`, method: "GET", headers: headers()})
     }
 )

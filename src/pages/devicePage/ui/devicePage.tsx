@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {DeviceList, deviceListReducer, deviceListThunk} from 'entities/deviceList';
+import {DeviceList, deviceListActions, deviceListReducer, deviceListThunk} from 'entities/deviceList';
 import cls from './devicePage.module.sass';
 import {Modal} from 'shared/ui/modal';
 import {Form} from 'shared/ui/form';
@@ -13,6 +13,7 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {headerImg, useHttp} from "../../../shared/api/base";
 
 const reducers: ReducersList = {
     deviceListSlice: deviceListReducer
@@ -22,6 +23,7 @@ export const DevicePage = () => {
     const [addItem, setAddItem] = useState<boolean>(false);
     const [name, setName] = useState<string>();
     const [ipAddress, setIpAddress] = useState<string>();
+    const {request} = useHttp()
     const dispatch: any = useDispatch()
     const onPortal = () => {
         setAddItem(!addItem);
@@ -36,8 +38,20 @@ export const DevicePage = () => {
         formData.append('name', name);
         formData.append('ip_address', ipAddress);
         formData.append('img', event.currentTarget.img.files[0]);
-
-        dispatch(deviceThunk(formData))
+        request({
+            url: `device/crud/create/`,
+            method: "POST",
+            body: formData,
+            //@ts-ignore
+            headers: headerImg()
+        })
+            .then(res => {
+                dispatch(deviceListActions.addDevice(res))
+                setAddItem(false)
+            })
+            .catch(err => {
+                console.log(err)
+            })
 
 
     };
@@ -53,7 +67,7 @@ export const DevicePage = () => {
                 </Button>
                 <DeviceList/>
 
-                <Modal extraClass={cls.addItemBox} active={addItem} setActive={setAddItem}>
+                <Modal type={"simple"} extraClass={cls.addItemBox} active={addItem} setActive={setAddItem}>
                     <Form onSubmit={handleFormSubmit}>
                         <Input extraClass={cls.addItemBox__input} name="name" placeholder="Name device"
                                onChange={getName}/>
