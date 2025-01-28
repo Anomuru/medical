@@ -6,7 +6,7 @@ import {fetchJobsData, getJobsData} from "entities/oftenUsed";
 import {Button} from "shared/ui/button";
 import {Input, ErrorType} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
-import {Select} from "shared/ui/select";
+import {MultiSelect, Select} from "shared/ui/select";
 import {Form} from "shared/ui/form";
 import {headers, useHttp} from "shared/api/base";
 
@@ -37,6 +37,12 @@ export const RegisterPage = () => {
 
     const jobsList = useSelector(getJobsData)
 
+    const [selectedJob, setSelectedJob] = useState<string>()
+    const [selectedLocation, setSelectedLocation] = useState<string>()
+
+    const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
+    const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
+
     const registerStaff = useMemo(() => [
         {
             name: "username",
@@ -55,9 +61,15 @@ export const RegisterPage = () => {
             label: "Address",
             isInput: true,
         }, {
+            name: "location",
+            label: "Location",
+            isSelect: true,
+            onSelect: getSelectedLocation
+        }, {
             name: "job",
             label: "Job",
-            isSelect: true,
+            isMultiSelect: true,
+            onSelect: getSelectedJob
         }, {
             name: "passport_series",
             label: "Pasport seria (A B)",
@@ -97,7 +109,6 @@ export const RegisterPage = () => {
         reset
     } = useForm<ISubmitData>()
     const [selectedRadio, setSelectedRadio] = useState<number>()
-    const [selectedSelect, setSelectedSelect] = useState<string>()
     const [isCheckUsername, setIsCheckUsername] = useState<ErrorType>()
 
     const getSelectedRadio = useCallback((data: number) => setSelectedRadio(data), [])
@@ -139,8 +150,17 @@ export const RegisterPage = () => {
                 return (
                     <Select
                         title={item.label}
-                        setSelectOption={setSelectedSelect}
+                        setSelectOption={item.onSelect}
+                        // @ts-ignore
                         optionsData={jobsList}
+                    />
+                )
+            } else if (item.isMultiSelect) {
+                return (
+                    <MultiSelect
+                        // @ts-ignore
+                        options={jobsList}
+                        onChange={item.onSelect}
                     />
                 )
             }
@@ -148,11 +168,12 @@ export const RegisterPage = () => {
     }, [jobsList, register, registerStaff, selectedRadio, isCheckUsername])
 
     const onSubmit = (data: ISubmitData) => {
-        if (selectedRadio && selectedSelect) {
+        if (selectedRadio && selectedJob && selectedLocation) {
             const res = {
                 ...data,
                 sex: selectedRadio,
-                job_id: selectedSelect,
+                job_id: selectedJob,
+                location_id: selectedLocation,
                 branch: 1
             }
 
@@ -165,7 +186,7 @@ export const RegisterPage = () => {
                 .then(res => {
                     console.log(res)
                     setSelectedRadio(NaN)
-                    setSelectedSelect("")
+                    setSelectedJob("")
                     reset()
                 })
                 .catch(err => console.log(err))

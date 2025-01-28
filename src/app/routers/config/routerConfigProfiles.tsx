@@ -23,8 +23,9 @@ import {
     getProfileRoute,
     getDeviceProfileRoute,
     getWorkTableRoute,
-    getWorkerProfile
+    getWorkerProfile, getPatientRoute
 } from "shared/const/routers";
+import {PatientPage} from "../../../pages/patientPage";
 
 
 interface IRouterConfigProfiles {
@@ -56,19 +57,23 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "staffPage",
         element: <StaffPage/>,
         path: getStaffRoute()
-    },{
+    }, {
+        name: "patientPage",
+        element: <PatientPage/>,
+        path: getPatientRoute()
+    }, {
         name: "hospitalRegPage",
         element: <HospitalRegPage/>,
         path: getHospitalRegRoute()
-    },{
+    }, {
         name: "platformHomePage",
         element: <PlatformHomePage/>,
         path: getPlatformHomePage()
-    },{
+    }, {
         name: "pricePage",
         element: <PricePage/>,
         path: getPricePageRoute()
-    },{
+    }, {
         name: "devicePage",
         element: <DevicePage/>,
         path: getDevicePageRoute()

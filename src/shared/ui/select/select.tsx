@@ -45,7 +45,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
 
     // Agar faqat bitta ma'lumot kelsa, uni avtomatik tanlash
     useEffect(() => {
-        if (optionsData.length === 1) {
+        if (optionsData?.length === 1) {
             const item = optionsData[0];
             const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
             setSelectOption(value);
@@ -65,7 +65,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 value={selectOption}
                 onChange={(e) => setSelectOption(e.target.value)}
             >
-                {title ? <option value={""} disabled>{title}</option> : <option value={""} disabled>Tanlang</option>}
+                {title ? <option selected value={""} disabled>{title}</option> : <option value={""} disabled>Tanlang</option>}
                 {renderedOptions}
             </select>
             {status === "error" && <span className={cls.label__error}>Tanlanmagan</span>}
