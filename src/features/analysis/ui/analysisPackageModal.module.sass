@@ -6,9 +6,14 @@
   gap: 5rem
   &__wrapper
     display: flex
-    justify-self: flex-end
+    align-self: flex-end
     gap: 2.5rem
   &__add
-    padding: 2rem
-    font-size: 1.5rem
+    border-radius: 50%
+    border: 0.56px solid #8E8E93
+    padding: 1.5rem 1.7rem
+    font-size: 2.5rem
+    transition: .1s
     @include btn-active
+    &:active
+      background: #E5E5EA

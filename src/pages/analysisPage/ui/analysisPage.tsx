@@ -13,6 +13,9 @@ export const AnalysisPage = () => {
             <Outlet/>
             <Routes>
                 <Route path={"package"} element={<AnalysisPackageModal/>}/>
+                <Route path={"group"} element={null}/>
+                <Route path={"container"} element={null}/>
+                <Route path={"analysis"} element={null}/>
 
                 <Route index element={<Navigate to={"package"}/>}/>
             </Routes>

@@ -38,7 +38,7 @@ export const AnalysisHeader = memo(() => {
                 </NavLink>
             )
         })
-    }, [])
+    }, [list])
 
     return (
         <div className={cls.header}>
