@@ -5,7 +5,9 @@ import plusImage from 'shared/assets/icon/plus.png'
 import {JobList} from "entities/jobList";
 import {AddJobModal,ChangeJobModal} from "features/job";
 import {JobSchema} from "shared/types/oftenUsedTypes";
-import {DeleteModal} from "../../../features/deleteModal/ui/DeleteModal";
+import {DeleteModal, DeleteModalReturnData} from "../../../features/deleteModal/ui/DeleteModal";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {deleteJobThunk} from "features/job/model/thunk/deleteJobThunk";
 
 
 
@@ -16,9 +18,11 @@ export const JobListPage = () => {
     const [isActiveChange, setIsActiveChange] = useState(false);
     const [isActiveDelete, setIsActiveDelete] = useState(false);
 
-    const [changingData, setChangingData] = useState<JobSchema>();
+    const [changingData, setChangingData] = useState<JobSchema| null>(null);
 
 
+
+    const dispatch = useAppDispatch()
     // const authData = useSelector(getUserAuthData);
 
     const onCloseModal = useCallback(() => {
@@ -58,10 +62,17 @@ export const JobListPage = () => {
 
 
 
-    const onConfirmDelete = () => {
 
+    const onConfirmDelete = (data: DeleteModalReturnData) => {
+
+        if (changingData?.id)
+
+        dispatch(deleteJobThunk({...data,id: changingData.id}))
+        onCloseDeleteModal()
     }
 
+
+    console.log(changingData)
     return (
         <div className={cls.tableBox}>
             <div className={cls.tableBox__header}>
@@ -80,8 +91,9 @@ export const JobListPage = () => {
             </div>
 
 
-            <AddJobModal active={isActiveAdd} setActive={onCloseModal}/>
-            <ChangeJobModal active={isActiveChange} setActive={onCloseChangeModal}/>
+            <AddJobModal  active={isActiveAdd} setActive={onCloseModal}/>
+            {changingData &&  <ChangeJobModal changedData={changingData} active={isActiveChange} setActive={onCloseChangeModal}/>}
+
 
             <DeleteModal onConfirm={onConfirmDelete} active={isActiveDelete} setActive={onCloseDeleteModal}/>
 

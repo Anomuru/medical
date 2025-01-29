@@ -9,6 +9,10 @@ import {Radio} from "shared/ui/radio";
 
 import cls from "./hospitalRegPage.module.sass";
 import {headers, useHttp} from "shared/api/base";
+import arrowContainedSquare from "shared/assets/icon/arrowContainedSquare.svg"
+
+
+
 
 interface IHospitalRegPageData {
 
@@ -227,13 +231,11 @@ export const HospitalRegPage = () => {
     return (
         <div className={cls.wrapper}>
             <div className={cls.hospital}>
-
-
                 {/*<div className={cls.hospital__progress}>*/}
                 {/*    <div style={{width: `${calc}%`}} className={cls.info}/>*/}
                 {/*</div>*/}
-                <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.hospital__wrapper}>
-                    <div className={cls.hospital__from}>
+                <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
+                    <div className={cls.registerForm__form}>
                         <div className={cls.info}>
                             {/*<div className={cls.info__percent}>*/}
                             {/*    <h2 className={cls.text}>Patient Information</h2>*/}
@@ -247,8 +249,75 @@ export const HospitalRegPage = () => {
                         <h2> {errorUserName ? "Username already exist" : null}</h2>
                         {renderInput()}
                     </div>
-                    <Button extraClass={cls.hospital__btn}>Add</Button>
                 </Form>
+
+                <div className={cls.analizForm}>
+
+                    <div className={cls.header}>
+                        <h1>Analiz form</h1>
+                        <Input name={"search"} placeholder={"Search"}/>
+                    </div>
+
+
+                    <div className={cls.content}>
+                        <div className={cls.collection}>
+                            <h1>Paket</h1>
+                            <div className={cls.container}>
+                                <div className={cls.item}>
+                                    <h2>
+                                        КОАГУЛОЛОГИЯ
+                                    </h2>
+                                    <div className={cls.icon}>
+                                        <i className="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={cls.collection}>
+                            <h1>Analiz</h1>
+                            <div className={cls.container}>
+                                <div className={cls.item}></div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div className={cls.list}>
+                    <h1>Ro'yxat</h1>
+                    <div className={cls.list__container}>
+                        <div className={cls.paket}>
+                            <div className={cls.header}>
+                                <div className={cls.row}>
+                                    <span>D-димер</span>
+                                    <span>2.000.000</span>
+                                </div>
+                                <div className={cls.subrow}>
+                                    <span>Analiz ro’yxatlari :</span>
+                                    <span><img src={arrowContainedSquare} alt=""/></span>
+                                </div>
+                            </div>
+
+                            <div className={cls.analysis}>
+                                <div className={cls.analysis__item}>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <Button extraClass={cls.hospital__btn}>Add</Button>
+
             </div>
         </div>
     );

@@ -1,4 +1,5 @@
 @import "app/styles/abstracts/variables"
+@import "app/styles/abstracts/mixins"
 
 .wrapper
   width: 100%
@@ -6,9 +7,10 @@
   justify-content: center
 
 .hospital
-  width: 75rem
+  width: 100%
   display: flex
-  flex-direction: column
+  justify-content: space-around
+  flex-wrap: wrap
   gap: 2rem
   &__progress
     height: 1.5rem
@@ -18,71 +20,183 @@
       height: 100%
       width: 70%
       background: $medical-color
-  &__wrapper
-    padding: 0 2.7rem
+  .registerForm
+    width: 35%
+    padding: 2.5rem
     display: flex
     flex-direction: column
     gap: 2rem
-  &__from
-    display: flex
-    flex-direction: column
-    gap: 2.5rem
-    border-bottom: 2px solid #AEAEB2
-    padding-bottom: 2.5rem
-    .info
+    box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
+    height: fit-content
+    &__form
       display: flex
       flex-direction: column
       gap: 2.5rem
-      &__percent
+      border-bottom: 2px solid #AEAEB2
+      padding-bottom: 2.5rem
+      .info
         display: flex
-        justify-content: space-between
-        .text
-          color: #AEAEB2
+        flex-direction: column
+        gap: 2.5rem
+        &__percent
+          display: flex
+          justify-content: space-between
+          .text
+            color: #AEAEB2
+            font-family: sans-serif, Montserrat
+            font-size: 20px
+            font-weight: 400
+            line-height: 24.38px
+            text-underline-position: from-font
+            text-decoration-skip-ink: none
+          .percent
+            color: $medical-color
+            font-family: sans-serif, Montserrat
+            font-size: 20px
+            font-weight: 500
+            line-height: 28px
+            text-underline-position: from-font
+            text-decoration-skip-ink: none
+        &__title
+          color: $medical-color
+          font-family: sans-serif, Montserrat
+          font-size: 36px
+          font-weight: 500
+          line-height: 43.88px
+          text-underline-position: from-font
+          text-decoration-skip-ink: none
+        &__text
+          color: #C7C7CC
           font-family: sans-serif, Montserrat
           font-size: 20px
           font-weight: 400
           line-height: 24.38px
           text-underline-position: from-font
           text-decoration-skip-ink: none
-        .percent
-          color: $medical-color
-          font-family: sans-serif, Montserrat
-          font-size: 20px
-          font-weight: 500
-          line-height: 28px
-          text-underline-position: from-font
-          text-decoration-skip-ink: none
-      &__title
-        color: $medical-color
-        font-family: sans-serif, Montserrat
-        font-size: 36px
-        font-weight: 500
-        line-height: 43.88px
-        text-underline-position: from-font
-        text-decoration-skip-ink: none
-      &__text
-        color: #C7C7CC
-        font-family: sans-serif, Montserrat
-        font-size: 20px
-        font-weight: 400
-        line-height: 24.38px
-        text-underline-position: from-font
-        text-decoration-skip-ink: none
-  .content
-    width: 100%
-    display: flex
-    flex-direction: column
-    gap: 2.5rem
-    .double
+    .content
       width: 100%
       display: flex
-      gap: 5rem
-      &__input
+      flex-direction: column
+      gap: 2.5rem
+      .double
         width: 100%
-    .radios
+        display: flex
+        gap: 5rem
+        &__input
+          width: 100%
+      .radios
+        display: flex
+        justify-content: center
+        gap: 5rem
+
+
+  .analizForm
+    width: 60%
+    background-color: $medical-color
+    height: 93rem
+    padding: 2rem
+    display: flex
+    flex-direction: column
+    gap: 2rem
+    border-radius: 10px
+    .header
       display: flex
-      justify-content: center
-      gap: 5rem
+      align-items: center
+      justify-content: space-between
+      h1
+        color: white
+    .content
+      display: flex
+      height: 90%
+      gap: 2rem
+      .collection
+        width: 50%
+        height: 100%
+        position: relative
+        background-color: white
+        padding: 1.5rem
+        display: flex
+        flex-direction: column
+        border-radius: 10px
+
+        h1
+          top: 0
+          position: sticky
+          color: $medical-color
+          width: 100%
+          background-color: white
+
+        .container
+          height: 100%
+          overflow-y: auto
+          overflow-x: hidden
+          display: flex
+          flex-direction: column
+          margin-top: 1.5rem
+          gap: 1rem
+          .item
+            border-top: 2px solid #C7C7CC
+            border-bottom: 2px solid #C7C7CC
+            display: flex
+            align-items: center
+            justify-content: space-between
+            padding: 1.5rem 0
+            transition: all .1s
+            cursor: pointer
+            @include btn-active
+            i
+              border: 1px solid black
+              font-size: 1.2rem
+              border-radius: 50%
+              padding: .5rem
+  .list
+    width: 100%
+    margin: 2rem 0
+    &__container
+      display: flex
+      flex-direction: column
+      padding: 1.5rem 2.5rem
+      background-color: $medical-color
+      border-radius: 10px
+      margin-top: 1rem
+      max-height: 34rem
+      overflow-y: auto
+      overflow-x: hidden
+      .paket
+        background-color: white
+        border-radius: 10px
+        max-height: 22rem
+        padding: 1.3rem 1.8rem
+        display: flex
+        flex-direction: column
+        .header
+          display: flex
+          flex-direction: column
+          .row
+            display: flex
+            align-items: center
+            justify-content: space-between
+            span:first-child
+              font-weight: 500
+              font-size: 1.5rem
+            span:last-child
+              font-weight: 500
+              font-size: 1.5rem
+          .subrow
+            display: flex
+            align-items: center
+            justify-content: space-between
+            margin-top: 1rem
+            span:first-child
+              font-weight: 400
+              font-size: 1.4rem
+              color: $medical-color
+            span:last-child
+              cursor: pointer
+              @include btn-active
+              img
+                width: 2.5rem
+
   &__btn
     width: 100%
     padding: 1.55rem 0

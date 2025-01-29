@@ -1,19 +1,21 @@
 import {Modal} from "shared/ui/modal";
 import {JobCrudForm} from "features/job/ui/jobCrudForm/JobCrudForm";
 import React from "react";
+import {JobSchema} from "shared/types/oftenUsedTypes";
 
 interface ChangeJobModalProps {
     className?: string;
     active: boolean;
     setActive: () => void;
+    changedData: JobSchema;
 }
 
 
 
-export const ChangeJobModal = ({active,setActive} : ChangeJobModalProps) => {
+export const ChangeJobModal = ({active,setActive,changedData} : ChangeJobModalProps) => {
     return (
         <Modal title={"Change"} active={active} setActive={setActive}>
-            <JobCrudForm/>
+            <JobCrudForm onSuccess={setActive} changedData={changedData}/>
         </Modal>
     );
 };

@@ -3,20 +3,29 @@ import {ThunkConfig} from "app/providers/storeProvider";
 import {headers} from "shared/api/base";
 import {jobsListActions} from "entities/jobList";
 
-interface addJobProps {
-    data: FormData
+
+
+
+
+
+interface deleteJobThunkProps {
+    reason: string,
+    id: number,
 }
 
 
-export const addJobThunk = createAsyncThunk<
+export const deleteJobThunk = createAsyncThunk<
     void,
-    addJobProps,
+    deleteJobThunkProps,
     ThunkConfig<string>
->('job/addJob', async (authData, thunkApi) => {
+>('job/deleteJob', async (authData, thunkApi) => {
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
+
+
+        console.log(authData)
         const response = await extra.api({
-            url: "job_info/job_crud/create/", method: "POST", body: authData.data, headers: headers()
+            url: `job_info/job_crud/delete/${authData.id}`, method: "DELETE", body: JSON.stringify({reason: authData.reason}), headers: headers()
         })
 
 
@@ -26,7 +35,7 @@ export const addJobThunk = createAsyncThunk<
 
 
 
-        dispatch(jobsListActions.addJob(response));
+        dispatch(jobsListActions.deleteJob(response));
         return response.data;
     } catch (e) {
         console.log(e);
