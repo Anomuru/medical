@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, { useCallback, useEffect } from 'react';
 import classNames from "classnames";
 
 import cls from "./select.module.sass";
@@ -8,8 +8,8 @@ interface ISelectProps {
     title?: string,
     required?: boolean,
     selectOption?: string,
-    setSelectOption: (arg: string) => void,
-    optionsData?: any[],
+    setSelectOption: (arg: any) => void,
+    optionsData: any[],
     keyValue?: string,
     status?: string
 }
@@ -29,10 +29,8 @@ export const Select: React.FC<ISelectProps> = (props) => {
 
     const renderOptionsOfSelect = useCallback(() => {
         return optionsData?.map((item, index) => {
-            const value = item.id || item.value || item.name;
-            // const key = item?.name || item?.number || item.old_id || item?.days || item.num || item?.user && `${item.user?.name} ${item.user?.surname}` || item.branch || item;
-            const key = item.name || item.id
-
+            const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
+            const key = item.name || item.id;
             return (
                 <option
                     disabled={item.disabled}
@@ -43,22 +41,21 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 </option>
             )
         });
-    }, [optionsData]);
+    }, [optionsData, keyValue]);
 
+    // Agar faqat bitta ma'lumot kelsa, uni avtomatik tanlash
+    useEffect(() => {
+        if (optionsData?.length === 1) {
+            const item = optionsData[0];
+            const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
+            setSelectOption(value);
+        }
+    }, [optionsData, keyValue, setSelectOption]);
 
     const renderedOptions = renderOptionsOfSelect();
 
     return (
         <label className={classNames(cls.label, extraClass)}>
-            {/*{*/}
-            {/*    title ?*/}
-            {/*        <div className={cls.info}>*/}
-            {/*            <span className={cls.info__inner}>*/}
-            {/*                {title}*/}
-            {/*            </span>*/}
-            {/*        </div>*/}
-            {/*        : null*/}
-            {/*}*/}
             <select
                 disabled={status === "disabled"}
                 className={classNames(cls.label__inner, extraClass, {
@@ -66,17 +63,12 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 })}
                 required={required}
                 value={selectOption}
-                onChange={(e) => {
-                    setSelectOption(e.target.value);
-                    // setIsChanged(true);
-                }}
+                onChange={(e) => setSelectOption(e.target.value)}
             >
-                {/*<option value={""} disabled>Tanlang</option>*/}
-
                 {title ? <option selected value={""} disabled>{title}</option> : <option value={""} disabled>Tanlang</option>}
                 {renderedOptions}
             </select>
-            {status === "error" ? <span className={cls.label__error}>Tanlanmagan</span> : null}
+            {status === "error" && <span className={cls.label__error}>Tanlanmagan</span>}
         </label>
     );
 }
