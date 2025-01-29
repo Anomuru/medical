@@ -318,7 +318,7 @@ export const DeviceProfile = () => {
                            changes</Button>
                    </Form>
                </Modal>
-               <ConfirmModal setActive={setActiveDelete} active={activeDelete} type={"delete"}
+               <ConfirmModal setActive={setActiveDelete} active={activeDelete}
                              title={"Rostanham o'chirmoqchimisiz"} onClick={onDelete}/>
            </div>
 

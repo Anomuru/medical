@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Table} from "shared/ui/table";
 import cls from './jobList.module.sass'
 import {JobSchema} from "shared/types/oftenUsedTypes";
@@ -6,6 +6,9 @@ import {useSelector} from "react-redux";
 import {getJobList} from "entities/jobList/model/selectors/jobListSelector";
 import {DynamicModuleLoader, ReducersList} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {jobsListReducer} from "../model/slice/jobListSlice";
+import {API_URL_DOC} from "shared/api/base";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {getJobsThunk} from "entities/jobList/model/thunk/jobListThunk";
 
 
 
@@ -32,6 +35,14 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
     const pageSize = useMemo(() => 10, [])
 
 
+    const dispatch = useAppDispatch()
+
+
+    useEffect(() => {
+        dispatch(getJobsThunk())
+    },[])
+
+
 
     const onClickChange = (item: JobSchema) => {
         setChangeActive()
@@ -50,11 +61,14 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
             <tr>
                 <td>{index + 1}</td>
                 <td>
-                    <span className={cls.profile__job}>{item.name}</span>
+                    <div className={cls.job}>
+                        <img className={cls.job__img} src={item.img } alt=""/>
+                        <span className={cls.job__name}>{item.name}</span>
+                    </div>
+
                 </td>
 
                 <td onClick={() => onClickChange(item)}>
-
                     <div className={cls.edit}>
                         Edit
                     </div>

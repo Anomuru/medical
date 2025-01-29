@@ -23,7 +23,7 @@ import {
 import {
     DynamicModuleLoader,
     ReducersList
-} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 
 
 
