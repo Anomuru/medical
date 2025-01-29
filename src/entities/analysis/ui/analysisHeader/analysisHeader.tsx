@@ -37,7 +37,7 @@ export const AnalysisHeader = memo(() => {
                     className={classNames(cls.header__item , {
                         [cls.active] : item.label === active
                     })}
-                    to={item.path}
+                    to={`./../${item.path}`}
                     onClick={() => setActive(item.label)}
                 >
                     {item.label}
