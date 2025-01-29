@@ -13,7 +13,6 @@ interface IConfirmModal {
     onClick?: () => void
     title?: string
     text?: string
-    type?: string
 }
 export const ConfirmModal : FC<IConfirmModal> = (
     {
@@ -22,7 +21,6 @@ export const ConfirmModal : FC<IConfirmModal> = (
         onClick,
         title= "Rostanham o'chirmoqchimisiz",
         text,
-        type
     }) => {
 
 
@@ -38,8 +36,8 @@ export const ConfirmModal : FC<IConfirmModal> = (
                     </div> : null
                 }
                 <div className={cls.deleteButtons}>
-                    <Button extraClass={cls.deleteButton} type={type} children={"Xa"} onClick={onClick}/>
-                    <Button extraClass={cls.cancelButton} type={type} children={"Yo'q"} onClick={() => setActive(!active)}/>
+                    <Button extraClass={cls.deleteButton} children={"Xa"} onClick={onClick}/>
+                    <Button extraClass={cls.cancelButton}  children={"Yo'q"} onClick={() => setActive(!active)}/>
                 </div>
             </div>
         </Modal>

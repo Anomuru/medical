@@ -6,133 +6,7 @@ import {JobListSchema} from "../types/jobListSchema";
 import {getJobsThunk} from "entities/jobList/model/thunk/jobListThunk";
 
 const initialState: JobListSchema = {
-    jobs: [
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        },
-        {
-            name: "asdasd",
-            id: 123
-        }
-
-    ],
+    jobs: [],
     isLoading: false
 }
 
@@ -141,20 +15,20 @@ const jobsListSlice = createSlice({
     initialState,
     reducers: {
         addJobsList: (state,action) => {
-            state.jobs = action.payload.jobs
+            state.jobs = action.payload.results
         },
         addJob: (state,action) => {
-            state.jobs = [...state.jobs, action.payload.job]
+            state.jobs = [...state.jobs, action.payload]
         },
         changeJob: (state,action) => {
-            state.jobs = state.jobs.filter(job => {
+            state.jobs = state.jobs.map(job => {
                 if (job.id === action.payload.id) {
-
+                    return action.payload
                 }
             })
         },
         deleteJob: (state,action) => {
-            state.jobs = action.payload.jobs
+            state.jobs = state.jobs.filter(job => job.id !== action.payload.job)
         },
     },
     extraReducers: (builder) => {

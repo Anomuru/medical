@@ -24,7 +24,7 @@ export interface InputProps extends HTMLInputProps {
     extraLabelClass?: string,
     title?: string,
     onChangeState?: Dispatch<SetStateAction<string|undefined>>,
-
+    value?: string | number,
     onChange?: (value: string) => void,
     name: string,
     register?: UseFormRegister<any>,
@@ -47,11 +47,13 @@ export const Input: React.FC<InputProps> = (props) => {
         rules,
         required,
         error,
-        onChangeState
-
+        onChangeState,
+        value
     } = props
 
     const textField = register && register(name, rules)
+
+
 
     const [passwordActive, setPasswordActive] = useState<boolean>(false)
 
@@ -65,6 +67,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 className={classNames(cls.label__input, extraClass)}
                 type={(type === "password" && passwordActive) ? "text" : type}
                 placeholder={placeholder}
+                value={value}
                 // onChange={(e) => {
                 //     onChange && onChange(e.target.value)
                 //     textField && textField.onChange(e)

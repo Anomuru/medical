@@ -8,13 +8,13 @@ import {headers} from "shared/api/base";
 
 export const getJobsThunk = createAsyncThunk<
     void,
-    null,
+    void,
     ThunkConfig<string>
 >('job/getJobs', async (authData, thunkApi) => {
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "token/", method: "GET", body: null, headers: headers()
+            url: "job_info/job_get/job_list/", method: "GET", body: null, headers: headers()
         })
 
 

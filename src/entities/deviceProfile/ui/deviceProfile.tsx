@@ -216,7 +216,8 @@ export const DeviceProfile = () => {
                            totalCount={getUsers?.count}
                            onPageChange={setCurrentPage}
                            currentPage={currentPage}
-                           pageSize={pageSize}/>
+                           pageSize={pageSize}
+                       />
                    </div>
                </div>
                <Box extraClass={cls.profileContainer__rightContainer}>
@@ -318,7 +319,7 @@ export const DeviceProfile = () => {
                            changes</Button>
                    </Form>
                </Modal>
-               <ConfirmModal setActive={setActiveDelete} active={activeDelete} type={"delete"}
+               <ConfirmModal setActive={setActiveDelete} active={activeDelete}
                              title={"Rostanham o'chirmoqchimisiz"} onClick={onDelete}/>
            </div>
 

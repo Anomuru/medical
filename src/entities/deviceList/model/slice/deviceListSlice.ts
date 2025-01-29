@@ -1,13 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {DeviceListSchema} from "../types/deviceListSchema";
 import {deviceListThunk} from "../thunk/deviceListThunk";
-import {deviceThunk} from "../thunk/deviceListThunk";
 
 
 const initialState: DeviceListSchema = {
     loading: false,
-    data: undefined,
-    list: [],
+    data: {},
     error: undefined
 }
 
@@ -16,8 +14,18 @@ const deviceListSlice = createSlice({
     initialState,
     reducers: {
         addDevice: (state, action) => {
-            // state.data = state.data && [action.payload, ...state.data]
+            console.log(action.payload)
+
+
+            state.data = {
+                // @ts-ignore
+                results: [...state.data.results, action.payload],
+                next: state.data?.next,
+                previous: state.data?.previous,
+                count: state.data?.count
+            }
         },
+
         onDeleteDevice: (state, action) => {
             console.log(action.payload)
             state.data = {
@@ -50,19 +58,6 @@ const deviceListSlice = createSlice({
                 state.error = "error"
             })
             .addCase(deviceListThunk.rejected, (state) => {
-                state.loading = false
-                state.error = "error"
-            })
-            .addCase(deviceThunk.pending, (state) => {
-                state.loading = true
-                state.error = undefined
-            })
-            .addCase(deviceThunk.fulfilled, (state,action) => {
-                state.loading = false
-                state.list = action.payload
-                state.error = "error"
-            })
-            .addCase(deviceThunk.rejected, (state) => {
                 state.loading = false
                 state.error = "error"
             })
