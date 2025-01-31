@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 
-import {AnalysisPackage} from "entities/analysis";
+import {AnalysisGroup} from "entities/analysis";
 import {Modal} from "shared/ui/modal";
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
 
-import cls from "./analysisPackageModal.module.sass";
+import cls from "./analysisGroupModal.module.sass";
 
-export const AnalysisPackageModal = () => {
+export const AnalysisGroupModal = () => {
 
     const [active, setActive] = useState(false)
 
@@ -21,7 +21,7 @@ export const AnalysisPackageModal = () => {
                     <i className={"fas fa-edit"}/>
                 </div>
             </div>
-            <AnalysisPackage/>
+            <AnalysisGroup/>
             <Modal
                 active={active}
                 setActive={setActive}

@@ -1,2 +1,3 @@
 export {AnalysisPackageModal} from "./ui/analysisPackageModal/analysisPackageModal";
-export {AnalysisContainerModal} from "./ui/analysisContainer/analysisContainer"
+export {AnalysisGroupModal} from "./ui/analysisGroupModal/analysisGroupModal";
+export {AnalysisContainerModal} from "./ui/analysisContainer/analysisContainer";

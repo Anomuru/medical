@@ -191,7 +191,7 @@ export const PricePage = () => {
     }
 
 
-    // analysis item
+    // analysisGroup item
 
     const onPostData = (data: ISubmitData) => {
 
