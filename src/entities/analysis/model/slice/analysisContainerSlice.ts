@@ -1,6 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IAnalysisContainerSchema} from "../types/analysisContainerScheme";
-import {bu} from "@fullcalendar/core/internal-common";
 
 
 const initialState : IAnalysisContainerSchema = {

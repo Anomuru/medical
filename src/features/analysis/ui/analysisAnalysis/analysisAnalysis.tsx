@@ -4,9 +4,11 @@ import React, {useState} from "react";
 import {Modal} from "../../../../shared/ui/modal";
 import {Form} from "../../../../shared/ui/form";
 import {Input} from "../../../../shared/ui/input";
+import {AnalysisList} from "../../../../entities/analysis";
 
 export const AnalysisAnalysis = () => {
     const [active, setActive] = useState<boolean>(false)
+    // const []
 
     return (
         <div className={cls.modal}>
@@ -15,7 +17,7 @@ export const AnalysisAnalysis = () => {
                     <i className={"fas fa-plus"}/>
                 </div>
             </div>
-
+            <AnalysisList/>
 
             <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import {Navigate, Outlet, Route, Routes} from 'react-router';
 
 import {AnalysisAnalysis, AnalysisContainerModal, AnalysisGroupModal, AnalysisPackageModal} from "features/analysis";
-import {AnalysisHeader} from "entities/analysis";
+import {AnalysisHeader, analysisReducer} from "entities/analysis";
 
 import cls from "./analysisPage.module.sass";
 import {
@@ -15,9 +15,11 @@ import {analysisGroupReducer} from "../../../entities/analysis/model/slice/analy
 
 const reducers: ReducersList = {
     analysisContainerSlice: analysisContainerReducer,
-    analysisGroupSlice: analysisGroupReducer
+    analysisGroupSlice: analysisGroupReducer,
+    analysisSlice: analysisReducer
     // userSlice:
 };
+
 export const AnalysisPage = () => {
     const route = localStorage.getItem("route")
 
@@ -31,7 +33,7 @@ export const AnalysisPage = () => {
                     <Route path={"package"} element={<AnalysisPackageModal/>}/>
                     <Route path={"group"} element={<AnalysisGroupModal/>}/>
                     <Route path={"container"} element={<AnalysisContainerModal/>}/>
-                    <Route path={"analysis"} element={<AnalysisAnalysis/>}/>
+                    <Route path={"analysisGroup"} element={<AnalysisAnalysis/>}/>
 
                     <Route index element={<Navigate to={`${route}`}/>}/>
                 </Routes>
