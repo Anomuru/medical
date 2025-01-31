@@ -9,8 +9,11 @@ import {LoginSchema} from "pages/logInPage";
 import {JobListSchema} from "entities/jobList/model/types/jobListSchema";
 import {DeviceProfileSchema} from "entities/deviceProfile";
 import {IPriceSchema} from "entities/price/model/types/priceSchemas";
-import {IAnalysisContainerSchema} from "entities/analysis/model/types/analysisContainerScheme";
-import {IAnalysisGroupSchema} from "../../../../entities/analysis/model/types/analysisGroupScheme";
+import {
+    IAnalysisSchema,
+    IAnalysisContainerSchema,
+    IAnalysisGroupSchema
+} from "entities/analysis";
 import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/analysisPackageScheme";
 
 
@@ -20,13 +23,11 @@ export interface StateSchema {
     oftenUsedSlice: OftenUsedSchemas;
 
     workTableSlice?: WorkTableSchema;
-    staffSlice? : StaffListSchema;
+    staffSlice?: StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
     jobList?: JobListSchema
-
-
 
 
     deviceProfileSlice?: DeviceProfileSchema;
@@ -35,6 +36,7 @@ export interface StateSchema {
     analysisContainerSlice?: IAnalysisContainerSchema,
     analysisGroupSlice?: IAnalysisGroupSchema,
     analysisPackageSlice?: IAnalysisPackageSchema
+    analysisSlice?: IAnalysisSchema,
 
 
 }
