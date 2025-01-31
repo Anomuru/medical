@@ -8,11 +8,22 @@ import cls from "./pakets.module.sass";
 export const Pakets = memo(() => {
 
     const [isDelete, setIsDelete] = useState(false)
+    const [isActive, setIsActive] = useState(NaN)
+
+    const onDelete = () => {
+        console.log(isActive, 'is already delete')
+        setIsDelete(false)
+    }
+
+    const onClick = (id:number) => {
+        setIsActive(id)
+        setIsDelete(true)
+    }
 
     return (
         <>
-            <PaketsList/>
-            <ConfirmModal setActive={setIsDelete} active={isDelete}/>
+            <PaketsList onDelete={onClick}/>
+            <ConfirmModal onClick={onDelete} setActive={setIsDelete} active={isDelete}/>
         </>
     );
 })

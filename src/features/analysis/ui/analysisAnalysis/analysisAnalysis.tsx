@@ -5,6 +5,7 @@ import {Modal} from "../../../../shared/ui/modal";
 import {Form} from "../../../../shared/ui/form";
 import {Input} from "../../../../shared/ui/input";
 import {AnalysisList} from "../../../../entities/analysis";
+import {Select} from "../../../../shared/ui/select";
 
 export const AnalysisAnalysis = () => {
     const [active, setActive] = useState<boolean>(false)
@@ -26,12 +27,17 @@ export const AnalysisAnalysis = () => {
 
 
 const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setActive: (arg: boolean) => void }) => {
+
+    const [selectedGroup, setSelectedGroup] = useState(null)
+
     return (
         <>
 
             <Modal title={"Add"} active={active} setActive={setActive}>
                 <Form>
                     <Input name={"name"}/>
+                    <Input name={"name"}/>
+                    <Select setSelectOption={setSelectedGroup} optionsData={[]}/>
                 </Form>
             </Modal>
         </>
