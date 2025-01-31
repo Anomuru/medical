@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import classNames from "classnames";
 
 import {PriceAccordionItem, PriceAccordionList} from "entities/price";
@@ -13,7 +13,12 @@ import {useForm} from "react-hook-form";
 import {headers, useHttp} from "shared/api/base";
 import {Select} from "shared/ui/select";
 import {useDispatch, useSelector} from "react-redux";
-import {getPriceDevice, getPriceType, getPriceTypes} from "../../../entities/price/model/selector/priceSelector";
+import {
+    getPriceCount,
+    getPriceDevice,
+    getPriceType,
+    getPriceTypes
+} from "../../../entities/price/model/selector/priceSelector";
 
 import {fetchDeviceList, fetchPriceType, fetchPriceTypes} from "../../../entities/price/model/thunk/priceThunk";
 
@@ -23,7 +28,8 @@ import {
 import {
     DynamicModuleLoader,
     ReducersList
-} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {Pagination} from "../../../features/pagination";
 
 
 
@@ -48,9 +54,11 @@ export const PricePage = () => {
     const [isAddItem, setIsAddItem] = useState<boolean>(false)
     const [isAdd, setIsAdd] = useState<boolean>(false)
     const priceData = useSelector(getPriceType)
+    const count = useSelector(getPriceCount)
     const [activeType, setActiveType] = useState<number>()
 
-
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const pageSize = useMemo(() => 50, []);
     const dispatch = useDispatch()
 
 
@@ -61,7 +69,7 @@ export const PricePage = () => {
     useEffect(() => {
 
         // @ts-ignore
-        dispatch(fetchPriceType())
+        dispatch(fetchPriceType(currentPage))
 
         // @ts-ignore
         dispatch(fetchPriceTypes())
@@ -183,7 +191,7 @@ export const PricePage = () => {
     }
 
 
-    // analysis item
+    // analysisGroup item
 
     const onPostData = (data: ISubmitData) => {
 
@@ -276,8 +284,18 @@ export const PricePage = () => {
                 </div>
             </div>
 
-            <Modal extraClass={cls.itemEdit} active={isAddItem} setActive={setIsAddItem}>
-                <h1 className={cls.itemEdit__title}>Add</h1>
+
+
+
+            {/*<Pagination*/}
+            {/*    // totalCount={count}*/}
+            {/*    onPageChange={setCurrentPage}*/}
+            {/*    currentPage={currentPage}*/}
+            {/*    pageSize={pageSize}*/}
+            {/*/>*/}
+
+            <Modal extraClass={cls.itemEdit} active={isAddItem} setActive={setIsAddItem} title={"Add"}>
+
                 <Form extraClass={cls.itemEdit__container}>
                     {/*// @ts-ignore*/}
                     <Input register={register} name={"name"} placeholder={"Name"}/>
@@ -292,8 +310,8 @@ export const PricePage = () => {
             </Modal>
 
 
-            <Modal extraClass={cls.itemEdit} active={isEditItem} setActive={setIsEditItem}>
-                <h1 className={cls.itemEdit__title}>Edit</h1>
+            <Modal extraClass={cls.itemEdit} active={isEditItem} setActive={setIsEditItem} title={"Edit"}>
+
                 <Form extraClass={cls.itemEdit__container}>
                     {/*// @ts-ignore*/}
 
@@ -320,8 +338,7 @@ export const PricePage = () => {
             </Modal>
 
 
-            <Modal extraClass={cls.itemEdit} active={isAdd} setActive={setIsAdd}>
-                <h1 className={cls.itemEdit__title}>Add</h1>
+            <Modal extraClass={cls.itemEdit} active={isAdd} setActive={setIsAdd} title={"Add"}>
                 <Form extraClass={cls.itemEdit__container}>
 
                     {/*// @ts-ignore*/}
@@ -334,8 +351,8 @@ export const PricePage = () => {
             </Modal>
 
 
-            <Modal extraClass={cls.itemEdit} active={isEdit} setActive={setIsEdit}>
-                <h1 className={cls.itemEdit__title}>Edit</h1>
+            <Modal extraClass={cls.itemEdit} active={isEdit} setActive={setIsEdit} title={"Edit"}>
+
                 <Form extraClass={cls.itemEdit__container}>
                     {/*// @ts-ignore*/}
                     <Input register={register} name={"name"} placeholder={"Name"}/>

@@ -9,10 +9,10 @@ interface IRadioProps {
     name: string,
     id?: string,
     disabled?: boolean,
-    onChange: (arg: number) => void,
+    onChange: (arg: any) => void,
     children: string,
     extraClass?: string,
-    value: number,
+    value: number|string,
     checked: boolean,
     required?: boolean
 }
@@ -36,7 +36,7 @@ export const Radio: React.FC<IRadioProps> = (props) => {
     useEffect(() => setActive(checked), [checked])
 
     return (
-        <label htmlFor={id} className={classNames(cls.radioLabel , extraClass)}>
+        <label htmlFor={id} className={classNames(cls.radioLabel, extraClass)}>
             <input
                 required={required}
                 disabled={disabled}

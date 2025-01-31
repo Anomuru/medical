@@ -1,15 +1,19 @@
 import {WorkTableSchema} from "entities/workTable";
-// import {StaffSchema} from "entities/staff";
-// import {OftenUsedSchemas} from "entities/oftenUsed";
+
 import {userReducer, UserSchema} from "entities/user";
 import {EnhancedStore, Reducer, ReducersMapObject} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "entities/oftenUsed";
 import {StaffListSchema, StaffProfileSchema} from "entities/staff";
-import {DeviceListSchema} from "../../../../entities/deviceList";
+import {DeviceListSchema} from "entities/deviceList";
 import {LoginSchema} from "pages/logInPage";
 import {JobListSchema} from "entities/jobList/model/types/jobListSchema";
-import {DeviceProfileSchema} from "../../../../entities/deviceProfile";
-import {IPriceSchema} from "../../../../entities/price/model/types/priceSchemas";
+import {DeviceProfileSchema} from "entities/deviceProfile";
+import {IPriceSchema} from "entities/price/model/types/priceSchemas";
+import {
+    IAnalysisSchema,
+    IAnalysisContainerSchema,
+    IAnalysisGroupSchema
+} from "entities/analysis";
 
 
 export interface StateSchema {
@@ -18,17 +22,19 @@ export interface StateSchema {
     oftenUsedSlice: OftenUsedSchemas;
 
     workTableSlice?: WorkTableSchema;
-    staffSlice? : StaffListSchema;
+    staffSlice?: StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
     jobList?: JobListSchema
 
 
-
-
     deviceProfileSlice?: DeviceProfileSchema;
     priceSlice?: IPriceSchema;
+
+    analysisContainerSlice?: IAnalysisContainerSchema,
+    analysisGroupSlice?: IAnalysisGroupSchema,
+    analysisSlice?: IAnalysisSchema,
 
 
 }

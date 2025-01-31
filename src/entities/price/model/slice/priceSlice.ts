@@ -8,7 +8,9 @@ const initialState: IPriceSchema = {
     error: null,
     data: [],
     types: [],
-    device: []
+    device: [],
+    count: 0
+
 }
 
 
@@ -106,6 +108,8 @@ const priceSlice = createSlice({
             })
             .addCase(fetchPriceType.fulfilled, (state, action) => {
                 state.data = action.payload.results
+                state.count = action.payload.count
+                console.log(action.payload.count)
                 state.loading = false
                 state.error = null
             })

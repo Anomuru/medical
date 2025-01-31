@@ -11,6 +11,8 @@ import {DevicePage} from "pages/devicePage";
 import {DeviceProfilePage} from "pages/deviceProfilePage";
 import {WorkTablePage} from "pages/workTablePage";
 import {WorkerProfilePage} from "pages/workerProfilePage";
+import {PatientPage} from "pages/patientPage";
+import {AnalysisPage} from "pages/analysisPage";
 import {PaymentPage} from "pages/paymentPage";
 
 import {
@@ -25,7 +27,7 @@ import {
     getProfileRoute,
     getDeviceProfileRoute,
     getWorkTableRoute,
-    getWorkerProfile, getPaymentRoute
+    getWorkerProfile, getPaymentRoute, getPatientRoute, getAnalysisRoute
 } from "shared/const/routers";
 
 
@@ -40,8 +42,7 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "registerPage",
         element: <RegisterPage/>,
         path: getRegisterRoute()
-    },
-    {
+    }, {
         name: "dashboardPage",
         element: <RegisterPage/>,
         path: getDashboardRoute()
@@ -59,13 +60,15 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "staffPage",
         element: <StaffPage/>,
         path: getStaffRoute()
-    },
-    {
+    }, {
+        name: "patientPage",
+        element: <PatientPage/>,
+        path: getPatientRoute()
+    }, {
         name: "hospitalRegPage",
         element: <HospitalRegPage/>,
         path: getHospitalRegRoute()
-    },
-    {
+    }, {
         name: "paymentPage",
         element: <PaymentPage/>,
         path: getPaymentRoute()
@@ -74,13 +77,11 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "platformHomePage",
         element: <PlatformHomePage/>,
         path: getPlatformHomePage()
-    },
-    {
+    },{
         name: "pricePage",
         element: <PricePage/>,
         path: getPricePageRoute()
-    },
-    {
+    },{
         name: "devicePage",
         element: <DevicePage/>,
         path: getDevicePageRoute()
@@ -99,5 +100,10 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "table/workerProfile",
         element: <WorkerProfilePage/>,
         path: getWorkerProfile()
+    },
+    {
+        name: "analysis",
+        element: <AnalysisPage/>,
+        path: getAnalysisRoute()
     }
 ]

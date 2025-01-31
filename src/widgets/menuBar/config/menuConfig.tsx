@@ -19,25 +19,28 @@ export const menuConfig = [
     {
         to: "jobPage",
         image: jobListImage
-    },
-    {
+    }, {
         to: "staff",
         image: dashboardImage
+    }, {
+        to: "patient",
+        image: jobListImage
     },{
+        to: "analysisGroup",
+        image: jobListImage
+    }, {
         to: "hospitalReg",
         image: dashboardImage
-    },{
+    }, {
         to: "platformHomePage",
         image: dashboardImage
-    },{
+    }, {
         to: "pricePage",
         image: dashboardImage
-    },
-    {
+    }, {
         to: "devicePage",
         image: dashboardImage
-    },
-    {
+    }, {
         to: "table",
         image: dashboardImage
     },

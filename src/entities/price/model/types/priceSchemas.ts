@@ -19,6 +19,7 @@ export interface IPriceSchema {
     error: string | null,
     data: PriceSchemas[],
     types: string[],
-    device: string[]
+    device: string[],
+    count: number
 }
 

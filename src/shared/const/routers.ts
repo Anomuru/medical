@@ -12,3 +12,5 @@ export const getDevicePageRoute = () => `devicePage`
 export const getDeviceProfileRoute = () => `devicePage/deviceProfile/:id`
 export const getWorkTableRoute = () => `table`
 export const getWorkerProfile = () => `table/workerProfile`
+export const getAnalysisRoute = () => `analysisGroup/*`
+export const getPatientRoute = () => `patient`
