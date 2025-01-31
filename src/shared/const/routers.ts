@@ -9,7 +9,7 @@ export const getPricePageRoute = () => `pricePage`
 export const getProfileRoute = (id: string) => `staff/profile/${id}`
 export const getJobListRoute = () => `jobPage`
 export const getDevicePageRoute = () => `devicePage`
-export const getDeviceProfileRoute = () => `devicePage/deviceProfile/:id`
+export const getDeviceProfileRoute = () => `devicePage/deviceProfile/:id`  
 export const getWorkTableRoute = () => `table`
 export const getWorkerProfile = () => `table/workerProfile`
 export const getAnalysisRoute = () => `analysisGroup/*`
