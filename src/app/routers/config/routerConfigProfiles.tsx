@@ -13,6 +13,8 @@ import {WorkTablePage} from "pages/workTablePage";
 import {WorkerProfilePage} from "pages/workerProfilePage";
 import {PatientPage} from "pages/patientPage";
 import {AnalysisPage} from "pages/analysisPage";
+import {PaymentPage} from "pages/paymentPage";
+
 import {
     getDashboardRoute,
     getRegisterRoute,
@@ -25,7 +27,7 @@ import {
     getProfileRoute,
     getDeviceProfileRoute,
     getWorkTableRoute,
-    getWorkerProfile, getPatientRoute, getAnalysisRoute
+    getWorkerProfile, getPaymentRoute, getPatientRoute, getAnalysisRoute
 } from "shared/const/routers";
 
 
@@ -67,14 +69,19 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         element: <HospitalRegPage/>,
         path: getHospitalRegRoute()
     }, {
+        name: "paymentPage",
+        element: <PaymentPage/>,
+        path: getPaymentRoute()
+    },
+    {
         name: "platformHomePage",
         element: <PlatformHomePage/>,
         path: getPlatformHomePage()
-    }, {
+    },{
         name: "pricePage",
         element: <PricePage/>,
         path: getPricePageRoute()
-    }, {
+    },{
         name: "devicePage",
         element: <DevicePage/>,
         path: getDevicePageRoute()
