@@ -162,6 +162,7 @@
       max-height: 34rem
       overflow-y: auto
       overflow-x: hidden
+      gap: 1rem
       .paket
         background-color: white
         border-radius: 10px
@@ -196,6 +197,36 @@
               @include btn-active
               img
                 width: 2.5rem
+        .analysis
+          display: flex
+          flex-direction: column
+          padding: 2rem 0
+          gap: 1rem
+          &__item
+            display: flex
+            align-items: center
+            gap: 1rem
+
+            .title
+              font-size: 1.2rem
+              font-weight: 400
+            .value
+              font-size: 1.2rem
+              font-weight: 400
+            hr
+              display: block
+              height: 2rem
+              flex-grow: 3
+              border: none
+              border-bottom: 1px dotted black
+            .minus
+              background-color: red
+              padding: .7rem
+              border-radius: 5px
+              color: white
+              cursor: pointer
+              @include btn-active
+
 
   &__btn
     width: 100%

@@ -1,0 +1,65 @@
+@import "app/styles/abstracts/variables"
+@import "app/styles/abstracts/mixins"
+
+
+.payment
+  padding: 5rem
+  display: flex
+  justify-content: space-between
+  flex-wrap: wrap
+  .cashier
+    width: 45%
+    height: 25rem
+    box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
+    border: 1px solid #D1D1D6
+    border-radius: 10px
+    padding: 2.5rem
+    h1
+      font-size: 1.6rem
+      font-weight: 600
+      margin-bottom: 1.8rem
+    .types
+      display: flex
+      align-items: center
+      justify-content: center
+      gap: 1rem
+      margin-top: 2rem
+    .submit
+      margin-top: 2rem
+      width: 100%
+
+  .patientsList
+    width: 45%
+    height: 25rem
+    box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
+    border: 1px solid #D1D1D6
+    border-radius: 10px
+    padding: 2.5rem
+    display: flex
+    flex-direction: column
+    .header
+      display: flex
+      align-items: center
+      justify-content: space-between
+    .container
+      display: flex
+      flex-direction: column
+      gap: 1.5rem
+      margin-top: 1.5rem
+      overflow-y: auto
+      overflow-x: hidden
+      height: 100%
+      .item
+        width: 100%
+        box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
+        background-color: rgba($medical-color, 0.05)
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 1.3rem
+        border-radius: 10px
+        span
+          font-weight: 500
+          font-size: 1.6rem
+          color: #313D62
+
