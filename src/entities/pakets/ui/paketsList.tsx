@@ -1,9 +1,11 @@
-import React, {memo, useEffect, useRef, useState} from 'react';
+import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 
 import cls from "./paketsList.module.sass";
 import arrowContainedSquare from "shared/assets/icon/arrowContainedSquare.svg";
 
-export const PaketsList = memo(() => {
+type PropsType = { onDelete: (arg: number) => void }
+
+export const PaketsList = memo(({onDelete}: PropsType) => {
 
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -22,6 +24,21 @@ export const PaketsList = memo(() => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const render = useCallback(() => {
+        return (
+            <div className={cls.analysis__item}>
+                <h1 className={cls.title}>Протромбиновое время (ПВ)</h1>
+                <hr/>
+                <h2 className={cls.value}>200.000</h2>
+                <div onClick={() => onDelete(1)} className={cls.minus}>
+                    <i className="fas fa-minus"></i>
+
+                </div>
+            </div>
+        )
+    }, [onDelete])
+
+
     return (
         <div className={cls.paket}>
             <div className={cls.header}>
@@ -37,33 +54,7 @@ export const PaketsList = memo(() => {
 
             {isOpen && (
                 <div className={cls.analysis}>
-                    <div className={cls.analysis__item}>
-                        <h1 className={cls.title}>Протромбиновое время (ПВ)</h1>
-                        <hr/>
-                        <h2 className={cls.value}>200.000</h2>
-                        <div className={cls.minus}>
-                            <i className="fas fa-minus"></i>
-
-                        </div>
-                    </div>
-                    <div className={cls.analysis__item}>
-                        <h1 className={cls.title}>Протромбиновое время (ПВ)</h1>
-                        <hr/>
-                        <h2 className={cls.value}>200.000</h2>
-                        <div className={cls.minus}>
-                            <i className="fas fa-minus"></i>
-
-                        </div>
-                    </div>
-                    <div className={cls.analysis__item}>
-                        <h1 className={cls.title}>Протромбиновое время (ПВ)</h1>
-                        <hr />
-                        <h2 className={cls.value}>200.000</h2>
-                        <div className={cls.minus}>
-                            <i className="fas fa-minus"></i>
-
-                        </div>
-                    </div>
+                    {render()}
                 </div>
             )}
 
