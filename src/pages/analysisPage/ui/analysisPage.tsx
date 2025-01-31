@@ -9,13 +9,15 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {analysisContainerReducer} from "../../../entities/analysis/model/slice/analysisContainerSlice";
-import {analysisGroupReducer} from "../../../entities/analysis/model/slice/analysisGroupSlice";
+import {analysisContainerReducer} from "entities/analysis/model/slice/analysisContainerSlice";
+import {analysisGroupReducer} from "entities/analysis/model/slice/analysisGroupSlice";
+import {analysisPackageReducer} from "entities/analysis/model/slice/analysisPackageSlice";
 
 
 const reducers: ReducersList = {
     analysisContainerSlice: analysisContainerReducer,
-    analysisGroupSlice: analysisGroupReducer
+    analysisGroupSlice: analysisGroupReducer,
+    analysisPackageSlice: analysisPackageReducer
     // userSlice:
 };
 export const AnalysisPage = () => {
@@ -31,7 +33,7 @@ export const AnalysisPage = () => {
                     <Route path={"package"} element={<AnalysisPackageModal/>}/>
                     <Route path={"group"} element={<AnalysisGroupModal/>}/>
                     <Route path={"container"} element={<AnalysisContainerModal/>}/>
-                    <Route path={"analysis"} element={<AnalysisAnalysis/>}/>
+                    <Route path={"analysisGroup"} element={<AnalysisAnalysis/>}/>
 
                     <Route index element={<Navigate to={`${route}`}/>}/>
                 </Routes>

@@ -1,14 +1,64 @@
-.package
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jersey+15&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
+@import "app/styles/abstracts/mixins"
+
+.wrapper
   display: flex
-  flex-wrap: wrap
-  gap: 1rem 2rem
-  &__item
-    width: fit-content
-    padding: 1.8rem 1.6rem
-    background: #FEF7FF
-    border: 1px solid #CAC4D0
-    border-radius: 1.2rem
+  gap: 2rem
+  &__box
+    padding: 2rem
+    background-color: rgba(179, 179, 179, 0.37)
+    border-radius: 10px
+    /* width: 25rem; */
     display: flex
+
     flex-direction: column
-    gap: .7rem
-    font-size: 1.4rem
+    gap: 1rem
+    min-width: 25rem
+    max-width: 30rem
+    border: 1px solid rgb(118, 118, 118)
+    &_header
+      display: flex
+      justify-content: space-between
+      align-items: center
+      gap: 1rem
+      &_box
+        display: flex
+        flex-direction: column
+        gap: 1rem
+      &_edit
+        font-size: 2rem
+        @include btn-active
+      &_title
+        font-size: 1.8rem
+        font-family: "Inter", serif
+        font-optical-sizing: auto
+        font-weight: 600
+        font-style: normal
+      &_name
+        font-size: 1.6rem
+        font-family: "Inter", serif
+        font-optical-sizing: auto
+        font-weight: 400
+        color: rgba(29, 27, 32, 1)
+        font-style: normal
+    &_list
+      display: flex
+      flex-direction: column
+      gap: 2rem
+      & > li
+        display: flex
+        justify-content: space-between
+        align-items: center
+        font-family: "Inter", serif
+        font-optical-sizing: auto
+        font-weight: 400
+        color: rgba(29, 27, 32, 1)
+        font-style: normal
+        font-size: 1.8rem
+        & > div
+          font-size: 1.6rem
+          font-family: "Inter", serif
+          font-optical-sizing: auto
+          font-weight: 600
+          font-style: normal
+

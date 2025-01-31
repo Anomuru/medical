@@ -11,6 +11,7 @@ import {DeviceProfileSchema} from "entities/deviceProfile";
 import {IPriceSchema} from "entities/price/model/types/priceSchemas";
 import {IAnalysisContainerSchema} from "entities/analysis/model/types/analysisContainerScheme";
 import {IAnalysisGroupSchema} from "../../../../entities/analysis/model/types/analysisGroupScheme";
+import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/analysisPackageScheme";
 
 
 export interface StateSchema {
@@ -32,7 +33,8 @@ export interface StateSchema {
     priceSlice?: IPriceSchema;
 
     analysisContainerSlice?: IAnalysisContainerSchema,
-    analysisGroupSlice?: IAnalysisGroupSchema
+    analysisGroupSlice?: IAnalysisGroupSchema,
+    analysisPackageSlice?: IAnalysisPackageSchema
 
 
 }
