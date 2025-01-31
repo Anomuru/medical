@@ -24,9 +24,6 @@ interface JobCrudFormProps {
 
 export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
 
-
-    console.log(changedData,"chnageddddddd")
-
     const [img,setImg] = useState<File | string>("")
     const [name,setName] = useState<string>("")
     const [isChanging,setIsChanging] = useState(false)
