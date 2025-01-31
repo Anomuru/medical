@@ -1,15 +1,16 @@
 import {WorkTableSchema} from "entities/workTable";
-// import {StaffSchema} from "entities/staff";
-// import {OftenUsedSchemas} from "entities/oftenUsed";
+
 import {userReducer, UserSchema} from "entities/user";
 import {EnhancedStore, Reducer, ReducersMapObject} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "entities/oftenUsed";
 import {StaffListSchema, StaffProfileSchema} from "entities/staff";
-import {DeviceListSchema} from "../../../../entities/deviceList";
+import {DeviceListSchema} from "entities/deviceList";
 import {LoginSchema} from "pages/logInPage";
 import {JobListSchema} from "entities/jobList/model/types/jobListSchema";
-import {DeviceProfileSchema} from "../../../../entities/deviceProfile";
-import {IPriceSchema} from "../../../../entities/price/model/types/priceSchemas";
+import {DeviceProfileSchema} from "entities/deviceProfile";
+import {IPriceSchema} from "entities/price/model/types/priceSchemas";
+import {IAnalysisContainerSchema} from "entities/analysis/model/types/analysisContainerScheme";
+import {IAnalysisGroupSchema} from "../../../../entities/analysis/model/types/analysisGroupScheme";
 
 
 export interface StateSchema {
@@ -29,6 +30,9 @@ export interface StateSchema {
 
     deviceProfileSlice?: DeviceProfileSchema;
     priceSlice?: IPriceSchema;
+
+    analysisContainerSlice?: IAnalysisContainerSchema,
+    analysisGroupSlice?: IAnalysisGroupSchema
 
 
 }
