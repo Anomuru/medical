@@ -24,27 +24,31 @@ const list = [
 ]
 
 
-
-
 export const AnalysisHeader = memo(() => {
     const [active, setActive] = useState<string>(list[0].label)
+
+
+    const route = localStorage.getItem("route")
 
 
     const render = useCallback(() => {
         return list.map(item => {
             return (
                 <NavLink
-                    className={classNames(cls.header__item , {
-                        [cls.active] : item.label === active
+                    className={classNames(cls.header__item, {
+                        [cls.active]: item.path === route
                     })}
                     to={`./../${item.path}`}
-                    onClick={() => setActive(item.label)}
+                    onClick={() => {
+                        setActive(item.label)
+                        localStorage.setItem("route", item.path)
+                    }}
                 >
                     {item.label}
                 </NavLink>
             )
         })
-    }, [active])
+    }, [active, route])
 
     return (
         <div className={cls.header}>
