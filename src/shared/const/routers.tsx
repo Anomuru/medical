@@ -12,4 +12,4 @@ export const getDevicePageRoute = () => `devicePage`
 export const getDeviceProfileRoute = (id?:string) => `devicePage/deviceProfile/:id`
 export const getWorkTableRoute = () => `table`
 export const getWorkerProfile = (id?:string) => `table/workerProfile`
-export const getAnalysisRoute = () => `analysis/*`
+export const getAnalysisRoute = () => `analysisGroup/*`

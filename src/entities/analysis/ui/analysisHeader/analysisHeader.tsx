@@ -19,7 +19,7 @@ const list = [
     },
     {
         label: "Analiz",
-        path: "analysis"
+        path: "analysisGroup"
     }
 ]
 
