@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ThunkConfig} from "app/providers/storeProvider";
 import {headers} from "shared/api/base";
-import {analysisContainerActions} from "../../model/slice/analysisContainerSlice";
+import {analysisContainerActions} from "../slice/analysisContainerSlice";
 
 export const analysisContainerThunk = createAsyncThunk<
     void,
@@ -11,7 +11,7 @@ export const analysisContainerThunk = createAsyncThunk<
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "", method: "GET", body: null, headers: headers()
+            url: "container/get/", method: "GET", body: null, headers: headers()
         })
         if (!response) {
             throw new Error();

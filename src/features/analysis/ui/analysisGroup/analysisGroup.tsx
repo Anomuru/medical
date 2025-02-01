@@ -13,12 +13,12 @@ import {useForm} from "react-hook-form";
 
 import {useDispatch, useSelector} from "react-redux";
 import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/analysisGroupSelector";
-import {AnalysisGroup} from "../../../../entities/analysis/ui/analysisGroup/analysisGroup";
-import {analysisGroupActions} from "../../../../entities/analysis/model/slice/analysisGroupSlice";
+import {AnalysisGroup} from "../../../../entities/analysis";
+import {analysisGroupActions} from "../../../../entities/analysis";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {headers, useHttp} from "../../../../shared/api/base";
 import {useAppDispatch} from "../../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {fetchAnalysisPackageList} from "../../../../entities/analysis";
+import {fetchAnalysisGroupList} from "../../../../entities/analysis";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
 
 
@@ -48,7 +48,7 @@ export const AnalysisGroupModal = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(fetchAnalysisPackageList())
+        dispatch(fetchAnalysisGroupList())
     }, [])
 
 

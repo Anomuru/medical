@@ -14,5 +14,4 @@ export const getWorkTableRoute = () => `table`
 export const getAnalysisRoute = () => `analysisGroup/*`
 export const getWorkerProfile = (id?:string) => `table/workerProfile`
 
-export const getAnalysisRoute = () => "analysisGroup/*"
 export const getPatientRoute = (id?:string) => "patient"

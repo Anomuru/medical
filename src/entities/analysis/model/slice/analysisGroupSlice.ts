@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IAnalysisGroupSchema} from "../types/analysisGroupScheme";
-import {fetchAnalysisPackageList} from "../thunk/analysisPackageGroupThunk";
+import {fetchAnalysisGroupList} from "../thunk/analysisPackageGroupThunk";
 
 
 
@@ -15,7 +15,7 @@ const analysisGroupSlice = createSlice({
     name: "analysisGroupSlice",
     initialState,
     reducers: {
-        onAnalysisPackage: (state, action) => {
+        onAnalysisGroup: (state, action) => {
             state.data =  action.payload.results
         },
         onAddAnalysisGroup: (state , action) => {
@@ -35,16 +35,16 @@ const analysisGroupSlice = createSlice({
         },
     },
     extraReducers: builder => builder
-        .addCase(fetchAnalysisPackageList.pending , state => {
+        .addCase(fetchAnalysisGroupList.pending , state => {
             state.loading = true
             state.error = false
         })
-        .addCase(fetchAnalysisPackageList.fulfilled , state => {
+        .addCase(fetchAnalysisGroupList.fulfilled , state => {
             state.loading = false
             state.error = false
 
         })
-        .addCase(fetchAnalysisPackageList.rejected , state => {
+        .addCase(fetchAnalysisGroupList.rejected , state => {
             state.loading = false
             state.error = true
         })

@@ -5,25 +5,19 @@ import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisCont
 
 const initialState : IAnalysisContainerSchema = {
     loading: false,
-    data: [
-        {
-            id: 1,
-            name: "test",
-            size: "12",
-            color: "#FFF"
-        }
-    ],
+    data: [],
 }
 
 const analysisContainerSlice = createSlice({
     name: "analysisContainerSlice",
     initialState,
     reducers: {
+
         onAddAnalysis: (state, action) => {
             state.data = [...state.data, action.payload]
         },
         onGetContainer: (state, action) => {
-            state.data = action.payload
+            state.data = action.payload.results
         },
         onEditAnalysis: (state, action) => {
             state.data =  state.data.map(item => {

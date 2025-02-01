@@ -4,20 +4,7 @@ import {ThunkConfig} from "../../../../app/providers/storeProvider";
 
 import {analysisPackageAction} from "../slice/analysisPackageSlice";
 
-// export const fetchAnalysisPackageList = createAsyncThunk(
-//     "analysisSlice/fetchAnalysisList",
-//     () => {
-//         const {request} = useHttp()
-//         return request(
-//             {
-//                 url: "analysis/analysis_type/get/list/",
-//                 method: "GET",
-//                 body: undefined,
-//                 headers: headers()
-//             },
-//         )
-//     }
-// )
+
 
 export const fetchAnalysisPackageList = createAsyncThunk<
     void,
@@ -27,7 +14,7 @@ export const fetchAnalysisPackageList = createAsyncThunk<
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "/analysis/analysis_type/get/list/", method: "GET", body: null, headers: headers()
+            url: "packet/get/list/", method: "GET", body: null, headers: headers()
         })
 
 
