@@ -27,7 +27,7 @@ export const fetchAnalysisPackageList = createAsyncThunk<
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "packet/get/list/", method: "GET", body: null, headers: headers()
+            url: "/analysis/analysis_type/get/list/", method: "GET", body: null, headers: headers()
         })
 
 
@@ -37,7 +37,7 @@ export const fetchAnalysisPackageList = createAsyncThunk<
 
 
 
-        dispatch(analysisPackageAction.onAddAnalysisPackage(response.results));
+        dispatch(analysisPackageAction.onAnalysisPackage(response));
         return response.data;
     } catch (e) {
         console.log(e);

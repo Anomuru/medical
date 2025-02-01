@@ -17,5 +17,3 @@ export {fetchAnalysisPackageList} from "./model/thunk/analysisPackageThunk"
 
 export {analysisPackageAction , analysisPackageReducer} from "./model/slice/analysisPackageSlice"
 export {getAnalysisPackage} from "./model/selector/analysisPackageSelector"
-
-export {analysisGroupReducer , analysisGroupActions} from "./model/slice/analysisGroupSlice"
