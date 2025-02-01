@@ -6,7 +6,7 @@ import {getAnalysisData} from "../../model/selector/analysisSelector";
 
 import cls from "./analysisList.module.sass";
 
-export const AnalysisList = memo(() => {
+export const AnalysisList = memo(({isChange}: any) => {
 
     const data = useSelector(getAnalysisData)
 
@@ -22,7 +22,7 @@ export const AnalysisList = memo(() => {
                     <td>{item.device}</td>
                     <td>{item.container}</td>
                     <td>
-                        <i className={"fas fa-edit"}/>
+                        <i onClick={() => isChange(item)} className={"fas fa-edit"}/>
                     </td>
                 </tr>
             )

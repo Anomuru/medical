@@ -3,7 +3,6 @@ import React, {useCallback} from 'react';
 import {Table} from "shared/ui/table";
 
 import cls from "./priceAccordionItem.module.sass";
-import {a} from "@fullcalendar/core/internal-common";
 
 interface IItem {
     name: string,

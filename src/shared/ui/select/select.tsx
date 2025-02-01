@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {useCallback, useEffect} from 'react';
 import classNames from "classnames";
 
 import cls from "./select.module.sass";
@@ -26,6 +26,12 @@ export const Select: React.FC<ISelectProps> = (props) => {
         keyValue,
         status
     } = props
+
+    useEffect(() => {
+        if (selectOption) {
+            setSelectOption(selectOption)
+        }
+    }, [selectOption, setSelectOption])
 
     const renderOptionsOfSelect = useCallback(() => {
         return optionsData?.map((item, index) => {
@@ -65,7 +71,8 @@ export const Select: React.FC<ISelectProps> = (props) => {
                 value={selectOption}
                 onChange={(e) => setSelectOption(e.target.value)}
             >
-                {title ? <option selected value={""} disabled>{title}</option> : <option value={""} disabled>Tanlang</option>}
+                {title ? <option selected value={""} disabled>{title}</option> :
+                    <option value={""} disabled>Tanlang</option>}
                 {renderedOptions}
             </select>
             {status === "error" && <span className={cls.label__error}>Tanlanmagan</span>}
