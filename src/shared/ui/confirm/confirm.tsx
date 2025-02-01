@@ -25,19 +25,16 @@ export const ConfirmModal : FC<IConfirmModal> = (
 
 
     return (
-        <Modal active={active} setActive={setActive}>
+        <Modal title={title} active={active} setActive={setActive}>
             <div className={cls.filter}>
-                <div className={cls.deleteHead}>
-                    <h2>{title}</h2>
-                </div>
                 {text ?
                     <div className={cls.deleteText}>
                         <span>{text}</span>
                     </div> : null
                 }
                 <div className={cls.deleteButtons}>
-                    <Button extraClass={cls.deleteButton} children={"Xa"} onClick={onClick}/>
-                    <Button extraClass={cls.cancelButton}  children={"Yo'q"} onClick={() => setActive(!active)}/>
+                    <Button type={"danger"}  extraClass={cls.deleteButton} children={"Xa"} onClick={onClick}/>
+                    <Button   children={"Yo'q"} onClick={() => setActive(!active)}/>
                 </div>
             </div>
         </Modal>
