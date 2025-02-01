@@ -28,16 +28,20 @@ export const menuConfig = [
     },{
         to: "analysisGroup",
         image: jobListImage
-    }, {
-        to: "hospitalReg",
-        image: dashboardImage
-    }, {
+    },
+    // {
+    //     to: "hospitalReg",
+    //     image: dashboardImage
+    // },
+    {
         to: "platformHomePage",
         image: dashboardImage
-    }, {
-        to: "pricePage",
-        image: dashboardImage
-    }, {
+    },
+    // {
+    //     to: "pricePage",
+    //     image: dashboardImage
+    // },
+    {
         to: "devicePage",
         image: dashboardImage
     }, {
