@@ -18,6 +18,8 @@ import {getAnalysisContainer} from "../../../../entities/analysis/model/selector
 
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {useHttp} from "../../../../shared/api/base";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
 
 
 interface IAnalysisContainerModalProps {
@@ -43,9 +45,14 @@ export const AnalysisContainerModal = () => {
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
     const [activeEditItem, setActiveEditItem] = useState(null)
 
-
     const analysisDate = useSelector(getAnalysisContainer)
 
+    const dispatch = useAppDispatch()
+
+
+    useEffect(() => {
+        dispatch(analysisContainerThunk())
+    },[])
 
 
     return (
@@ -71,11 +78,10 @@ export const AnalysisContainerModal = () => {
 
 
 const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive}) => {
-    const [color, setColor] = useState("#fff");
-
-    const {register, setValue, handleSubmit} = useForm()
-
-    const dispatch = useDispatch()
+    const
+        [color, setColor] = useState("#fff");
+    const {register, setValue, handleSubmit} = useForm();
+    const dispatch = useDispatch();
 
 
     const {request} = useHttp()
@@ -89,7 +95,7 @@ const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActi
         //     body: JSON.stringify(),
         //     headers: headers()
         // })
-        //
+
 
         const res = {
             ...data,

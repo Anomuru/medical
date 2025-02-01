@@ -1,13 +1,13 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {headers, useHttp} from "shared/api/base";
 import {ThunkConfig} from "app/providers/storeProvider";
-import {analysisActions} from "../slice/analysisSlice";
+import {headers} from "shared/api/base";
+import {analysisContainerActions} from "../../model/slice/analysisContainerSlice";
 
-export const analysisThunk = createAsyncThunk<
+export const analysisContainerThunk = createAsyncThunk<
     void,
     void,
     ThunkConfig<string>
->('analysisSlice/analysisThunk', async (authData, thunkApi) => {
+>('analysisContainerSlice/analysisContainerThunk', async (authData, thunkApi) => {
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
@@ -16,7 +16,7 @@ export const analysisThunk = createAsyncThunk<
         if (!response) {
             throw new Error();
         }
-        dispatch(analysisActions.onGetAnalysis(response));
+        dispatch(analysisContainerActions.onGetContainer(response));
         return response.data;
     } catch (e) {
         console.log(e);

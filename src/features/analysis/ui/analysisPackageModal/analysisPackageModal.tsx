@@ -9,14 +9,13 @@ import cls from "./analysisPackageModal.module.sass";
 import {getAnalysisPackage} from "entities/analysis/model/selector/analysisPackageSelector";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
-import {Button} from "../../../../shared/ui/button";
-import {di} from "@fullcalendar/core/internal-common";
-import {analysisPackageAction} from "../../../../entities/analysis/model/slice/analysisPackageSlice";
+import {Button} from "shared/ui/button";
+import {analysisPackageAction} from "entities/analysis/model/slice/analysisPackageSlice";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
-import {headers, useHttp} from "../../../../shared/api/base";
-import {fetchAnalysisPackageList} from "../../../../entities/analysis/model/thunk/analysisPackage";
-import {useAppDispatch} from "../../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {headers, useHttp} from "shared/api/base";
+import {fetchAnalysisPackageList} from "entities/analysis/model/thunk/analysisPackage";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 export const AnalysisPackageModal = () => {
 
@@ -27,7 +26,6 @@ export const AnalysisPackageModal = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-
         dispatch(fetchAnalysisPackageList())
     }, [])
 
