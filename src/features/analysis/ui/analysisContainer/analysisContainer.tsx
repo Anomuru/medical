@@ -17,9 +17,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
 
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
-import {useHttp} from "../../../../shared/api/base";
+import {headers, useHttp} from "../../../../shared/api/base";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
+import {alertAction} from "../../../alert/model/slice/alertSlice";
 
 
 interface IAnalysisContainerModalProps {
@@ -78,8 +79,7 @@ export const AnalysisContainerModal = () => {
 
 
 const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive}) => {
-    const
-        [color, setColor] = useState("#fff");
+
     const {register, setValue, handleSubmit} = useForm();
     const dispatch = useDispatch();
 
@@ -89,24 +89,27 @@ const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActi
     const onClick = (data: IAnalysisContainerModalProps) => {
 
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
+        request({
+            url: "container/crud/create/",
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+            setActive(false)
+            setValue("name" , "")
+            setValue("size" , "")
+            setValue("color" , "")
+            dispatch(analysisContainerActions.onAddAnalysis(res))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully added"
+            }))
+        })
 
 
-        const res = {
-            ...data,
-            id: new Date().getTime()
-        }
 
-        setActive(false)
-        setValue("name" , "")
-        setValue("size" , "")
-        setValue("color" , "")
-        dispatch(analysisContainerActions.onAddAnalysis(res))
+
 
     }
     return (
@@ -155,20 +158,25 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
     }, []);
 
     const onEdit = (data: IAnalysisContainerModalProps) => {
+        request({
+            url: `container/crud/${activeEditItem.id}/update`,
+            method: "PATCH",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+
+            setActive(false)
+            dispatch(analysisContainerActions.onEditAnalysis({id: activeEditItem.id , data : res}))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully changed"
+            }))
+        })
 
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
-        //
 
 
-
-        setActive(false)
-        dispatch(analysisContainerActions.onEditAnalysis({id: activeEditItem.id , data}))
 
     }
 
@@ -182,11 +190,22 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
         //     headers: headers()
         // })
         //
+        request({
+            url: `container/crud/${activeEditItem.id}/delete`,
+            method: "DELETE",
+            headers: headers()
+        }).then(res => {
+            dispatch(analysisContainerActions.onDeleteAnalysis(activeEditItem.id))
+            setActive(false)
+            onCloseDeleteModal()
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully changed"
+            }))
+        })
 
 
-        dispatch(analysisContainerActions.onDeleteAnalysis(activeEditItem.id))
-        setActive(false)
-        onCloseDeleteModal()
 
     }
     return (

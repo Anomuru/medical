@@ -13,10 +13,13 @@ import {useForm} from "react-hook-form";
 
 import {useDispatch, useSelector} from "react-redux";
 import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/analysisGroupSelector";
-import {AnalysisGroup} from "../../../../entities/analysis/ui/analysisGroup/analysisGroup";
-import {analysisGroupActions} from "../../../../entities/analysis/model/slice/analysisGroupSlice";
+import {AnalysisGroup} from "../../../../entities/analysis";
+import {analysisGroupActions} from "../../../../entities/analysis";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
-import {useHttp} from "../../../../shared/api/base";
+import {headers, useHttp} from "../../../../shared/api/base";
+import {useAppDispatch} from "../../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {fetchAnalysisGroupList} from "../../../../entities/analysis";
+import {alertAction} from "../../../alert/model/slice/alertSlice";
 
 
 interface IAnalysisContainerModalProps {
@@ -27,6 +30,7 @@ interface IAddAnalysisContainerModalProps {
     active: boolean,
     setActive: (arg: boolean) => void
 }
+
 interface IEditAnalysisContainerModalProps {
     active: boolean,
     setActive: (arg: boolean) => void,
@@ -41,6 +45,11 @@ export const AnalysisGroupModal = () => {
 
     const groupAnalysisData = useSelector(getAnalysisGroup)
 
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchAnalysisGroupList())
+    }, [])
 
 
     return (
@@ -77,23 +86,23 @@ const AddGroupModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive})
     const onClick = (data: IAnalysisContainerModalProps) => {
 
 
+        request({
+            url: "analysis/analysis_type/crud/create/",
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+            setActive(false)
+            setValue("name", "")
+            dispatch(analysisGroupActions.onAddAnalysisGroup(res))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully added"
+            }))
+        })
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
-        //
 
-
-        const res = {
-            ...data,
-            id: new Date().getTime()
-        }
-        setActive(false)
-        setValue("name", "")
-        dispatch(analysisGroupActions.onAddAnalysisGroup(res))
     }
     return (
         <Modal
@@ -114,19 +123,19 @@ const AddGroupModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive})
 
 //
 //
-const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setActive , activeEditItem}) => {
+const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setActive, activeEditItem}) => {
 
 
     const {register, setValue, handleSubmit} = useForm()
 
-    const [activeConfirm , setActiveConfirm] = useState<boolean>(false)
+    const [activeConfirm, setActiveConfirm] = useState<boolean>(false)
 
     const {request} = useHttp()
 
     useEffect(() => {
-        setValue("name" , activeEditItem?.name)
+        setValue("name", activeEditItem?.name)
 
-    } , [activeEditItem , active])
+    }, [activeEditItem, active])
 
 
     const dispatch = useDispatch()
@@ -138,34 +147,44 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
     const onEdit = (data: IAnalysisContainerModalProps) => {
 
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
+        request({
+            url: `analysis/analysis_type/crud/update/${activeEditItem.id}/`,
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+            setActive(false)
+            dispatch(analysisGroupActions.onEditAnalysisGroup({id: activeEditItem.id, data: res}))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully Changed"
+            }))
+        })
         //
 
-
-        setActive(false)
-        dispatch(analysisGroupActions.onEditAnalysisGroup({id: activeEditItem.id , data}))
 
     }
 
     const onDelete = () => {
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
-        //
 
+        request({
+            url: `analysis/analysis_type/crud/delete/${activeEditItem.id}/`,
+            method: "DELETE",
 
-        dispatch(analysisGroupActions.onDeleteAnalysisGroup(activeEditItem.id))
-        setActive(false)
-        onCloseDeleteModal()
+            headers: headers()
+        }).then(res => {
+            dispatch(analysisGroupActions.onDeleteAnalysisGroup(activeEditItem.id))
+            setActive(false)
+            onCloseDeleteModal()
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: res.message
+            }))
+        })
+
 
     }
     return (
@@ -176,11 +195,12 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
         >
             <Form extraClass={cls.modal__form}>
                 <Input extraClass={cls.modal__input} name={"name"} placeholder={"Nomi"} register={register}/>
-                <div style={{display: "flex" , justifyContent: "space-between"}}>
+                <div style={{display: "flex", justifyContent: "space-between"}}>
                     <Button extraClass={cls.modal__button} onClick={handleSubmit(onEdit)}>
                         Edit
                     </Button>
-                    <Button type={"danger"} extraClass={cls.modal__button} onClick={handleSubmit(() => setActiveConfirm(true))}>
+                    <Button type={"danger"} extraClass={cls.modal__button}
+                            onClick={handleSubmit(() => setActiveConfirm(true))}>
                         Delete
                     </Button>
                 </div>

@@ -13,3 +13,11 @@ export {getAnalysisData, getAnalysisLoading, getAnalysisError} from "./model/sel
 export type {IAnalysis, IAnalysisSchema} from "./model/types/analysisSchema";
 export type {IAnalysisContainer, IAnalysisContainerSchema} from "./model/types/analysisContainerScheme";
 export type {IAnalysisGroup, IAnalysisGroupSchema} from "./model/types/analysisGroupScheme";
+export {fetchAnalysisPackageList} from "./model/thunk/analysisPackageThunk"
+
+export {fetchAnalysisGroupList} from "./model/thunk/analysisPackageGroupThunk"
+
+export {analysisPackageAction , analysisPackageReducer} from "./model/slice/analysisPackageSlice"
+export {getAnalysisPackage} from "./model/selector/analysisPackageSelector"
+
+export {analysisGroupReducer , analysisGroupActions} from "./model/slice/analysisGroupSlice"

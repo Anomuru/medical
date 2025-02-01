@@ -4,14 +4,15 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Modal} from "../../../../shared/ui/modal";
 import {Form} from "../../../../shared/ui/form";
 import {Input} from "../../../../shared/ui/input";
-import {analysisActions, AnalysisList, IAnalysis} from "../../../../entities/analysis";
+import {analysisActions, AnalysisList, fetchAnalysisGroupList, IAnalysis} from "../../../../entities/analysis";
 import {Select} from "../../../../shared/ui/select";
 import {Button} from "../../../../shared/ui/button";
 import {useForm} from "react-hook-form";
 import {useHttp} from "../../../../shared/api/base";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {analysisThunk} from "entities/analysis/model/thunk/analysisThunk";
+import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/analysisGroupSelector";
 
 interface IAddData {
     name: string,
@@ -35,9 +36,13 @@ export const AnalysisAnalysis = () => {
     const [changedItem, setChangedItem] = useState()
 
 
+
+
+
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+
         dispatch(analysisThunk())
     },[])
 
@@ -65,7 +70,8 @@ export const AnalysisAnalysis = () => {
 const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
 
     const {request} = useHttp()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+
     const {createAnalysis} = analysisActions
     const {register, handleSubmit} = useForm<IAddData>()
 
@@ -78,6 +84,11 @@ const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
     const getPackageId = useCallback((id: number) => setSelectedPackage(id), [])
     const getDeviceId = useCallback((id: number) => setSelectedDevice(id), [])
     const getContainerId = useCallback((id: number) => setSelectedContainer(id), [])
+    const groupAnalysisData = useSelector(getAnalysisGroup)
+
+    useEffect(() => {
+        dispatch(fetchAnalysisGroupList())
+    } , [])
 
     const onSubmit = (data: IAddData) => {
         const res = {
@@ -95,6 +106,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
             .catch(err => console.log(err))
     }
 
+
     return (
         <Modal title={"Add"} active={active} setActive={setActive}>
             <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.modal__form}>
@@ -110,7 +122,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
                     placeholder={"Kod nomi"}
                     name={"cod_name"}
                 />
-                <Select title={"Group"} setSelectOption={getGroupId} optionsData={[]}/>
+                <Select title={"Group"} setSelectOption={getGroupId} optionsData={groupAnalysisData}/>
                 <Select title={"Paket"} setSelectOption={getPackageId} optionsData={[]}/>
                 <Select title={"Device"} setSelectOption={getDeviceId} optionsData={[]}/>
                 <Select title={"Container"} setSelectOption={getContainerId} optionsData={[]}/>

@@ -4,20 +4,7 @@ import {ThunkConfig} from "../../../../app/providers/storeProvider";
 
 import {analysisPackageAction} from "../slice/analysisPackageSlice";
 
-// export const fetchAnalysisPackageList = createAsyncThunk(
-//     "analysisSlice/fetchAnalysisList",
-//     () => {
-//         const {request} = useHttp()
-//         return request(
-//             {
-//                 url: "analysis/analysis_type/get/list/",
-//                 method: "GET",
-//                 body: undefined,
-//                 headers: headers()
-//             },
-//         )
-//     }
-// )
+
 
 export const fetchAnalysisPackageList = createAsyncThunk<
     void,
@@ -37,7 +24,7 @@ export const fetchAnalysisPackageList = createAsyncThunk<
 
 
 
-        dispatch(analysisPackageAction.onAddAnalysisPackage(response.results));
+        dispatch(analysisPackageAction.onAnalysisPackage(response));
         return response.data;
     } catch (e) {
         console.log(e);

@@ -6,15 +6,16 @@ import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
 
 import cls from "./analysisPackageModal.module.sass";
-import {getAnalysisPackage} from "entities/analysis/model/selector/analysisPackageSelector";
+import {getAnalysisPackage} from "entities/analysis";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 import {Button} from "shared/ui/button";
-import {analysisPackageAction} from "entities/analysis/model/slice/analysisPackageSlice";
+
+import {analysisPackageAction} from "entities/analysis";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
-import {headers, useHttp} from "shared/api/base";
-import {fetchAnalysisPackageList} from "entities/analysis/model/thunk/analysisPackage";
+import {headers, useHttp} from "../../../../shared/api/base";
+import {fetchAnalysisPackageList} from "entities/analysis/index";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 export const AnalysisPackageModal = () => {
@@ -26,6 +27,7 @@ export const AnalysisPackageModal = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+
         dispatch(fetchAnalysisPackageList())
     }, [])
 
@@ -69,7 +71,7 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
             dispatch(alertAction.onAddAlertOptions({
                 type: "success",
                 status: true,
-                msg: "sherzod gandon"
+                msg: "Successfully added"
             }))
         })
             .catch(err => {
@@ -111,33 +113,50 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
     const onClick = (data: {}) => {
 
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
+        request({
+            url: `packet/crud/update/${activeEditItem.id}`,
+            method: "PATCH",
+            body: JSON.stringify(data),
+            headers: headers()
+        })
+            .then(res => {
+                console.log(res)
+
+                dispatch(analysisPackageAction.onEditAnalysisPackage({id: activeEditItem.id, res}))
+                setActive(false)
+                setValue("name", "")
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Successfully Changed"
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            })
         //
 
-        dispatch(analysisPackageAction.onEditAnalysisPackage({id: activeEditItem.id, data}))
-        setActive(false)
-        setValue("name", "")
     }
     const onDelete = () => {
 
+        request({
+            url: `packet/crud/delete/${activeEditItem.id}`,
+            method: "DELETE",
+            headers: headers()
+        })
+            .then(res => {
+                dispatch(analysisPackageAction.onDeleteAnalysisPackage(activeEditItem.id))
+                setActive(false)
+                setValue("name", "")
+                onCloseDeleteModal()
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: res.message
+                }))
+            })
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
-        //
 
-        dispatch(analysisPackageAction.onDeleteAnalysisPackage(activeEditItem.id))
-        setActive(false)
-        setValue("name", "")
-        onCloseDeleteModal()
     }
     const onCloseDeleteModal = useCallback(() => {
         setActiveConfirm(false);
