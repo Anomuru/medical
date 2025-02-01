@@ -1,6 +1,6 @@
 import cls from "./analysisAnalysisModal.module.sass";
 
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Modal} from "../../../../shared/ui/modal";
 import {Form} from "../../../../shared/ui/form";
 import {Input} from "../../../../shared/ui/input";
@@ -10,6 +10,8 @@ import {Button} from "../../../../shared/ui/button";
 import {useForm} from "react-hook-form";
 import {useHttp} from "../../../../shared/api/base";
 import {useDispatch} from "react-redux";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {analysisThunk} from "entities/analysis/model/thunk/analysisThunk";
 
 interface IAddData {
     name: string,
@@ -32,8 +34,15 @@ export const AnalysisAnalysis = () => {
     const [change, setChange] = useState(false)
     const [changedItem, setChangedItem] = useState()
 
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(analysisThunk())
+    },[])
+
+
     const getChangedItem = (data: any) => {
-        console.log(data, "data")
         setChangedItem(data)
         setChange(true)
     }

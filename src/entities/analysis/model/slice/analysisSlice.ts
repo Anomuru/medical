@@ -10,14 +10,16 @@ const initialState: IAnalysisSchema = {
             package: "КОАГУЛОЛОГИЯ",
             device: "Device nomi",
             container: "Container nomi"
-        }, {
+        },
+        {
             name: "Analiz nomi",
             code_name: 35,
             group: "Group gh",
             package: "КОАГУЛОЛОГИЯ",
             device: "Device nomi",
             container: "Container nomi"
-        }, {
+        },
+        {
             name: "Analiz nomi",
             code_name: 36,
             group: "Group asd",
@@ -34,6 +36,10 @@ const analysisSlice = createSlice({
     name: "analysisSlice",
     initialState,
     reducers: {
+        onGetAnalysis: (state, action) => {
+            state.data = action.payload
+        },
+
         createAnalysis: (state, action) => {
             state.data = [action.payload, ...state?.data]
         }
