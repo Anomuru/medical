@@ -16,8 +16,9 @@ interface IAnalysisContainerProps {
 
 }
 
-export const AnalysisPackage : FC<IAnalysisContainerProps> = memo(({data , setActiveEdit , setActiveEditItem}) => {
+export const AnalysisPackage: FC<IAnalysisContainerProps> = memo(({data, setActiveEdit, setActiveEditItem}) => {
 
+    console.log(data)
     const renderData = () => {
         return data?.map(item => (
             <div className={cls.wrapper__box}>
@@ -31,15 +32,14 @@ export const AnalysisPackage : FC<IAnalysisContainerProps> = memo(({data , setAc
 
                     <div
                         onClick={() => {
-                        setActiveEdit(true)
-                        setActiveEditItem(item)
-                    }}
-                         className={cls.wrapper__box_header_edit}>
+                            setActiveEdit(true)
+                            setActiveEditItem(item)
+                        }}
+                        className={cls.wrapper__box_header_edit}>
                         <i className={"fas fa-edit"}/>
                     </div>
 
                 </div>
-
 
 
             </div>

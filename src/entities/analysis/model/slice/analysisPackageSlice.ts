@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IAnalysisPackageSchema} from "../types/analysisPackageScheme";
+import {fetchAnalysisPackageList} from "../thunk/analysisPackage";
 
 
 const initialState : IAnalysisPackageSchema = {
@@ -13,10 +14,10 @@ const analysisPackageSlice = createSlice({
     initialState,
     reducers: {
         onAddAnalysisPackage: (state, action) => {
-            state.data = [...state.data, action.payload]
+            state.data =  [...state.data, action.payload]
         },
         onEditAnalysisPackage: (state, action) => {
-            state.data = state.data.map(item => {
+            state.data = state?.data?.map(item => {
                 if (item.id === action.payload.id) {
                     return action.payload.data
                 }
@@ -28,6 +29,20 @@ const analysisPackageSlice = createSlice({
         },
 
     },
+    extraReducers: builder =>
+        builder
+            .addCase(fetchAnalysisPackageList.pending , state => {
+                state.loading = true
+                state.error = false
+            })
+            .addCase(fetchAnalysisPackageList.fulfilled , (state , action) => {
+                state.loading = false
+                state.error = false
+            })
+            .addCase(fetchAnalysisPackageList.rejected , state => {
+                state.loading = false
+                state.error = true
+            })
 })
 
 export const {reducer: analysisPackageReducer} = analysisPackageSlice

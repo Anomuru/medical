@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+
 
 interface AlertType {
     msg: string;
@@ -31,12 +32,13 @@ const AlertSlice = createSlice({
         onDeleteAlert: (state, action: PayloadAction<{ index: number }>) => {
             state.alert = state.alert.map((item, index) => {
                 if (index === action.payload.index) {
-                    return { ...item, status: false };
+                    return {...item, status: false};
                 }
                 return item;
             });
         },
     },
+
 });
 
 export const {reducer: alertReducer} = AlertSlice

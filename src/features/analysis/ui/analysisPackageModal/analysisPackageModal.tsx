@@ -15,12 +15,21 @@ import {analysisPackageAction} from "../../../../entities/analysis/model/slice/a
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
 import {headers, useHttp} from "../../../../shared/api/base";
+import {fetchAnalysisPackageList} from "../../../../entities/analysis/model/thunk/analysisPackage";
+import {useAppDispatch} from "../../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 export const AnalysisPackageModal = () => {
 
     const [active, setActive] = useState<boolean>(false)
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
     const [activeEditItem, setActiveEditItem] = useState({})
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+
+        dispatch(fetchAnalysisPackageList())
+    }, [])
 
     const analysisPackageData = useSelector(getAnalysisPackage)
 
@@ -45,31 +54,31 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
 
     const {setValue, handleSubmit, register} = useForm()
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const onClick = (data: {}) => {
 
 
-        // request({
-        //     url: ``,
-        //     method: "PATCH",
-        //     body: JSON.stringify(),
-        //     headers: headers()
-        // })
-        //
-        const res = {
-            ...data,
-            id: new Date().getTime()
-        }
+        request({
+            url: "packet/crud/create/",
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+            dispatch(analysisPackageAction.onAddAnalysisPackage(res))
+            setActive(false)
+            setValue("name", "")
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "sherzod gandon"
+            }))
+        })
+            .catch(err => {
+                console.log(err)
+            })
 
-        dispatch(analysisPackageAction.onAddAnalysisPackage(res))
-        setActive(false)
-        setValue("name", "")
-        dispatch(alertAction.onAddAlertOptions({
-            type: "success",
-            status: true,
-            msg: "sherzod gandon"
-        }))
+
     }
 
     return (
@@ -95,15 +104,13 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
     const {setValue, handleSubmit, register} = useForm()
 
     const [activeConfirm, setActiveConfirm] = useState<boolean>(false)
-
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        setValue("name" , activeEditItem.name)
-    } , [setValue , activeEditItem])
+        setValue("name", activeEditItem.name)
+    }, [setValue, activeEditItem])
 
     const onClick = (data: {}) => {
-
 
 
         // request({
@@ -119,8 +126,6 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
         setValue("name", "")
     }
     const onDelete = () => {
-
-
 
 
         // request({
