@@ -16,6 +16,7 @@ import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/ana
 import {AnalysisGroup} from "../../../../entities/analysis/ui/analysisGroup/analysisGroup";
 import {analysisGroupActions} from "../../../../entities/analysis/model/slice/analysisGroupSlice";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
+import {useHttp} from "../../../../shared/api/base";
 
 
 interface IAnalysisContainerModalProps {
@@ -70,7 +71,22 @@ const AddGroupModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive})
     const {register, setValue, handleSubmit} = useForm()
 
     const dispatch = useDispatch()
+
+    const {request} = useHttp()
+
     const onClick = (data: IAnalysisContainerModalProps) => {
+
+
+
+        // request({
+        //     url: ``,
+        //     method: "PATCH",
+        //     body: JSON.stringify(),
+        //     headers: headers()
+        // })
+        //
+
+
         const res = {
             ...data,
             id: new Date().getTime()
@@ -105,6 +121,8 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
 
     const [activeConfirm , setActiveConfirm] = useState<boolean>(false)
 
+    const {request} = useHttp()
+
     useEffect(() => {
         setValue("name" , activeEditItem?.name)
 
@@ -118,12 +136,33 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
     }, []);
 
     const onEdit = (data: IAnalysisContainerModalProps) => {
+
+
+        // request({
+        //     url: ``,
+        //     method: "PATCH",
+        //     body: JSON.stringify(),
+        //     headers: headers()
+        // })
+        //
+
+
         setActive(false)
         dispatch(analysisGroupActions.onEditAnalysisGroup({id: activeEditItem.id , data}))
 
     }
 
     const onDelete = () => {
+
+        // request({
+        //     url: ``,
+        //     method: "PATCH",
+        //     body: JSON.stringify(),
+        //     headers: headers()
+        // })
+        //
+
+
         dispatch(analysisGroupActions.onDeleteAnalysisGroup(activeEditItem.id))
         setActive(false)
         onCloseDeleteModal()

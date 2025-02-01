@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, { useState} from 'react';
 
 
 import cls from "./paymentPage.module.sass"
@@ -7,7 +7,7 @@ import {Radio} from "shared/ui/radio";
 import {Button} from "shared/ui/button";
 
 
-export const PaymentPage = () => {
+export const  PaymentPage = () => {
 
 
 
@@ -54,8 +54,6 @@ export const PaymentPage = () => {
             <div className={cls.patientsList}>
                 <div className={cls.header}>
                     <h2>Patients list</h2>
-
-
                     <Input name={"search"} placeholder={"search"}/>
                 </div>
 
@@ -63,21 +61,28 @@ export const PaymentPage = () => {
                     <div className={cls.item}>
                         <span>Fatxullayev</span>
                         <span>Ulug'bek</span>
+                        <span>43240358453</span>
+                        <span>+998991270711</span>
+                    </div>
+                    <div className={cls.item}>
+                        <span>Fatxullayev</span>
+                        <span>Ulug'bek</span>
+                        <span>43240358453</span>
+
                         <span>+998920003</span>
                     </div>
                     <div className={cls.item}>
                         <span>Fatxullayev</span>
                         <span>Ulug'bek</span>
+                        <span>43240358453</span>
+
                         <span>+998920003</span>
                     </div>
                     <div className={cls.item}>
                         <span>Fatxullayev</span>
                         <span>Ulug'bek</span>
-                        <span>+998920003</span>
-                    </div>
-                    <div className={cls.item}>
-                        <span>Fatxullayev</span>
-                        <span>Ulug'bek</span>
+                        <span>43240358453</span>
+
                         <span>+998920003</span>
                     </div>
                 </div>

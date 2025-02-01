@@ -8,8 +8,8 @@ export interface IAnalysis {
 }
 
 export interface IAnalysisSchema {
-    data: IAnalysis[],
+    data: [] | IAnalysis[],
     loading: boolean,
-    error: null | "error"
+    error?: "error"
 }
 
