@@ -3,9 +3,13 @@ import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import cls from "./paketsList.module.sass";
 import arrowContainedSquare from "shared/assets/icon/arrowContainedSquare.svg";
 
-type PropsType = { onDelete: (arg: number) => void }
+type PropsType = {
+    onDelete: (arg: number) => void;
+    title: string,
+    totalPrice: number
+}
 
-export const PaketsList = memo(({onDelete}: PropsType) => {
+export const PaketsList = memo(({onDelete, totalPrice, title}: PropsType) => {
 
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -43,8 +47,8 @@ export const PaketsList = memo(({onDelete}: PropsType) => {
         <div className={cls.paket}>
             <div className={cls.header}>
                 <div className={cls.row}>
-                    <span>D-димер</span>
-                    <span>2.000.000</span>
+                    <span>{title}</span>
+                    <span>{totalPrice}</span>
                 </div>
                 <div className={cls.subrow}>
                     <span>Analiz ro’yxatlari :</span>
