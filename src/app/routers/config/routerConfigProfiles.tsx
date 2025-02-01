@@ -45,7 +45,8 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "registerPage",
         element: <RegisterPage/>,
         path: getRegisterRoute()
-    }, {
+    },
+    {
         name: "dashboardPage",
         element: <RegisterPage/>,
         path: getDashboardRoute()

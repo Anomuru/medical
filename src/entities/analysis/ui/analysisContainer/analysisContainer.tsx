@@ -42,7 +42,7 @@ export const AnalysisContainer: FC<IAnalysisContainerProps> = ({data, setActiveE
 
                 <ul className={cls.wrapper__box_list}>
                     <li>Hajm : <div>{item.size}</div></li>
-                    <li>Size : <div
+                    <li>Rang : <div
                         style={{width: "2rem", height: "2rem", background: item.color, borderRadius: "50%"}}></div></li>
                 </ul>
 

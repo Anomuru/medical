@@ -5,11 +5,13 @@ import {MenuBar} from "widgets/menuBar";
 import {Header} from "widgets/header";
 
 import cls from "./layout.module.sass";
+import {Alert} from "../../../features/alert/ui/alert";
 
 export const Layout = () => {
     return (
 
         <div className={cls.layout}>
+            <Alert/>
             <MenuBar/>
             <main className={cls.layout__content}>
                 <Header/>

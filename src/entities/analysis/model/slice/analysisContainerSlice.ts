@@ -9,7 +9,7 @@ const initialState : IAnalysisContainerSchema = {
             id: 1,
             name: "test",
             size: "12",
-            color: "#fff"
+            color: "#FFF"
         }
 
     ],

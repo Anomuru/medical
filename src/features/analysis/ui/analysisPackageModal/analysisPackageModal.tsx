@@ -13,6 +13,8 @@ import {Button} from "../../../../shared/ui/button";
 import {di} from "@fullcalendar/core/internal-common";
 import {analysisPackageAction} from "../../../../entities/analysis/model/slice/analysisPackageSlice";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
+import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {headers, useHttp} from "../../../../shared/api/base";
 
 export const AnalysisPackageModal = () => {
 
@@ -39,6 +41,7 @@ export const AnalysisPackageModal = () => {
 }
 
 const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (arg: boolean) => void }) => {
+    const {request} = useHttp()
 
     const {setValue, handleSubmit, register} = useForm()
 
@@ -46,6 +49,14 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
 
     const onClick = (data: {}) => {
 
+
+        // request({
+        //     url: ``,
+        //     method: "PATCH",
+        //     body: JSON.stringify(),
+        //     headers: headers()
+        // })
+        //
         const res = {
             ...data,
             id: new Date().getTime()
@@ -54,6 +65,11 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
         dispatch(analysisPackageAction.onAddAnalysisPackage(res))
         setActive(false)
         setValue("name", "")
+        dispatch(alertAction.onAddAlertOptions({
+            type: "success",
+            status: true,
+            msg: "sherzod gandon"
+        }))
     }
 
     return (
@@ -73,6 +89,9 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
     setActive: (arg: boolean) => void
 }) => {
 
+
+    const {request} = useHttp()
+
     const {setValue, handleSubmit, register} = useForm()
 
     const [activeConfirm, setActiveConfirm] = useState<boolean>(false)
@@ -85,11 +104,32 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
 
     const onClick = (data: {}) => {
 
+
+
+        // request({
+        //     url: ``,
+        //     method: "PATCH",
+        //     body: JSON.stringify(),
+        //     headers: headers()
+        // })
+        //
+
         dispatch(analysisPackageAction.onEditAnalysisPackage({id: activeEditItem.id, data}))
         setActive(false)
         setValue("name", "")
     }
     const onDelete = () => {
+
+
+
+
+        // request({
+        //     url: ``,
+        //     method: "PATCH",
+        //     body: JSON.stringify(),
+        //     headers: headers()
+        // })
+        //
 
         dispatch(analysisPackageAction.onDeleteAnalysisPackage(activeEditItem.id))
         setActive(false)

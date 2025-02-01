@@ -15,6 +15,7 @@ import {
     IAnalysisGroupSchema
 } from "entities/analysis";
 import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/analysisPackageScheme";
+import { IAlertState} from "../../../../features/alert/model/slice/alertSlice";
 
 
 export interface StateSchema {
@@ -37,6 +38,7 @@ export interface StateSchema {
     analysisGroupSlice?: IAnalysisGroupSchema,
     analysisPackageSlice?: IAnalysisPackageSchema
     analysisSlice?: IAnalysisSchema,
+    AlertSlice?: IAlertState
 
 
 }
