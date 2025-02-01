@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useForm} from "react-hook-form";
 
 import {Button} from "shared/ui/button";
@@ -8,7 +8,7 @@ import {Radio} from "shared/ui/radio";
 
 
 import cls from "./hospitalRegPage.module.sass";
-import {useHttp} from "shared/api/base";
+import {API_URL, headers, useHttp} from "shared/api/base";
 import {Pakets} from "features/pakets";
 
 
@@ -25,6 +25,8 @@ interface IProgress {
 export const HospitalRegPage = () => {
 
     const [errorUserName, setErrorUserName] = useState<boolean>(false)
+    const [pakets,setPakets] = useState([])
+
 
     const list = useMemo(() => [
         {
@@ -60,7 +62,8 @@ export const HospitalRegPage = () => {
             isInput: true,
             name: "pasport_number",
             label: "Password Seria (Number)",
-        }, {
+        },
+        {
             name: "birth_date__phone",
             isInput: true,
             isDouble: true,
@@ -74,16 +77,19 @@ export const HospitalRegPage = () => {
                     label: "Phone",
                 },
             ]
-        }, {
+        },
+        {
             isInput: true,
             name: "email",
             label: "Email Adress",
             type: "email"
-        }, {
+        },
+        {
             name: "unknown",
             value: [{label: "Man", id: "man"}, {label: "Woman", id: "woman"}],
             isRadio: true,
-        }, {
+        },
+        {
             name: "password",
             label: "Password",
             isInput: true,
@@ -108,6 +114,18 @@ export const HospitalRegPage = () => {
             } else return {name: item.name, status: false}
         }))
     }, [list])
+
+    useEffect(() => {
+        request({
+            url: "analysis/paket/get/list/",
+            method: "GET",
+            // headers: headers()
+        })
+            .then(res => {
+                setPakets(res.results)
+            })
+    },[])
+
 
     const [selectedRadio, setSelectedRadio] = useState<string>("")
     const [progress, setProgress] = useState<IProgress[]>([])
@@ -260,14 +278,21 @@ export const HospitalRegPage = () => {
                         <div className={cls.collection}>
                             <h1>Paket</h1>
                             <div className={cls.container}>
-                                <div className={cls.item}>
-                                    <h2>
-                                        КОАГУЛОЛОГИЯ
-                                    </h2>
-                                    <div className={cls.icon}>
-                                        <i className="fas fa-plus"></i>
-                                    </div>
-                                </div>
+                                {
+                                    pakets.map(item => {
+                                        return (
+                                            <div className={cls.item}>
+                                                <h2>
+                                                    {item.name}
+                                                </h2>
+                                                <div className={cls.icon}>
+                                                    <i className="fas fa-plus"></i>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+
                             </div>
                         </div>
                         <div className={cls.collection}>
