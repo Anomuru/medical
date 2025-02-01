@@ -69,7 +69,8 @@ export const RegisterPage = () => {
             name: "job",
             label: "Job",
             isMultiSelect: true,
-            onSelect: getSelectedJob
+            onSelect: getSelectedJob,
+            list: jobsList?.map(item => ({label: item.name, name: item.id}))
         }, {
             name: "passport_series",
             label: "Pasport seria (A B)",
@@ -159,7 +160,7 @@ export const RegisterPage = () => {
                 return (
                     <MultiSelect
                         // @ts-ignore
-                        options={jobsList}
+                        options={item.list}
                         onChange={item.onSelect}
                     />
                 )

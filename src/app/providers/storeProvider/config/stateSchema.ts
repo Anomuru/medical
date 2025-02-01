@@ -14,6 +14,7 @@ import {
     IAnalysisContainerSchema,
     IAnalysisGroupSchema
 } from "entities/analysis";
+import {IPatientSchema} from "entities/patient";
 
 
 export interface StateSchema {
@@ -35,7 +36,7 @@ export interface StateSchema {
     analysisContainerSlice?: IAnalysisContainerSchema,
     analysisGroupSlice?: IAnalysisGroupSchema,
     analysisSlice?: IAnalysisSchema,
-
+    patientSlice?: IPatientSchema
 
 }
 

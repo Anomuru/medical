@@ -1,4 +1,4 @@
-import React, {Dispatch, InputHTMLAttributes, SetStateAction, useState} from 'react';
+import React, {Dispatch, InputHTMLAttributes, SetStateAction, useMemo, useState} from 'react';
 import {
     UseFormRegister,
     RegisterOptions,
@@ -23,7 +23,7 @@ export interface InputProps extends HTMLInputProps {
     extraClass?: string,
     extraLabelClass?: string,
     title?: string,
-    onChangeState?: Dispatch<SetStateAction<string|undefined>>,
+    onChangeState?: Dispatch<SetStateAction<string | undefined>>,
     value?: string | number,
     onChange?: (value: string) => void,
     name: string,
@@ -50,6 +50,8 @@ export const Input: React.FC<InputProps> = (props) => {
         onChangeState,
         value
     } = props
+
+    console.log(rules, "rules")
 
     const textField = register && register(name, rules)
 
