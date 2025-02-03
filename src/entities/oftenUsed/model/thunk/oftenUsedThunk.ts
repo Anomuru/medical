@@ -8,3 +8,5 @@ export const fetchJobsData = createAsyncThunk(
         return request({url: "job_info/job_get/job_list/", body: undefined, headers: header()})
     }
 )
+
+

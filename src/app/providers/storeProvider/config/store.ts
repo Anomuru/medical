@@ -4,6 +4,8 @@ import { StateSchema, ThunkExtraArg } from './stateSchema';
 import { createReducerManager } from './reducerManager';
 import {useHttp} from "shared/api/base";
 import {oftenUsedReducer} from "entities/oftenUsed";
+import {IOftenUsedDeviceListSchema} from "../../../../entities/oftenUsed/model/types/oftenUsedDeviceScheme";
+import {oftenUsedDeviceReducer} from "../../../../entities/oftenUsed/model/slice/oftenUsedDeviceSlice";
 
 
 
@@ -19,7 +21,8 @@ export function createReduxStore(
     const rootReducers: ReducersMapObject<StateSchema> = {
         ...asyncReducers,
         user: userReducer,
-        oftenUsedSlice: oftenUsedReducer
+        oftenUsedSlice: oftenUsedReducer,
+        oftenUsedDeviceSlice: oftenUsedDeviceReducer
 
         // workTable:
     };

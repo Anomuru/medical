@@ -1,43 +1,74 @@
-import React, {memo, useState} from 'react';
+import {memo, useState} from 'react';
 
-import {PaketsList} from "entities/pakets";
+import {PacketsList, IPackets, packetsActions} from "entities/pakets";
 import {ConfirmModal} from "shared/ui/confirm";
 
-
 import cls from "./pakets.module.sass";
-import {IPackagesWithAnalysis} from "shared/types/oftenUsedTypes";
-import {IAnalysis} from "entities/analysis";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 
-
-interface IPakets {
-    title: string,
-    totalPrice: number,
-    packages: IAnalysis[]
+interface IPacketProps {
+    item: IPackets
 }
 
+export const Packets = memo(({item}: IPacketProps) => {
 
+    const dispatch = useAppDispatch()
+    const {
+        deleteAnalysis,
+        deletePacket
+    } = packetsActions
 
-export const Pakets = memo(({packages,title,totalPrice}: IPakets) => {
+    const [isDeleteAnalysis, setIsDeleteAnalysis] = useState(false)
+    const [isDeletePacket, setIsDeletePacket] = useState(false)
+    const [isActiveAnalysis, setIsActiveAnalysis] = useState(NaN)
+    const [isActivePacket, setIsActivePacket] = useState(NaN)
 
-    const [isDelete, setIsDelete] = useState(false)
-    const [isActive, setIsActive] = useState(NaN)
-
-    const onDelete = () => {
-        setIsDelete(false)
+    const onDeleteAnalysis = () => {
+        let price: number = 0;
+        item.packages
+            .filter(item => item.id !== isActiveAnalysis)
+            .map(inner => {
+                price += Number(inner.price)
+            })
+        dispatch(deleteAnalysis({
+            packageId: item.id,
+            analysisId: isActiveAnalysis,
+            packagePrice: price
+        }))
+        setIsDeleteAnalysis(false)
     }
 
-    const onClick = (id: number) => {
-        setIsActive(id)
-        setIsDelete(true)
+    const onDeletePacket = () => {
+        dispatch(deletePacket(isActivePacket))
+        setIsDeletePacket(false)
+    }
+
+    const onClickAnalysis = (id: number) => {
+        setIsActiveAnalysis(id)
+        setIsDeleteAnalysis(true)
+    }
+
+    const onClickPacket = (id: number) => {
+        setIsActivePacket(id)
+        setIsDeletePacket(true)
     }
 
     return (
         <>
-            <PaketsList title={title} totalPrice={totalPrice} packages={packages} onDelete={onClick}/>
+            <PacketsList
+                item={item}
+                onDeleteAnalysis={onClickAnalysis}
+                onDeletePacket={onClickPacket}
+            />
             <ConfirmModal
-                onClick={onDelete}
-                setActive={setIsDelete}
-                active={isDelete}
+                onClick={onDeleteAnalysis}
+                setActive={setIsDeleteAnalysis}
+                active={isDeleteAnalysis}
+            />
+            <ConfirmModal
+                onClick={onDeletePacket}
+                setActive={setIsDeletePacket}
+                active={isDeletePacket}
             />
         </>
     );

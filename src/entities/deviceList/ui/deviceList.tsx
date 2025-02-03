@@ -86,6 +86,7 @@ import { deviceListThunk } from '../model/thunk/deviceListThunk';
 import { getDeviceList } from 'entities/deviceList/model/selector/deviceListSelector';
 import {useNavigate} from "react-router";
 import {deviceProfileThunk} from "entities/deviceProfile";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 interface IList {
     id: number;
@@ -101,15 +102,15 @@ interface IDeviceListResponse {
 }
 
 export const DeviceList: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     // @ts-ignore
     const getData = useSelector(getDeviceList) as IDeviceListResponse;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pageSize = useMemo(() => 50, []);
     const navigate = useNavigate()
 
+    console.log(getData)
     useEffect(() => {
-        // @ts-ignore
         dispatch(deviceListThunk(currentPage));
     }, [currentPage, dispatch]);
 

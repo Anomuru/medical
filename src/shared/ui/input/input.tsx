@@ -51,8 +51,6 @@ export const Input: React.FC<InputProps> = (props) => {
         value
     } = props
 
-    console.log(rules, "rules")
-
     const textField = register && register(name, rules)
 
 

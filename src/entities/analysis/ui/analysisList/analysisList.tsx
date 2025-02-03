@@ -10,6 +10,7 @@ export const AnalysisList = memo(({isChange}: any) => {
 
     const data = useSelector(getAnalysisData)
 
+
     const render = useCallback(() => {
         return data?.map((item, index) => {
             return (
@@ -17,8 +18,8 @@ export const AnalysisList = memo(({isChange}: any) => {
                     <td>{index + 1}</td>
                     <td>{item.name}</td>
                     <td>{item.code_name}</td>
-                    <td>{item.group}</td>
-                    <td>{item.package}</td>
+                    <td>{item.type}</td>
+                    <td>{item.packet}</td>
                     <td>{item.device}</td>
                     <td>{item.container}</td>
                     <td>
