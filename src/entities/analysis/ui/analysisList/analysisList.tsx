@@ -10,18 +10,19 @@ export const AnalysisList = memo(({isChange}: any) => {
 
     const data = useSelector(getAnalysisData)
 
+    console.log(data)
 
     const render = useCallback(() => {
         return data?.map((item, index) => {
             return (
                 <tr>
                     <td>{index + 1}</td>
-                    <td>{item.name}</td>
-                    <td>{item.code_name}</td>
-                    <td>{item.type}</td>
-                    <td>{item.packet}</td>
-                    <td>{item.device}</td>
-                    <td>{item.container}</td>
+                    <td>{item?.name}</td>
+                    <td>{item?.code_name}</td>
+                    <td>{item?.type}</td>
+                    <td>{item?.packet}</td>
+                    <td>{item?.device}</td>
+                    <td>{item?.container}</td>
                     <td>
                         <i onClick={() => isChange(item)} className={"fas fa-edit"}/>
                     </td>

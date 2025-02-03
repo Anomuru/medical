@@ -1,0 +1,67 @@
+import React, { useCallback, useEffect, useState } from "react";
+import classNames from "classnames";
+import cls from "./select.module.sass";
+
+interface ISelectProps {
+    extraClass?: string;
+    title?: string;
+    required?: boolean;
+    selectOption?: string | number;
+    setSelectOption: (arg: any) => void;
+    optionsData?: any[];
+    keyValue?: string;
+    status?: string;
+}
+
+export const Select: React.FC<ISelectProps> = ({
+                                                   extraClass,
+                                                   setSelectOption,
+                                                   selectOption,
+                                                   required,
+                                                   title,
+                                                   optionsData,
+                                                   keyValue,
+                                                   status,
+                                               }) => {
+    const renderOptionsOfSelect = useCallback(() => {
+        return optionsData?.map((item, index) => {
+            const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
+            const key = item.name || item.id;
+            return (
+                <option key={index} value={value} disabled={item.disabled}>
+                    {key}
+                </option>
+            );
+        });
+    }, [optionsData, keyValue]);
+
+    useEffect(() => {
+        if (optionsData?.length === 1) {
+            const item = optionsData[0];
+            const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
+            if (selectOption !== value) {
+                setSelectOption(value);
+            }
+        }
+    }, [optionsData, keyValue, selectOption, setSelectOption]);
+
+    return (
+        <label className={classNames(cls.label, extraClass)}>
+            <select
+                disabled={status === "disabled"}
+                className={classNames(cls.label__inner, extraClass, {
+                    [cls.error]: status === "error",
+                })}
+                required={required}
+                value={selectOption ?? ""}
+                onChange={(e) => setSelectOption(e.target.value)}
+            >
+                <option value="" disabled>
+                    {title || "Tanlang"}
+                </option>
+                {renderOptionsOfSelect()}
+            </select>
+            {status === "error" && <span className={cls.label__error}>Tanlanmagan</span>}
+        </label>
+    );
+};
