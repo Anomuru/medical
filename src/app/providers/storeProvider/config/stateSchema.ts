@@ -17,12 +17,14 @@ import {
 import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/analysisPackageScheme";
 import { IAlertState} from "../../../../features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
+import {IOftenUsedDeviceListSchema} from "../../../../entities/oftenUsed/model/types/oftenUsedDeviceScheme";
 
 
 export interface StateSchema {
 
     user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
+    oftenUsedDeviceSlice: IOftenUsedDeviceListSchema
 
     workTableSlice?: WorkTableSchema;
     staffSlice?: StaffListSchema;
@@ -30,6 +32,10 @@ export interface StateSchema {
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
     jobList?: JobListSchema
+
+
+
+
 
 
     deviceProfileSlice?: DeviceProfileSchema;
@@ -42,7 +48,6 @@ export interface StateSchema {
     AlertSlice?: IAlertState
 
     patientSlice?: IPatientSchema
-
 }
 
 // export interface ReducerManager {

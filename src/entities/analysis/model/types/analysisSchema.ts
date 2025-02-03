@@ -1,15 +1,17 @@
 export interface IAnalysis {
     name: string,
     code_name: string | number,
-    group: string,
-    package: string,
+    type: string,
+    packet: string,
     device: string,
-    container: string
+    container: string,
+    id: number
 }
 
 export interface IAnalysisSchema {
     data: [] | IAnalysis[],
     loading: boolean,
-    error?: "error"
+    error?: "error",
+    count?: number
 }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {Navigate, Outlet, Route, Routes} from 'react-router';
 
 import {AnalysisAnalysis, AnalysisContainerModal, AnalysisGroupModal, AnalysisPackageModal} from "features/analysis";
-import {AnalysisHeader} from "entities/analysis";
+import {AnalysisHeader, analysisReducer} from "entities/analysis";
 
 import cls from "./analysisPage.module.sass";
 import {
@@ -15,6 +15,7 @@ import {analysisPackageReducer} from "entities/analysis/model/slice/analysisPack
 
 
 const reducers: ReducersList = {
+    analysisSlice: analysisReducer ,
     analysisContainerSlice: analysisContainerReducer,
     analysisGroupSlice: analysisGroupReducer,
     analysisPackageSlice: analysisPackageReducer
