@@ -15,15 +15,19 @@ export const Pakets = memo(() => {
         setIsDelete(false)
     }
 
-    const onClick = (id:number) => {
+    const onClick = (id: number) => {
         setIsActive(id)
         setIsDelete(true)
     }
 
     return (
         <>
-            <PaketsList onDelete={onClick}/>
-            <ConfirmModal onClick={onDelete} setActive={setIsDelete} active={isDelete}/>
+            {/*<PaketsList onDelete={onClick}/>*/}
+            <ConfirmModal
+                onClick={onDelete}
+                setActive={setIsDelete}
+                active={isDelete}
+            />
         </>
     );
 })

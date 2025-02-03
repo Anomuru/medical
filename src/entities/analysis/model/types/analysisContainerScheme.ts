@@ -9,5 +9,5 @@ export interface IAnalysisContainer {
 export interface IAnalysisContainerSchema {
     data: IAnalysisContainer[],
     loading: boolean,
-    error: boolean
+    error?: string
 }

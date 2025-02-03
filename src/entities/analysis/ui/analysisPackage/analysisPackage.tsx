@@ -1,23 +1,55 @@
-import {memo, useCallback} from 'react';
+import React, {FC, memo, useCallback} from 'react';
 
 import cls from "./analysisPackage.module.sass";
 
-export const AnalysisPackage = memo(() => {
 
-    const render = useCallback(() => {
-        return [1,2,3,4,5,6,7,8,9,0].map(item => {
-            return (
-                <div className={cls.package__item}>
-                    <h3>КОАГУЛОЛОГИЯ</h3>
-                    <p>Paket nomi</p>
+interface IItem {
+    id: number,
+    name: string,
+
+}
+
+interface IAnalysisContainerProps {
+    data?: IItem[]
+    setActiveEdit: (arg: boolean) => void
+    setActiveEditItem: any,
+
+}
+
+export const AnalysisPackage: FC<IAnalysisContainerProps> = memo(({data, setActiveEdit, setActiveEditItem}) => {
+
+    console.log(data)
+    const renderData = () => {
+        return data?.map(item => (
+            <div className={cls.wrapper__box}>
+                <div className={cls.wrapper__box_header}>
+                    <div className={cls.wrapper__box_header_box}>
+                        <span className={cls.wrapper__box_header_title}>{item.name}</span>
+                        <div className={cls.wrapper__box_header_name}>
+                            Paket nomi
+                        </div>
+                    </div>
+
+                    <div
+                        onClick={() => {
+                            setActiveEdit(true)
+                            setActiveEditItem(item)
+                        }}
+                        className={cls.wrapper__box_header_edit}>
+                        <i className={"fas fa-edit"}/>
+                    </div>
+
                 </div>
-            )
-        })
-    },[])
+
+
+            </div>
+        ))
+    }
+
 
     return (
-        <div className={cls.package}>
-            {render()}
+        <div className={cls.wrapper}>
+            {renderData()}
         </div>
     );
 })

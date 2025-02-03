@@ -1,28 +1,23 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IAnalysisContainerSchema} from "../types/analysisContainerScheme";
+import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
 
 
 const initialState : IAnalysisContainerSchema = {
     loading: false,
-    data: [
-        {
-            id: 1,
-            name: "test",
-            size: "12",
-            color: "#fff"
-        }
-
-    ],
-    error: false
+    data: [],
 }
 
 const analysisContainerSlice = createSlice({
     name: "analysisContainerSlice",
     initialState,
     reducers: {
+
         onAddAnalysis: (state, action) => {
             state.data = [...state.data, action.payload]
-
+        },
+        onGetContainer: (state, action) => {
+            state.data = action.payload.results
         },
         onEditAnalysis: (state, action) => {
             state.data =  state.data.map(item => {
@@ -36,10 +31,22 @@ const analysisContainerSlice = createSlice({
         },
         onDeleteAnalysis: (state, action) => {
             state.data = state.data.filter(item => item.id !== action.payload)
-
         },
     },
-    extraReducers: builder => {}
+    extraReducers: (builder) => {
+        builder
+            .addCase(analysisContainerThunk.pending, (state) => {
+                state.error = "";
+                state.loading = true;
+            })
+            .addCase(analysisContainerThunk.fulfilled, (state) => {
+                state.loading = false;
+            })
+            .addCase(analysisContainerThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            });
+    }
 })
 
 export const {reducer: analysisContainerReducer} = analysisContainerSlice

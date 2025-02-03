@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import {AnalysisPackage} from "entities/analysis";
 import {Modal} from "shared/ui/modal";
@@ -6,30 +6,172 @@ import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
 
 import cls from "./analysisPackageModal.module.sass";
+import {getAnalysisPackage} from "entities/analysis";
+import {useDispatch, useSelector} from "react-redux";
+import {useForm} from "react-hook-form";
+import {Button} from "shared/ui/button";
+
+import {analysisPackageAction} from "entities/analysis";
+import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
+import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {headers, useHttp} from "../../../../shared/api/base";
+import {fetchAnalysisPackageList} from "entities/analysis/index";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 export const AnalysisPackageModal = () => {
 
-    const [active, setActive] = useState(false)
+    const [active, setActive] = useState<boolean>(false)
+    const [activeEdit, setActiveEdit] = useState<boolean>(false)
+    const [activeEditItem, setActiveEditItem] = useState({})
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+
+        dispatch(fetchAnalysisPackageList())
+    }, [])
+
+    const analysisPackageData = useSelector(getAnalysisPackage)
 
     return (
         <div className={cls.modal}>
             <div className={cls.modal__wrapper}>
-                <div className={cls.modal__add}>
+                <div onClick={() => setActive(true)} className={cls.modal__add}>
                     <i className={"fas fa-plus"}/>
                 </div>
-                <div className={cls.modal__edit}>
-                    <i className={"fas fa-edit"}/>
-                </div>
             </div>
-            <AnalysisPackage/>
-            <Modal
-                active={active}
-                setActive={setActive}
-            >
-                <Form>
-                    <Input name={"name"}/>
-                </Form>
-            </Modal>
+            <AnalysisPackage data={analysisPackageData} setActiveEditItem={setActiveEditItem}
+                             setActiveEdit={setActiveEdit}/>
+            <AddPackageAddModal setActive={setActive} active={active}/>
+            <EditPackageAddModal active={activeEdit} setActive={setActiveEdit} activeEditItem={activeEditItem}/>
+
         </div>
     );
+}
+
+const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (arg: boolean) => void }) => {
+    const {request} = useHttp()
+
+    const {setValue, handleSubmit, register} = useForm()
+
+    const dispatch = useAppDispatch()
+
+    const onClick = (data: {}) => {
+
+
+        request({
+            url: "packet/crud/create/",
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+            dispatch(analysisPackageAction.onAddAnalysisPackage(res))
+            setActive(false)
+            setValue("name", "")
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully added"
+            }))
+        })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+    }
+
+    return (
+        <Modal title={"Add"} active={active} setActive={setActive}>
+            <Form extraClass={cls.modal__form} onSubmit={handleSubmit(onClick)}>
+                <Input name={"name"} register={register}/>
+                <Button>Add</Button>
+
+            </Form>
+        </Modal>
+    )
+}
+
+const EditPackageAddModal = ({active, setActive, activeEditItem}: {
+    activeEditItem: any,
+    active: boolean,
+    setActive: (arg: boolean) => void
+}) => {
+
+
+    const {request} = useHttp()
+
+    const {setValue, handleSubmit, register} = useForm()
+
+    const [activeConfirm, setActiveConfirm] = useState<boolean>(false)
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        setValue("name", activeEditItem.name)
+    }, [setValue, activeEditItem])
+
+    const onClick = (data: {}) => {
+
+
+        request({
+            url: `packet/crud/update/${activeEditItem.id}`,
+            method: "PATCH",
+            body: JSON.stringify(data),
+            headers: headers()
+        })
+            .then(res => {
+                console.log(res)
+
+                dispatch(analysisPackageAction.onEditAnalysisPackage({id: activeEditItem.id, res}))
+                setActive(false)
+                setValue("name", "")
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Successfully Changed"
+                }))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        //
+
+    }
+    const onDelete = () => {
+
+        request({
+            url: `packet/crud/delete/${activeEditItem.id}`,
+            method: "DELETE",
+            headers: headers()
+        })
+            .then(res => {
+                dispatch(analysisPackageAction.onDeleteAnalysisPackage(activeEditItem.id))
+                setActive(false)
+                setValue("name", "")
+                onCloseDeleteModal()
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: res.message
+                }))
+            })
+
+
+    }
+    const onCloseDeleteModal = useCallback(() => {
+        setActiveConfirm(false);
+    }, []);
+    return (
+        <Modal title={"Edit"} active={active} setActive={setActive}>
+            <Form extraClass={cls.modal__form}>
+                <Input name={"name"} register={register}/>
+                <div className={cls.modal__buttons}>
+                    <Button onClick={handleSubmit(onClick)}>Edit</Button>
+                    <Button type={"danger"} onClick={handleSubmit(() => setActiveConfirm(true))}>Delete</Button>
+                </div>
+
+            </Form>
+            <DeleteModal active={activeConfirm} setActive={onCloseDeleteModal} onConfirm={onDelete}/>
+        </Modal>
+    )
 }

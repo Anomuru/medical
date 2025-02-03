@@ -1,24 +1,26 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 
-import {AnalysisContainer, AnalysisPackage} from "entities/analysis";
+import {AnalysisContainer} from "entities/analysis";
 import {Modal} from "shared/ui/modal";
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
 
 import cls from "./analysisContainerModal.module.sass";
-import {HexColorPicker} from "react-colorful";
+
 import {Button} from "../../../../shared/ui/button";
 import {useForm} from "react-hook-form";
-import {
-    DynamicModuleLoader,
-    ReducersList
-} from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 
-import {analysisContainerActions, analysisContainerReducer} from "entities/analysis/model/slice/analysisContainerSlice";
+
+
+import {analysisContainerActions} from "entities/analysis/model/slice/analysisContainerSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
 
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
+import {headers, useHttp} from "../../../../shared/api/base";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
+import {alertAction} from "../../../alert/model/slice/alertSlice";
 
 
 interface IAnalysisContainerModalProps {
@@ -44,9 +46,14 @@ export const AnalysisContainerModal = () => {
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
     const [activeEditItem, setActiveEditItem] = useState(null)
 
-
     const analysisDate = useSelector(getAnalysisContainer)
 
+    const dispatch = useAppDispatch()
+
+
+    useEffect(() => {
+        dispatch(analysisContainerThunk())
+    },[])
 
 
     return (
@@ -72,22 +79,37 @@ export const AnalysisContainerModal = () => {
 
 
 const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive}) => {
-    const [color, setColor] = useState("#fff");
 
-    const {register, setValue, handleSubmit} = useForm()
+    const {register, setValue, handleSubmit} = useForm();
+    const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+
+    const {request} = useHttp()
+
     const onClick = (data: IAnalysisContainerModalProps) => {
-        const res = {
-            ...data,
-            color: color,
-            id: new Date().getTime()
-        }
-        setActive(false)
-        setValue("name" , "")
-        setValue("size" , "")
-        setColor("#fff")
-        dispatch(analysisContainerActions.onAddAnalysis(res))
+
+
+        request({
+            url: "container/crud/create/",
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+            setActive(false)
+            setValue("name" , "")
+            setValue("size" , "")
+            setValue("color" , "")
+            dispatch(analysisContainerActions.onAddAnalysis(res))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully added"
+            }))
+        })
+
+
+
+
 
     }
     return (
@@ -99,18 +121,8 @@ const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActi
             <Form extraClass={cls.modal__form}>
                 <Input required extraClass={cls.modal__input} name={"name"} placeholder={"Nomi"} register={register}/>
                 <Input required extraClass={cls.modal__input} name={"size"} placeholder={"Hajmi"} register={register}/>
-                <div className={cls.modal__colorChange}>
 
-
-                    <HexColorPicker color={color} onChange={setColor}/>
-                    <div className={cls.modal__colorChange_mainBox}>
-                        <h2>Color :</h2>
-                        <div className={cls.modal__colorChange_box}
-                             style={{background: color}}>
-
-                        </div>
-                    </div>
-                </div>
+                <label htmlFor="">Choose color<Input extraLabelClass={cls.label} name={"color"} register={register} type={"color"}/></label>
                 <Button extraClass={cls.modal__button} onClick={handleSubmit(onClick)}>
                     Add
                 </Button>
@@ -128,10 +140,13 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
 
     const [activeConfirm , setActiveConfirm] = useState<boolean>(false)
 
+
+    const {request} = useHttp()
+
     useEffect(() => {
         setValue("name" , activeEditItem?.name)
         setValue("size" , activeEditItem?.size)
-        setColor(activeEditItem?.color)
+        setValue("color" , activeEditItem?.color)
 
     } , [activeEditItem , active])
 
@@ -143,20 +158,54 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
     }, []);
 
     const onEdit = (data: IAnalysisContainerModalProps) => {
-        const res = {
-            ...data,
-            color: color,
+        request({
+            url: `container/crud/${activeEditItem.id}/update`,
+            method: "PATCH",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
 
-        }
-        setActive(false)
-        dispatch(analysisContainerActions.onEditAnalysis({id: activeEditItem.id , data: res}))
+            setActive(false)
+            dispatch(analysisContainerActions.onEditAnalysis({id: activeEditItem.id , data : res}))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully changed"
+            }))
+        })
+
+
+
+
 
     }
 
     const onDelete = () => {
-        dispatch(analysisContainerActions.onDeleteAnalysis(activeEditItem.id))
-        setActive(false)
-        onCloseDeleteModal()
+
+
+        // request({
+        //     url: ``,
+        //     method: "PATCH",
+        //     body: JSON.stringify(),
+        //     headers: headers()
+        // })
+        //
+        request({
+            url: `container/crud/${activeEditItem.id}/delete`,
+            method: "DELETE",
+            headers: headers()
+        }).then(res => {
+            dispatch(analysisContainerActions.onDeleteAnalysis(activeEditItem.id))
+            setActive(false)
+            onCloseDeleteModal()
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Successfully changed"
+            }))
+        })
+
+
 
     }
     return (
@@ -168,18 +217,10 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
             <Form extraClass={cls.modal__form}>
                 <Input extraClass={cls.modal__input} name={"name"} placeholder={"Nomi"} register={register}/>
                 <Input extraClass={cls.modal__input} name={"size"} placeholder={"Hajmi"} register={register}/>
-                <div className={cls.modal__colorChange}>
-
-
-                    <HexColorPicker color={color} onChange={setColor}/>
-                    <div className={cls.modal__colorChange_mainBox}>
-                        <h2>Color :</h2>
-                        <div className={cls.modal__colorChange_box}
-                             style={{background: color}}>
-
-                        </div>
-                    </div>
-                </div>
+                <label htmlFor="">
+                    Change color
+                    <Input extraLabelClass={cls.label} name={"color"}  register={register} type={"color"}/>
+                </label>
                 <div style={{display: "flex" , justifyContent: "space-between"}}>
                     <Button extraClass={cls.modal__button} onClick={handleSubmit(onEdit)}>
                         Edit

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import classNames from "classnames";
 
 import cls from "./select.module.sass";
@@ -7,7 +7,7 @@ interface ISelectProps {
     extraClass?: string,
     title?: string,
     required?: boolean,
-    selectOption?: string,
+    selectOption?: string | number,
     setSelectOption: (arg: any) => void,
     optionsData?: any[],
     keyValue?: string,
@@ -26,6 +26,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
         keyValue,
         status
     } = props
+
 
     useEffect(() => {
         if (selectOption) {

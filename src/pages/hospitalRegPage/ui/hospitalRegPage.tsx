@@ -8,9 +8,8 @@ import {Radio} from "shared/ui/radio";
 
 
 import cls from "./hospitalRegPage.module.sass";
-import {headers, useHttp} from "shared/api/base";
-import arrowContainedSquare from "shared/assets/icon/arrowContainedSquare.svg"
-import {Pakets} from "../../../features/pakets";
+import {useHttp} from "shared/api/base";
+import {Pakets} from "features/pakets";
 
 
 interface IHospitalRegPageData {
@@ -26,7 +25,6 @@ interface IProgress {
 export const HospitalRegPage = () => {
 
     const [errorUserName, setErrorUserName] = useState<boolean>(false)
-
 
     const list = useMemo(() => [
         {
@@ -193,41 +191,38 @@ export const HospitalRegPage = () => {
             ...data,
             sex: selectedRadio,
             branch: 1
-
         }
 
-        request({
-            url: "user/users/crud/create/",
-            method: "POST",
-            body: JSON.stringify(res),
-            headers: headers()
-        })
-            .then(res => {
-                console.log(res)
-                setErrorUserName(false)
 
-                // list.map(item => {
-                //     if (item.isDouble) {
-                //
-                //     } else {
-                //         setValue(item.name, "")
-                //     }
-                // })
-
-                reset()
-            })
-            .catch(err => {
-                console.log(err)
+        console.log(res)
 
 
-                setErrorUserName(true)
-
-
-            })
+        //
+        // request({
+        //     url: "user/users/crud/create/",
+        //     method: "POST",
+        //     body: JSON.stringify(res),
+        //     headers: headers()
+        // })
+        //     .then(res => {
+        //         console.log(res)
+        //         setErrorUserName(false)
+        //         // list.map(item => {
+        //         //     if (item.isDouble) {
+        //         //
+        //         //     } else {
+        //         //         setValue(item.name, "")
+        //         //     }
+        //         // })
+        //         reset()
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //         setErrorUserName(true)
+        //     })
     }
 
 
-    const pakets = []
 
 
     return (
@@ -236,7 +231,7 @@ export const HospitalRegPage = () => {
                 {/*<div className={cls.hospital__progress}>*/}
                 {/*    <div style={{width: `${calc}%`}} className={cls.info}/>*/}
                 {/*</div>*/}
-                <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
+                <Form id={"regForm"} onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
                     <div className={cls.registerForm__form}>
                         <div className={cls.info}>
                             {/*<div className={cls.info__percent}>*/}
@@ -290,27 +285,19 @@ export const HospitalRegPage = () => {
                 <div className={cls.list}>
                     <h1>Ro'yxat</h1>
                     <div className={cls.list__container}>
-
                         <Pakets/>
                         <Pakets/>
-
                     </div>
-
-
                 </div>
 
 
-                <Button extraClass={cls.hospital__btn}>Add</Button>
+                <Button id={"regForm"} extraClass={cls.hospital__btn}>Add</Button>
 
             </div>
         </div>
     );
 }
 
-
-interface PaketProps {
-    item: object
-}
 
 
 

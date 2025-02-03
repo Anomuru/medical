@@ -9,17 +9,18 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {analysisContainerReducer} from "../../../entities/analysis/model/slice/analysisContainerSlice";
-import {analysisGroupReducer} from "../../../entities/analysis/model/slice/analysisGroupSlice";
+import {analysisContainerReducer} from "entities/analysis/model/slice/analysisContainerSlice";
+import {analysisGroupReducer} from "entities/analysis/model/slice/analysisGroupSlice";
+import {analysisPackageReducer} from "entities/analysis/model/slice/analysisPackageSlice";
 
 
 const reducers: ReducersList = {
+    analysisSlice: analysisReducer ,
     analysisContainerSlice: analysisContainerReducer,
     analysisGroupSlice: analysisGroupReducer,
-    analysisSlice: analysisReducer
+    analysisPackageSlice: analysisPackageReducer
     // userSlice:
 };
-
 export const AnalysisPage = () => {
     const route = localStorage.getItem("route")
 
