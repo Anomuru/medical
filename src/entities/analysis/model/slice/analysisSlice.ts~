@@ -1,0 +1,27 @@
+import {createSlice} from "@reduxjs/toolkit";
+import {IAnalysisSchema} from "../types/analysisSchema";
+
+const initialState: IAnalysisSchema = {
+    data: [],
+    loading: false,
+    error: undefined,
+    count: 0
+}
+
+const analysisSlice = createSlice({
+    name: "analysisSlice",
+    initialState,
+    reducers: {
+        onGetAnalysis: (state, action) => {
+            state.data = action.payload.results
+            state.count = action.payload.count
+        },
+
+        createAnalysis: (state, action) => {
+            state.data = [...state.data, action.payload]
+        }
+    }
+})
+
+export const {reducer: analysisReducer} = analysisSlice
+export const {actions: analysisActions} = analysisSlice

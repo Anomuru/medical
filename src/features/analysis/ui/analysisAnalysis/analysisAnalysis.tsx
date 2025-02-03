@@ -32,16 +32,7 @@ interface IAddData {
     code_name: string
 }
 
-interface IAddModalProps {
-    active: boolean,
-    setActive: (arg: boolean) => void
-}
 
-interface IChangeModalProps {
-    active: boolean,
-    setActive: (arg: boolean) => void,
-    data?: IAnalysis
-}
 
 export const AnalysisAnalysis = () => {
     const [active, setActive] = useState<boolean>(false)
@@ -95,7 +86,7 @@ export const AnalysisAnalysis = () => {
 };
 
 
-const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
+const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setActive: (active: boolean) => void }) => {
 
     const {request} = useHttp()
     const dispatch = useAppDispatch()
@@ -175,7 +166,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
     )
 }
 
-const AnalysisAnalysisChangeModal = ({active, setActive, data}: IChangeModalProps) => {
+const AnalysisAnalysisChangeModal = ({active, setActive, data}: { active: boolean, setActive: (active: boolean) => void, data: any }) => {
 
 
     const dispatch = useAppDispatch()
