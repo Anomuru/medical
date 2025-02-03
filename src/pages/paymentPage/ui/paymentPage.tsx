@@ -22,35 +22,6 @@ export const  PaymentPage = () => {
 
     return (
         <div className={cls.payment}>
-
-            <div className={cls.cashier}>
-                <h1>Kassir</h1>
-                <Input name={"id"} title={"Hisob raqami (ID)"}/>
-                <div className={cls.types}>
-                    {
-                        list.value.map(item => {
-                            return (
-                                <Radio
-                                    name={list.name}
-                                    // @ts-ignore
-                                    value={item.id}
-                                    // @ts-ignore
-                                    onChange={setSelectedRadio}
-                                    checked={item.id === selectedRadio}
-                                >
-                                    {item.label}
-                                </Radio>
-                            )
-                        })
-                    }
-
-                </div>
-
-                <Button extraClass={cls.submit}>Add</Button>
-
-
-            </div>
-
             <div className={cls.patientsList}>
                 <div className={cls.header}>
                     <h2>Patients list</h2>
@@ -87,6 +58,36 @@ export const  PaymentPage = () => {
                     </div>
                 </div>
             </div>
+
+            <div className={cls.cashier}>
+                <h1>Kassir</h1>
+                <Input name={"id"} title={"Hisob raqami (ID)"}/>
+                <div className={cls.types}>
+                    {
+                        list.value.map(item => {
+                            return (
+                                <Radio
+                                    name={list.name}
+                                    // @ts-ignore
+                                    value={item.id}
+                                    // @ts-ignore
+                                    onChange={setSelectedRadio}
+                                    checked={item.id === selectedRadio}
+                                >
+                                    {item.label}
+                                </Radio>
+                            )
+                        })
+                    }
+
+                </div>
+
+                <Button extraClass={cls.submit}>Add</Button>
+
+
+            </div>
+
+
 
 
 
