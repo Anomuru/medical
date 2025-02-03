@@ -9,7 +9,8 @@ const initialState: IAnalysisSchema = {
             group: "Group tr",
             package: "КОАГУЛОЛОГИЯ",
             device: "Device nomi",
-            container: "Container nomi"
+            container: "Container nomi",
+            price: "200000"
         },
         {
             name: "Analiz nomi",
@@ -17,7 +18,8 @@ const initialState: IAnalysisSchema = {
             group: "Group gh",
             package: "КОАГУЛОЛОГИЯ",
             device: "Device nomi",
-            container: "Container nomi"
+            container: "Container nomi",
+            price: "200000"
         },
         {
             name: "Analiz nomi",
@@ -25,7 +27,8 @@ const initialState: IAnalysisSchema = {
             group: "Group asd",
             package: "КОАГУЛОЛОГИЯ",
             device: "Device nomi",
-            container: "Container nomi"
+            container: "Container nomi",
+            price: "200000"
         }
     ],
     loading: false,

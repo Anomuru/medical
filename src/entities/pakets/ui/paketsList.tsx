@@ -2,14 +2,20 @@ import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 
 import cls from "./paketsList.module.sass";
 import arrowContainedSquare from "shared/assets/icon/arrowContainedSquare.svg";
+import {IAnalysis} from "entities/analysis";
+import {IPackagesWithAnalysis} from "shared/types/oftenUsedTypes";
+
+
+
 
 type PropsType = {
     onDelete: (arg: number) => void;
     title: string,
-    totalPrice: number
+    totalPrice: number,
+    packages: IAnalysis[]
 }
 
-export const PaketsList = memo(({onDelete, totalPrice, title}: PropsType) => {
+export const PaketsList = memo(({onDelete, totalPrice, title,packages}: PropsType) => {
 
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -29,18 +35,23 @@ export const PaketsList = memo(({onDelete, totalPrice, title}: PropsType) => {
     }, []);
 
     const render = useCallback(() => {
-        return (
-            <div className={cls.analysis__item}>
-                <h1 className={cls.title}>Протромбиновое время (ПВ)</h1>
-                <hr/>
-                <h2 className={cls.value}>200.000</h2>
-                <div onClick={() => onDelete(1)} className={cls.minus}>
-                    <i className="fas fa-minus"></i>
 
+        return packages.map(item => {
+            return (
+                <div className={cls.analysis__item}>
+                    <h1 className={cls.title}>Протромбиновое время (ПВ)</h1>
+                    <hr/>
+                    <h2 className={cls.value}>200.000</h2>
+                    <div onClick={() => onDelete(1)} className={cls.minus}>
+                        <i className="fas fa-minus"></i>
+
+                    </div>
                 </div>
-            </div>
-        )
-    }, [onDelete])
+            )
+        })
+
+
+    }, [onDelete,packages])
 
 
     return (

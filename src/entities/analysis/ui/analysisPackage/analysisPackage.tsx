@@ -18,7 +18,6 @@ interface IAnalysisContainerProps {
 
 export const AnalysisPackage: FC<IAnalysisContainerProps> = memo(({data, setActiveEdit, setActiveEditItem}) => {
 
-    console.log(data)
     const renderData = () => {
         return data?.map(item => (
             <div className={cls.wrapper__box}>

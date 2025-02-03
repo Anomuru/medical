@@ -5,14 +5,24 @@ import {ConfirmModal} from "shared/ui/confirm";
 
 
 import cls from "./pakets.module.sass";
+import {IPackagesWithAnalysis} from "shared/types/oftenUsedTypes";
+import {IAnalysis} from "entities/analysis";
 
-export const Pakets = memo(() => {
+
+interface IPakets {
+    title: string,
+    totalPrice: number,
+    packages: IAnalysis[]
+}
+
+
+
+export const Pakets = memo(({packages,title,totalPrice}: IPakets) => {
 
     const [isDelete, setIsDelete] = useState(false)
     const [isActive, setIsActive] = useState(NaN)
 
     const onDelete = () => {
-        console.log(isActive, 'is already delete')
         setIsDelete(false)
     }
 
@@ -23,7 +33,7 @@ export const Pakets = memo(() => {
 
     return (
         <>
-            {/*<PaketsList onDelete={onClick}/>*/}
+            <PaketsList title={title} totalPrice={totalPrice} packages={packages} onDelete={onClick}/>
             <ConfirmModal
                 onClick={onDelete}
                 setActive={setIsDelete}

@@ -10,6 +10,13 @@ import {Radio} from "shared/ui/radio";
 import cls from "./hospitalRegPage.module.sass";
 import {API_URL, headers, useHttp} from "shared/api/base";
 import {Pakets} from "features/pakets";
+import {IAnalysisPackage} from "entities/analysis/model/types/analysisPackageScheme";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchJobsData, getJobsData} from "entities/oftenUsed";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {Select} from "shared/ui/select";
+import {IAnalysis} from "entities/analysis";
+import {IPackagesWithAnalysis} from "shared/types/oftenUsedTypes";
 
 
 interface IHospitalRegPageData {
@@ -25,7 +32,18 @@ interface IProgress {
 export const HospitalRegPage = () => {
 
     const [errorUserName, setErrorUserName] = useState<boolean>(false)
-    const [pakets,setPakets] = useState([])
+    const [pakets, setPakets] = useState<IPackagesWithAnalysis[]>([])
+
+    const jobs = useSelector(getJobsData)
+    const [doctors, setDoctors] = useState([])
+    const [analysis, setAnalysis] = useState<IAnalysis[]>([])
+
+    const [job, setJob] = useState()
+    const [doctor, setDoctor] = useState()
+
+
+    const [packs, setPacks] = useState([])
+    const [customPack, setCustomPack] = useState([])
 
 
     const list = useMemo(() => [
@@ -72,7 +90,8 @@ export const HospitalRegPage = () => {
                     type: "date",
                     name: "birth_date",
                     label: "Birth Date",
-                }, {
+                },
+                {
                     name: "phone_number",
                     label: "Phone",
                 },
@@ -95,7 +114,7 @@ export const HospitalRegPage = () => {
             isInput: true,
             type: "password"
         },
-    ], [])
+    ], [jobs, doctors])
 
     const {
         register,
@@ -104,6 +123,9 @@ export const HospitalRegPage = () => {
         reset
     } = useForm<IHospitalRegPageData>()
     const {request} = useHttp()
+
+    const dispatch = useAppDispatch()
+
 
     useEffect(() => {
         setProgress(list.map(item => {
@@ -122,9 +144,40 @@ export const HospitalRegPage = () => {
             // headers: headers()
         })
             .then(res => {
+                console.log(res.results)
                 setPakets(res.results)
             })
-    },[])
+    }, [])
+
+
+    useEffect(() => {
+        dispatch(fetchJobsData())
+    }, [])
+
+
+    useEffect(() => {
+        if (job)
+            request({
+                url: `job_info/job_get/doctor_list/?job_id=${job}`,
+                method: "GET",
+                // headers: headers()
+            })
+                .then(res => {
+                    setDoctors(res.results)
+                })
+    }, [job])
+
+    useEffect(() => {
+        if (job)
+            request({
+                url: `analysis/analysis/get/list/`,
+                method: "GET",
+                // headers: headers()
+            })
+                .then(res => {
+                    setAnalysis(res.results)
+                })
+    }, [job])
 
 
     const [selectedRadio, setSelectedRadio] = useState<string>("")
@@ -212,9 +265,6 @@ export const HospitalRegPage = () => {
         }
 
 
-        console.log(res)
-
-
         //
         // request({
         //     url: "user/users/crud/create/",
@@ -240,7 +290,24 @@ export const HospitalRegPage = () => {
         //     })
     }
 
+    const onAddedPaket = (id: number) => {
 
+
+        const filtered = pakets.filter(state => state.id === id)[0]
+
+
+        setPakets(state => [...state, {
+            id: filtered.id,
+            name: filtered.name,
+            analysis: filtered.analysis,
+            totalPrice: Number(filtered.analysis.map(item => item.price)),
+        }])
+
+    }
+
+    const onAddedAnalysis = () => {
+
+    }
 
 
     return (
@@ -263,6 +330,9 @@ export const HospitalRegPage = () => {
                     <div className={cls.content}>
                         <h2> {errorUserName ? "Username already exist" : null}</h2>
                         {renderInput()}
+                        <Select selectOption={job} setSelectOption={setJob} title={"Jobs"} optionsData={jobs}/>
+                        <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
+                                optionsData={doctors}/>
                     </div>
                 </Form>
 
@@ -281,7 +351,7 @@ export const HospitalRegPage = () => {
                                 {
                                     pakets.map(item => {
                                         return (
-                                            <div className={cls.item}>
+                                            <div className={cls.item} onClick={() => onAddedPaket(item.id)}>
                                                 <h2>
                                                     {item.name}
                                                 </h2>
@@ -298,7 +368,21 @@ export const HospitalRegPage = () => {
                         <div className={cls.collection}>
                             <h1>Analiz</h1>
                             <div className={cls.container}>
-                                <div className={cls.item}></div>
+                                {
+                                    analysis.map(item => {
+                                        return (
+                                            <div className={cls.item}>
+                                                <h2>
+                                                    {item.name}
+                                                </h2>
+                                                <div className={cls.icon}>
+                                                    <i className="fas fa-plus"></i>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+
 
                             </div>
                         </div>
@@ -310,8 +394,15 @@ export const HospitalRegPage = () => {
                 <div className={cls.list}>
                     <h1>Ro'yxat</h1>
                     <div className={cls.list__container}>
-                        <Pakets/>
-                        <Pakets/>
+                        {
+                            pakets.map(item => {
+                                return (
+                                    <Pakets packages={item.analysis} title={item.name} totalPrice={item.id} />
+
+                                )
+                            })
+                        }
+                        {/*<Pakets/>*/}
                     </div>
                 </div>
 

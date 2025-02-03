@@ -4,7 +4,8 @@ export interface IAnalysis {
     group: string,
     package: string,
     device: string,
-    container: string
+    container: string,
+    price: string
 }
 
 export interface IAnalysisSchema {
