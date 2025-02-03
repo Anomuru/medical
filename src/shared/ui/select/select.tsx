@@ -11,7 +11,7 @@ interface ISelectProps {
     setSelectOption: (arg: any) => void,
     optionsData?: any[],
     keyValue?: string,
-    status?: string
+    status?: string,
 }
 
 export const Select: React.FC<ISelectProps> = (props) => {
@@ -24,7 +24,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
         title,
         optionsData,
         keyValue,
-        status
+        status,
     } = props
 
 

@@ -8,6 +8,7 @@ export {analysisReducer, analysisActions} from "./model/slice/analysisSlice";
 
 export {getAnalysisData, getAnalysisLoading, getAnalysisError} from "./model/selector/analysisSelector";
 
+// export {fetchAnalysisList} from "./model/thunk/analysisThunk";
 
 export type {IAnalysis, IAnalysisSchema} from "./model/types/analysisSchema";
 export type {IAnalysisContainer, IAnalysisContainerSchema} from "./model/types/analysisContainerScheme";

@@ -18,6 +18,7 @@ import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/
 import { IAlertState} from "../../../../features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
 import {IOftenUsedDeviceListSchema} from "../../../../entities/oftenUsed/model/types/oftenUsedDeviceScheme";
+import {IPacketsSchema} from "../../../../entities/pakets";
 
 
 export interface StateSchema {
@@ -47,7 +48,8 @@ export interface StateSchema {
     analysisSlice?: IAnalysisSchema,
     AlertSlice?: IAlertState
 
-    patientSlice?: IPatientSchema
+    patientSlice?: IPatientSchema,
+    packetsSlice?: IPacketsSchema,
 }
 
 // export interface ReducerManager {

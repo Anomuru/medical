@@ -5,7 +5,8 @@ export interface IAnalysis {
     packet: string,
     device: string,
     container: string,
-    id: number
+    id: number,
+    price: string
 }
 
 export interface IAnalysisSchema {

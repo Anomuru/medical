@@ -12,7 +12,7 @@ import {Button} from "../../../shared/ui/button";
 import classNames from "classnames";
 import {Modal} from "../../../shared/ui/modal";
 import {Select} from "../../../shared/ui/select";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {fetchStaffListData, getStaffListData, staffReducer} from "../../staff";
 import {
     DynamicModuleLoader,
@@ -22,19 +22,21 @@ import {workTableReducer} from "../model/slice/workTableSlice";
 import {Form} from "shared/ui/form";
 import {Input} from "../../../shared/ui/input";
 import {workTableThunk} from "../model/thunk/workTableThunk";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {useNavigate} from "react-router";
 
 
 const weekNames = [
     {
         id: 1,
         name: "Monday"
-    },{
+    }, {
         id: 2,
         name: "Tuesday"
-    },{
+    }, {
         id: 3,
         name: "Wednesday"
-    },{
+    }, {
         id: 4,
         name: "Thursday"
     },
@@ -59,19 +61,18 @@ export const WorkTable = () => {
     const [week, setWeek] = useState<number | string>()
     const [fromDate, setFromDate] = useState<string>()
     const [toDate, setToDate] = useState<string>()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const handleClick = () => {
         setActive(!active)
     }
 
     useEffect(() => {
-        //@ts-ignore
         dispatch(fetchStaffListData())
     }, [])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // if (!(select && fromDate)) return
 
         const data = {
             doctor: select,
@@ -86,7 +87,6 @@ export const WorkTable = () => {
 
     const staffList = useSelector(getStaffListData)
 
-    console.log(select, 'efefee')
     const calendar = useCalendarApp({
         views: [
             createViewWeek(),
@@ -96,15 +96,30 @@ export const WorkTable = () => {
             {
                 id: 1,
                 title: "My new event",
-                start: "2024-12-21 03:00",
-                end: "2024-12-21 04:00",
+                start: "2024-12-21 09:00",
+                end: "2024-12-21 14:00",
             }
         ],
         selectedDate: "2024-12-15",
         plugins: [
             createEventModalPlugin(),
             createDragAndDropPlugin()
-        ]
+        ],
+        dayBoundaries: {
+            start: '08:00',
+            end: '00:00',
+        },
+        callbacks: {
+            onClickDateTime(data: any) {
+                navigate("../hospitalReg")
+                const math = Number(data.substring(data.length - 5, data.length - 3)) + 1
+                const res = {
+                    start: data.substring(data.length - 5, data.length - 3) + ":00",
+                    end: (math < 10 ? `0${math}` : math) + ":00"
+                }
+                localStorage.setItem("time", JSON.stringify(res))
+            }
+        }
     })
     return (
         <DynamicModuleLoader reducers={reducers}>
@@ -113,7 +128,11 @@ export const WorkTable = () => {
                     <Calendar className={cls.mainBox__leftSight__calendar}/>
                     <div className={cls.mainBox__leftSight__arounder}>
                         <h1 className={cls.mainBox__leftSight__arounder__content}>Staff list</h1>
-                        <Button onClick={handleClick} extraClass={cls.mainBox__leftSight__arounder__btn} children={ <i className={classNames("fa-solid fa-plus")} />}/>
+                        <Button
+                            onClick={handleClick}
+                            extraClass={cls.mainBox__leftSight__arounder__btn}
+                            children={<i className={classNames("fa-solid fa-plus")}/>}
+                        />
                     </div>
 
                     <div className={cls.mainBox__leftSight__staffList}>
@@ -134,14 +153,15 @@ export const WorkTable = () => {
                     </div>
                 </div>
                 <div className={cls.mainBox__rightSight}>
-                    <ScheduleXCalendar calendarApp={calendar} />
+                    <ScheduleXCalendar calendarApp={calendar}/>
                 </div>
-                <Modal extraClass={cls.mainBox__modal} title={"Add"}  active={active} setActive={handleClick}>
+                <Modal extraClass={cls.mainBox__modal} title={"Add"} active={active} setActive={handleClick}>
                     <Form extraClass={cls.mainBox__modal__form} onSubmit={handleSubmit}>
                         {/*//@ts-ignore*/}
-                        <Select extraClass={cls.mainBox__modal__form__select} title={"Doctors"} setSelectOption={setSelected} optionsData={staffList}/>
+                        <Select extraClass={cls.mainBox__modal__form__select} title={"Doctors"}
+                                setSelectOption={setSelected} optionsData={staffList}/>
                         {/*//@ts-ignore*/}
-                        <Select title={"Days"} keyValue={"name"}  setSelectOption={setWeek} optionsData={weekNames}/>
+                        <Select title={"Days"} keyValue={"name"} setSelectOption={setWeek} optionsData={weekNames}/>
                         <Input name={"start_time"} title={"Start time"} type={"time"} onChange={setFromDate}/>
                         <Input name={"end_time"} title={"End time"} type={"time"} onChange={setToDate}/>
                         <Button extraClass={cls.mainBox__modal__form__select}>Send</Button>
