@@ -19,6 +19,7 @@ import { IAlertState} from "../../../../features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
 import {IOftenUsedDeviceListSchema} from "../../../../entities/oftenUsed/model/types/oftenUsedDeviceScheme";
 import {IPacketsSchema} from "../../../../entities/pakets";
+import {BranchSchema} from "../../../../features/branch/types/branchSchema";
 
 
 export interface StateSchema {
@@ -26,13 +27,14 @@ export interface StateSchema {
     user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
     oftenUsedDeviceSlice: IOftenUsedDeviceListSchema
-
+    branchSlice?: BranchSchema;
     workTableSlice?: WorkTableSchema;
     staffSlice?: StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
     jobList?: JobListSchema
+
 
 
 

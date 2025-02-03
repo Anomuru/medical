@@ -12,7 +12,25 @@ import {headers, useHttp} from "shared/api/base";
 
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {getBranch, getBranchThunk} from "../../../features/branch";
+import {
+    DynamicModuleLoader,
+    ReducersList
+} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
 
+interface Branch {
+    id: number,
+    name: string,
+    starts: string,
+    ends: string,
+    phone_number: string,
+    ip_address: string,
+    main: boolean,
+    location: string
+
+}
 interface ISubmitData {
     name: string,
     surname: string,
@@ -25,23 +43,40 @@ interface ISubmitData {
     password: string
 }
 
+interface IBranchResponse {
+    count: number;
+    next?: string;
+    previous?: string;
+    results?: Branch[];
+}
+
+const reducers: ReducersList = {
+    branchSlice: branchReducers
+}
 export const RegisterPage = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const {request} = useHttp()
 
     useEffect(() => {
-        // @ts-ignore
-        dispatch(fetchJobsData())
+        dispatch(getBranchThunk(1))
     }, [])
 
-    const jobsList = useSelector(getJobsData)
+    // useEffect(() => {
+    //     // @ts-ignore
+    //     dispatch(fetchJobsData())
+    // }, [])
 
+
+    const jobsList = useSelector(getJobsData)
+    const branch = useSelector(getBranch) as IBranchResponse
     const [selectedJob, setSelectedJob] = useState<string>()
     const [selectedLocation, setSelectedLocation] = useState<string>()
 
     const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
     const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
+
+    console.log(branch, 'eefefe')
 
     const registerStaff = useMemo(() => [
         {
@@ -168,6 +203,10 @@ export const RegisterPage = () => {
         })
     }, [jobsList, register, registerStaff, selectedRadio, isCheckUsername])
 
+    const onSub = () => {
+        console.log("Data")
+    }
+
     const onSubmit = (data: ISubmitData) => {
         if (selectedRadio && selectedJob && selectedLocation) {
             const res = {
@@ -210,17 +249,19 @@ export const RegisterPage = () => {
 
 
     return (
-        <div className={cls.registerPage}>
-            <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
-                <h1>Register Staff</h1>
-                <div className={cls.container}>
-                    {render()}
-                </div>
-                <Button extraClass={cls.registerPage__btn}>Register</Button>
-            </Form>
-            <div className={cls.registerPage__image}>
-                <img src={image} alt=""/>
-            </div>
-        </div>
+       <DynamicModuleLoader reducers={reducers}>
+           <div className={cls.registerPage}>
+               <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
+                   <h1>Register Staff</h1>
+                   <div className={cls.container}>
+                       {render()}
+                   </div>
+                   <Button extraClass={cls.registerPage__btn}>Register</Button>
+               </Form>
+               <div className={cls.registerPage__image}>
+                   <img src={image} alt=""/>
+               </div>
+           </div>
+       </DynamicModuleLoader>
     );
 }
