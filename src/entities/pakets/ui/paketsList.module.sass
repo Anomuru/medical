@@ -26,15 +26,18 @@
       align-items: center
       justify-content: space-between
       margin-top: 1rem
+      &__wrapper
+        display: flex
+        gap: 1rem
+        span
+          cursor: pointer
+          @include btn-active
+          img
+            width: 2.5rem
       span:first-child
         font-weight: 400
         font-size: 1.4rem
         color: $medical-color
-      span:last-child
-        cursor: pointer
-        @include btn-active
-        img
-          width: 2.5rem
   .analysis
     display: flex
     flex-direction: column
@@ -57,10 +60,11 @@
         flex-grow: 3
         border: none
         border-bottom: 1px dotted black
-      .minus
-        background-color: red
-        padding: .7rem
-        border-radius: 5px
-        color: white
-        cursor: pointer
-        @include btn-active
+  .minus
+    height: fit-content
+    background-color: red
+    padding: .55rem .7rem
+    border-radius: 5px
+    color: white
+    cursor: pointer
+    @include btn-active

@@ -9,14 +9,19 @@ import {Radio} from "shared/ui/radio";
 
 import cls from "./hospitalRegPage.module.sass";
 import {API_URL, headers, useHttp} from "shared/api/base";
-import {Pakets} from "features/pakets";
+import {Packets} from "features/pakets";
 import {IAnalysisPackage} from "entities/analysis/model/types/analysisPackageScheme";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchJobsData, getJobsData} from "entities/oftenUsed";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {Select} from "shared/ui/select";
-import {IAnalysis} from "entities/analysis";
-import {IPackagesWithAnalysis} from "shared/types/oftenUsedTypes";
+import {analysisPackageReducer, analysisReducer, IAnalysis} from "entities/analysis";
+import {
+    DynamicModuleLoader,
+    ReducersList
+} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {packetsActions, packetsReducer} from "../../../entities/pakets/model/paketsSlice";
+import {getPacketsData, IPackets} from "../../../entities/pakets";
 
 
 interface IHospitalRegPageData {
@@ -29,14 +34,36 @@ interface IProgress {
 
 }
 
+const reducers: ReducersList = {
+    packetsSlice: packetsReducer,
+    analysisSlice: analysisReducer,
+    analysisPackageSlice: analysisPackageReducer
+}
+
 export const HospitalRegPage = () => {
 
+    const packetsData = useSelector(getPacketsData)
+    const {
+        addAnalysis,
+        addPacket
+    } = packetsActions
+
     const [errorUserName, setErrorUserName] = useState<boolean>(false)
-    const [pakets, setPakets] = useState<IPackagesWithAnalysis[]>([])
+    const [pakets, setPakets] = useState<IPackets[]>([])
 
     const jobs = useSelector(getJobsData)
     const [doctors, setDoctors] = useState([])
-    const [analysis, setAnalysis] = useState<IAnalysis[]>([])
+    const [analysis, setAnalysis] =
+        useState<IAnalysis[]>([{
+            id: 6,
+            name: "new analysis",
+            type: "new type",
+            price: "11000",
+            device: "new device",
+            container: "new container",
+            code_name: "new code_name",
+            packet: "new packet"
+        }])
 
     const [job, setJob] = useState()
     const [doctor, setDoctor] = useState()
@@ -298,119 +325,125 @@ export const HospitalRegPage = () => {
 
         setPakets(state => [...state, {
             id: filtered.id,
-            name: filtered.name,
-            analysis: filtered.analysis,
-            totalPrice: Number(filtered.analysis.map(item => item.price)),
+            title: filtered.title,
+            packages: filtered.packages,
+            price: Number(filtered.packages.map(item => item.price)),
         }])
 
     }
 
-    const onAddedAnalysis = () => {
-
+    const onAddNewAnalysis = (data: IAnalysis) => {
+        dispatch(addAnalysis(data))
+        // setAnalysis(prev => prev.filter(item => item.id !== data.id))
     }
 
 
     return (
-        <div className={cls.wrapper}>
-            <div className={cls.hospital}>
-                {/*<div className={cls.hospital__progress}>*/}
-                {/*    <div style={{width: `${calc}%`}} className={cls.info}/>*/}
-                {/*</div>*/}
-                <Form id={"regForm"} onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
-                    <div className={cls.registerForm__form}>
-                        <div className={cls.info}>
-                            {/*<div className={cls.info__percent}>*/}
-                            {/*    <h2 className={cls.text}>Patient Information</h2>*/}
-                            {/*    <p className={cls.percent}>{calc}%</p>*/}
-                            {/*</div>*/}
-                            <h1 className={cls.info__title}>Hospital Registration Form</h1>
-                            <h2 className={cls.info__text}>Lorem Ipsum has been the industry's standard dummy.</h2>
-                        </div>
-                    </div>
-                    <div className={cls.content}>
-                        <h2> {errorUserName ? "Username already exist" : null}</h2>
-                        {renderInput()}
-                        <Select selectOption={job} setSelectOption={setJob} title={"Jobs"} optionsData={jobs}/>
-                        <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
-                                optionsData={doctors}/>
-                    </div>
-                </Form>
-
-                <div className={cls.analizForm}>
-
-                    <div className={cls.header}>
-                        <h1>Analiz form</h1>
-                        <Input name={"search"} placeholder={"Search"}/>
-                    </div>
-
-
-                    <div className={cls.content}>
-                        <div className={cls.collection}>
-                            <h1>Paket</h1>
-                            <div className={cls.container}>
-                                {
-                                    pakets.map(item => {
-                                        return (
-                                            <div className={cls.item} onClick={() => onAddedPaket(item.id)}>
-                                                <h2>
-                                                    {item.name}
-                                                </h2>
-                                                <div className={cls.icon}>
-                                                    <i className="fas fa-plus"></i>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-
+        <DynamicModuleLoader reducers={reducers}>
+            <div className={cls.wrapper}>
+                <div className={cls.hospital}>
+                    {/*<div className={cls.hospital__progress}>*/}
+                    {/*    <div style={{width: `${calc}%`}} className={cls.info}/>*/}
+                    {/*</div>*/}
+                    <Form id={"regForm"} onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
+                        <div className={cls.registerForm__form}>
+                            <div className={cls.info}>
+                                {/*<div className={cls.info__percent}>*/}
+                                {/*    <h2 className={cls.text}>Patient Information</h2>*/}
+                                {/*    <p className={cls.percent}>{calc}%</p>*/}
+                                {/*</div>*/}
+                                <h1 className={cls.info__title}>Hospital Registration Form</h1>
+                                <h2 className={cls.info__text}>Lorem Ipsum has been the industry's standard dummy.</h2>
                             </div>
                         </div>
-                        <div className={cls.collection}>
-                            <h1>Analiz</h1>
-                            <div className={cls.container}>
-                                {
-                                    analysis.map(item => {
-                                        return (
-                                            <div className={cls.item}>
-                                                <h2>
-                                                    {item.name}
-                                                </h2>
-                                                <div className={cls.icon}>
-                                                    <i className="fas fa-plus"></i>
+                        <div className={cls.content}>
+                            <h2> {errorUserName ? "Username already exist" : null}</h2>
+                            {renderInput()}
+                            <Select selectOption={job} setSelectOption={setJob} title={"Jobs"} optionsData={jobs}/>
+                            <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
+                                    optionsData={doctors}/>
+                        </div>
+                    </Form>
+
+                    <div className={cls.analizForm}>
+
+                        <div className={cls.header}>
+                            <h1>Analiz form</h1>
+                            <Input name={"search"} placeholder={"Search"}/>
+                        </div>
+
+
+                        <div className={cls.content}>
+                            <div className={cls.collection}>
+                                <h1>Paket</h1>
+                                <div className={cls.container}>
+                                    {
+                                        pakets.map(item => {
+                                            return (
+                                                <div className={cls.item} onClick={() => onAddedPaket(item.id)}>
+                                                    <h2>
+                                                        {item.title}
+                                                    </h2>
+                                                    <div className={cls.icon}>
+                                                        <i className="fas fa-plus"></i>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    })
-                                }
+                                            )
+                                        })
+                                    }
 
-
+                                </div>
                             </div>
+                            <div className={cls.collection}>
+                                <h1>Analiz</h1>
+                                <div className={cls.container}>
+                                    {
+                                        analysis.map(item => {
+                                            return (
+                                                <div onClick={() => onAddNewAnalysis(item)} className={cls.item}>
+                                                    <h2>
+                                                        {item.name}
+                                                    </h2>
+                                                    <div
+
+                                                        className={cls.icon}
+                                                    >
+                                                        <i className="fas fa-plus"></i>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div className={cls.list}>
+                        <h1>Ro'yxat</h1>
+                        <div className={cls.list__container}>
+                            {
+                                packetsData?.map(item => {
+                                    return (
+                                        <Packets item={item}/>
+
+                                    )
+                                })
+                            }
+                            {/*<Pakets/>*/}
                         </div>
                     </div>
 
+
+                    <Button id={"regForm"} extraClass={cls.hospital__btn}>Add</Button>
+
                 </div>
-
-
-                <div className={cls.list}>
-                    <h1>Ro'yxat</h1>
-                    <div className={cls.list__container}>
-                        {
-                            pakets.map(item => {
-                                return (
-                                    <Pakets packages={item.analysis} title={item.name} totalPrice={item.id} />
-
-                                )
-                            })
-                        }
-                        {/*<Pakets/>*/}
-                    </div>
-                </div>
-
-
-                <Button id={"regForm"} extraClass={cls.hospital__btn}>Add</Button>
-
             </div>
-        </div>
+        </DynamicModuleLoader>
     );
 }
 

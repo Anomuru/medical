@@ -5,10 +5,3 @@ export interface JobSchema {
     id: number,
     name: string
 }
-
-export interface IPackagesWithAnalysis {
-    id: number,
-    name: string,
-    totalPrice: number,
-    analysis: IAnalysis[]
-}
