@@ -118,6 +118,7 @@ export const WorkTable = () => {
                     end: (math < 10 ? `0${math}` : math) + ":00"
                 }
                 localStorage.setItem("time", JSON.stringify(res))
+                localStorage.setItem("date_calendar", JSON.stringify(data.substring(0,10)))
             }
         }
     })

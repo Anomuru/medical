@@ -19,9 +19,9 @@ import {analysisPackageReducer, analysisReducer, IAnalysis} from "entities/analy
 import {
     DynamicModuleLoader,
     ReducersList
-} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {packetsActions, packetsReducer} from "../../../entities/pakets/model/paketsSlice";
-import {getPacketsData, IPackets} from "../../../entities/pakets";
+import {getPacketsData, IPackets} from "entities/pakets";
 
 
 interface IHospitalRegPageData {
@@ -53,17 +53,7 @@ export const HospitalRegPage = () => {
 
     const jobs = useSelector(getJobsData)
     const [doctors, setDoctors] = useState([])
-    const [analysis, setAnalysis] =
-        useState<IAnalysis[]>([{
-            id: 6,
-            name: "new analysis",
-            type: "new type",
-            price: "11000",
-            device: "new device",
-            container: "new container",
-            code_name: "new code_name",
-            packet: "new packet"
-        }])
+    const [analysis, setAnalysis] = useState<IAnalysis[]>([])
 
     const [job, setJob] = useState()
     const [doctor, setDoctor] = useState()
@@ -83,11 +73,13 @@ export const HospitalRegPage = () => {
             name: "name_surname",
             isInput: true,
             isDouble: true,
+
             items: [
                 {
                     name: "name",
                     label: "Name",
-                }, {
+                },
+                {
                     name: "surname",
                     label: "Surname",
                 },
@@ -100,7 +92,7 @@ export const HospitalRegPage = () => {
         },
         {
             isInput: true,
-            name: "pasport_seria",
+            name: "passport_series",
             label: "Pasport Seria (AB or AD)",
         },
         {
@@ -128,7 +120,8 @@ export const HospitalRegPage = () => {
             isInput: true,
             name: "email",
             label: "Email Adress",
-            type: "email"
+            type: "email",
+            isRequired: false
         },
         {
             name: "unknown",
@@ -141,6 +134,7 @@ export const HospitalRegPage = () => {
             isInput: true,
             type: "password"
         },
+
     ], [jobs, doctors])
 
     const {
@@ -171,8 +165,10 @@ export const HospitalRegPage = () => {
             // headers: headers()
         })
             .then(res => {
-                console.log(res.results)
-                setPakets(res.results)
+                setPakets(res.results.map((item: { total_price: number; }) => ({
+                    ...item,
+                    price: item.total_price
+                })))
             })
     }, [])
 
@@ -180,6 +176,7 @@ export const HospitalRegPage = () => {
     useEffect(() => {
         dispatch(fetchJobsData())
     }, [])
+
 
 
     useEffect(() => {
@@ -220,6 +217,9 @@ export const HospitalRegPage = () => {
 
     const renderInput = useCallback(() => {
         return list.map(item => {
+
+
+            console.log(item)
             if (item.isDouble) {
                 return (
                     <div className={cls.double}>
@@ -271,50 +271,74 @@ export const HospitalRegPage = () => {
                         name={item.name}
                         register={register}
                         onChange={(value) => onProgress({name: item.name, value})}
+                        required={item.isRequired !== undefined ? item.isRequired : true}
                     />
                 )
             }
         })
     }, [list, selectedRadio])
 
-    const calc = useMemo(() =>
-        Math.floor((progress.filter(item => item.status).length / progress.length) * 100), [progress])
 
-    // console.log(calc, "calc")
-    // console.log(progress.filter(item => item.status).length, "calc")
-    // console.log(progress.length, "calc")
+    console.log(list)
+    function combineArraysInOneArray<T>(arrays: T[][]): T[] {
+        return arrays.reduce((acc, arr) => acc.concat(arr), []);
+    }
+
+
 
     const onSubmit = (data: IHospitalRegPageData) => {
-        const res = {
-            ...data,
-            sex: selectedRadio,
-            branch: 1
+        if (packetsData?.length) {
+            const analysisData: number[][]  =
+                packetsData.map(item => item.analysis.map(id => id.id))
+
+
+            const analysis = combineArraysInOneArray(analysisData );
+            const timeString = localStorage.getItem("time");
+            const date = JSON.parse(localStorage.getItem("date_calendar") as string);
+
+            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : { start: '', end: '' };
+
+
+            console.log(analysis, "analysis")
+
+            const res = {
+                ...data,
+                sex: selectedRadio,
+                branch: 1,
+                from_date: time.start,
+                to_date: time.end,
+                doctor_id: doctor,
+                date,
+                analysis
+            }
+
+            console.log(res)
+
+            // request({
+            //     url: "user/users/crud/create/",
+            //     method: "POST",
+            //     body: JSON.stringify(res),
+            //     headers: headers()
+            // })
+            //     .then(res => {
+            //         console.log(res)
+            //         setErrorUserName(false)
+            //         // list.map(item => {
+            //         //     if (item.isDouble) {
+            //         //
+            //         //     } else {
+            //         //         setValue(item.name, "")
+            //         //     }
+            //         // })
+            //         reset()
+            //     })
+            //     .catch(err => {
+            //         console.log(err)
+            //         setErrorUserName(true)
+            //     })
         }
 
 
-        //
-        // request({
-        //     url: "user/users/crud/create/",
-        //     method: "POST",
-        //     body: JSON.stringify(res),
-        //     headers: headers()
-        // })
-        //     .then(res => {
-        //         console.log(res)
-        //         setErrorUserName(false)
-        //         // list.map(item => {
-        //         //     if (item.isDouble) {
-        //         //
-        //         //     } else {
-        //         //         setValue(item.name, "")
-        //         //     }
-        //         // })
-        //         reset()
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //         setErrorUserName(true)
-        //     })
     }
 
     const onAddedPaket = (id: number) => {
@@ -322,13 +346,14 @@ export const HospitalRegPage = () => {
 
         const filtered = pakets.filter(state => state.id === id)[0]
 
-
-        setPakets(state => [...state, {
-            id: filtered.id,
-            title: filtered.title,
-            packages: filtered.packages,
-            price: Number(filtered.packages.map(item => item.price)),
-        }])
+        dispatch(addPacket(
+            {
+                id: filtered.id,
+                name: filtered.name,
+                analysis: filtered.analysis,
+                price: filtered.price,
+            }
+        ))
 
     }
 
@@ -336,6 +361,9 @@ export const HospitalRegPage = () => {
         dispatch(addAnalysis(data))
         // setAnalysis(prev => prev.filter(item => item.id !== data.id))
     }
+
+
+    console.log(packetsData)
 
 
     return (
@@ -382,7 +410,7 @@ export const HospitalRegPage = () => {
                                             return (
                                                 <div className={cls.item} onClick={() => onAddedPaket(item.id)}>
                                                     <h2>
-                                                        {item.title}
+                                                        {item.name}
                                                     </h2>
                                                     <div className={cls.icon}>
                                                         <i className="fas fa-plus"></i>
@@ -437,8 +465,6 @@ export const HospitalRegPage = () => {
                             {/*<Pakets/>*/}
                         </div>
                     </div>
-
-
                     <Button id={"regForm"} extraClass={cls.hospital__btn}>Add</Button>
 
                 </div>

@@ -2,9 +2,10 @@ import {IAnalysis} from "../../analysis";
 
 export interface IPackets {
     id: number,
-    title: string | null,
+    extra?: boolean,
+    name: string | null,
     price: number | null,
-    packages: IAnalysis[] | []
+    analysis: IAnalysis[]
 }
 
 export interface IPacketsSchema {
