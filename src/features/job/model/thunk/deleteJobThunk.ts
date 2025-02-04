@@ -5,9 +5,6 @@ import {jobsListActions} from "entities/jobList";
 
 
 
-
-
-
 interface deleteJobThunkProps {
     reason: string,
     id: number,
@@ -23,7 +20,6 @@ export const deleteJobThunk = createAsyncThunk<
     try {
 
 
-        console.log(authData)
         const response = await extra.api({
             url: `job_info/job_crud/delete/${authData.id}`, method: "DELETE", body: JSON.stringify({reason: authData.reason}), headers: headers()
         })
