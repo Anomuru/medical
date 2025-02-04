@@ -21,6 +21,7 @@ import {IOftenUsedDeviceListSchema} from "../../../../entities/oftenUsed/model/t
 import {IPacketsSchema} from "../../../../entities/pakets";
 import {BranchSchema} from "../../../../features/branch/types/branchSchema";
 import {IPaymentSchema} from "../../../../features/paymentFeature/model/paymentTypes";
+import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
 
 
 export interface StateSchema {
@@ -48,9 +49,9 @@ export interface StateSchema {
     analysisPackageSlice?: IAnalysisPackageSchema
     analysisSlice?: IAnalysisSchema,
     AlertSlice?: IAlertState
-
     patientSlice?: IPatientSchema,
     packetsSlice?: IPacketsSchema,
+    userAnalysisSlice?: IUserAnalysisSchema
 
 }
 

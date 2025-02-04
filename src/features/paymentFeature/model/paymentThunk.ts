@@ -24,3 +24,4 @@ export const fetchUserPaymentList = createAsyncThunk<
         return rejectWithValue('error');
     }
 });
+

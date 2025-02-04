@@ -76,7 +76,6 @@ export const RegisterPage = () => {
     const branchId = branch?.results?.[0]?.id;
     const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
     const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
-    console.log(branchId, 'efefefe')
     const registerStaff = useMemo(() => [
         {
             name: "username",
@@ -136,7 +135,7 @@ export const RegisterPage = () => {
             isInput: true,
             type: "password"
         },
-    ], [])
+    ], [jobsList])
 
     const {
         register,

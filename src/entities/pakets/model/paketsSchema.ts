@@ -5,11 +5,11 @@ export interface IPackets {
     extra?: boolean,
     name: string | null,
     price: number | null,
-    analysis: IAnalysis[]
+    analysis?: IAnalysis[]
 }
 
 export interface IPacketsSchema {
-    data: IPackets[] | [],
+    data: IPackets[],
     loading: boolean,
     error?: "error"
 }

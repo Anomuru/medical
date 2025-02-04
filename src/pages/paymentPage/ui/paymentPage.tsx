@@ -15,12 +15,17 @@ import {getPaymentData} from "../../../features/paymentFeature/model/paymentSele
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {fetchUserPaymentList} from "../../../features/paymentFeature/model/paymentThunk";
 import {getBranch, getBranchThunk} from "../../../features/branch";
+import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
 import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
+import {Packets} from "../../../features/pakets";
+import {userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
+import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
 
 
 
 
 const reducers: ReducersList = {
+    userAnalysisSlice: userAnalysisReducer,
     paymentSlice: paymentReducer,
     branchSlice: branchReducers
 }
@@ -28,12 +33,12 @@ const reducers: ReducersList = {
 export const PaymentPage = () => {
 
     const data = useSelector(getPaymentData)
+    const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
     const branch = useSelector(getBranch)
     const branchId = branch?.results?.[0]?.id;
-    console.log(branchId, 'idd')
+    const analiz = useSelector(getUserAnalysis)
     const dispatch = useAppDispatch()
-
     useEffect(() => {
         dispatch(getBranchThunk(1))
     }, [])
@@ -43,14 +48,22 @@ export const PaymentPage = () => {
         dispatch(fetchUserPaymentList({branchId, search}))
     }, [branchId])
 
+    useEffect(() => {
+        //@ts-ignore
+        dispatch(fetchUserAnalys({userId}))
+    }, [userId])
+
+
 // @ts-ignore
     const onChangeSearch = (e) => {
         setSearch(e);
     }
+    //@ts-ignore
+    // const onClickGetId = (e) => {
+    //     setUserId(e)
+    // }
 
-
-    console.log(search, 'qidiruv')
-
+    console.log(analiz, 'sdede')
 
 
 
@@ -63,7 +76,7 @@ export const PaymentPage = () => {
         const filteredData = data?.filter(item => item?.surname?.toLowerCase().includes(search?.toLowerCase()));
         return filteredData?.map(item => {
             return (
-                <div key={item.user_id} className={cls.item}>
+                <div onClick={() => setUserId(item.id)} key={item.user_id} className={cls.item}>
                     <span>{item.surname}</span>
                     <span>{item.name}</span>
                     <span>{item.user_id}</span>
@@ -99,6 +112,8 @@ export const PaymentPage = () => {
                         {renderData()}
                             </div>
                 </div>
+
+                {/*<Packets item={analiz}/>*/}
 
                 <div className={cls.cashier}>
                     <h1>Kassir</h1>
