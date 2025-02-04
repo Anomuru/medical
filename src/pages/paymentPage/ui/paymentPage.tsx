@@ -14,38 +14,63 @@ import {useSelector} from "react-redux";
 import {getPaymentData} from "../../../features/paymentFeature/model/paymentSelector";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {fetchUserPaymentList} from "../../../features/paymentFeature/model/paymentThunk";
+import {getBranch, getBranchThunk} from "../../../features/branch";
+import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
 
 
 
 
 const reducers: ReducersList = {
-    paymentSlice: paymentReducer
+    paymentSlice: paymentReducer,
+    branchSlice: branchReducers
 }
 
 export const PaymentPage = () => {
 
     const data = useSelector(getPaymentData)
-
+    const [search, setSearch] = useState("")
+    const branch = useSelector(getBranch)
+    const branchId = branch?.results?.[0]?.id;
+    console.log(branchId, 'idd')
     const dispatch = useAppDispatch()
-    useEffect(() => {
 
-        dispatch(fetchUserPaymentList())
+    useEffect(() => {
+        dispatch(getBranchThunk(1))
     }, [])
+
+    useEffect(() => {
+        //@ts-ignore
+        dispatch(fetchUserPaymentList({branchId, search}))
+    }, [branchId])
+
+// @ts-ignore
+    const onChangeSearch = (e) => {
+        setSearch(e);
+    }
+
+
+    console.log(search, 'qidiruv')
+
+
+
+
+
 
 
     const [selectedRadio, setSelectedRadio] = useState<string>("")
 
     const renderData = () => {
-        return data?.map(item => {
+        const filteredData = data?.filter(item => item?.surname?.toLowerCase().includes(search?.toLowerCase()));
+        return filteredData?.map(item => {
             return (
-                <div className={cls.item}>
+                <div key={item.user_id} className={cls.item}>
                     <span>{item.surname}</span>
                     <span>{item.name}</span>
                     <span>{item.user_id}</span>
                     <span>{item.phone_number}</span>
                 </div>
             )
-        })
+        });
     }
 
 
@@ -61,7 +86,12 @@ export const PaymentPage = () => {
                 <div className={cls.patientsList}>
                     <div className={cls.header}>
                         <h2>Patients list</h2>
-                        <Input name={"search"} placeholder={"search"}/>
+                        <Input
+                            //@ts-ignore
+                            onChange={onChangeSearch}
+                            name={"search"}
+                            placeholder={"search"}
+                            value={search}/>
                     </div>
 
                     <div className={cls.container}>
