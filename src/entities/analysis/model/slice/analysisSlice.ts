@@ -20,7 +20,7 @@ const analysisSlice = createSlice({
         createAnalysis: (state, action) => {
             state.data = [...state.data, action.payload]
         },
-        editAnalysis: (state, action) => {
+          editAnalysis: (state, action) => {
             state.data =  state.data.map(item => {
                 if (item.id === action.payload.id) {
                     return action.payload.data

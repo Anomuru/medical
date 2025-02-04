@@ -26,22 +26,17 @@ import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thu
 import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedDeviceSelector";
 import {Pagination} from "../../../pagination";
 import {getAnalysisCount} from "../../../../entities/analysis/model/selector/analysisSelector";
+import {data} from "react-router";
+import {alertAction, alertReducer} from "../../../alert/model/slice/alertSlice";
+import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 
 interface IAddData {
     name: string,
-    code_name: string
+    code_name: string,
+    id: number
 }
 
-interface IAddModalProps {
-    active: boolean,
-    setActive: (arg: boolean) => void
-}
 
-interface IChangeModalProps {
-    active: boolean,
-    setActive: (arg: boolean) => void,
-    data?: IAnalysis
-}
 
 export const AnalysisAnalysis = () => {
     const [active, setActive] = useState<boolean>(false)
@@ -95,7 +90,7 @@ export const AnalysisAnalysis = () => {
 };
 
 
-const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
+const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setActive: (active: boolean) => void }) => {
 
     const {request} = useHttp()
     const dispatch = useAppDispatch()
@@ -175,16 +170,33 @@ const AnalysisAnalysisAddModal = ({active, setActive}: IAddModalProps) => {
     )
 }
 
-const AnalysisAnalysisChangeModal = ({active, setActive, data}: IChangeModalProps) => {
+const AnalysisAnalysisChangeModal = ({active, setActive, data}: { active: boolean, setActive: (active: boolean) => void, data: any }) => {
 
 
     const dispatch = useAppDispatch()
+    const [deleteConfirm  , setDeleteConfirm] = useState<boolean>(false)
 
     const {request} = useHttp()
+
+    useEffect(() => {
+        if (data){
+
+
+            setValue("name" , data?.name)
+            setValue("code_name" , data?.code_name)
+            setSelectedGroup(data?.type)
+            setSelectedPackage(data.packet)
+            setSelectedDevice(data.device)
+            setSelectedContainer(data.container)
+        }
+    } , [data])
+
+
     // const dispatch = useDispatch()
     // const {createAnalysis} = analysisActions
     const {register, handleSubmit , setValue} = useForm<IAddData>()
 
+    const itemId = data?.id
     const onSubmit = (data: IAddData) => {
         const res = {
             ...data,
@@ -194,23 +206,37 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: IChangeModalProp
             container: selectedContainer
         }
 
-        request({url: "", body: JSON.stringify(res), method: "PATCH"})
+
+        request({url: `analysis/analysis/crud/update/${itemId}/`, body: JSON.stringify(res), method: "PUT"})
             .then(res => {
-                console.log(res)
-                dispatch(analysisActions.editAnalysis(res))
+                setActive(false)
+                dispatch(analysisActions.editAnalysis({id: itemId, data: res}))
+                dispatch(alertAction.onAddAlertOptions({type: "success", status: true, msg: "Successfully Changed"}))
             })
             .catch(err => console.log(err))
     }
 
-    const [selectedGroup, setSelectedGroup] = useState(NaN)
+    const onDelete = () => {
+
+        request({url: `analysis/analysis/crud/delete/${itemId}/`,method: "DELETE"})
+            .then(res => {
+                setActive(false)
+                dispatch(analysisActions.deleteAnalysis(itemId))
+                dispatch(alertAction.onAddAlertOptions({type: "success", status: true, msg: res.message}))
+
+            })
+            .catch(err => console.log(err))
+    }
+
+    const [selectedGroup, setSelectedGroup] = useState(undefined)
     const [selectedPackage, setSelectedPackage] = useState(NaN)
     const [selectedDevice, setSelectedDevice] = useState(NaN)
     const [selectedContainer, setSelectedContainer] = useState(NaN)
 
-    const getGroupId = useCallback((id: number) => setSelectedGroup(id ?? data?.type), [data?.type])
-    const getPackageId = useCallback((id: number) => setSelectedPackage(id ?? data?.packet), [data?.packet])
-    const getDeviceId = useCallback((id: number) => setSelectedDevice(id ?? data?.device), [data?.device])
-    const getContainerId = useCallback((id: number) => setSelectedContainer(id ?? data?.container), [data?.container])
+    // const getGroupId = useCallback((id: number) => setSelectedGroup(id ?? data?.type), [data?.type, setSelectedGroup]);
+
+
+
 
 
     const groupAnalysisData = useSelector(getAnalysisGroup)
@@ -218,17 +244,12 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: IChangeModalProp
     const getData = useSelector(getOftenDevice)
     const analysisDate = useSelector(getAnalysisContainer)
 
-    useEffect(() => {
-        // @ts-ignore
-        setValue("name" , data?.name)
-        // @ts-ignore
-        setValue("code_name" , data?.code_name)
-    } , [data])
+
 
 
     return (
         <Modal title={"Change"} active={active} setActive={setActive}>
-            <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.modal__form}>
+            <Form extraClass={cls.modal__form}>
                 <Input
                     required
                     register={register}
@@ -248,31 +269,38 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: IChangeModalProp
                     // rules={{value: data?.code_name}}
                 />
                 <Select
-                    selectOption={data?.type}
-                    title={"Group"}
-                    setSelectOption={getGroupId}
+                    // selectOption={data?.type}
+                    selectOption={selectedGroup}
+                    title="Group"
+                    setSelectOption={setSelectedGroup}
                     optionsData={groupAnalysisData}
                 />
+
                 <Select
-                    selectOption={data?.packet}
+                    selectOption={selectedPackage}
                     title={"Paket"}
-                    setSelectOption={getPackageId}
+                    setSelectOption={setSelectedPackage}
                     optionsData={analysisPackageData}
                 />
                 <Select
-                    selectOption={data?.device}
+
+                    selectOption={selectedDevice}
                     title={"Device"}
-                    setSelectOption={getDeviceId}
+                    setSelectOption={setSelectedDevice}
                     optionsData={getData?.results}
                 />
                 <Select
-                    selectOption={data?.container}
+                    selectOption={selectedContainer}
                     title={"Container"}
-                    setSelectOption={getContainerId}
+                    setSelectOption={setSelectedContainer}
                     optionsData={analysisDate}
                 />
-                <Button>Add</Button>
+                <div style={{display: "flex" , justifyContent: "space-between"}}>
+                    <Button onClick={handleSubmit(onSubmit)}>Add</Button>
+                    <Button type={"danger"} onClick={handleSubmit(() => setDeleteConfirm(true))}>Delete</Button>
+                </div>
             </Form>
+            <DeleteModal active={deleteConfirm} setActive={() => setDeleteConfirm(false)} onConfirm={onDelete}/>
         </Modal>
     )
 }

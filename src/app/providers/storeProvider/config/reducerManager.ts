@@ -40,6 +40,8 @@ export function createReducerManager(
             if (!key || reducers[key]) {
                 return;
             }
+
+            // @ts-ignore
             reducers[key] = reducer;
             mountedReducers[key] = true;
 

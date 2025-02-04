@@ -15,11 +15,12 @@ import {
     IAnalysisGroupSchema
 } from "entities/analysis";
 import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/analysisPackageScheme";
-import { IAlertState} from "../../../../features/alert/model/slice/alertSlice";
+import {IAlertState} from "../../../../features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
 import {IOftenUsedDeviceListSchema} from "../../../../entities/oftenUsed/model/types/oftenUsedDeviceScheme";
 import {IPacketsSchema} from "../../../../entities/pakets";
 import {BranchSchema} from "../../../../features/branch/types/branchSchema";
+import {IPaymentSchema} from "../../../../features/paymentFeature/model/paymentTypes";
 
 
 export interface StateSchema {
@@ -36,9 +37,7 @@ export interface StateSchema {
     jobList?: JobListSchema
 
 
-
-
-
+    paymentSlice?: IPaymentSchema,
 
 
     deviceProfileSlice?: DeviceProfileSchema;
@@ -52,6 +51,7 @@ export interface StateSchema {
 
     patientSlice?: IPatientSchema,
     packetsSlice?: IPacketsSchema,
+
 }
 
 // export interface ReducerManager {
