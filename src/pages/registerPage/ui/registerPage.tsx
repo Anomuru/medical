@@ -55,29 +55,28 @@ const reducers: ReducersList = {
 }
 export const RegisterPage = () => {
 
-    const dispatch = useAppDispatch()
+    const dispatchs = useAppDispatch()
+    const dispatch = useDispatch()
     const {request} = useHttp()
 
     useEffect(() => {
-        dispatch(getBranchThunk(1))
+        dispatchs(getBranchThunk(1))
     }, [])
 
-    // useEffect(() => {
-    //     // @ts-ignore
-    //     dispatch(fetchJobsData())
-    // }, [])
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchJobsData())
+    }, [])
 
 
     const jobsList = useSelector(getJobsData)
     const branch = useSelector(getBranch) as IBranchResponse
     const [selectedJob, setSelectedJob] = useState<string>()
     const [selectedLocation, setSelectedLocation] = useState<string>()
-
+    const branchId = branch?.results?.[0]?.id;
     const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
     const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
-
-    console.log(branch, 'eefefe')
-
+    console.log(branchId, 'efefefe')
     const registerStaff = useMemo(() => [
         {
             name: "username",
@@ -105,7 +104,7 @@ export const RegisterPage = () => {
             label: "Job",
             isMultiSelect: true,
             onSelect: getSelectedJob,
-            list: jobsList?.map(item => ({label: item.name, name: item.id}))
+            list: jobsList?.map(item => ({label: item.name, id: item.id}))
         }, {
             name: "passport_series",
             label: "Pasport seria (A B)",
@@ -203,18 +202,15 @@ export const RegisterPage = () => {
         })
     }, [jobsList, register, registerStaff, selectedRadio, isCheckUsername])
 
-    const onSub = () => {
-        console.log("Data")
-    }
 
     const onSubmit = (data: ISubmitData) => {
         if (selectedRadio && selectedJob && selectedLocation) {
             const res = {
                 ...data,
                 sex: selectedRadio,
-                job_id: selectedJob,
+                jobs: selectedJob,
                 location_id: selectedLocation,
-                branch: 1
+                branch: branchId
             }
 
             request({
