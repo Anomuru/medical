@@ -17,7 +17,7 @@ interface PropsType {
 export const PacketsList = memo((props: PropsType) => {
 
     const {item, onDeleteAnalysis, onDeletePacket} = props
-    const {id, packages, price, title} = item
+    const {id, analysis, price, name} = item
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,7 +37,7 @@ export const PacketsList = memo((props: PropsType) => {
 
     const render = useCallback(() => {
 
-        return packages.map(item => {
+        return analysis.map(item => {
             return (
                 <div className={cls.analysis__item}>
                     <h1 className={cls.title}>{item.name}</h1>
@@ -52,14 +52,14 @@ export const PacketsList = memo((props: PropsType) => {
         })
 
 
-    }, [onDeleteAnalysis, packages])
+    }, [onDeleteAnalysis, analysis])
 
 
     return (
         <div className={cls.paket}>
             <div className={cls.header}>
                 <div className={cls.row}>
-                    <span>{title}</span>
+                    <span>{name}</span>
                     <span>{price}</span>
                 </div>
                 <div className={cls.subrow}>

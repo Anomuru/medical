@@ -6,13 +6,13 @@ import {paymentActions} from "./paymentSlice";
 
 export const fetchUserPaymentList = createAsyncThunk<
     void,
-    void,
+    { branchId: number, search: string },
     ThunkConfig<string>
->('paymentSlice/fetchUserPaymentList', async (authData, thunkApi) => {
+>('paymentSlice/fetchUserPaymentList', async ({branchId, search}, thunkApi) => {
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "user/patient/", method: "GET", body: null, headers: headers()
+            url: `user/patient/?branch=${branchId}&search=${search}`, method: "GET", body: null, headers: headers()
         })
         if (!response) {
             throw new Error();
