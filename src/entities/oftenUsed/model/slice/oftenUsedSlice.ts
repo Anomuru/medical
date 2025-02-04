@@ -1,9 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "../types/oftenUsedSchemas";
-import {fetchJobsData} from "../thunk/oftenUsedThunk";
+import {fetchJobsData, fetchLocationData} from "../thunk/oftenUsedThunk";
 
 const initialState: OftenUsedSchemas = {
     jobs: undefined,
+    locations: undefined,
     loading: false,
     error: undefined
 }
@@ -19,12 +20,24 @@ const oftenUsedSlice = createSlice({
                 state.error = undefined
             })
             .addCase(fetchJobsData.fulfilled, (state, action) => {
-                console.log("ready")
                 state.jobs = action.payload.results
                 state.loading = false
                 state.error = undefined
             })
             .addCase(fetchJobsData.rejected, (state) => {
+                state.loading = false
+                state.error = "error"
+            })
+            .addCase(fetchLocationData.pending, (state) => {
+                state.loading = true
+                state.error = undefined
+            })
+            .addCase(fetchLocationData.fulfilled, (state, action) => {
+                state.locations = action.payload.results
+                state.loading = false
+                state.error = undefined
+            })
+            .addCase(fetchLocationData.rejected, (state) => {
                 state.loading = false
                 state.error = "error"
             })

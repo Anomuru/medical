@@ -1,5 +1,7 @@
 import React, {useCallback} from 'react';
+import {useSelector} from "react-redux";
 
+import {getUserRole} from "entities/user";
 import {Link} from "shared/ui/link";
 import {menuConfig} from "../config/menuConfig";
 
@@ -7,18 +9,23 @@ import cls from "./menuBar.module.sass";
 
 export const MenuBar = () => {
 
+    // const userRole = useSelector(getUserRole)
+    const userRole = localStorage.getItem("role")
+
     const renderMenuItems = useCallback(() => {
         return menuConfig.map(item => {
-            return (
-                <Link to={item.to}>
-                    <img
-                        src={item.image}
-                        alt={item.to}
-                    />
-                </Link>
-            )
+            if (userRole && item.roles.includes(userRole))
+                return (
+                    <Link to={item.to}>
+                        <img
+                            style={{color: "white"}}
+                            src={item.image}
+                            alt={item.to}
+                        />
+                    </Link>
+                )
         })
-    }, [menuConfig])
+    }, [userRole])
 
     return (
         <div className={cls.menu}>

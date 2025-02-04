@@ -9,4 +9,12 @@ export const fetchJobsData = createAsyncThunk(
     }
 )
 
+export const fetchLocationData = createAsyncThunk(
+    "oftenUsedSlice/fetchLocationData",
+    () => {
+        const {request} = useHttp()
+        return request({url: "branch_info/location/get/"})
+    }
+)
+
 
