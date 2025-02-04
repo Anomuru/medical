@@ -42,7 +42,7 @@ export const LogInPage = () => {
 
         dispatch(loginThunk(data))
             .then(res => {
-                if (res.meta.requestStatus === "fulfilled") {
+                if (res) {
                     navigate("/platform")
                 }
 

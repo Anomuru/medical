@@ -1,41 +1,56 @@
-import {useCallback} from 'react';
+import {FC, useCallback} from 'react';
 
 import {Table} from "shared/ui/table";
 
 import cls from "./patientList.module.sass";
+import {IPatient} from "../../model/patientSchema";
 
-export const PatientList = () => {
+
+
+interface IPatientListProps {
+    data?: IPatient[],
+    setActiveDeleteItem: (item: IPatient) => void,
+    setActiveDelete: (arg: boolean) => void
+
+}
+
+export const PatientList: FC<IPatientListProps> = ({data , setActiveDeleteItem , setActiveDelete}) => {
+
+    console.log(data)
 
     const render = useCallback(() => {
-        return [1,2,3,4,5,6, 7].map((item, index) => {
+        return data?.map((item, index) => {
             return (
                 <tr>
-                    <td>{index+1}</td>
+                    <td>{index + 1}</td>
                     <td>
                         <div className={cls.item}>
                             <img className={cls.item__image} src="" alt=""/>
                             <div className={cls.item__info}>
-                                <h3>John Smith</h3>
-                                <p>Surgeon</p>
+                                <h3>{item.surname}</h3>
+                                <p>{item.name}</p>
                             </div>
                         </div>
                     </td>
-                    <td>33</td>
-                    <td>+998 90 123-45-67</td>
+                    <td>{item.age}</td>
+                    <td>{item.phone_number}</td>
                     <td>
                         <div className={cls.check}>
-                            <i className="fa-solid fa-check"/>
+                            {item.status ? <i className="fa-solid fa-check"/> : <i className={`fa-solid fa-xmark ${cls.red}`}/>}
                         </div>
                     </td>
-                    <td>
-                        <div style={{background: "#FAECEC"}} className={cls.check}>
+                    {!item.deleted && <td>
+                        <div onClick={() => {
+                            setActiveDeleteItem(item)
+                            setActiveDelete(true)
+                        }} style={{background: "#FAECEC"}} className={cls.check}>
                             <i style={{color: "#FF0000"}} className="fas fa-times"/>
                         </div>
-                    </td>
+                    </td>}
                 </tr>
             )
         })
-    }, [])
+    }, [data])
 
     return (
         <Table>
@@ -51,7 +66,7 @@ export const PatientList = () => {
             </thead>
             <tbody>
             {render()}
-            {render()}
+
             </tbody>
         </Table>
     );

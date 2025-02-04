@@ -6,3 +6,6 @@ export const getLoading = (state: StateSchema) =>
     state.oftenUsedSlice?.loading
 export const getError = (state: StateSchema) =>
     state.oftenUsedSlice?.error
+
+
+export const getOftenDevice = (state: StateSchema) => state.oftenUsedSlice?.data

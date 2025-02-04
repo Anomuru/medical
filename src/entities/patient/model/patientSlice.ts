@@ -1,29 +1,42 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IPatientSchema} from "./patientSchema";
-import {fetchPatientData} from "./patientThunk";
+import {fetchPatientList} from "./patientThunk";
 
 const initialState: IPatientSchema = {
-    data: undefined,
+    data: [],
     loading: false,
-    error: undefined
+    error: undefined,
+    filter: []
 }
 
 const patientSlice = createSlice({
     name: "patientSlice",
     initialState,
-    reducers: {},
+    reducers: {
+        onGetPatientFilter: (state, action) => {
+            state.filter = action.payload.results
+        },
+
+        onGetPatient: (state, action) => {
+            state.data = action.payload.results
+        },
+        onDeletePatient: (state, action) => {
+            state.data = state.data?.filter(item => item.id !== action.payload)
+        }
+
+    },
     extraReducers: builder =>
         builder
-            .addCase(fetchPatientData.pending, state => {
+            .addCase(fetchPatientList.pending, state => {
                 state.loading = true
                 state.error = undefined
             })
-            .addCase(fetchPatientData.fulfilled, (state, action) => {
-                state.data = action.payload
+            .addCase(fetchPatientList.fulfilled, (state, action) => {
+
                 state.loading = false
                 state.error = undefined
             })
-            .addCase(fetchPatientData.rejected, state => {
+            .addCase(fetchPatientList.rejected, state => {
                 state.loading = false
                 state.error = "error"
             })

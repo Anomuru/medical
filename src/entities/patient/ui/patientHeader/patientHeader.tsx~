@@ -1,17 +1,10 @@
-import {FC, memo, useCallback, useState} from 'react';
+import {memo, useCallback, useState} from 'react';
 
 import {Radio} from "shared/ui/radio";
 
 import cls from "./patientHeader.module.sass";
 
-
-interface IPatientFilter {
-    patientFilter?: [],
-
-}
-
-
-export const PatientHeader: FC<IPatientFilter> = memo(({patientFilter}) => {
+export const PatientHeader = memo(() => {
 
     const [activeType, setActiveType] = useState("")
     const toggleActiveType = useCallback((data: string) => setActiveType(data), [])
