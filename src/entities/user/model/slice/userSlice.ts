@@ -4,6 +4,7 @@ import {fetchRefresh} from "../thunk/userThunk";
 
 const initialState: UserSchema = {
     id: null,
+    role: null,
     name: null,
     surname: null,
     branch: null,
@@ -20,6 +21,7 @@ const userSlice = createSlice({
             state.name = action.payload.name
             state.surname = action.payload.surname
             state.branch = action.payload.branch
+            state.role = action.payload.role
 
         }
 

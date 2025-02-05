@@ -27,7 +27,6 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {workTableReducer} from "../../workTable";
 import {deviceListActions} from "../../deviceList";
 
 

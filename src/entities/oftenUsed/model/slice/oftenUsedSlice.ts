@@ -1,9 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "../types/oftenUsedSchemas";
-import {fetchJobsData} from "../thunk/oftenUsedThunk";
+import {fetchJobsData, getDoctorsThunk,fetchLocationData} from "../thunk/oftenUsedThunk";
 
 const initialState: OftenUsedSchemas = {
-    jobs: undefined,
+    jobs: [],
+    doctors: [],
+    locations: undefined,
     loading: false,
     error: undefined
 }
@@ -25,6 +27,34 @@ const oftenUsedSlice = createSlice({
                 state.error = undefined
             })
             .addCase(fetchJobsData.rejected, (state) => {
+                state.loading = false
+                state.error = "error"
+            })
+            .addCase(fetchLocationData.pending, (state) => {
+                state.loading = true
+                state.error = undefined
+            })
+            .addCase(fetchLocationData.fulfilled, (state, action) => {
+                state.locations = action.payload.results
+                state.loading = false
+                state.error = undefined
+            })
+            .addCase(fetchLocationData.rejected, (state) => {
+                state.loading = false
+                state.error = "error"
+            })
+
+
+            .addCase(getDoctorsThunk.pending, (state) => {
+                state.loading = true
+                state.error = undefined
+            })
+            .addCase(getDoctorsThunk.fulfilled, (state, action) => {
+                state.doctors = action.payload
+                state.loading = false
+                state.error = undefined
+            })
+            .addCase(getDoctorsThunk.rejected, (state) => {
                 state.loading = false
                 state.error = "error"
             })
