@@ -12,6 +12,8 @@ import {addJobThunk} from "features/job/model/thunk/addJobThunk";
 import {JobSchema} from "shared/types/oftenUsedTypes";
 import CustomImg from "shared/ui/customImg/CustomImg";
 import {changeJobThunk} from "features/job/model/thunk/changeJobThunk";
+import {useForm} from "react-hook-form";
+import {getJobsThunk} from "../../../../entities/jobList/model/thunk/jobListThunk";
 
 
 interface JobCrudFormProps {
@@ -21,19 +23,24 @@ interface JobCrudFormProps {
 
 
 
-
 export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
 
     const [name,setName] = useState<string>("")
     const [isChanging,setIsChanging] = useState(false)
-
+    const [client, setClient] = useState<boolean>(false)
+    const {setValue, handleSubmit, register} = useForm()
+    const handleCheckboxChange = () => {
+        setClient(!client);
+    };
 
     useEffect(() =>{
         if (changedData && Object.keys(changedData).length) {
             setName(changedData.name)
             setIsChanging(true)
+            setClient(changedData.has_client)
         }
     },[changedData])
+    console.log(changedData, 'ssdsdsds')
 
 
 
@@ -51,23 +58,16 @@ export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
 
 
 
-    const onSubmit = (e: Event) => {
-
-        const data = new FormData()
-
-        e.preventDefault()
-
-
-        data.append("name", name)
-
-
+    const onSubmit = () => {
+        const data = {
+            name: name,
+            has_client: client
+        };
         if (isChanging && changedData) {
 
-            dispatch(changeJobThunk({data,id: changedData.id}))
+            dispatch(changeJobThunk( {data, id: changedData.id}))
         } else {
-
-
-            dispatch(addJobThunk({data}))
+            dispatch(addJobThunk(data))
         }
 
 
@@ -85,15 +85,32 @@ export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
 
     return (
         <div className={cls.jobCrud}>
-            <Form id={"form"} extraClass={cls.form}  onSubmit={onSubmit}>
+            <Form id={"form"} extraClass={cls.form}  onSubmit={handleSubmit(onSubmit)}>
 
 
-                <Input value={name} onChange={onChangeName}   name={"asds"} />
+                <Input register={register} value={name} onChange={onChangeName}   name={"asds"} />
+                <div>
+                    <label className={cls.label}>
+                        Has client
+                        <input
+                            className={cls.inputs}
+                            title={"Has client"}
+                            name={"client"}
+                            type={"checkbox"}
+                            checked={client}
+                            onChange={handleCheckboxChange}
+                        />
+                    </label>
+
+                </div>
 
                 <div className={cls.btn}>
+                    {
+                        changedData && isChanging ?
+                            <Button type={"success"} id={"form"} >Edit</Button> :
+                            <Button type={"success"} id={"form"} >Add</Button>
+                    }
 
-
-                    <Button type={"success"} id={"form"} >Add</Button>
                 </div>
 
             </Form>

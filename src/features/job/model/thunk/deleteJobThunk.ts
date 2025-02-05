@@ -21,7 +21,7 @@ export const deleteJobThunk = createAsyncThunk<
 
 
         const response = await extra.api({
-            url: `job_info/job_crud/delete/${authData.id}`, method: "DELETE", body: JSON.stringify({reason: authData.reason}), headers: headers()
+            url: `job_info/job_crud/delete/${authData.id}`, method: "DELETE", body: JSON.stringify({reason: authData.reason}), headers: headers(), isJson: false
         })
 
 
@@ -31,7 +31,7 @@ export const deleteJobThunk = createAsyncThunk<
 
 
 
-        dispatch(jobsListActions.deleteJob(response));
+        dispatch(jobsListActions.deleteJob({job: authData.id}));
         return response.data;
     } catch (e) {
         console.log(e);

@@ -75,7 +75,7 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
             }
 
-            return isJson ? await response.json() : response;
+            return isJson ? await response?.json() : response;
 
         } catch (e) {
             throw e;

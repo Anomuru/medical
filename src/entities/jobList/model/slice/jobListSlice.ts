@@ -25,6 +25,7 @@ const jobsListSlice = createSlice({
                 if (job.id === action.payload.id) {
                     return action.payload
                 }
+                return job
             })
         },
         deleteJob: (state,action) => {

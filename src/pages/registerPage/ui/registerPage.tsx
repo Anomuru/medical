@@ -133,7 +133,7 @@ export const RegisterPage = () => {
             label: "Password",
             isInput: true,
             type: "password"
-        },
+        }
     ], [jobsList])
 
     const {
@@ -144,6 +144,7 @@ export const RegisterPage = () => {
     const [selectedRadio, setSelectedRadio] = useState<number>()
     const [isCheckUsername, setIsCheckUsername] = useState<ErrorType>()
 
+
     const getSelectedRadio = useCallback((data: number) => setSelectedRadio(data), [])
 
     const render = useCallback(() => {
@@ -151,7 +152,6 @@ export const RegisterPage = () => {
             if (item.isInput) {
                 return (
                     <Input
-                        // @ts-ignore
                         register={register}
                         placeholder={item.label}
                         type={item.type}
@@ -184,7 +184,6 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={item.onSelect}
-                        //@ts-ignore
                         optionsData={item.list}
                     />
                 )

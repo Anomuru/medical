@@ -62,7 +62,7 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
                 <td>{index + 1}</td>
                 <td>
                     <div className={cls.job}>
-                        <span className={cls.job__name}>{item.name}</span>
+                        <span className={cls.job__name}>{item?.name}</span>
                     </div>
 
                 </td>
