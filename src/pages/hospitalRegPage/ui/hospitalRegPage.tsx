@@ -219,7 +219,6 @@ export const HospitalRegPage = () => {
         return list.map(item => {
 
 
-            console.log(item)
             if (item.isDouble) {
                 return (
                     <div className={cls.double}>
@@ -279,7 +278,6 @@ export const HospitalRegPage = () => {
     }, [list, selectedRadio])
 
 
-    console.log(list)
     function combineArraysInOneArray<T>(arrays: T[][]): T[] {
         return arrays.reduce((acc, arr) => acc.concat(arr), []);
     }
@@ -312,30 +310,21 @@ export const HospitalRegPage = () => {
                 analysis
             }
 
-            console.log(res)
 
-            // request({
-            //     url: "user/users/crud/create/",
-            //     method: "POST",
-            //     body: JSON.stringify(res),
-            //     headers: headers()
-            // })
-            //     .then(res => {
-            //         console.log(res)
-            //         setErrorUserName(false)
-            //         // list.map(item => {
-            //         //     if (item.isDouble) {
-            //         //
-            //         //     } else {
-            //         //         setValue(item.name, "")
-            //         //     }
-            //         // })
-            //         reset()
-            //     })
-            //     .catch(err => {
-            //         console.log(err)
-            //         setErrorUserName(true)
-            //     })
+            request({
+                url: "user/users/crud/create/",
+                method: "POST",
+                body: JSON.stringify(res),
+                headers: headers()
+            })
+                .then(res => {
+                    setErrorUserName(false)
+                    reset()
+                })
+                .catch(err => {
+                    console.log(err)
+                    setErrorUserName(true)
+                })
         }
 
 

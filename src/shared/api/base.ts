@@ -1,4 +1,4 @@
-export const API_URL_DOC = `http://192.168.1.61:8000/`
+export const API_URL_DOC = `http://192.168.1.82:8000/`
 // export const API_URL_DOC = `http://26.196.249.247:8000/`
 
 
@@ -68,7 +68,6 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
                 headersObject.delete("Content-Type");
             }
             const response = await fetch(newUrl, {method, mode: 'cors', body, headers: headersObject});
-
 
 
             if (!response.ok) {
