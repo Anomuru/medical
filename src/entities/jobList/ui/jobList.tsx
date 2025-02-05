@@ -62,7 +62,6 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
                 <td>{index + 1}</td>
                 <td>
                     <div className={cls.job}>
-                        <img className={cls.job__img} src={item.img } alt=""/>
                         <span className={cls.job__name}>{item.name}</span>
                     </div>
 
