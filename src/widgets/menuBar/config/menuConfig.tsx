@@ -1,13 +1,28 @@
-import dashboardImage from "shared/assets/icon/dashboard.png";
-import registerImage from "shared/assets/icon/register.png";
-import profileImage from "shared/assets/icon/setting.png"
-import jobListImage from "shared/assets/icon/list.png"
+import jobListImage from "shared/assets/icon/list.png";
+import timeTableImage from "shared/assets/icon/timetable.png";
+import paymentImage from "shared/assets/icon/payment.png";
+import staffImage from "shared/assets/icon/staffList.png";
+import analysisImage from "shared/assets/icon/analysis.png";
+import patientImage from "shared/assets/icon/patient.png";
+import deviceImage from "shared/assets/icon/deviceList.png";
+import {ROLES} from "shared/const/roles";
 
 export const menuConfig = [
     {
-        to: "dashboard",
-        image: dashboardImage
+        to: "table",
+        image: timeTableImage,
+        roles: [ROLES.operator, ROLES.reception, ROLES.admin]
     },
+    {
+        to: "payment",
+        image: paymentImage,
+        roles: [ROLES.operator, ROLES.reception]
+    },
+    // {
+    //     to: "dashboard",
+    //     image: dashboardImage,
+    //     roles: []
+    // },
     // {
     //     to: "register",
     //     image: registerImage
@@ -17,35 +32,40 @@ export const menuConfig = [
     //     image: profileImage
     // },
     {
-        to: "jobPage",
-        image: jobListImage
-    }, {
         to: "staff",
-        image: dashboardImage
-    }, {
-        to: "patient",
-        image: jobListImage
-    },{
+        image: staffImage,
+        roles: [ROLES.admin]
+    },
+    {
         to: "analysisGroup",
-        image: jobListImage
+        image: analysisImage,
+        roles: [ROLES.operator, ROLES.reception, ROLES.admin]
+    },
+    {
+        to: "jobPage",
+        image: jobListImage,
+        roles: [ROLES.admin]
+    },
+    {
+        to: "patient",
+        image: patientImage,
+        roles: [ROLES.admin]
     },
     // {
     //     to: "hospitalReg",
     //     image: dashboardImage
     // },
-    {
-        to: "platformHomePage",
-        image: dashboardImage
-    },
+    // {
+    //     to: "platformHomePage",
+    //     image: dashboardImage
+    // },
     // {
     //     to: "pricePage",
     //     image: dashboardImage
     // },
     {
         to: "devicePage",
-        image: dashboardImage
-    }, {
-        to: "table",
-        image: dashboardImage
-    },
+        image: deviceImage,
+        roles: [ROLES.admin]
+    }
 ]
