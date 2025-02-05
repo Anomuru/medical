@@ -29,6 +29,12 @@ import {getAnalysisCount} from "../../../../entities/analysis/model/selector/ana
 import {data} from "react-router";
 import {alertAction, alertReducer} from "../../../alert/model/slice/alertSlice";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
+import {
+    DynamicModuleLoader,
+    ReducersList
+} from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {branchReducers} from "../../../branch/model/slice/getBranchSlice";
+import {getBranch, getBranchThunk} from "../../../branch";
 
 interface IAddData {
     name: string,
@@ -36,7 +42,10 @@ interface IAddData {
     id: number
 }
 
+const reducers: ReducersList = {
+    branchSlice: branchReducers
 
+}
 
 export const AnalysisAnalysis = () => {
     const [active, setActive] = useState<boolean>(false)
@@ -57,7 +66,10 @@ export const AnalysisAnalysis = () => {
     useEffect(() => {
 
         dispatch(analysisThunk(currentPage))
+        dispatch(getBranchThunk())
+
     }, [currentPage])
+
 
 
     const getChangedItem = (data: any) => {
@@ -67,25 +79,27 @@ export const AnalysisAnalysis = () => {
 
 
     return (
-        <div className={cls.modal}>
-            <div className={cls.modal__wrapper}>
-                <div onClick={() => setActive(true)} className={cls.modal__add}>
-                    <i className={"fas fa-plus"}/>
+        <DynamicModuleLoader reducers={reducers}>
+            <div className={cls.modal}>
+                <div className={cls.modal__wrapper}>
+                    <div onClick={() => setActive(true)} className={cls.modal__add}>
+                        <i className={"fas fa-plus"}/>
+                    </div>
                 </div>
+                <AnalysisList isChange={getChangedItem}/>
+
+                <Pagination
+                    // @ts-ignore
+                    totalCount={count}
+                    onPageChange={setCurrentPage}
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                />
+
+                <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
+                <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
             </div>
-            <AnalysisList isChange={getChangedItem}/>
-
-            <Pagination
-                // @ts-ignore
-                totalCount={count}
-                onPageChange={setCurrentPage}
-                currentPage={currentPage}
-                pageSize={pageSize}
-            />
-
-            <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
-            <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
-        </div>
+        </DynamicModuleLoader>
     );
 };
 
@@ -101,6 +115,9 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const [selectedPackage, setSelectedPackage] = useState(NaN)
     const [selectedDevice, setSelectedDevice] = useState(NaN)
     const [selectedContainer, setSelectedContainer] = useState(NaN)
+    const branch = useSelector(getBranch)
+    const branchData = branch?.results;
+    const [selectedBranch, setSelectedBranch] = useState<string>()
 
     const getGroupId = useCallback((id: number) => setSelectedGroup(id), [])
     const getPackageId = useCallback((id: number) => setSelectedPackage(id), [])
@@ -127,7 +144,8 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
             type: selectedGroup,
             packet: selectedPackage,
             device: selectedDevice,
-            container: selectedContainer
+            container: selectedContainer,
+            branch: selectedBranch
         }
         request({url: "analysis/analysis/crud/create/", body: JSON.stringify(res), method: "POST"})
             .then(res => {
@@ -164,6 +182,11 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
                 <Select title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
                 <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData?.results}/>
                 <Select title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
+                <Select
+                    setSelectOption={setSelectedBranch}
+                    optionsData={branchData}
+                    selectOption={selectedBranch}
+                />
                 <Button>Add</Button>
             </Form>
         </Modal>

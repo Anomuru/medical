@@ -41,10 +41,9 @@ export const AnalysisPackageModal = () => {
     useEffect(() => {
 
         dispatch(fetchAnalysisPackageList())
-    }, [])
-    useEffect(() => {
         dispatch(getBranchThunk())
     }, [])
+
 
     // console.log(branchId)
 
@@ -81,12 +80,16 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
     const dispatch = useAppDispatch()
 
     const onClick = (data: {}) => {
+        const completeData = {
+            ...data,
+            branch: selectedBranch
+        }
 
 
         request({
             url: "packet/crud/create/",
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify(completeData),
             headers: headers()
         }).then(res => {
             dispatch(analysisPackageAction.onAddAnalysisPackage(res))
@@ -112,6 +115,7 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
                 <Select
                     setSelectOption={setSelectedBranch}
                     optionsData={branchData}
+                    selectOption={selectedBranch}
                 />
                 <Button>Add</Button>
 

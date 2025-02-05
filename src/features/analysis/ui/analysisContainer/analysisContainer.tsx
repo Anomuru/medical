@@ -21,6 +21,13 @@ import {headers, useHttp} from "../../../../shared/api/base";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {
+    DynamicModuleLoader,
+    ReducersList
+} from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {branchReducers} from "../../../branch/model/slice/getBranchSlice";
+import {getBranch, getBranchThunk} from "../../../branch";
+import {Select} from "../../../../shared/ui/select";
 
 
 interface IAnalysisContainerModalProps {
@@ -39,7 +46,10 @@ interface IEditAnalysisContainerModalProps {
     activeEditItem: any
 }
 
+const reducers: ReducersList = {
+    branchSlice: branchReducers
 
+}
 export const AnalysisContainerModal = () => {
 
     const [active, setActive] = useState<boolean>(false)
@@ -53,26 +63,29 @@ export const AnalysisContainerModal = () => {
 
     useEffect(() => {
         dispatch(analysisContainerThunk())
+        dispatch(getBranchThunk())
     },[])
 
 
     return (
 
-           <div className={cls.modal}>
-               <div className={cls.modal__wrapper}>
-                   <div onClick={() => setActive(true)} className={cls.modal__add}>
-                       <i className={"fas fa-plus"}/>
+           <DynamicModuleLoader reducers={reducers}>
+               <div className={cls.modal}>
+                   <div className={cls.modal__wrapper}>
+                       <div onClick={() => setActive(true)} className={cls.modal__add}>
+                           <i className={"fas fa-plus"}/>
+                       </div>
+
                    </div>
 
+
+
+                   <AnalysisContainer setActiveEdit={setActiveEdit} setActiveEditItem={setActiveEditItem} data={analysisDate}/>
+
+                   <AddContainerModal active={active} setActive={setActive}/>
+                   <EditContainerModal active={activeEdit} setActive={setActiveEdit} activeEditItem={activeEditItem}/>
                </div>
-
-
-
-               <AnalysisContainer setActiveEdit={setActiveEdit} setActiveEditItem={setActiveEditItem} data={analysisDate}/>
-
-               <AddContainerModal active={active} setActive={setActive}/>
-               <EditContainerModal active={activeEdit} setActive={setActiveEdit} activeEditItem={activeEditItem}/>
-           </div>
+           </DynamicModuleLoader>
 
     );
 }
@@ -82,17 +95,22 @@ const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActi
 
     const {register, setValue, handleSubmit} = useForm();
     const dispatch = useDispatch();
-
+    const branch = useSelector(getBranch)
+    const branchData = branch?.results;
+    const [selectedBranch, setSelectedBranch] = useState<string>()
 
     const {request} = useHttp()
 
     const onClick = (data: IAnalysisContainerModalProps) => {
-
+        const completeData = {
+            ...data,
+            branch: selectedBranch
+        }
 
         request({
             url: "container/crud/create/",
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify(completeData),
             headers: headers()
         }).then(res => {
             setActive(false)
@@ -123,6 +141,12 @@ const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActi
                 <Input required extraClass={cls.modal__input} name={"size"} placeholder={"Hajmi"} register={register}/>
 
                 <label htmlFor="">Choose color<Input extraLabelClass={cls.label} name={"color"} register={register} type={"color"}/></label>
+                <Select
+                    extraClass={cls.modal__input}
+                    setSelectOption={setSelectedBranch}
+                    optionsData={branchData}
+                    selectOption={selectedBranch}
+                />
                 <Button extraClass={cls.modal__button} onClick={handleSubmit(onClick)}>
                     Add
                 </Button>

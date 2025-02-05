@@ -6,7 +6,8 @@ export interface IAnalysis {
     device: string,
     container: string,
     id: number,
-    price: string
+    price: string,
+    branch: string
 }
 
 export interface IAnalysisSchema {

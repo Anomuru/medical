@@ -2,6 +2,7 @@
 export interface IAnalysisGroup {
     id: number
     name: string
+    branch: string
 }
 
 export interface IAnalysisGroupSchema {
