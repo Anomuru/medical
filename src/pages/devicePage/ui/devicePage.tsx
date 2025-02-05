@@ -31,7 +31,7 @@ export const DevicePage = () => {
     const {request} = useHttp()
     const dispatch: any = useDispatch()
     const branch = useSelector(getBranch)
-    const branchId = branch?.results;
+    const branchData = branch?.results;
 
     useEffect(() => {
         dispatch(getBranchThunk())
@@ -94,8 +94,7 @@ export const DevicePage = () => {
                         <Select
                             extraClass={cls.addItemBox__select}
                             setSelectOption={setSelectedBranch}
-                            //@ts-ignore
-                            optionsData={branchId}
+                            optionsData={branchData}
                         />
 
                         <Button>Add Device</Button>

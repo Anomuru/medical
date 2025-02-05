@@ -6,7 +6,6 @@ import {createViewDay, createViewMonthGrid, createViewWeek} from "@schedule-x/ca
 import {createEventModalPlugin} from "@schedule-x/event-modal";
 import '@schedule-x/theme-default/dist/index.css'
 import {createDragAndDropPlugin} from "@schedule-x/drag-and-drop";
-import { createCalendarControlsPlugin } from '@schedule-x/calendar-controls'
 
 import img from "shared/assets/images/dailyImage.png"
 import {Button} from "../../../shared/ui/button";
@@ -28,6 +27,7 @@ import {getDoctorsThunk} from "entities/oftenUsed/model/thunk/oftenUsedThunk";
 import {getDoctorsData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
 import {DoctorSchema} from "shared/types/oftenUsedTypes";
 import {createEventsServicePlugin} from "@schedule-x/events-service";
+import {createCalendarControlsPlugin} from "@schedule-x/calendar-controls";
 
 
 const weekNames = [
