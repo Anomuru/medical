@@ -8,6 +8,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@reduxjs/toolkit": "^2.5.0",
     "@schedule-x/calendar": "^2.12.0",
+    "@schedule-x/calendar-controls": "^2.17.0",
     "@schedule-x/drag-and-drop": "^2.12.0",
     "@schedule-x/event-modal": "^2.12.0",
     "@schedule-x/events-service": "^2.11.0",

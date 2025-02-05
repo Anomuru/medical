@@ -1,4 +1,3 @@
-import {WorkTableSchema} from "entities/workTable";
 
 import {userReducer, UserSchema} from "entities/user";
 import {EnhancedStore, Reducer, ReducersMapObject} from "@reduxjs/toolkit";
@@ -14,13 +13,14 @@ import {
     IAnalysisContainerSchema,
     IAnalysisGroupSchema
 } from "entities/analysis";
-import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/analysisPackageScheme";
-import {IAlertState} from "../../../../features/alert/model/slice/alertSlice";
+import {IAnalysisPackageSchema} from "entities/analysis/model/types/analysisPackageScheme";
+import {IAlertState} from "features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
-import {IOftenUsedDeviceListSchema} from "../../../../entities/oftenUsed/model/types/oftenUsedDeviceScheme";
-import {IPacketsSchema} from "../../../../entities/pakets";
-import {BranchSchema} from "../../../../features/branch/types/branchSchema";
-import {IPaymentSchema} from "../../../../features/paymentFeature/model/paymentTypes";
+import {IOftenUsedDeviceListSchema} from "entities/oftenUsed/model/types/oftenUsedDeviceScheme";
+import {IPacketsSchema} from "entities/pakets";
+import {BranchSchema} from "features/branch/types/branchSchema";
+import {IPaymentSchema} from "features/paymentFeature/model/paymentTypes";
+import {WorkTableSchema} from "features/workTable";
 
 
 export interface StateSchema {

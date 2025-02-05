@@ -1,7 +1,17 @@
-import {IAnalysis} from "entities/analysis";
 
 export interface JobSchema {
-    img: string,
+    img?: string,
     id: number,
     name: string
+}
+
+
+
+
+
+export interface DoctorSchema {
+    img: string,
+    id: number,
+    name: string,
+    jobs: JobSchema[]
 }

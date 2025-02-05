@@ -37,7 +37,7 @@ export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
     useEffect(() =>{
         if (changedData && Object.keys(changedData).length) {
             setName(changedData.name)
-            setImg(changedData.img)
+            setImg(changedData?.img || "")
             setIsChanging(true)
         }
     },[changedData])

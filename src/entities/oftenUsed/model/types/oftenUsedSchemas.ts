@@ -1,8 +1,9 @@
-import {JobSchema} from "shared/types/oftenUsedTypes";
+import {DoctorSchema, JobSchema} from "shared/types/oftenUsedTypes";
 
 
 export interface OftenUsedSchemas {
-    jobs?: JobSchema[],
+    jobs: JobSchema[],
+    doctors: DoctorSchema[],
     error?: "error"
     loading: boolean,
 }
