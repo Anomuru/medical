@@ -14,5 +14,5 @@ export interface IPatientSchema {
     data?: IPatient[],
     loading: boolean,
     error?: "error",
-    filter?: []
+
 }

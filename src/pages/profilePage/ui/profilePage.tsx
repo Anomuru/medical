@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import {ProfileModal} from "features/profile";
+import {AnalysisData, ProfileModal} from "features/profile";
 import {getStaffId, fetchStaffProfileData, getStaffProfileData, staffProfileReducer} from "entities/staff";
 import {Box} from "shared/ui/box";
 import {Button} from "shared/ui/button";
@@ -17,11 +17,32 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {useParams} from "react-router";
+import {data, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
+import classNames from "classnames";
+
 
 const reducers: ReducersList = {
     staffProfileSlice: staffProfileReducer
 }
+
+const dataButton = [
+    {
+        name: "Profile",
+        path: "profile"
+    },
+    {
+        name: "TimeTable",
+        path: "timeTable"
+    },
+    {
+        name: "Schedule",
+        path: "schedule"
+    },
+    {
+        name: "Analysis",
+        path: "analysis"
+    }
+]
 
 export const ProfilePage = () => {
 
@@ -37,7 +58,7 @@ export const ProfilePage = () => {
             placeholder: "Enter username",
             title: "Username",
             rules: {value: details?.username}
-        },{
+        }, {
             name: "name",
             placeholder: "Enter name",
             title: "Name",
@@ -127,6 +148,10 @@ export const ProfilePage = () => {
 
     const render = renderChangeParams()
 
+
+
+
+    const [active, setActive] = useState<string>(dataButton[0].name)
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.profileBox}>
@@ -137,89 +162,128 @@ export const ProfilePage = () => {
                         <h2 className={cls.profileBox__leftSide__profileContainer__mail}>{details?.email}</h2>
                     </Box>
                     <div className={cls.profileBox__leftSide__menuBox}>
-                        <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Edit profile"}/>
-                        <Button onClick={() => setIsTimeTable(true)}
-                                extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Time table"}/>
-                        <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Choose plan"}/>
-                        <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Analyses"}/>
+                        {/*<Button onClick={() => navigate(`profile`)}*/}
+                        {/*        extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Edit profile"}/>*/}
+                        {/*<Button onClick={() => setIsTimeTable(true)}*/}
+                        {/*        extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Time table"}/>*/}
+                        {/*<Button onClick={() => navigate(`profile2`)}*/}
+                        {/*        extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Choose plan"}/>*/}
+                        {/*<Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={"Analyses"}/>*/}
+
+                        {
+                            dataButton.map(item => {
+                                return (
+                                    <NavLink
+                                        className={classNames(cls.header__item, {
+                                            [cls.active]: item.path === active
+                                        })}
+                                        to={`./../${item.path}`}
+                                        onClick={() => {
+                                            setActive(item.name)
+                                            // localStorage.setItem("route", item.path)
+                                        }}
+                                    >
+                                        <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={`${item.name}`}/>
+                                    </NavLink>
+                                )
+                            })
+                        }
                     </div>
-                </div>
-                <div className={cls.profileBox__rigthSide}>
-                    <Box extraClass={cls.profileBox__rigthSide__profileSetBox}>
-                        <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Profile</h1>
-                        <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
-                        <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
-                              onSubmit={handleSubmit(onSubmit)}>
-                            {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Name"}*/}
-                            {/*       placeholder={"userName"} name={"name"} rules={{value: details?.name}}*/}
-                            {/*       register={register}/>*/}
-                            {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}*/}
-                            {/*       title={"Suraname"} placeholder={"userSurname"} name={"surname"}*/}
-                            {/*       rules={{value: details?.surname}} register={register}/>*/}
-                            {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Email"}*/}
-                            {/*       placeholder={"userMail"} name={"email"} rules={{value: details?.email}}*/}
-                            {/*       register={register}/>*/}
-                            {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Phone"}*/}
-                            {/*       placeholder={"userPhone"} name={"phone_number"} type={'number'}*/}
-                            {/*       rules={{value: details?.phone_number}} register={register}/>*/}
-                            <>
-                                {render}
-                            </>
-                            <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn} children={"Save changes"}/>
-                        </Form>
-                        <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
-                        <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
-                              onSubmit={handleSubmit(onSubmitPassword)}>
-                            <Input
-                                // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
-                                title={"Password"}
-                                placeholder={"Enter Password"}
-                                name={"password"}
-                                register={register}
-                                type={"password"}
-                            />
-                            <Input
-                                // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
-                                title={"Confirm Password"}
-                                placeholder={"Confirm Password"}
-                                name={"confirm_password"}
-                                register={register}
-                                type={"password"}
-                                // onChange={onSubmitPassword}
-                            />
-                            <>
-                                {
-                                    passwordError ?
-                                        <p className={cls.profileBox__rigthSide__profileSetBox__formBox__error}>
-                                            {
-                                                passwordError === "identical" ? "The passwords are not identical" :
-                                                    passwordError === "less_than_8" ? "The passwords are less than 8 symbols" : null
-                                            }
-                                        </p>
-                                        : null
-                                }
-                            </>
 
-                            {/*<Input*/}
-                            {/*    extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Email"}*/}
-                            {/*    placeholder={"userMail"}*/}
-                            {/*    name={"email"}*/}
-                            {/*/>*/}
-                            {/*<Input*/}
-                            {/*    extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}*/}
-                            {/*    title={"Phone"}*/}
-                            {/*    placeholder={"userPhone"}*/}
-                            {/*    name={"phone"}*/}
-                            {/*    type={'number'}*/}
-                            {/*/>*/}
-                            <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn} children={"Save changes"}/>
-                        </Form>
 
-                    </Box>
+
                 </div>
+                <Outlet/>
+
+                <Routes>
+
+                    <Route index element={<Navigate to={`profile`}/>}/>
+
+                    <Route path={"profile"} element={<>
+                        <div className={cls.profileBox__rigthSide}>
+                            <Box extraClass={cls.profileBox__rigthSide__profileSetBox}>
+                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Profile</h1>
+                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
+                                <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
+                                      onSubmit={handleSubmit(onSubmit)}>
+                                    {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Name"}*/}
+                                    {/*       placeholder={"userName"} name={"name"} rules={{value: details?.name}}*/}
+                                    {/*       register={register}/>*/}
+                                    {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}*/}
+                                    {/*       title={"Suraname"} placeholder={"userSurname"} name={"surname"}*/}
+                                    {/*       rules={{value: details?.surname}} register={register}/>*/}
+                                    {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Email"}*/}
+                                    {/*       placeholder={"userMail"} name={"email"} rules={{value: details?.email}}*/}
+                                    {/*       register={register}/>*/}
+                                    {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Phone"}*/}
+                                    {/*       placeholder={"userPhone"} name={"phone_number"} type={'number'}*/}
+                                    {/*       rules={{value: details?.phone_number}} register={register}/>*/}
+                                    <>
+                                        {render}
+                                    </>
+                                    <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn}
+                                            children={"Save changes"}/>
+                                </Form>
+                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
+                                <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
+                                      onSubmit={handleSubmit(onSubmitPassword)}>
+                                    <Input
+                                        // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
+                                        title={"Password"}
+                                        placeholder={"Enter Password"}
+                                        name={"password"}
+                                        register={register}
+                                        type={"password"}
+                                    />
+                                    <Input
+                                        // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
+                                        title={"Confirm Password"}
+                                        placeholder={"Confirm Password"}
+                                        name={"confirm_password"}
+                                        register={register}
+                                        type={"password"}
+                                        // onChange={onSubmitPassword}
+                                    />
+                                    <>
+                                        {
+                                            passwordError ?
+                                                <p className={cls.profileBox__rigthSide__profileSetBox__formBox__error}>
+                                                    {
+                                                        passwordError === "identical" ? "The passwords are not identical" :
+                                                            passwordError === "less_than_8" ? "The passwords are less than 8 symbols" : null
+                                                    }
+                                                </p>
+                                                : null
+                                        }
+                                    </>
+
+                                    {/*<Input*/}
+                                    {/*    extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Email"}*/}
+                                    {/*    placeholder={"userMail"}*/}
+                                    {/*    name={"email"}*/}
+                                    {/*/>*/}
+                                    {/*<Input*/}
+                                    {/*    extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}*/}
+                                    {/*    title={"Phone"}*/}
+                                    {/*    placeholder={"userPhone"}*/}
+                                    {/*    name={"phone"}*/}
+                                    {/*    type={'number'}*/}
+                                    {/*/>*/}
+                                    <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn}
+                                            children={"Save changes"}/>
+                                </Form>
+
+                            </Box>
+                        </div>
+                    </>}/>
+                    <Route path={"analysis"} element={<AnalysisData/>}/>
+
+                </Routes>
+
             </div>
 
             <ProfileModal active={isTimeTable} setActive={setIsTimeTable}/>
         </DynamicModuleLoader>
-    );
+    )
+        ;
 };

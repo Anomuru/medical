@@ -20,6 +20,7 @@ const userSlice = createSlice({
             state.name = action.payload.name
             state.surname = action.payload.surname
             state.branch = action.payload.branch
+            // @ts-ignore
 
         }
 

@@ -20,22 +20,29 @@ import {useSelector} from "react-redux";
 import {DeleteModal} from "../../../features/deleteModal/ui/DeleteModal";
 import {headers, useHttp} from "../../../shared/api/base";
 import {alertAction} from "../../../features/alert/model/slice/alertSlice";
-import {getPatientFilter} from "../../../entities/patient/model/patientSelector";
+
+
 
 const reducers: ReducersList = {
     patientSlice: patientReducer
 };
 
+const filter = [
+    {name: "Paid" , status: "true"},
+    {name: "Unpaid" , status: "false"}
+]
+
 export const PatientPage = () => {
 
     const dispatch = useAppDispatch()
 
-    const patientFilter = useSelector(getPatientFilter)
+
     const patientData = useSelector(getPatientData)
+    const [activeType, setActiveType] = useState("")
 
     useEffect(() => {
-        dispatch(fetchPatientList())
-    }, [])
+        dispatch(fetchPatientList({branchId: 1 , filter: activeType}))
+    }, [activeType])
 
     const {request} = useHttp()
 
@@ -45,6 +52,8 @@ export const PatientPage = () => {
     const [activeDelete, setActiveDelete] = useState<boolean>(false)
 
     const [activeDeleteItem, setActiveDeleteItem] = useState<IPatient>({} as IPatient)
+
+
 
     const onDelete = () => {
         request({
@@ -78,7 +87,7 @@ export const PatientPage = () => {
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.patient}>
-                <PatientHeader patientFilter={patientFilter}/>
+                <PatientHeader filter={filter} setActiveType={setActiveType} activeType={activeType}/>
                 <div className={cls.patient__container}>
 
                     <PatientList data={patientData} setActiveDeleteItem={setActiveDeleteItem}

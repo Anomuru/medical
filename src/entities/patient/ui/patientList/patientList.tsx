@@ -4,6 +4,7 @@ import {Table} from "shared/ui/table";
 
 import cls from "./patientList.module.sass";
 import {IPatient} from "../../model/patientSchema";
+import {useNavigate} from "react-router";
 
 
 
@@ -16,14 +17,16 @@ interface IPatientListProps {
 
 export const PatientList: FC<IPatientListProps> = ({data , setActiveDeleteItem , setActiveDelete}) => {
 
-    console.log(data)
+
+
+    const navigate = useNavigate()
 
     const render = useCallback(() => {
         return data?.map((item, index) => {
             return (
                 <tr>
                     <td>{index + 1}</td>
-                    <td>
+                    <td onClick={() => navigate(`../staff/profile/${item.id}`)}>
                         <div className={cls.item}>
                             <img className={cls.item__image} src="" alt=""/>
                             <div className={cls.item__info}>

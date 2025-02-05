@@ -6,16 +6,14 @@ const initialState: IPatientSchema = {
     data: [],
     loading: false,
     error: undefined,
-    filter: []
+
 }
 
 const patientSlice = createSlice({
     name: "patientSlice",
     initialState,
     reducers: {
-        onGetPatientFilter: (state, action) => {
-            state.filter = action.payload.results
-        },
+
 
         onGetPatient: (state, action) => {
             state.data = action.payload.results

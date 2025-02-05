@@ -6,14 +6,18 @@ import {patientActions} from "./patientSlice";
 
 export const fetchPatientList = createAsyncThunk<
     void,
-    void,
+    { branchId: number; filter: string },
     ThunkConfig<string>
->('patientSlice/fetchPatientList', async (authData, thunkApi) => {
+>('patientSlice/fetchPatientList', async ({ branchId, filter }, thunkApi) => {
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "user/patient/list/", method: "GET", body: null, headers: headers()
-        })
+            url: `user/patient/list/?branch=${branchId}${filter ? `&filter_paid=${filter}` : ""}`,
+            method: "GET",
+            body: null,
+            headers: headers()
+        });
+
         if (!response) {
             throw new Error();
         }
@@ -24,27 +28,3 @@ export const fetchPatientList = createAsyncThunk<
         return rejectWithValue('error');
     }
 });
-
-
-
-export const fetchPatientFilter = createAsyncThunk<
-    void,
-    void,
-    ThunkConfig<string>
->('patientSlice/fetchPatientFilter', async (authData, thunkApi) => {
-    const { extra, dispatch, rejectWithValue } = thunkApi;
-    try {
-        const response = await extra.api({
-            url: "user/patient/list/", method: "GET", body: null, headers: headers()
-        })
-        if (!response) {
-            throw new Error();
-        }
-        dispatch(patientActions.onGetPatientFilter(response));
-        return response.data;
-    } catch (e) {
-        console.log(e);
-        return rejectWithValue('error');
-    }
-});
-

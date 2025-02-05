@@ -5,7 +5,7 @@ import {branchAction} from "../slice/getBranchSlice";
 
 export const getBranchThunk = createAsyncThunk<
     void,
-    number,
+    number | void,
     ThunkConfig<string>
     >('getBranchSlice/getBrnachThunk', async (page, thunkApi) => {
         const {extra, dispatch, rejectWithValue} = thunkApi;

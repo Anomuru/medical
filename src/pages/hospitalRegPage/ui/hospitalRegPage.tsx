@@ -359,11 +359,10 @@ export const HospitalRegPage = () => {
 
     const onAddNewAnalysis = (data: IAnalysis) => {
         dispatch(addAnalysis(data))
-        // setAnalysis(prev => prev.filter(item => item.id !== data.id))
     }
 
 
-    console.log(packetsData)
+
 
 
     return (
