@@ -72,7 +72,6 @@ export const JobListPage = () => {
     }
 
 
-    console.log(changingData)
     return (
         <div className={cls.tableBox}>
             <div className={cls.tableBox__header}>
