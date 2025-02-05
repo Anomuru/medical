@@ -2,17 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {IPacketsSchema} from "./paketsSchema";
 
 const initialState: IPacketsSchema = {
-    data: [
-        {
-            id: 1,
-            name: "Boshqa",
-            price: 0,
-            extra: true,
-            analysis: []
-        },
-
-
-    ],
+    data: [],
     loading: false,
     error: undefined
 }
@@ -59,8 +49,6 @@ const packetsSlice = createSlice({
                 }
                 return item
             })
-
-
         }
     }
 })
