@@ -1,9 +1,9 @@
 import {StateSchema} from "app/providers/storeProvider";
 
-export const getUserRole = (state: StateSchema) =>
+export const getUserJob = (state: StateSchema) =>
     state.user.role
 export const getUserId = (state: StateSchema) =>
-    state.user.id
+    state.user.user_id
 export const getUserName = (state: StateSchema) =>
     state.user.name
 export const getUserSurname = (state: StateSchema) =>

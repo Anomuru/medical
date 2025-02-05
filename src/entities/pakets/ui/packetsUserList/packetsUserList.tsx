@@ -1,23 +1,20 @@
 import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 
-import cls from "./paketsList.module.sass";
+import cls from "./packetsUserList.module.sass";
 import arrowContainedSquare from "shared/assets/icon/arrowContainedSquare.svg";
-import {IPackets} from "../model/paketsSchema";
+import {IAnalysisProps} from "../../model/paketsSchema";
 
-
-interface PropsType {
-    onDeleteAnalysis: (arg: number) => void,
-    onDeletePacket: (arg: number) => void,
-    item: IPackets,
-    // title: string,
-    // totalPrice: number,
-    // packages: IAnalysis[]
+interface IPacketsUser {
+    packet_id?: number,
+    packet_name?: string,
+    list?: IAnalysisProps[]
+    onDeleteAnalysis: (arg: number) => void
+    onDeletePacket: (arg?: number) => void
 }
 
-export const PacketsList = memo((props: PropsType) => {
+export const PacketsUserList = memo((props: IPacketsUser) => {
 
-    const {item, onDeleteAnalysis, onDeletePacket} = props
-    const {id, analysis, price, name} = item
+    const {packet_id, packet_name, list, onDeleteAnalysis, onDeletePacket} = props
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,12 +34,13 @@ export const PacketsList = memo((props: PropsType) => {
 
     const render = useCallback(() => {
 
-        return analysis?.map(item => {
+        return list?.map(item => {
             return (
                 <div className={cls.analysis__item}>
-                    <h1 className={cls.title}>{item.name}</h1>
+                    <h1 className={cls.title}>{item.analysis.name}</h1>
                     <hr/>
-                    <h2 className={cls.value}>{item.price}</h2>
+                    {/*<h2 className={cls.value}>{item.price}</h2>*/}
+                    <h2 className={cls.value}>0</h2>
                     <div onClick={() => onDeleteAnalysis(item.id)} className={cls.minus}>
                         <i className="fas fa-minus"></i>
 
@@ -51,23 +49,24 @@ export const PacketsList = memo((props: PropsType) => {
             )
         })
 
-
-    }, [onDeleteAnalysis, analysis])
+    }, [onDeleteAnalysis, list])
 
 
     return (
         <div className={cls.paket}>
             <div className={cls.header}>
                 <div className={cls.row}>
-                    <span>{name}</span>
-                    <span>{price}</span>
+                    <span>{packet_name ?? "Boshqa"}</span>
+                    {/*<span>Name</span>*/}
+                    {/*<span>{price}</span>*/}
+                    <span>price</span>
                 </div>
                 <div className={cls.subrow}>
                     <span>Analiz ro’yxatlari :</span>
                     <div className={cls.subrow__wrapper}>
                         <span><img onClick={toggleDropdown} src={arrowContainedSquare} alt=""/></span>
                         <div
-                            onClick={() => onDeletePacket(id)}
+                            onClick={() => packet_id && onDeletePacket(packet_id)}
                             className={cls.minus}
                         >
                             <i className="fas fa-minus"></i>

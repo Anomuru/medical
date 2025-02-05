@@ -31,7 +31,7 @@ interface IUserAnalysisData {
 }
 
 export interface IUserAnalysisSchema {
-    info: IUserAnalysisData[];
+    info: IUserAnalysisData;
     loading: boolean;
     error?: string;
 }

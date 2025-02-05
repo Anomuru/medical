@@ -1,0 +1,71 @@
+@import "app/styles/abstracts/variables"
+@import "app/styles/abstracts/mixins"
+
+.paket
+  background-color: white
+  border-radius: 10px
+  max-height: 22rem
+  padding: 1.3rem 1.8rem
+  display: flex
+  flex-direction: column
+  .header
+    display: flex
+    flex-direction: column
+    .row
+      display: flex
+      align-items: center
+      justify-content: space-between
+      span:first-child
+        font-weight: 500
+        font-size: 1.5rem
+      span:last-child
+        font-weight: 500
+        font-size: 1.5rem
+    .subrow
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-top: 1rem
+      &__wrapper
+        display: flex
+        gap: 1rem
+        span
+          cursor: pointer
+          @include btn-active
+          img
+            width: 2.5rem
+      span:first-child
+        font-weight: 400
+        font-size: 1.4rem
+        color: $medical-color
+  .analysis
+    display: flex
+    flex-direction: column
+    padding: 2rem 0
+    gap: 1rem
+    overflow-y: auto
+    &__item
+      display: flex
+      align-items: center
+      gap: 1rem
+
+      .title
+        font-size: 1.2rem
+        font-weight: 400
+      .value
+        font-size: 1.2rem
+        font-weight: 400
+      hr
+        display: block
+        height: 2rem
+        flex-grow: 3
+        border: none
+        border-bottom: 1px dotted black
+  .minus
+    height: fit-content
+    background-color: red
+    padding: .55rem .7rem
+    border-radius: 5px
+    color: white
+    cursor: pointer
+    @include btn-active

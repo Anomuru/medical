@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {useSelector} from "react-redux";
 
-import {getUserRole} from "entities/user";
+import {getUserJob} from "entities/user";
 import {Link} from "shared/ui/link";
 import {menuConfig} from "../config/menuConfig";
 
@@ -9,8 +9,8 @@ import cls from "./menuBar.module.sass";
 
 export const MenuBar = () => {
 
-    // const userRole = useSelector(getUserRole)
-    const userRole = localStorage.getItem("role")
+    const userRole = useSelector(getUserJob)
+    // const userRole = localStorage.getItem("role")
 
     const renderMenuItems = useCallback(() => {
         return menuConfig.map(item => {

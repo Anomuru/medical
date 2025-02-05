@@ -3,8 +3,7 @@ import {memo, useState} from 'react';
 import {PacketsList, IPackets, packetsActions} from "entities/pakets";
 import {ConfirmModal} from "shared/ui/confirm";
 
-import cls from "./pakets.module.sass";
-import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 interface IPacketProps {
     item: IPackets

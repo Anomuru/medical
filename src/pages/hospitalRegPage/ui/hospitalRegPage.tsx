@@ -314,28 +314,28 @@ export const HospitalRegPage = () => {
 
             console.log(res)
 
-            // request({
-            //     url: "user/users/crud/create/",
-            //     method: "POST",
-            //     body: JSON.stringify(res),
-            //     headers: headers()
-            // })
-            //     .then(res => {
-            //         console.log(res)
-            //         setErrorUserName(false)
-            //         // list.map(item => {
-            //         //     if (item.isDouble) {
-            //         //
-            //         //     } else {
-            //         //         setValue(item.name, "")
-            //         //     }
-            //         // })
-            //         reset()
-            //     })
-            //     .catch(err => {
-            //         console.log(err)
-            //         setErrorUserName(true)
-            //     })
+            request({
+                url: "user/users/crud/create/",
+                method: "POST",
+                body: JSON.stringify(res),
+                headers: headers()
+            })
+                .then(res => {
+                    console.log(res)
+                    setErrorUserName(false)
+                    // list.map(item => {
+                    //     if (item.isDouble) {
+                    //
+                    //     } else {
+                    //         setValue(item.name, "")
+                    //     }
+                    // })
+                    reset()
+                })
+                .catch(err => {
+                    console.log(err)
+                    setErrorUserName(true)
+                })
         }
 
 
