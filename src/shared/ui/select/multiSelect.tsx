@@ -5,7 +5,7 @@ import makeAnimated from 'react-select/animated';
 const animatedComponents = makeAnimated();
 
 interface MultiSelect {
-    options: any[],
+    options?: any[],
     onChange: (rag: any) => void,
     value?: any,
     extraClass?: string,

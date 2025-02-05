@@ -15,46 +15,76 @@ import {getPaymentData} from "../../../features/paymentFeature/model/paymentSele
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {fetchUserPaymentList} from "../../../features/paymentFeature/model/paymentThunk";
 import {getBranch, getBranchThunk} from "../../../features/branch";
+import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
 import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
-
-
+import {Packets} from "../../../features/pakets";
+import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
+import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
+import {UserPackets} from "../../../features/pakets/ui/userPackets";
+import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
 
 
 const reducers: ReducersList = {
+    userAnalysisSlice: userAnalysisReducer,
     paymentSlice: paymentReducer,
     branchSlice: branchReducers
 }
 
 export const PaymentPage = () => {
 
+    const {
+        deletePacketAnalysis,
+        deletePacket,
+        deleteAnalysis,
+        deleteAllAnalysis
+    } = userAnalysisActions
+
     const data = useSelector(getPaymentData)
+    const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
     const branch = useSelector(getBranch)
     const branchId = branch?.results?.[0]?.id;
-    console.log(branchId, 'idd')
+    const analiz = useSelector(getUserAnalysis)
     const dispatch = useAppDispatch()
-
     useEffect(() => {
-        dispatch(getBranchThunk(1))
+        dispatch(getBranchThunk())
     }, [])
 
     useEffect(() => {
-        //@ts-ignore
-        dispatch(fetchUserPaymentList({branchId, search}))
+        if (branchId)
+            dispatch(fetchUserPaymentList({branchId, search}))
     }, [branchId])
 
-// @ts-ignore
-    const onChangeSearch = (e) => {
+    useEffect(() => {
+        if (userId)
+            dispatch(fetchUserAnalys({userId}))
+    }, [userId])
+
+
+    const onChangeSearch = (e: string) => {
         setSearch(e);
     }
 
+    const onDeletePacketAnalysis = (id: number, packetId: number) => {
+        dispatch(deletePacketAnalysis({packetId: packetId, analysisId: id}))
+    }
 
-    console.log(search, 'qidiruv')
+    const onDeletePacket = (id: number) => {
+        dispatch(deletePacket(id))
+    }
 
+    const onDeleteAnalysis = (id: number) => {
+        dispatch(deleteAnalysis(id))
+    }
 
+    const onDeleteAllAnalysis = () => {
+        dispatch(deleteAllAnalysis())
+    }
 
-
-
+    //@ts-ignore
+    // const onClickGetId = (e) => {
+    //     setUserId(e)
+    // }
 
 
     const [selectedRadio, setSelectedRadio] = useState<string>("")
@@ -63,7 +93,7 @@ export const PaymentPage = () => {
         const filteredData = data?.filter(item => item?.surname?.toLowerCase().includes(search?.toLowerCase()));
         return filteredData?.map(item => {
             return (
-                <div key={item.user_id} className={cls.item}>
+                <div onClick={() => setUserId(item.id)} key={item.user_id} className={cls.item}>
                     <span>{item.surname}</span>
                     <span>{item.name}</span>
                     <span>{item.user_id}</span>
@@ -72,7 +102,6 @@ export const PaymentPage = () => {
             )
         });
     }
-
 
     const list = {
         name: "unknown",
@@ -87,7 +116,6 @@ export const PaymentPage = () => {
                     <div className={cls.header}>
                         <h2>Patients list</h2>
                         <Input
-                            //@ts-ignore
                             onChange={onChangeSearch}
                             name={"search"}
                             placeholder={"search"}
@@ -97,8 +125,30 @@ export const PaymentPage = () => {
                     <div className={cls.container}>
 
                         {renderData()}
-                            </div>
+                    </div>
                 </div>
+
+                <div className={cls.payment__list}>
+                    {
+                        analiz?.packet.map(item => {
+                            return (
+                                <UserPackets
+                                    // @ts-ignore
+                                    item={item}
+                                    onDeletePacketAnalysis={onDeletePacketAnalysis}
+                                    onDeletePacketId={onDeletePacket}
+                                />
+                            )
+                        })
+                    }
+                    {analiz?.analysis_list.length ? <UserAnalysis
+                        // @ts-ignore
+                        item={analiz?.analysis_list}
+                        onDeleteAnalysisId={onDeleteAnalysis}
+                        onDeleteAllAnalysis={onDeleteAllAnalysis}
+                    /> : null}
+                </div>
+
 
                 <div className={cls.cashier}>
                     <h1>Kassir</h1>

@@ -3,8 +3,7 @@ import {memo, useState} from 'react';
 import {PacketsList, IPackets, packetsActions} from "entities/pakets";
 import {ConfirmModal} from "shared/ui/confirm";
 
-import cls from "./pakets.module.sass";
-import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 interface IPacketProps {
     item: IPackets
@@ -25,8 +24,7 @@ export const Packets = memo(({item}: IPacketProps) => {
 
     const onDeleteAnalysis = () => {
         let price: number = 0;
-        item.analysis
-            .filter(item => item.id !== isActiveAnalysis)
+        item.analysis?.filter(item => item.id !== isActiveAnalysis)
             .map(inner => {
                 price += Number(inner.price)
             })

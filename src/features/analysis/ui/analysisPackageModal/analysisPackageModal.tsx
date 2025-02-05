@@ -17,6 +17,18 @@ import {alertAction} from "../../../alert/model/slice/alertSlice";
 import {headers, useHttp} from "../../../../shared/api/base";
 import {fetchAnalysisPackageList} from "entities/analysis/index";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {
+    DynamicModuleLoader,
+    ReducersList
+} from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {branchReducers} from "../../../branch/model/slice/getBranchSlice";
+import {getBranch, getBranchThunk} from "../../../branch";
+import {Select} from "../../../../shared/ui/select";
+
+const reducers: ReducersList = {
+    branchSlice: branchReducers
+
+}
 
 export const AnalysisPackageModal = () => {
 
@@ -30,26 +42,38 @@ export const AnalysisPackageModal = () => {
 
         dispatch(fetchAnalysisPackageList())
     }, [])
+    useEffect(() => {
+        dispatch(getBranchThunk())
+    }, [])
+
+    // console.log(branchId)
 
     const analysisPackageData = useSelector(getAnalysisPackage)
 
     return (
-        <div className={cls.modal}>
-            <div className={cls.modal__wrapper}>
-                <div onClick={() => setActive(true)} className={cls.modal__add}>
-                    <i className={"fas fa-plus"}/>
-                </div>
-            </div>
-            <AnalysisPackage data={analysisPackageData} setActiveEditItem={setActiveEditItem}
-                             setActiveEdit={setActiveEdit}/>
-            <AddPackageAddModal setActive={setActive} active={active}/>
-            <EditPackageAddModal active={activeEdit} setActive={setActiveEdit} activeEditItem={activeEditItem}/>
 
-        </div>
+        <DynamicModuleLoader reducers={reducers}>
+            <div className={cls.modal}>
+                <div className={cls.modal__wrapper}>
+                    <div onClick={() => setActive(true)} className={cls.modal__add}>
+                        <i className={"fas fa-plus"}/>
+                    </div>
+                </div>
+                <AnalysisPackage data={analysisPackageData} setActiveEditItem={setActiveEditItem}
+                                 setActiveEdit={setActiveEdit}/>
+                <AddPackageAddModal setActive={setActive} active={active}/>
+                <EditPackageAddModal active={activeEdit} setActive={setActiveEdit} activeEditItem={activeEditItem}/>
+
+            </div>
+        </DynamicModuleLoader>
     );
 }
 
 const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (arg: boolean) => void }) => {
+    const branch = useSelector(getBranch)
+    const branchData = branch?.results;
+    const [selectedBranch, setSelectedBranch] = useState<string>()
+
     const {request} = useHttp()
 
     const {setValue, handleSubmit, register} = useForm()
@@ -85,6 +109,10 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
         <Modal title={"Add"} active={active} setActive={setActive}>
             <Form extraClass={cls.modal__form} onSubmit={handleSubmit(onClick)}>
                 <Input name={"name"} register={register}/>
+                <Select
+                    setSelectOption={setSelectedBranch}
+                    optionsData={branchData}
+                />
                 <Button>Add</Button>
 
             </Form>

@@ -1,4 +1,3 @@
-import {WorkTableSchema} from "entities/workTable";
 
 import {userReducer, UserSchema} from "entities/user";
 import {EnhancedStore, Reducer, ReducersMapObject} from "@reduxjs/toolkit";
@@ -14,9 +13,15 @@ import {
     IAnalysisContainerSchema,
     IAnalysisGroupSchema
 } from "entities/analysis";
-import {IAnalysisPackageSchema} from "../../../../entities/analysis/model/types/analysisPackageScheme";
-import {IAlertState} from "../../../../features/alert/model/slice/alertSlice";
+import {IAnalysisPackageSchema} from "entities/analysis/model/types/analysisPackageScheme";
+import {IAlertState} from "features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
+import {IOftenUsedDeviceListSchema} from "entities/oftenUsed/model/types/oftenUsedDeviceScheme";
+import {IPacketsSchema} from "entities/pakets";
+import {BranchSchema} from "features/branch/types/branchSchema";
+import {IPaymentSchema} from "features/paymentFeature/model/paymentTypes";
+import {WorkTableSchema} from "features/workTable";
+import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
 
 import {IPacketsSchema} from "../../../../entities/pakets";
 import {BranchSchema} from "../../../../features/branch/types/branchSchema";
@@ -47,9 +52,9 @@ export interface StateSchema {
     analysisPackageSlice?: IAnalysisPackageSchema
     analysisSlice?: IAnalysisSchema,
     AlertSlice?: IAlertState
-
     patientSlice?: IPatientSchema,
     packetsSlice?: IPacketsSchema,
+    userAnalysisSlice?: IUserAnalysisSchema
 
 }
 

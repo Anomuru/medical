@@ -1,3 +1,4 @@
+import {DoctorSchema} from "shared/types/oftenUsedTypes";
 
 export interface IWorkTable {
     doctor: number,
@@ -8,6 +9,7 @@ export interface IWorkTable {
 
 export interface WorkTableSchema {
     data: IWorkTable[],
+    doctors: DoctorSchema[],
     loading: true | false,
     error: undefined | "error"
 }

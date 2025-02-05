@@ -11,5 +11,5 @@ interface IPaymentItem {
 export interface IPaymentSchema {
     data: IPaymentItem[],
     loading: boolean,
-    error: boolean
+    error?: "error"
 }

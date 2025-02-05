@@ -1,5 +1,23 @@
 import {IAnalysis} from "../../analysis";
 
+export interface IAnalysisProps {
+    expected_result: string,
+    id: number,
+    paid: boolean,
+    result: string,
+    status: boolean,
+    user: number,
+    analysis: {
+        id: number,
+        name: string,
+        packet: {
+            branch: number,
+            id: number,
+            name: string
+        }
+    },
+}
+
 export interface IPackets {
     id: number,
     extra?: boolean,
@@ -8,7 +26,13 @@ export interface IPackets {
     analysis: IAnalysis[]
 }
 
-export interface IPacketsSchema {
+export interface IUserPackets {
+    packet_id?: number,
+    packet_name?: string,
+    analysis_list: IAnalysisProps[] | []
+}
+
+export interface IPacketsSchema{
     data: IPackets[] | [],
     loading: boolean,
     error?: "error"

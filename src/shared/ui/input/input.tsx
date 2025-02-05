@@ -53,6 +53,8 @@ export const Input: React.FC<InputProps> = (props) => {
 
     const textField = register && register(name, rules)
 
+    // console.log(required, name)
+
     const [passwordActive, setPasswordActive] = useState<boolean>(false)
 
     return (

@@ -1,4 +1,5 @@
 export const API_URL_DOC = `http://192.168.1.61:8000/`
+// export const API_URL_DOC = `http://26.196.249.247:8000/`
 
 
 export const API_URL: string = `${API_URL_DOC}api/`
@@ -43,9 +44,7 @@ interface UseHttpProps {
     url: string,
     method?: Methods,
     body?: BodyInit,
-    headers?: {
-        "Content-Type": string
-    },
+    headers?: HeadersInit,
     typeUrl?: "auto" | "hand",
     isJson?: boolean
 }
@@ -60,28 +59,16 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
             typeUrl = "auto",
             isJson = true
         } = props;
-
-        let finalHeaders = headers;
-
-        if (body instanceof FormData) {
-            finalHeaders = {...headers};
-            // @ts-ignore
-            delete finalHeaders['Content-Type'];
-        }
-
-
         try {
             let newUrl = typeUrl === "auto" ? API_URL + url : url;
 
-            const response = await fetch(newUrl, {method, mode: 'cors', body, headers: finalHeaders});
+            const response = await fetch(newUrl, {method, mode: 'cors', body, headers: headers});
 
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
             }
 
-            if (isJson) {
-                return await response?.json();
-            } else return await response
+            return isJson ? await response.json() : response;
 
         } catch (e) {
             throw e;
@@ -91,3 +78,18 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
     return {request}
 
 }
+export const ParamUrl = (params: Record<string, string | number | boolean | undefined>): string => {
+    const paramsList = Object.keys(params);
+    let res = '';
+
+    for (let i = 0; i < paramsList.length; i++) {
+        const key = paramsList[i];
+        const value = params[key];
+
+        if (value !== undefined && value !== null) { // ✅ Ensures we don't add `undefined` or `null` values
+            res += `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}&`; // ✅ Properly encodes URL parameters
+        }
+    }
+
+    return res.slice(0, -1); // ✅ Removes the trailing "&"
+};

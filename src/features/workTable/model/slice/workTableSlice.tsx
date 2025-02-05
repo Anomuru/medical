@@ -4,6 +4,7 @@ import {workTableThunk} from "../thunk/workTableThunk";
 
 const initialState: WorkTableSchema = {
     data: [],
+    doctors: [],
     loading: false,
     error: undefined
 }

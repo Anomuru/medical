@@ -2,7 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 
-import {fetchJobsData, getJobsData} from "entities/oftenUsed";
+import {fetchJobsData, fetchLocationData, getJobsData, getLocationsData} from "entities/oftenUsed";
 import {Button} from "shared/ui/button";
 import {Input, ErrorType} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
@@ -31,6 +31,7 @@ interface Branch {
     location: string
 
 }
+
 interface ISubmitData {
     name: string,
     surname: string,
@@ -55,28 +56,24 @@ const reducers: ReducersList = {
 }
 export const RegisterPage = () => {
 
-    const dispatchs = useAppDispatch()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const {request} = useHttp()
 
     useEffect(() => {
-        dispatchs(getBranchThunk(1))
-    }, [])
-
-    useEffect(() => {
-        // @ts-ignore
+        dispatch(getBranchThunk())
         dispatch(fetchJobsData())
+        dispatch(fetchLocationData())
     }, [])
-
 
     const jobsList = useSelector(getJobsData)
+    const locationsList = useSelector(getLocationsData)
     const branch = useSelector(getBranch) as IBranchResponse
     const [selectedJob, setSelectedJob] = useState<string>()
     const [selectedLocation, setSelectedLocation] = useState<string>()
     const branchId = branch?.results?.[0]?.id;
     const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
     const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
-    console.log(branchId, 'efefefe')
+
     const registerStaff = useMemo(() => [
         {
             name: "username",
@@ -98,7 +95,8 @@ export const RegisterPage = () => {
             name: "location",
             label: "Location",
             isSelect: true,
-            onSelect: getSelectedLocation
+            onSelect: getSelectedLocation,
+            list: locationsList
         }, {
             name: "job",
             label: "Job",
@@ -136,7 +134,7 @@ export const RegisterPage = () => {
             isInput: true,
             type: "password"
         },
-    ], [])
+    ], [jobsList])
 
     const {
         register,
@@ -186,14 +184,13 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={item.onSelect}
-                        // @ts-ignore
-                        optionsData={jobsList}
+                        //@ts-ignore
+                        optionsData={item.list}
                     />
                 )
             } else if (item.isMultiSelect) {
                 return (
                     <MultiSelect
-                        // @ts-ignore
                         options={item.list}
                         onChange={item.onSelect}
                     />
@@ -245,19 +242,19 @@ export const RegisterPage = () => {
 
 
     return (
-       <DynamicModuleLoader reducers={reducers}>
-           <div className={cls.registerPage}>
-               <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
-                   <h1>Register Staff</h1>
-                   <div className={cls.container}>
-                       {render()}
-                   </div>
-                   <Button extraClass={cls.registerPage__btn}>Register</Button>
-               </Form>
-               <div className={cls.registerPage__image}>
-                   <img src={image} alt=""/>
-               </div>
-           </div>
-       </DynamicModuleLoader>
+        <DynamicModuleLoader reducers={reducers}>
+            <div className={cls.registerPage}>
+                <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
+                    <h1>Register Staff</h1>
+                    <div className={cls.container}>
+                        {render()}
+                    </div>
+                    <Button extraClass={cls.registerPage__btn}>Register</Button>
+                </Form>
+                <div className={cls.registerPage__image}>
+                    <img src={image} alt=""/>
+                </div>
+            </div>
+        </DynamicModuleLoader>
     );
 }
