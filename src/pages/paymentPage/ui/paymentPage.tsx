@@ -40,7 +40,7 @@ export const PaymentPage = () => {
     const analiz = useSelector(getUserAnalysis)
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(getBranchThunk(1))
+        dispatch(getBranchThunk())
     }, [])
 
     useEffect(() => {

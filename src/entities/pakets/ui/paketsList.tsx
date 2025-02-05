@@ -37,7 +37,7 @@ export const PacketsList = memo((props: PropsType) => {
 
     const render = useCallback(() => {
 
-        return analysis.map(item => {
+        return analysis?.map(item => {
             return (
                 <div className={cls.analysis__item}>
                     <h1 className={cls.title}>{item.name}</h1>

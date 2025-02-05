@@ -5,7 +5,7 @@ export interface IPackets {
     extra?: boolean,
     name: string | null,
     price: number | null,
-    analysis?: IAnalysis[]
+    analysis: IAnalysis[]
 }
 
 export interface IPacketsSchema {

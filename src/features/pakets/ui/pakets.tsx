@@ -25,8 +25,7 @@ export const Packets = memo(({item}: IPacketProps) => {
 
     const onDeleteAnalysis = () => {
         let price: number = 0;
-        item.analysis
-            .filter(item => item.id !== isActiveAnalysis)
+        item.analysis?.filter(item => item.id !== isActiveAnalysis)
             .map(inner => {
                 price += Number(inner.price)
             })

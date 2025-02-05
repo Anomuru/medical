@@ -60,7 +60,7 @@ export const RegisterPage = () => {
     const {request} = useHttp()
 
     useEffect(() => {
-        dispatchs(getBranchThunk(1))
+        dispatchs(getBranchThunk())
     }, [])
 
     useEffect(() => {
