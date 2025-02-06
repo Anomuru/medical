@@ -22,8 +22,8 @@ import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/ana
 
 import {analysisContainerThunk} from "../../../../entities/analysis/model/thunk/analysisContainerThunk";
 import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
-import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/ofternUsedDeviceList";
-import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedDeviceSelector";
+import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
+import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 import {Pagination} from "../../../pagination";
 import {getAnalysisCount} from "../../../../entities/analysis/model/selector/analysisSelector";
 import {data} from "react-router";
@@ -180,7 +180,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
                 />
                 <Select title={"Group"} setSelectOption={getGroupId} optionsData={groupAnalysisData}/>
                 <Select title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
-                <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData?.results}/>
+                <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>
                 <Select title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
                 <Select
                     setSelectOption={setSelectedBranch}
@@ -310,7 +310,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: { active: boolea
                     selectOption={selectedDevice}
                     title={"Device"}
                     setSelectOption={setSelectedDevice}
-                    optionsData={getData?.results}
+                    optionsData={getData}
                 />
                 <Select
                     selectOption={selectedContainer}

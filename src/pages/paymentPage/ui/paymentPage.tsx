@@ -111,6 +111,7 @@ export const PaymentPage = () => {
             ...completeData,
             payment_type: selectedRadio,
             user: userId,
+            branch: branchId
         }
         //@ts-ignore
         dispatch(givePaymentThunk(data))

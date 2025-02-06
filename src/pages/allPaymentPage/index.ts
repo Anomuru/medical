@@ -1,0 +1,1 @@
+export {AllPaymentPage} from "./ui/allPaymentPage";

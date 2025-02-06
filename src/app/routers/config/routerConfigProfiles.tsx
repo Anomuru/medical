@@ -30,8 +30,9 @@ import {
     getDeviceProfileRoute,
     getWorkTableRoute, getPatientRoute, getAnalysisRoute,
     getWorkerProfile,
-     getPaymentRoute
+    getPaymentRoute, getAllPaymentsPageRoute
 } from "shared/const/routers";
+import {AllPaymentPage} from "../../../pages/allPaymentPage";
 
 
 interface IRouterConfigProfiles {
@@ -116,5 +117,10 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "analysis",
         element: <AnalysisPage/>,
         path: getAnalysisRoute()
+    },
+    {
+        name: "allPayment",
+        element: <AllPaymentPage/>,
+        path: getAllPaymentsPageRoute()
     }
 ]

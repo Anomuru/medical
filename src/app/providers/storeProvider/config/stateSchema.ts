@@ -23,6 +23,7 @@ import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "features/p
 import {WorkTableSchema} from "features/workTable";
 import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
 import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/types/profileAnalysisTypes";
+import {IAllPaymentSchema} from "../../../../entities/allPayment/model/types/allPaymentSchema";
 
 
 
@@ -54,6 +55,7 @@ export interface StateSchema {
     packetsSlice?: IPacketsSchema,
     userAnalysisSlice?: IUserAnalysisSchema,
     profileAnalysisSlice?: IUserProfileAnalysisSchema
+    allPaymentSlice?: IAllPaymentSchema
 
 }
 
