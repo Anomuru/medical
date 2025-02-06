@@ -25,12 +25,12 @@ interface IUserAnalysisPacket {
     analysis_list: IUserAnalysis[];
 }
 
-export interface IUserAnalysisData {
+interface IUserAnalysisData {
     packet: IUserAnalysisPacket[];
     analysis_list: IUserAnalysis[];
 }
 
-export interface IUserAnalysisSchema {
+export interface IUserProfileAnalysisSchema {
     info: IUserAnalysisData;
     loading: boolean;
     error?: string;

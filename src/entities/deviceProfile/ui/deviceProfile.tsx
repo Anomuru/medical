@@ -28,6 +28,7 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {deviceListActions} from "../../deviceList";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 
 interface IList {
@@ -70,7 +71,7 @@ export const DeviceProfile = () => {
     const [activeDelete, setActiveDelete] = useState<boolean>(false)
 
 
-    const dispatch: any = useDispatch()
+    const dispatch = useAppDispatch()
     const getData: any = useSelector(getProfile)
     //@ts-ignore
     const getUsers = useSelector(getProfileUsers) as IDeviceUserResponse

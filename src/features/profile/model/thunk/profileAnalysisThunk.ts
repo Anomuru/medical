@@ -1,31 +1,25 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ThunkConfig} from "../../../../app/providers/storeProvider";
 import {headers} from "../../../../shared/api/base";
-import {analysisGroupActions} from "../slice/analysisGroupSlice";
+import {profileAnalysisActions} from "../slice/profileAnalysisSlice";
 
-
-export const fetchAnalysisGroupList = createAsyncThunk<
+export const fetchProfileAnalysis = createAsyncThunk<
     void,
-    void,
+    string,
     ThunkConfig<string>
->('analysisGroupSlice/fetchAnalysisPackageList', async (authData, thunkApi) => {
+>('profileAnalysisSlice/fetchProfileAnalysis', async (id, thunkApi) => {
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "analysis/analysis_type/get/list/", method: "GET", body: null, headers: headers()
+            url: `user/user_analysis_get/?user=${id}`, method: "GET", body: null, headers: headers()
         })
-
-
         if (!response) {
             throw new Error();
         }
-
-
-
-        dispatch(analysisGroupActions.onAnalysisGroup(response));
+        dispatch(profileAnalysisActions.onGetProfileAnalysis(response));
         return response.data;
     } catch (e) {
-
+        console.log(e);
         return rejectWithValue('error');
     }
 });

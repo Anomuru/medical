@@ -22,6 +22,7 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
     const toggleDropdown = () => setIsOpen(!isOpen);
 
 
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {

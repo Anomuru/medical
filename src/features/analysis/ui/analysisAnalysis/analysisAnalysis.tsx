@@ -234,7 +234,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: { active: boolea
     const [selectedDevice, setSelectedDevice] = useState(NaN)
     const [selectedContainer, setSelectedContainer] = useState(NaN)
 
-    // const getGroupId = useCallback((id: number) => setSelectedGroup(id ?? data?.type), [data?.type, setSelectedGroup]);
+    // const getGroupId = useCallback((id: number) => setSelectedGroup(id ?? data?.types), [data?.types, setSelectedGroup]);
 
 
 
@@ -270,7 +270,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: { active: boolea
                     // rules={{value: data?.code_name}}
                 />
                 <Select
-                    // selectOption={data?.type}
+                    // selectOption={data?.types}
                     selectOption={selectedGroup}
                     title="Group"
                     setSelectOption={setSelectedGroup}

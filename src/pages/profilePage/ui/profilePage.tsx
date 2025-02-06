@@ -19,10 +19,15 @@ import {
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {data, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
 import classNames from "classnames";
+import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileAnalysisSlice";
+import {packetsReducer} from "../../../entities/pakets";
 
 
 const reducers: ReducersList = {
-    staffProfileSlice: staffProfileReducer
+    packetsSlice: packetsReducer,
+    staffProfileSlice: staffProfileReducer,
+    profileAnalysisSlice: profileAnalysisReducer,
+
 }
 
 const dataButton = [
@@ -51,6 +56,8 @@ export const ProfilePage = () => {
     const {register, handleSubmit, setValue} = useForm()
     const {id: staffId} = useParams()
     const details = useSelector(getStaffProfileData)
+
+
 
     const staffDetails = useMemo(() => [
         {
@@ -94,14 +101,13 @@ export const ProfilePage = () => {
     const [passwordError, setPasswordError] = useState<string>("")
 
     const onSubmit = (data: any) => {
-        console.log(data, "data")
+
         // @ts-ignore
         dispatch(changeStaffDetails({staffId, data}))
     }
 
     const onSubmitPassword = (data: any) => {
-        console.log(data.password.length, "length")
-        console.log(data.password.length < 8)
+
         if (data.password.length < 8 || data.confirm_password.length < 8) setPasswordError("less_than_8")
         else {
             if (data.password === data.confirm_password) {
@@ -113,7 +119,7 @@ export const ProfilePage = () => {
     }
 
     const onCheckUsername = (data: string) => {
-        console.log(data, "data")
+
         request({
             url: `user/username-check-authorized/`,
             method: "POST",
@@ -128,7 +134,7 @@ export const ProfilePage = () => {
     // }, 500)
 
     const renderChangeParams = useCallback(() => {
-        console.log(staffDetails, "staffDetails")
+
         return staffDetails.map(item => {
             setValue(item.name, item.rules.value)
             return (
@@ -216,7 +222,7 @@ export const ProfilePage = () => {
                                     {/*       placeholder={"userMail"} name={"email"} rules={{value: details?.email}}*/}
                                     {/*       register={register}/>*/}
                                     {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Phone"}*/}
-                                    {/*       placeholder={"userPhone"} name={"phone_number"} type={'number'}*/}
+                                    {/*       placeholder={"userPhone"} name={"phone_number"} types={'number'}*/}
                                     {/*       rules={{value: details?.phone_number}} register={register}/>*/}
                                     <>
                                         {render}
@@ -267,7 +273,7 @@ export const ProfilePage = () => {
                                     {/*    title={"Phone"}*/}
                                     {/*    placeholder={"userPhone"}*/}
                                     {/*    name={"phone"}*/}
-                                    {/*    type={'number'}*/}
+                                    {/*    types={'number'}*/}
                                     {/*/>*/}
                                     <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn}
                                             children={"Save changes"}/>

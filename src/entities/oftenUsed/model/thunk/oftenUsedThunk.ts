@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {header, headers, useHttp} from "shared/api/base";
+import {header, headers, ParamUrl, useHttp} from "shared/api/base";
 import {ThunkConfig} from "../../../../app/providers/storeProvider";
 
 import {oftenUsedActions} from "../slice/oftenUsedSlice";
