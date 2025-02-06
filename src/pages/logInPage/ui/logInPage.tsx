@@ -8,8 +8,8 @@ import {Button} from "shared/ui/button";
 import cls from "./logInPage.module.sass";
 import image from "shared/assets/images/loginImage.png";
 import logo from "shared/assets/logo/medicalLogo.png";
-import { loginThunk} from "../model/thunk/loginThunk";
-import { loginReducer} from "../model/slice/loginSlice";
+import {loginThunk} from "../model/thunk/loginThunk";
+import {loginReducer} from "../model/slice/loginSlice";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {DynamicModuleLoader, ReducersList} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {useNavigate} from "react-router";
@@ -41,12 +41,7 @@ export const LogInPage = () => {
 
 
         dispatch(loginThunk(data))
-            .then(res => {
-                if (res.meta.requestStatus === "fulfilled") {
-                    navigate("/platform")
-                }
-
-            })
+            .then(res => res.meta.requestStatus === "fulfilled" ? navigate("/platform") : null)
         // request({url: "token/", method: "POST", body: JSON.stringify(data), headers: headers()})
         //     .then(res => {
         //
@@ -56,7 +51,7 @@ export const LogInPage = () => {
         //     })
     }
 
-    
+
     return (
         <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount={false}>
             <div className={cls.loginPage}>
@@ -94,7 +89,7 @@ export const LogInPage = () => {
                     <img src={image} alt=""/>
                 </div>
             </div>
-         </DynamicModuleLoader>
+        </DynamicModuleLoader>
 
     );
 }

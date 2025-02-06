@@ -37,8 +37,8 @@ export const loginThunk = createAsyncThunk<
             response.refresh,
         );
 
-        dispatch(userActions.setAuthData(response.user));
-        return response.data;
+        dispatch(userActions.setAuthData(response));
+        return response;
     } catch (e) {
         console.log(e);
         return rejectWithValue('error');

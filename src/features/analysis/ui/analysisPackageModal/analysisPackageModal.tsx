@@ -24,6 +24,8 @@ import {
 import {branchReducers} from "../../../branch/model/slice/getBranchSlice";
 import {getBranch, getBranchThunk} from "../../../branch";
 import {Select} from "../../../../shared/ui/select";
+import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
+import {getSelectedLocationData} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
 const reducers: ReducersList = {
     branchSlice: branchReducers
@@ -31,6 +33,8 @@ const reducers: ReducersList = {
 }
 
 export const AnalysisPackageModal = () => {
+
+    const selectedLocation = useSelector(getSelectedLocationData)
 
     const [active, setActive] = useState<boolean>(false)
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
@@ -43,8 +47,9 @@ export const AnalysisPackageModal = () => {
         dispatch(fetchAnalysisPackageList())
     }, [])
     useEffect(() => {
-        dispatch(getBranchThunk())
-    }, [])
+        if (selectedLocation)
+            dispatch(fetchBranchData({id: selectedLocation}))
+    }, [selectedLocation])
 
     // console.log(branchId)
 
@@ -70,8 +75,11 @@ export const AnalysisPackageModal = () => {
 }
 
 const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (arg: boolean) => void }) => {
-    const branch = useSelector(getBranch)
-    const branchData = branch?.results;
+    // const branch = useSelector(getBranch)
+    // const branchData = branch?.results;
+
+    const branchData = useSelector(getBranchesData)
+
     const [selectedBranch, setSelectedBranch] = useState<string>()
 
     const {request} = useHttp()

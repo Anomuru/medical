@@ -8,6 +8,12 @@ export const getDoctorsData = (state: StateSchema) =>
 
 export const getLocationsData = (state: StateSchema) =>
     state.oftenUsedSlice?.locations
+export const getBranchesData = (state: StateSchema) =>
+    state.oftenUsedSlice?.branches
+export const getSelectedLocationData = (state: StateSchema) =>
+    state.oftenUsedSlice?.selectedLocation
+export const getSelectedBranchData = (state: StateSchema) =>
+    state.oftenUsedSlice?.selectedBranch
 export const getLoading = (state: StateSchema) =>
     state.oftenUsedSlice?.loading
 export const getError = (state: StateSchema) =>

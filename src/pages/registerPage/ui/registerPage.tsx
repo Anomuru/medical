@@ -2,7 +2,14 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
 
-import {fetchJobsData, fetchLocationData, getJobsData, getLocationsData} from "entities/oftenUsed";
+import {
+    fetchBranchData,
+    fetchJobsData,
+    fetchLocationData,
+    getBranchesData,
+    getJobsData,
+    getLocationsData
+} from "entities/oftenUsed";
 import {Button} from "shared/ui/button";
 import {Input, ErrorType} from "shared/ui/input";
 import {Radio} from "shared/ui/radio";
@@ -19,6 +26,7 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
+import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
 interface Branch {
     id: number,
@@ -58,21 +66,27 @@ export const RegisterPage = () => {
 
     const dispatch = useAppDispatch()
     const {request} = useHttp()
+    const selectedLocationId = useSelector(getSelectedLocationData)
 
     useEffect(() => {
-        dispatch(getBranchThunk())
         dispatch(fetchJobsData())
         dispatch(fetchLocationData())
     }, [])
 
+    useEffect(() => {
+        if (selectedLocationId)
+            dispatch(fetchBranchData({id: selectedLocationId}))
+    }, [selectedLocationId])
+
     const jobsList = useSelector(getJobsData)
     const locationsList = useSelector(getLocationsData)
-    const branch = useSelector(getBranch) as IBranchResponse
+    const branch = useSelector(getBranchesData)
     const [selectedJob, setSelectedJob] = useState<string>()
     const [selectedLocation, setSelectedLocation] = useState<string>()
-    const branchId = branch?.results?.[0]?.id;
+    const [selectedBranch, setSelectedBranch] = useState<string>()
     const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
     const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
+    const getSelectedBranch = useCallback((data: string) => setSelectedBranch(data), [])
 
     const registerStaff = useMemo(() => [
         {
@@ -91,6 +105,12 @@ export const RegisterPage = () => {
             name: "address",
             label: "Address",
             isInput: true,
+        }, {
+            name: "branch",
+            label: "Branch",
+            isSelect: true,
+            onSelect: getSelectedBranch,
+            list: branch
         }, {
             name: "location",
             label: "Location",
@@ -134,7 +154,7 @@ export const RegisterPage = () => {
             isInput: true,
             type: "password"
         },
-    ], [jobsList])
+    ], [branch, jobsList, locationsList])
 
     const {
         register,
@@ -207,7 +227,7 @@ export const RegisterPage = () => {
                 sex: selectedRadio,
                 jobs: selectedJob,
                 location_id: selectedLocation,
-                branch: branchId
+                branch: selectedBranch
             }
 
             request({
