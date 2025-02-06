@@ -18,17 +18,15 @@ import {
     givePaymentThunk,
     paymentTypeThunk
 } from "../../../features/paymentFeature/model/paymentThunk";
-import {getBranch, getBranchThunk} from "../../../features/branch";
 import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
-import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
 import {Packets} from "../../../features/pakets";
 import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
 import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
 import {UserPackets} from "../../../features/pakets/ui/userPackets";
 import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
-import {paymentTypeReducer} from "../../../features/paymentFeature/model/paymentTypeSlice";
+import {fetchBranchData, getSelectedBranchData} from "../../../entities/oftenUsed";
+import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 import {Form} from "../../../shared/ui/form";
-import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
 import {useForm} from "react-hook-form";
 
 interface IPaymentData {
@@ -42,9 +40,6 @@ interface IPaymentData {
 const reducers: ReducersList = {
     userAnalysisSlice: userAnalysisReducer,
     paymentSlice: paymentReducer,
-    branchSlice: branchReducers,
-    paymentTypeSlice: paymentTypeReducer,
-    givePaymentSlice: givePaymentReducer
 }
 
 export const PaymentPage = () => {
@@ -56,13 +51,13 @@ export const PaymentPage = () => {
         deleteAllAnalysis
     } = userAnalysisActions
 
+    const selectedLocation = useSelector(getSelectedLocationData)
+    const selectedBranch = useSelector(getSelectedBranchData)
     const {register, setValue, handleSubmit} = useForm()
 
     const data = useSelector(getPaymentData)
     const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
-    const branch = useSelector(getBranch)
-    const branchId = branch?.results?.[0]?.id;
     const analiz = useSelector(getUserAnalysis)
     //@ts-ignore
     const prices = analiz?.analysis_list?.map(item => item.price)
@@ -72,13 +67,19 @@ export const PaymentPage = () => {
     const payType = useSelector(getPaymentTypeData)
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(getBranchThunk())
-        dispatch(paymentTypeThunk())
-    }, [])
+        // dispatch(getBranchThunk())
+        if (selectedLocation)
+            dispatch(fetchBranchData({id: selectedLocation}))
+    }, [selectedLocation])
+
     useEffect(() => {
-        if (branchId)
-            dispatch(fetchUserPaymentList({branchId, search}))
-    }, [branchId])
+        dispatch(paymentTypeThunk())
+    })
+
+    useEffect(() => {
+        if (selectedBranch)
+            dispatch(fetchUserPaymentList({selectedBranch, search}))
+    }, [selectedBranch])
 
     useEffect(() => {
         if (userId)
@@ -165,7 +166,6 @@ export const PaymentPage = () => {
                         analiz?.packet.map(item => {
                             return (
                                 <UserPackets
-                                    // @ts-ignore
                                     item={item}
                                     onDeletePacketAnalysis={onDeletePacketAnalysis}
                                     onDeletePacketId={onDeletePacket}
@@ -174,7 +174,6 @@ export const PaymentPage = () => {
                         })
                     }
                     {analiz?.analysis_list.length ? <UserAnalysis
-                        // @ts-ignore
                         item={analiz?.analysis_list}
                         total={totalOther}
                         onDeleteAnalysisId={onDeleteAnalysis}

@@ -21,6 +21,42 @@ export const fetchLocationData = createAsyncThunk(
     }
 )
 
+// export const fetchBranchData = createAsyncThunk(
+//     "oftenUsedSlice/fetchBranchData",
+//     () => {
+//         const {request} = useHttp()
+//         return request({url: "branch_info/branch_get/"})
+//     }
+// )
+
+interface IBranchThunkProps {
+    id: number
+}
+
+export const fetchBranchData = createAsyncThunk<
+    void,
+    IBranchThunkProps,
+    ThunkConfig<string>
+>('oftenUsedSlice/fetchBranchData', async (authData, thunkApi) => {
+    const { extra,  rejectWithValue } = thunkApi;
+    try {
+        const response = await extra.api({
+            url: `branch_info/branch_get/?${ParamUrl({location: authData.id})}`,
+            method: "GET",
+            body: null,
+            headers: headers()
+        })
+
+        if (!response) {
+            throw new Error();
+        }
+        return response.results;
+    } catch (e) {
+        console.log(e);
+        return rejectWithValue('error');
+    }
+});
+
 
 
 

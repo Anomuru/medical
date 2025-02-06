@@ -16,7 +16,10 @@ export interface Device {
 export interface OftenUsedSchemas {
     jobs?: JobSchema[],
     locations?: any,
+    branches?: any,
     doctors: DoctorSchema[],
+    selectedLocation?: number,
+    selectedBranch?: number,
     error?: "error"
     loading: boolean,
     data: []

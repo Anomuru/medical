@@ -15,8 +15,7 @@ import {PaymentPage} from "pages/paymentPage";
 
 import {PatientPage} from "pages/patientPage";
 import {AnalysisPage} from "pages/analysisPage";
-
-
+import {AllPaymentPage} from "../../../pages/allPaymentPage";
 import {
     getDashboardRoute,
     getRegisterRoute,
@@ -28,12 +27,13 @@ import {
     getJobListRoute,
     getProfileRoute,
     getDeviceProfileRoute,
-    getWorkTableRoute, getPatientRoute, getAnalysisRoute,
+    getWorkTableRoute,
+    getPatientRoute,
+    getAnalysisRoute,
     getWorkerProfile,
-    getPaymentRoute, getAllPaymentsPageRoute
+    getPaymentRoute,
+    getAllPaymentsPageRoute
 } from "shared/const/routers";
-import {AllPaymentPage} from "../../../pages/allPaymentPage";
-
 
 interface IRouterConfigProfiles {
     name: string,

@@ -41,13 +41,7 @@ export const LogInPage = () => {
 
 
         dispatch(loginThunk(data))
-            .then(res => {
-
-                if (res) {
-                    navigate("/platform")
-                }
-
-            })
+            .then(res => res.meta.requestStatus === "fulfilled" ? navigate("/platform") : null)
         // request({url: "token/", method: "POST", body: JSON.stringify(data), headers: headers()})
         //     .then(res => {
         //
