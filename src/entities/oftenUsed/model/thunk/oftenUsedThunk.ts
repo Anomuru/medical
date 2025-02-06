@@ -1,6 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {header, headers, ParamUrl, useHttp} from "shared/api/base";
-import {ThunkConfig} from "app/providers/storeProvider";
+import {ThunkConfig} from "../../../../app/providers/storeProvider";
+
+import {oftenUsedActions} from "../slice/oftenUsedSlice";
 import {DoctorSchema} from "shared/types/oftenUsedTypes";
 
 export const fetchJobsData = createAsyncThunk(
@@ -54,3 +56,28 @@ export const getDoctorsThunk = createAsyncThunk<
 
 
 
+
+export const oftenUsedDeviceListThunk = createAsyncThunk<
+    void,
+    void,
+    ThunkConfig<string>
+>('deviceListSlice/oftenUsedDeviceListThunk', async (authData, thunkApi) => {
+    const {extra, dispatch, rejectWithValue} = thunkApi;
+    try {
+        const response = await extra.api({
+            url: `device/get/list/`, method: "GET", body: null, headers: headers()
+        })
+
+
+        if (!response) {
+            throw new Error();
+        }
+
+
+        dispatch(oftenUsedActions.onGetDeviceList(response));
+        return response.data;
+    } catch (e) {
+        console.log(e);
+        return rejectWithValue('error');
+    }
+});

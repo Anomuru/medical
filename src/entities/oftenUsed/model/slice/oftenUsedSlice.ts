@@ -1,19 +1,27 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "../types/oftenUsedSchemas";
 import {fetchJobsData, getDoctorsThunk,fetchLocationData} from "../thunk/oftenUsedThunk";
+import {  oftenUsedDeviceListThunk} from "../thunk/oftenUsedThunk";
+
 
 const initialState: OftenUsedSchemas = {
     jobs: [],
     doctors: [],
     locations: undefined,
     loading: false,
-    error: undefined
+    error: undefined,
+    data: []
 }
 
 const oftenUsedSlice = createSlice({
     name: "oftenUsedSlice",
     initialState,
-    reducers: {},
+    reducers: {
+        onGetDeviceList: (state, action) => {
+            state.data = action.payload.results
+        },
+
+    },
     extraReducers: builder =>
         builder
             .addCase(fetchJobsData.pending, (state) => {
@@ -55,6 +63,21 @@ const oftenUsedSlice = createSlice({
                 state.error = undefined
             })
             .addCase(getDoctorsThunk.rejected, (state) => {
+                state.loading = false
+                state.error = "error"
+            })
+
+
+            .addCase(oftenUsedDeviceListThunk.pending, (state) => {
+                state.loading = true
+                state.error = undefined
+            })
+            .addCase(oftenUsedDeviceListThunk.fulfilled, (state, action) => {
+                state.loading = false
+
+                state.error = "error"
+            })
+            .addCase(oftenUsedDeviceListThunk.rejected, (state) => {
                 state.loading = false
                 state.error = "error"
             })

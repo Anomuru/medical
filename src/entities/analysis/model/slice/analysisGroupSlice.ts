@@ -28,7 +28,7 @@ const analysisGroupSlice = createSlice({
                 }
                 return item
             })
-            console.log(action.payload)
+
         },
         onDeleteAnalysisGroup: (state , action) => {
             state.data = state.data.filter(item => item.id !== action.payload)

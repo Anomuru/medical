@@ -3,9 +3,9 @@ import cls from "./workTable.module.sass"
 
 import {ScheduleXCalendar, useCalendarApp} from '@schedule-x/react';
 import {createViewDay, createViewMonthGrid, createViewWeek} from "@schedule-x/calendar";
-import {createEventModalPlugin} from "@schedule-x/event-modal";
+
 import '@schedule-x/theme-default/dist/index.css'
-import {createDragAndDropPlugin} from "@schedule-x/drag-and-drop";
+
 
 import img from "shared/assets/images/dailyImage.png"
 import {Button} from "../../../shared/ui/button";
@@ -20,13 +20,12 @@ import {
 import {workTableReducer} from "../model/slice/workTableSlice";
 import {Form} from "shared/ui/form";
 import {Input} from "../../../shared/ui/input";
-import {workTableThunk} from "../model/thunk/workTableThunk";
+
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useNavigate} from "react-router";
 import {getDoctorsThunk} from "entities/oftenUsed/model/thunk/oftenUsedThunk";
 import {getDoctorsData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
-import {DoctorSchema} from "shared/types/oftenUsedTypes";
-import {createEventsServicePlugin} from "@schedule-x/events-service";
+
 import {createCalendarControlsPlugin} from "@schedule-x/calendar-controls";
 
 

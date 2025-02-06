@@ -21,6 +21,8 @@ const loginSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(loginThunk.fulfilled, (state) => {
+
+
                 state.isLoading = false;
             })
             .addCase(loginThunk.rejected, (state, action) => {

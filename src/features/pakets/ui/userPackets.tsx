@@ -8,8 +8,8 @@ import {IAnalysisProps, IUserPackets} from "../../../entities/pakets/model/paket
 
 interface IPacketsProps {
     item: IUserPackets,
-    onDeletePacketAnalysis: (arg: number, arg2: number) => void,
-    onDeletePacketId: (arg: number) => void
+    onDeletePacketAnalysis?: (arg: number, arg2: number) => void,
+    onDeletePacketId?: (arg: number) => void
 }
 
 export const UserPackets = memo(({item, onDeletePacketAnalysis, onDeletePacketId}: IPacketsProps) => {
@@ -41,7 +41,7 @@ export const UserPackets = memo(({item, onDeletePacketAnalysis, onDeletePacketId
         //     packagePrice: price
         // }))
         // dispatch(deleteUserPacketsAnalysis(isActiveAnalysis))
-        if (packet_id) {
+        if (packet_id && onDeletePacketAnalysis) {
             onDeletePacketAnalysis(isActiveAnalysis, packet_id)
             setIsDeleteAnalysis(false)
         }
@@ -49,12 +49,13 @@ export const UserPackets = memo(({item, onDeletePacketAnalysis, onDeletePacketId
 
     const onDeletePacket = () => {
         // dispatch(deletePacket(isActivePacket))
-        onDeletePacketId(isActivePacket)
-        setIsDeletePacket(false)
+        if (onDeletePacketId) {
+            onDeletePacketId(isActivePacket)
+            setIsDeletePacket(false)
+        }
     }
 
     const onClickAnalysis = (id: number) => {
-        console.log(id, "id", "userPackets")
         setIsActiveAnalysis(id)
         setIsDeleteAnalysis(true)
     }

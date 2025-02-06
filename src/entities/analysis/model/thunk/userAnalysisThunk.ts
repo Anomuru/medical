@@ -5,7 +5,7 @@ import {userAnalysisActions} from "../slice/userAnalysisSlice";
 
 export const fetchUserAnalys = createAsyncThunk<
     void,
-    {userId: number},
+    {userId: number | string},
     ThunkConfig<string>
 >('userAnalysisSlice/fetchUserAnalys', async ({userId}, thunkApi) => {
     const {extra, dispatch, rejectWithValue} = thunkApi;

@@ -1,34 +1,48 @@
-import {memo, useCallback, useState} from 'react';
+import {FC, memo} from 'react';
 
-import {Radio} from "shared/ui/radio";
+
 
 import cls from "./patientHeader.module.sass";
 
-export const PatientHeader = memo(() => {
 
-    const [activeType, setActiveType] = useState("")
-    const toggleActiveType = useCallback((data: string) => setActiveType(data), [])
+
+interface IPatientFilter {
+    filter?: {name: string , status: string}[],
+    setActiveType: (arg: string) => void,
+    activeType: string
+}
+
+
+export const PatientHeader: FC<IPatientFilter> = memo(({filter , setActiveType , activeType}) => {
+
+
+    const handleCheckboxChange = (status: string) => {
+        // @ts-ignore
+        setActiveType((prev: string) => (prev === status ? null : status));
+    };
+
+    const filterRender = () => {
+        return filter?.map((item, index) => (
+            <div key={index} className={cls.header__filter_item}>
+                <input
+                    type="checkbox"
+                    checked={activeType === item.status}
+                    onChange={() => handleCheckboxChange(item.status)}
+                    name="checkbox"
+                />
+                {item.name}
+            </div>
+        ));
+    };
+
+
 
     return (
         <div className={cls.header}>
             <h1>Patient list</h1>
             <div className={cls.header__filter}>
-                <Radio
-                    value={"paid"}
-                    name={"radio"}
-                    onChange={toggleActiveType}
-                    checked={"paid" === activeType}
-                >
-                    Paid
-                </Radio>
-                <Radio
-                    value={"unpaid"}
-                    name={"radio"}
-                    onChange={toggleActiveType}
-                    checked={"unpaid" === activeType}
-                >
-                    Unpaid
-                </Radio>
+                {filterRender()}
+
             </div>
         </div>
     );
