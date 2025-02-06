@@ -18,18 +18,17 @@ import {IAlertState} from "features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
 
 import {IPacketsSchema} from "entities/pakets";
-import {BranchSchema} from "features/branch/types/branchSchema";
 import {IPaymentSchema} from "features/paymentFeature/model/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
 import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
 import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/types/profileAnalysisTypes";
 
 
-
 export interface StateSchema {
 
     user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
+    oftenUsedDeviceSlice: IOftenUsedDeviceListSchema
     branchSlice?: BranchSchema;
     workTableSlice?: WorkTableSchema;
     staffSlice?: StaffListSchema;

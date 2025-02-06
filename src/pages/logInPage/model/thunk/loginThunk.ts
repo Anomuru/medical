@@ -38,7 +38,7 @@ export const loginThunk = createAsyncThunk<
         );
 
         dispatch(userActions.setAuthData(response));
-        return response.data;
+        return response;
     } catch (e) {
         console.log(e);
         return rejectWithValue('error');

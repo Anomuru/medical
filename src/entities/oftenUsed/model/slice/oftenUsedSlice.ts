@@ -1,13 +1,14 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "../types/oftenUsedSchemas";
-import {fetchJobsData, getDoctorsThunk,fetchLocationData} from "../thunk/oftenUsedThunk";
-import {  oftenUsedDeviceListThunk} from "../thunk/oftenUsedThunk";
-
+import {fetchJobsData, getDoctorsThunk, fetchLocationData, fetchBranchData} from "../thunk/oftenUsedThunk";
 
 const initialState: OftenUsedSchemas = {
     jobs: [],
     doctors: [],
-    locations: undefined,
+    locations: [],
+    branches: [],
+    selectedLocation: undefined,
+    selectedBranch: undefined,
     loading: false,
     error: undefined,
     data: []
@@ -17,11 +18,16 @@ const oftenUsedSlice = createSlice({
     name: "oftenUsedSlice",
     initialState,
     reducers: {
-        onGetDeviceList: (state, action) => {
-            state.data = action.payload.results
+        fetchSelectedLocation: (state, action) => {
+            state.selectedLocation = action.payload
         },
 
+
+    onGetDeviceList: (state, action) => {
+        state.data = action.payload.results
     },
+
+},
     extraReducers: builder =>
         builder
             .addCase(fetchJobsData.pending, (state) => {
@@ -48,6 +54,19 @@ const oftenUsedSlice = createSlice({
                 state.error = undefined
             })
             .addCase(fetchLocationData.rejected, (state) => {
+                state.loading = false
+                state.error = "error"
+            })
+            .addCase(fetchBranchData.pending, (state) => {
+                state.loading = true
+                state.error = undefined
+            })
+            .addCase(fetchBranchData.fulfilled, (state, action) => {
+                state.branches = action.payload
+                state.loading = false
+                state.error = undefined
+            })
+            .addCase(fetchBranchData.rejected, (state) => {
                 state.loading = false
                 state.error = "error"
             })

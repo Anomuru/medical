@@ -21,16 +21,14 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {branchReducers} from "../../../branch/model/slice/getBranchSlice";
-import {getBranch, getBranchThunk} from "../../../branch";
 import {Select} from "../../../../shared/ui/select";
+import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
+import {getSelectedLocationData} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
-const reducers: ReducersList = {
-    branchSlice: branchReducers
-
-}
 
 export const AnalysisPackageModal = () => {
+
+    const selectedLocation = useSelector(getSelectedLocationData)
 
     const [active, setActive] = useState<boolean>(false)
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
@@ -43,8 +41,9 @@ export const AnalysisPackageModal = () => {
         dispatch(fetchAnalysisPackageList())
     }, [])
     useEffect(() => {
-        dispatch(getBranchThunk())
-    }, [])
+        if (selectedLocation)
+            dispatch(fetchBranchData({id: selectedLocation}))
+    }, [selectedLocation])
 
     // console.log(branchId)
 
@@ -52,26 +51,26 @@ export const AnalysisPackageModal = () => {
 
     return (
 
-        <DynamicModuleLoader reducers={reducers}>
-            <div className={cls.modal}>
-                <div className={cls.modal__wrapper}>
-                    <div onClick={() => setActive(true)} className={cls.modal__add}>
-                        <i className={"fas fa-plus"}/>
-                    </div>
+        <div className={cls.modal}>
+            <div className={cls.modal__wrapper}>
+                <div onClick={() => setActive(true)} className={cls.modal__add}>
+                    <i className={"fas fa-plus"}/>
                 </div>
-                <AnalysisPackage data={analysisPackageData} setActiveEditItem={setActiveEditItem}
-                                 setActiveEdit={setActiveEdit}/>
-                <AddPackageAddModal setActive={setActive} active={active}/>
-                <EditPackageAddModal active={activeEdit} setActive={setActiveEdit} activeEditItem={activeEditItem}/>
-
             </div>
-        </DynamicModuleLoader>
+            <AnalysisPackage data={analysisPackageData} setActiveEditItem={setActiveEditItem}
+                             setActiveEdit={setActiveEdit}/>
+            <AddPackageAddModal setActive={setActive} active={active}/>
+            <EditPackageAddModal active={activeEdit} setActive={setActiveEdit} activeEditItem={activeEditItem}/>
+
+        </div>
     );
 }
 
 const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (arg: boolean) => void }) => {
-    const branch = useSelector(getBranch)
-    const branchData = branch?.results;
+    // const branchData = branch?.results;
+
+    const branchData = useSelector(getBranchesData)
+
     const [selectedBranch, setSelectedBranch] = useState<string>()
 
     const {request} = useHttp()

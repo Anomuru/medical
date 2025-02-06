@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import classNames from "classnames";
 
 import {Input} from "shared/ui/input";
@@ -6,8 +6,50 @@ import {Input} from "shared/ui/input";
 import cls from "./header.module.sass";
 import logo from "shared/assets/logo/medicalLogo.png";
 import profileImage from "shared/assets/images/loginImage.png";
+import {Select} from "../../../shared/ui/select";
+import {useSelector} from "react-redux";
+import {
+    fetchBranchData,
+    fetchLocationData,
+    getBranchesData,
+    getLocationsData,
+    oftenUsedActions
+} from "entities/oftenUsed";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {getUserId, getUserName, getUserSurname} from "../../../entities/user";
+import {useNavigate} from "react-router";
 
 export const Header = () => {
+
+    const dispatch = useAppDispatch()
+    const navigation = useNavigate()
+    const {fetchSelectedLocation} = oftenUsedActions
+    const [location, setLocation] = useState<number>()
+    const [branch, setBranch] = useState<number>()
+
+    useEffect(() => {
+        dispatch(fetchLocationData())
+    }, [])
+
+    useEffect(() => {
+        if (location)
+            dispatch(fetchBranchData({id: location}))
+    }, [location])
+
+    useEffect(() => {
+        if (branch)
+            dispatch(fetchSelectedLocation(branch))
+    }, [branch])
+
+    const branchData = useSelector(getBranchesData)
+    const locationData = useSelector(getLocationsData)
+    const userSurname = useSelector(getUserSurname)
+    const userName = useSelector(getUserName)
+    const userId = useSelector(getUserId)
+
+    const getLocation = useCallback((arg: number) => setLocation(arg), [])
+    const getBranch = useCallback((arg: number) => setBranch(arg), [])
+
     return (
         <div className={cls.header}>
             <img
@@ -16,21 +58,26 @@ export const Header = () => {
                 alt=""
             />
             <div className={cls.setting}>
-                <div className={cls.setting__search}>
-                    <i className={classNames("fa-solid fa-search", cls.setting__icon)}/>
-                    <Input extraClass={cls.setting__input} name={"search"}/>
-                </div>
-                <div className={cls.setting__notifications}>
-                    <i className={classNames("fa-solid fa-bell", cls.setting__notification)}/>
-                    <div className={cls.setting__newMessage}/>
-                </div>
-                <div className={cls.profile}>
+                <Select optionsData={locationData} title={"Location"} setSelectOption={getLocation}/>
+                <Select optionsData={branchData} title={"Branch"} setSelectOption={getBranch}/>
+                {/*<div className={cls.setting__search}>*/}
+                {/*    <i className={classNames("fa-solid fa-search", cls.setting__icon)}/>*/}
+                {/*    <Input extraClass={cls.setting__input} name={"search"}/>*/}
+                {/*</div>*/}
+                {/*<div className={cls.setting__notifications}>*/}
+                {/*    <i className={classNames("fa-solid fa-bell", cls.setting__notification)}/>*/}
+                {/*    <div className={cls.setting__newMessage}/>*/}
+                {/*</div>*/}
+                <div
+                    onClick={() => navigation(`/platform/staff/profile/${userId}`, {replace: true})}
+                    className={cls.profile}
+                >
                     <img
                         className={cls.profile__image}
                         src={profileImage}
                         alt="profileImage"
                     />
-                    <h2 className={cls.profile__surname}>Dr. Ram</h2>
+                    <h2 className={cls.profile__surname}>{userSurname} {userName}</h2>
                 </div>
             </div>
         </div>

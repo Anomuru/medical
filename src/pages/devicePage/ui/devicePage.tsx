@@ -14,13 +14,13 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {headerImg, useHttp} from "../../../shared/api/base";
-import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
-import {getBranch, getBranchThunk} from "../../../features/branch";
 import {Select} from "../../../shared/ui/select";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {fetchBranchData, getBranchesData} from "../../../entities/oftenUsed";
+import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
 const reducers: ReducersList = {
     deviceListSlice: deviceListReducer,
-    branchSlice: branchReducers
 }
 
 export const DevicePage = () => {
@@ -29,13 +29,16 @@ export const DevicePage = () => {
     const [ipAddress, setIpAddress] = useState<string>();
     const [selectedBranch, setSelectedBranch] = useState<string>()
     const {request} = useHttp()
-    const dispatch: any = useDispatch()
-    const branch = useSelector(getBranch)
-    const branchData = branch?.results;
+    const dispatch = useAppDispatch()
+    const selectedLocationId = useSelector(getSelectedLocationData)
+    // const branchData = branch?.results;
+    const branchData = useSelector(getBranchesData)
 
     useEffect(() => {
-        dispatch(getBranchThunk())
-    }, [])
+        // dispatch(getBranchThunk())
+        if (selectedLocationId)
+            dispatch(fetchBranchData({id: selectedLocationId}))
+    }, [selectedLocationId])
 
     const onPortal = () => {
         setAddItem(!addItem);
@@ -82,15 +85,16 @@ export const DevicePage = () => {
                 </Button>
                 <DeviceList/>
 
-                <Modal type={"simple"} extraClass={cls.addItemBox} active={addItem} setActive={setAddItem} title={"Add device"}>
-                    <Form  onSubmit={handleFormSubmit}>
+                <Modal type={"simple"} extraClass={cls.addItemBox} active={addItem} setActive={setAddItem}
+                       title={"Add device"}>
+                    <Form onSubmit={handleFormSubmit}>
                         <Input extraClass={cls.addItemBox__input} name="name" placeholder="Name device"
                                onChange={getName}
                                required
                         />
                         <Input extraClass={cls.addItemBox__input} name="ip_address" placeholder="Enter IP Address"
                                onChange={getIpAddress} required/>
-                        <Input extraClass={cls.addItemBox__input} name="img" type="file" />
+                        <Input extraClass={cls.addItemBox__input} name="img" type="file"/>
                         <Select
                             extraClass={cls.addItemBox__select}
                             setSelectOption={setSelectedBranch}
