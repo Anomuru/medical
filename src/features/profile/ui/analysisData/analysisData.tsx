@@ -26,10 +26,6 @@ export const AnalysisData = () => {
     const {id} = useParams()
 
 
-
-
-
-
     const {request} = useHttp()
 
     useEffect(() => {
@@ -37,8 +33,6 @@ export const AnalysisData = () => {
             dispatch(fetchProfileAnalysis(id))
         }
     }, [id])
-
-
 
 
     const onDeletePacketAnalysis = (analysisID: number, packetId: number) => {
@@ -56,7 +50,6 @@ export const AnalysisData = () => {
                 dispatch(profileAnalysisActions.deleteAnalysis(analysisID))
             })
     }
-
 
 
     return (
@@ -96,7 +89,7 @@ export const AnalysisData = () => {
     );
 };
 
-const OldAnalysis  = () => {
+const OldAnalysis = () => {
     const [pakets, setPakets] = useState<IPackets[]>([])
     const [analysis, setAnalysis] = useState<IAnalysis[]>([])
     const [selectedItems, setSelectedItems] = useState<IAnalysis[]>([]);
@@ -134,15 +127,11 @@ const OldAnalysis  = () => {
     }, [])
 
 
-
-
-
-
     const onPostSelectedAnalysis = () => {
         request({
             url: `user/user_analysis_crud/create/`,
             method: "POST",
-            body: JSON.stringify({analysis_list: selectedItemId, user: Number(id)}),
+            body: JSON.stringify({analysis_list: selectedItemId.length ? selectedItemId : selectedPacketItemsId, user: Number(id)}),
             headers: headers(),
         })
             .then(res => {
@@ -172,21 +161,25 @@ const OldAnalysis  = () => {
             return [...prev, item]
         })
         // @ts-ignore
-        setSelectedPacketItemsId(prev => {
+
+        setSelectedPacketItemsId(
             // @ts-ignore
-            return [...prev , item.analysis]
-        })
+            item.analysis.map(item => item.id)
+        )
 
 
     };
-    console.log(selectedPacketItemsId, "selectedPacketItemsId")
+
+
     const onClickPacket = (id: number) => {
         setSelectedPacketItems(prev => {
             return prev.filter(item => item.id !== id)
         })
+        // @ts-ignore
+        setSelectedPacketItemsId(prev => prev.filter(i => i !== id))
     }
 
-    return(
+    return (
         <>
 
             <div className={cls.wrapper__analysis}>
@@ -198,7 +191,7 @@ const OldAnalysis  = () => {
                             {
                                 pakets.map(item => {
                                     return (
-                                        <div onClick={() => handleSelect(item)} className={cls.item} >
+                                        <div onClick={() => handleSelect(item)} className={cls.item}>
                                             <h2>
                                                 {item.name}
                                             </h2>
@@ -209,37 +202,25 @@ const OldAnalysis  = () => {
                                     )
                                 })
                             }
-                            {
-                                pakets.map(item => {
-                                    return (
-                                        <div onClick={() => handleSelect(item)} className={cls.item} >
-                                            <h2>
-                                                {item.name}
-                                            </h2>
-                                            <div className={cls.icon}>
-                                                <i className="fas fa-plus"></i>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
+
 
                         </div>
                     </div>
 
-                    <div className={cls.oldAnalysis__main}>
+                    {selectedPacketItems.length ? <div className={cls.oldAnalysis__main}>
                         {
                             selectedPacketItems?.map(item => {
                                 return (
                                     <div className={cls.oldAnalysis__main_packetList}>
-                                        <PacketsList onDeleteAnalysis={() => console.log("sfsd")} onDeletePacket={onClickPacket} item={item}/>
+                                        <PacketsList onDeleteAnalysis={() => console.log("sfsd")}
+                                                     onDeletePacket={onClickPacket} item={item}/>
                                     </div>
 
                                 )
                             })
                         }
-                    </div>
-
+                    </div> : null
+                    }
 
                 </div>
 
@@ -267,7 +248,7 @@ const OldAnalysis  = () => {
                         </div>
                     </div>
 
-                    <div className={cls.oldAnalysis__main}>
+                    {selectedItems.length ? <div className={cls.oldAnalysis__main}>
                         {selectedItems.map(item => (
                             <div className={cls.oldAnalysis__main_list}>
                                 <div className={cls.oldAnalysis__main_list_name}>
@@ -279,7 +260,7 @@ const OldAnalysis  = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    </div>  :null}
 
                 </div>
             </div>
