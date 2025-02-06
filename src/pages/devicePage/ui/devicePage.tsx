@@ -14,8 +14,6 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {headerImg, useHttp} from "../../../shared/api/base";
-import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
-import {getBranch, getBranchThunk} from "../../../features/branch";
 import {Select} from "../../../shared/ui/select";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {fetchBranchData, getBranchesData} from "../../../entities/oftenUsed";
@@ -23,7 +21,6 @@ import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selecto
 
 const reducers: ReducersList = {
     deviceListSlice: deviceListReducer,
-    branchSlice: branchReducers
 }
 
 export const DevicePage = () => {
@@ -33,7 +30,6 @@ export const DevicePage = () => {
     const [selectedBranch, setSelectedBranch] = useState<string>()
     const {request} = useHttp()
     const dispatch = useAppDispatch()
-    // const branch = useSelector(getBranch)
     const selectedLocationId = useSelector(getSelectedLocationData)
     // const branchData = branch?.results;
     const branchData = useSelector(getBranchesData)

@@ -14,9 +14,7 @@ import {useSelector} from "react-redux";
 import {getPaymentData} from "../../../features/paymentFeature/model/paymentSelector";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {fetchUserPaymentList} from "../../../features/paymentFeature/model/paymentThunk";
-import {getBranch, getBranchThunk} from "../../../features/branch";
 import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
-import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
 import {Packets} from "../../../features/pakets";
 import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
 import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
@@ -29,7 +27,6 @@ import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selecto
 const reducers: ReducersList = {
     userAnalysisSlice: userAnalysisReducer,
     paymentSlice: paymentReducer,
-    branchSlice: branchReducers
 }
 
 export const PaymentPage = () => {

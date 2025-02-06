@@ -20,12 +20,10 @@ import {headers, useHttp} from "shared/api/base";
 import cls from "./registerPage.module.sass";
 import image from "shared/assets/images/registerImage.png";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {getBranch, getBranchThunk} from "../../../features/branch";
 import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
 import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
 interface Branch {
@@ -59,9 +57,7 @@ interface IBranchResponse {
     results?: Branch[];
 }
 
-const reducers: ReducersList = {
-    branchSlice: branchReducers
-}
+
 export const RegisterPage = () => {
 
     const dispatch = useAppDispatch()
@@ -262,19 +258,17 @@ export const RegisterPage = () => {
 
 
     return (
-        <DynamicModuleLoader reducers={reducers}>
-            <div className={cls.registerPage}>
-                <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
-                    <h1>Register Staff</h1>
-                    <div className={cls.container}>
-                        {render()}
-                    </div>
-                    <Button extraClass={cls.registerPage__btn}>Register</Button>
-                </Form>
-                <div className={cls.registerPage__image}>
-                    <img src={image} alt=""/>
+        <div className={cls.registerPage}>
+            <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
+                <h1>Register Staff</h1>
+                <div className={cls.container}>
+                    {render()}
                 </div>
+                <Button extraClass={cls.registerPage__btn}>Register</Button>
+            </Form>
+            <div className={cls.registerPage__image}>
+                <img src={image} alt=""/>
             </div>
-        </DynamicModuleLoader>
+        </div>
     );
 }
