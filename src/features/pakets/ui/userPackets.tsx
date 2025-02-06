@@ -14,7 +14,7 @@ interface IPacketsProps {
 
 export const UserPackets = memo(({item, onDeletePacketAnalysis, onDeletePacketId}: IPacketsProps) => {
 
-    const {packet_id, packet_name, analysis_list} = item
+    const {packet_id, packet_name, analysis_list, total} = item
 
     const [analysisList, setAnalysisList] = useState<any[]>([])
 
@@ -72,6 +72,7 @@ export const UserPackets = memo(({item, onDeletePacketAnalysis, onDeletePacketId
                 packet_id={packet_id}
                 packet_name={packet_name}
                 list={analysisList}
+                total={total}
                 onDeleteAnalysis={onClickAnalysis}
                 onDeletePacket={onClickPacket}
             />

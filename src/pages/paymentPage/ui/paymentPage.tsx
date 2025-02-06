@@ -11,9 +11,13 @@ import {
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {paymentReducer} from "../../../features/paymentFeature/model/paymentSlice";
 import {useSelector} from "react-redux";
-import {getPaymentData} from "../../../features/paymentFeature/model/paymentSelector";
+import {getPaymentData, getPaymentTypeData} from "../../../features/paymentFeature/model/paymentSelector";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {fetchUserPaymentList} from "../../../features/paymentFeature/model/paymentThunk";
+import {
+    fetchUserPaymentList,
+    givePaymentThunk,
+    paymentTypeThunk
+} from "../../../features/paymentFeature/model/paymentThunk";
 import {getBranch, getBranchThunk} from "../../../features/branch";
 import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
 import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
@@ -22,12 +26,25 @@ import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analys
 import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
 import {UserPackets} from "../../../features/pakets/ui/userPackets";
 import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
+import {paymentTypeReducer} from "../../../features/paymentFeature/model/paymentTypeSlice";
+import {Form} from "../../../shared/ui/form";
+import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
+import {useForm} from "react-hook-form";
 
+interface IPaymentData {
+    date: string,
+    payment_type: string,
+    user: number,
+
+
+}
 
 const reducers: ReducersList = {
     userAnalysisSlice: userAnalysisReducer,
     paymentSlice: paymentReducer,
-    branchSlice: branchReducers
+    branchSlice: branchReducers,
+    paymentTypeSlice: paymentTypeReducer,
+    givePaymentSlice: givePaymentReducer
 }
 
 export const PaymentPage = () => {
@@ -39,17 +56,25 @@ export const PaymentPage = () => {
         deleteAllAnalysis
     } = userAnalysisActions
 
+    const {register, setValue, handleSubmit} = useForm()
+
     const data = useSelector(getPaymentData)
     const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
     const branch = useSelector(getBranch)
     const branchId = branch?.results?.[0]?.id;
     const analiz = useSelector(getUserAnalysis)
+    //@ts-ignore
+    const prices = analiz?.analysis_list?.map(item => item.price)
+    const totalOther = prices?.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+
+    const payType = useSelector(getPaymentTypeData)
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getBranchThunk())
+        dispatch(paymentTypeThunk())
     }, [])
-
     useEffect(() => {
         if (branchId)
             dispatch(fetchUserPaymentList({branchId, search}))
@@ -81,6 +106,16 @@ export const PaymentPage = () => {
         dispatch(deleteAllAnalysis())
     }
 
+    const onClick = (completeData: IPaymentData) => {
+        const data = {
+            ...completeData,
+            payment_type: selectedRadio,
+            user: userId,
+        }
+        //@ts-ignore
+        dispatch(givePaymentThunk(data))
+    }
+
     //@ts-ignore
     // const onClickGetId = (e) => {
     //     setUserId(e)
@@ -103,11 +138,7 @@ export const PaymentPage = () => {
         });
     }
 
-    const list = {
-        name: "unknown",
-        value: [{label: "Cash", id: "cash"}, {label: "Click", id: "click"}, {label: "Bank", id: "bank"}],
-        isRadio: true,
-    }
+
 
     return (
         <DynamicModuleLoader reducers={reducers}>
@@ -144,39 +175,44 @@ export const PaymentPage = () => {
                     {analiz?.analysis_list.length ? <UserAnalysis
                         // @ts-ignore
                         item={analiz?.analysis_list}
+                        total={totalOther}
                         onDeleteAnalysisId={onDeleteAnalysis}
                         onDeleteAllAnalysis={onDeleteAllAnalysis}
                     /> : null}
                 </div>
 
 
-                <div className={cls.cashier}>
+                <Form extraClass={cls.cashier}>
                     <h1>Kassir</h1>
-                    <Input name={"id"} title={"Hisob raqami (ID)"}/>
+                    <Input name={"date"} title={"Kun"} type={"date"} register={register}/>
                     <div className={cls.types}>
                         {
-                            list.value.map(item => {
+                            payType?.map(item => {
                                 return (
                                     <Radio
-                                        name={list.name}
+                                        name={item.payment_type}
                                         // @ts-ignore
                                         value={item.id}
                                         // @ts-ignore
                                         onChange={setSelectedRadio}
+                                        //@ts-ignore
                                         checked={item.id === selectedRadio}
                                     >
-                                        {item.label}
+                                        {item.payment_type}
                                     </Radio>
                                 )
                             })
                         }
 
                     </div>
+                    {
+                        //@ts-ignore
+                        <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Add</Button>
+                    }
 
-                    <Button extraClass={cls.submit}>Add</Button>
 
 
-                </div>
+                </Form>
 
 
             </div>

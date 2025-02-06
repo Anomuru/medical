@@ -19,7 +19,7 @@ import {IPatientSchema} from "entities/patient";
 import {IOftenUsedDeviceListSchema} from "entities/oftenUsed/model/types/oftenUsedDeviceScheme";
 import {IPacketsSchema} from "entities/pakets";
 import {BranchSchema} from "features/branch/types/branchSchema";
-import {IPaymentSchema} from "features/paymentFeature/model/paymentTypes";
+import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "features/paymentFeature/model/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
 import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
 
@@ -35,9 +35,9 @@ export interface StateSchema {
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
-    jobList?: JobListSchema
-
-
+    jobList?: JobListSchema;
+    paymentTypeSlice?: IPaymentTypeSchema
+    givePaymentSlice?: IGivePaymentSchema;
     paymentSlice?: IPaymentSchema,
 
 

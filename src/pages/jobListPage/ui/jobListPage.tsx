@@ -85,7 +85,7 @@ export const JobListPage = () => {
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.tableBox}>
                 <div className={cls.tableBox__header}>
-                    <h1>Job lit </h1>
+                    <h1>Job list </h1>
                     <div className={cls.tableBox__header__buttonPanel}>
                         {/*<Button extraClass={cls.tableBox__header__buttonPanel__btn} children={<img src={settingImage} alt=""/>}/>*/}
                         <Button onClick={onShowModal} extraClass={cls.tableBox__header__buttonPanel__btn}  children={<img src={plusImage} alt=""/>} />
