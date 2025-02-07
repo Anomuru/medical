@@ -22,8 +22,8 @@ import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/ana
 
 import {analysisContainerThunk} from "../../../../entities/analysis/model/thunk/analysisContainerThunk";
 import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
-import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/ofternUsedDeviceList";
-import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedDeviceSelector";
+import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
+import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 import {Pagination} from "../../../pagination";
 import {getAnalysisCount} from "../../../../entities/analysis/model/selector/analysisSelector";
 import {data} from "react-router";
@@ -32,7 +32,7 @@ import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
 import {
     getSelectedLocationData
-} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+} from "entities/oftenUsed/model/selector/oftenUsedSelector";
 
 interface IAddData {
     name: string,
@@ -66,13 +66,14 @@ export const AnalysisAnalysis = () => {
 
 
     return (
-        <div className={cls.modal}>
-            <div className={cls.modal__wrapper}>
-                <div onClick={() => setActive(true)} className={cls.modal__add}>
-                    <i className={"fas fa-plus"}/>
+
+            <div className={cls.modal}>
+                <div className={cls.modal__wrapper}>
+                    <div onClick={() => setActive(true)} className={cls.modal__add}>
+                        <i className={"fas fa-plus"}/>
+                    </div>
                 </div>
-            </div>
-            <AnalysisList isChange={getChangedItem}/>
+                <AnalysisList isChange={getChangedItem}/>
 
             <Pagination
                 // @ts-ignore
@@ -82,9 +83,9 @@ export const AnalysisAnalysis = () => {
                 pageSize={pageSize}
             />
 
-            <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
-            <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
-        </div>
+                <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
+                <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
+            </div>
     );
 };
 
@@ -172,13 +173,9 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
                 />
                 <Select title={"Group"} setSelectOption={getGroupId} optionsData={groupAnalysisData}/>
                 <Select title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
-                <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData?.results}/>
+                <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>
                 <Select title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
-                <Select
-                    setSelectOption={setSelectedBranch}
-                    optionsData={branchData}
-                    selectOption={selectedBranch}
-                />
+                <Select title={"Branch"} setSelectOption={getBranchId} optionsData={branchData}/>
                 <Button>Add</Button>
             </Form>
         </Modal>
@@ -301,7 +298,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
                     selectOption={selectedDevice}
                     title={"Device"}
                     setSelectOption={setSelectedDevice}
-                    optionsData={getData?.results}
+                    optionsData={getData}
                 />
                 <Select
                     selectOption={selectedContainer}

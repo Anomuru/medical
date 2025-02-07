@@ -20,7 +20,7 @@ const analysisPackageSlice = createSlice({
             state.data =  [...state.data, action.payload]
         },
         onEditAnalysisPackage: (state, action) => {
-            console.log(action.payload)
+
             state.data = state?.data?.map(item => {
                 if (item.id === action.payload.id) {
                     return action.payload.res

@@ -77,9 +77,25 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
                 <td onClick={() => onClickDelete(item)}>
 
                     <div className={cls.delete}>
-                        <i className="fa-solid fa-xmark"></i>
+                        Delete
                     </div>
                 </td>
+                <td>
+                    {
+                        item.has_client ?
+                            (
+                                <div className={cls.haveWork}>
+                                    <i className="fa-solid fa-circle-check"></i>
+                                </div>
+                            ) :
+                            (
+                                <div className={cls.notWork}>
+                                    <i className="fa-solid fa-circle-xmark"></i>
+                                </div>
+                            )
+                    }
+                </td>
+
             </tr>
         ))
     }, [jobs])
@@ -94,6 +110,7 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
                         <th>Name</th>
                         <th>Edit</th>
                         <th>Delete</th>
+                        <th>Client</th>
                     </tr>
                     </thead>
                     <tbody className={cls.thBody}>

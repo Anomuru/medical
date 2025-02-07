@@ -19,7 +19,7 @@
 //     pageSize: number,
 //     className?: string,
 //     setCurrentTableData: (arg: () => []) => void,
-//     type?: string
+//     types?: string
 // }
 //
 // export const Pagination: React.FC<IPaginationProps> = (props) => {
@@ -32,7 +32,7 @@
 //         pageSize,
 //         className,
 //         setCurrentTableData,
-//         type = "basic"
+//         types = "basic"
 //     } = props;
 //
 //
@@ -64,8 +64,8 @@
 //                 <li
 //                     key={index}
 //                     className={classNames(cls.pagination_item, {
-//                         [cls.selected]: pageNumber === currentPage && type === "basic",
-//                         [cls.customSelected]: pageNumber === currentPage && type === "custom"
+//                         [cls.selected]: pageNumber === currentPage && types === "basic",
+//                         [cls.customSelected]: pageNumber === currentPage && types === "custom"
 //                     })}
 //                     onClick={() => onPageChange(pageNumber)}
 //                 >

@@ -16,26 +16,28 @@ import {
 import {IAnalysisPackageSchema} from "entities/analysis/model/types/analysisPackageScheme";
 import {IAlertState} from "features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
-import {IOftenUsedDeviceListSchema} from "entities/oftenUsed/model/types/oftenUsedDeviceScheme";
+
 import {IPacketsSchema} from "entities/pakets";
-import {IPaymentSchema} from "features/paymentFeature/model/paymentTypes";
+import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "features/paymentFeature/model/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
 import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
+import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/types/profileAnalysisTypes";
+import {IAllPaymentSchema} from "../../../../entities/allPayment/model/types/allPaymentSchema";
+
 
 
 export interface StateSchema {
 
     user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
-    oftenUsedDeviceSlice: IOftenUsedDeviceListSchema
     workTableSlice?: WorkTableSchema;
     staffSlice?: StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
-    jobList?: JobListSchema
-
-
+    jobList?: JobListSchema;
+    paymentTypeSlice?: IPaymentTypeSchema
+    givePaymentSlice?: IGivePaymentSchema;
     paymentSlice?: IPaymentSchema,
 
 
@@ -49,7 +51,9 @@ export interface StateSchema {
     AlertSlice?: IAlertState
     patientSlice?: IPatientSchema,
     packetsSlice?: IPacketsSchema,
-    userAnalysisSlice?: IUserAnalysisSchema
+    userAnalysisSlice?: IUserAnalysisSchema,
+    profileAnalysisSlice?: IUserProfileAnalysisSchema
+    allPaymentSlice?: IAllPaymentSchema
 
 }
 
@@ -69,7 +73,7 @@ export interface StateSchema {
 export type StateSchemaKey = keyof StateSchema;
 
 type CustomCombinedState<T> = {
-    [K in keyof T]: Exclude<T[K], undefined>;  // Remove `undefined` from each slice's type
+    [K in keyof T]: Exclude<T[K], undefined>;  // Remove `undefined` from each slice's types
 };
 
 export type MountedReducers = OptionalRecord<StateSchemaKey, boolean>;

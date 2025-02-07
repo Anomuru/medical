@@ -25,7 +25,7 @@ export const fetchAnalysisGroupList = createAsyncThunk<
         dispatch(analysisGroupActions.onAnalysisGroup(response));
         return response.data;
     } catch (e) {
-        console.log(e);
+
         return rejectWithValue('error');
     }
 });

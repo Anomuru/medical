@@ -27,7 +27,7 @@ export const fetchAnalysisPackageList = createAsyncThunk<
         dispatch(analysisPackageAction.onAnalysisPackage(response));
         return response.data;
     } catch (e) {
-        console.log(e);
+
         return rejectWithValue('error');
     }
 });

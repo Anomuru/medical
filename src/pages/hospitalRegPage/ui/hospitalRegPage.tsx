@@ -339,7 +339,8 @@ export const HospitalRegPage = () => {
             const timeString = localStorage.getItem("time");
             const date = JSON.parse(localStorage.getItem("date_calendar") as string);
 
-            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : { start: '', end: '' };
+            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : {start: '', end: ''};
+
 
             const res = {
                 ...data,
@@ -390,12 +391,7 @@ export const HospitalRegPage = () => {
 
     const onAddNewAnalysis = (data: IAnalysis) => {
         dispatch(addAnalysis(data))
-        // setAnalysis(prev => prev.filter(item => item.id !== data.id))
     }
-
-
-
-
 
 
     return (

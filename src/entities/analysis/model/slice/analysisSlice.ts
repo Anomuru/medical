@@ -27,7 +27,7 @@ const analysisSlice = createSlice({
                 }
                 return item
             })
-            console.log(action.payload)
+
         },
         deleteAnalysis: (state, action) => {
             state.data = state.data.filter(item => item.id !== action.payload)

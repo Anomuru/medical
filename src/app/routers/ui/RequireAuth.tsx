@@ -31,7 +31,7 @@ export const RequireAuth = () => {
     }, [])
 
 
-    console.log(error,refreshLoading, "hahhahahahahahah")
+
 
     if (refreshLoading) {
         return <DefaultPageLoader/>

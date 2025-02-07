@@ -17,7 +17,7 @@ interface IUserAnalysisPacket {
     analysis_list: IAnalysisProps[];
 }
 
-interface IUserAnalysisData {
+export interface IUserAnalysisData {
     packet: IUserAnalysisPacket[];
     analysis_list: IAnalysisProps[];
 }

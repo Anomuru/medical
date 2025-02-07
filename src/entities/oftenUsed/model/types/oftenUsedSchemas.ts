@@ -1,6 +1,18 @@
 import {DoctorSchema, JobSchema} from "shared/types/oftenUsedTypes";
 
 
+export interface Device {
+    id: number,
+    name: string,
+    image: string
+}
+
+
+
+
+
+
+
 export interface OftenUsedSchemas {
     jobs?: JobSchema[],
     locations?: any,
@@ -10,4 +22,5 @@ export interface OftenUsedSchemas {
     selectedBranch?: number,
     error?: "error"
     loading: boolean,
+    data: []
 }

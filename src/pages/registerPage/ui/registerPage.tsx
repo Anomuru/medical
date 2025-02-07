@@ -24,7 +24,7 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
 
 interface Branch {
     id: number,
@@ -199,6 +199,7 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={item.onSelect}
+                        //@ts-ignore
                         optionsData={item.list}
                     />
                 )

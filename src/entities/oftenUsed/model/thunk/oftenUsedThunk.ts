@@ -1,6 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {header, headers, ParamUrl, useHttp} from "shared/api/base";
-import {ThunkConfig} from "app/providers/storeProvider";
+import {ThunkConfig} from "../../../../app/providers/storeProvider";
+
+import {oftenUsedActions} from "../slice/oftenUsedSlice";
 import {DoctorSchema} from "shared/types/oftenUsedTypes";
 
 export const fetchJobsData = createAsyncThunk(
@@ -36,7 +38,7 @@ export const fetchBranchData = createAsyncThunk<
     IBranchThunkProps,
     ThunkConfig<string>
 >('oftenUsedSlice/fetchBranchData', async (authData, thunkApi) => {
-    const { extra,  rejectWithValue } = thunkApi;
+    const { extra, dispatch,  rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
             url: `branch_info/branch_get/?${ParamUrl({location: authData.id})}`,
@@ -48,6 +50,7 @@ export const fetchBranchData = createAsyncThunk<
         if (!response) {
             throw new Error();
         }
+        // dispatch(oftenUsedActions.onBranch(response))
         return response.results;
     } catch (e) {
         console.log(e);
@@ -90,3 +93,28 @@ export const getDoctorsThunk = createAsyncThunk<
 
 
 
+
+export const oftenUsedDeviceListThunk = createAsyncThunk<
+    void,
+    void,
+    ThunkConfig<string>
+>('deviceListSlice/oftenUsedDeviceListThunk', async (authData, thunkApi) => {
+    const {extra, dispatch, rejectWithValue} = thunkApi;
+    try {
+        const response = await extra.api({
+            url: `device/get/list/`, method: "GET", body: null, headers: headers()
+        })
+
+
+        if (!response) {
+            throw new Error();
+        }
+
+
+        dispatch(oftenUsedActions.onGetDeviceList(response));
+        return response.data;
+    } catch (e) {
+        console.log(e);
+        return rejectWithValue('error');
+    }
+});
