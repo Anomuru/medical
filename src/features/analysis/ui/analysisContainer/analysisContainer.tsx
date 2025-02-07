@@ -7,27 +7,27 @@ import {Input} from "shared/ui/input";
 
 import cls from "./analysisContainerModal.module.sass";
 
-import {Button} from "../../../../shared/ui/button";
+import {Button} from "shared/ui/button";
 import {useForm} from "react-hook-form";
 
 
 
 import {analysisContainerActions} from "entities/analysis/model/slice/analysisContainerSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
+import {getAnalysisContainer} from "entities/analysis/model/selector/analysisContainerSelector";
 
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
-import {headers, useHttp} from "../../../../shared/api/base";
+import {headers, useHttp} from "shared/api/base";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
 import {
     DynamicModuleLoader,
     ReducersList
-} from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {branchReducers} from "../../../branch/model/slice/getBranchSlice";
 import {getBranch, getBranchThunk} from "../../../branch";
-import {Select} from "../../../../shared/ui/select";
+import {Select} from "shared/ui/select";
 
 
 interface IAnalysisContainerModalProps {
