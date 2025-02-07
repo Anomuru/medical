@@ -11,7 +11,6 @@ import {Pagination} from "features/pagination";
 // } from "entities/patient";
 
 
-
 import {
     AllPaymentHeader,
     AllPaymentList
@@ -24,16 +23,14 @@ import {
 import cls from "./allPaymentPage.module.sass";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useSelector} from "react-redux";
-import {DeleteModal} from "../../../features/deleteModal/ui/DeleteModal";
-import {headers, useHttp} from "../../../shared/api/base";
-import {alertAction} from "../../../features/alert/model/slice/alertSlice";
-import {paymentListActions, paymentListReducer} from "../../../entities/allPayment/model/slice/allPaymentSlice";
-import {getAllPaymentList} from "../../../entities/allPayment/model/selectors/allPaymentSelector";
-import {fetchAllPaymentThunk} from "../../../entities/allPayment/model/thunk/allPaymentThunk";
-import {IPatient, patientActions} from "../../../entities/patient";
-import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "../../../entities/oftenUsed";
-import {IAllPayment} from "../../../entities/allPayment/model/types/allPaymentSchema";
-
+import {DeleteModal} from "features/deleteModal/ui/DeleteModal";
+import {headers, useHttp} from "shared/api/base";
+import {alertAction} from "features/alert/model/slice/alertSlice";
+import {paymentListActions, paymentListReducer} from "entities/allPayment/model/slice/allPaymentSlice";
+import {getAllPaymentList} from "entities/allPayment/model/selectors/allPaymentSelector";
+import {fetchAllPaymentThunk} from "entities/allPayment/model/thunk/allPaymentThunk";
+import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "entities/oftenUsed";
+import {IAllPayment} from "entities/allPayment/model/types/allPaymentSchema";
 
 
 const reducers: ReducersList = {
@@ -41,8 +38,8 @@ const reducers: ReducersList = {
 };
 
 const filter = [
-    {name: "Paid" , status: "true"},
-    {name: "Unpaid" , status: "false"}
+    {name: "Paid", status: "true"},
+    {name: "Unpaid", status: "false"}
 ]
 
 export const AllPaymentPage = () => {
@@ -63,7 +60,7 @@ export const AllPaymentPage = () => {
 
     useEffect(() => {
         if (selectedBranch)
-        dispatch(fetchAllPaymentThunk(selectedBranch))
+            dispatch(fetchAllPaymentThunk(selectedBranch))
     }, [selectedBranch])
 
     const {request} = useHttp()
@@ -74,7 +71,6 @@ export const AllPaymentPage = () => {
     const [activeDelete, setActiveDelete] = useState<boolean>(false)
 
     const [activeDeleteItem, setActiveDeleteItem] = useState<IAllPayment>({} as IAllPayment)
-
 
 
     const onDelete = () => {
@@ -103,7 +99,6 @@ export const AllPaymentPage = () => {
                     msg: "Error"
                 }))
             })
-
     }
 
     return (
