@@ -39,6 +39,7 @@ export const fetchRefresh = createAsyncThunk<
         );
 
         dispatch(userActions.setAuthData(response));
+        console.log(response , "res")
 
         return response.data;
     } catch (e) {

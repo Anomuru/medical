@@ -1,8 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "../types/oftenUsedSchemas";
-import {fetchJobsData, getDoctorsThunk, fetchLocationData, fetchBranchData} from "../thunk/oftenUsedThunk";
-import {  oftenUsedDeviceListThunk} from "../thunk/oftenUsedThunk";
-
+import {
+    fetchJobsData,
+    getDoctorsThunk,
+    fetchLocationData,
+    fetchBranchData,
+    oftenUsedDeviceListThunk
+} from "../thunk/oftenUsedThunk";
 
 const initialState: OftenUsedSchemas = {
     jobs: [],
@@ -27,6 +31,7 @@ const oftenUsedSlice = createSlice({
             state.selectedBranch = action.payload
             console.log(action.payload, 'bracccccc')
         },
+
         onGetDeviceList: (state, action) => {
             state.data = action.payload.results
         },

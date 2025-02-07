@@ -30,7 +30,9 @@ import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
 import {
     getSelectedLocationData
-} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+} from "../../../../entities/oftenUsed";
+import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
+import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
 interface IAddData {
     name: string,
@@ -94,6 +96,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const dispatch = useAppDispatch()
 
     const {register, handleSubmit} = useForm<IAddData>()
+    const userBranch = localStorage.getItem("branch")
 
     const [selectedGroup, setSelectedGroup] = useState(NaN)
     const [selectedPackage, setSelectedPackage] = useState(NaN)
@@ -107,17 +110,20 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const getContainerId = useCallback((id: number) => setSelectedContainer(id), [])
     const getBranchId = useCallback((id: number) => setSelectedBranch(id), [])
 
+    const getData = useSelector(getOftenDevice)
 
     const groupAnalysisData = useSelector(getAnalysisGroup)
     const analysisPackageData = useSelector(getAnalysisPackage)
-    // const getData = useSelector(getOftenDevice)
+
     const analysisDate = useSelector(getAnalysisContainer)
     const branchData = useSelector(getBranchesData)
     const selectedLocationId = useSelector(getSelectedLocationData)
 
     useEffect(() => {
         dispatch(fetchAnalysisGroupList())
-        dispatch(fetchAnalysisPackageList())
+
+            dispatch(fetchAnalysisPackageList())
+
         dispatch(analysisContainerThunk())
         // dispatch(oftenUsedDeviceListThunk())
     }, [])
@@ -171,7 +177,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
                 />
                 <Select title={"Group"} setSelectOption={getGroupId} optionsData={groupAnalysisData}/>
                 <Select title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
-                {/*<Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>*/}
+                <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>
                 <Select title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
                 <Select title={"Branch"} setSelectOption={getBranchId} optionsData={branchData}/>
                 <Button>Add</Button>
@@ -252,7 +258,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
 
     const groupAnalysisData = useSelector(getAnalysisGroup)
     const analysisPackageData = useSelector(getAnalysisPackage)
-    // const getData = useSelector(getOftenDevice)
+    const getData = useSelector(getOftenDevice)
     const analysisDate = useSelector(getAnalysisContainer)
 
 
@@ -296,7 +302,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
                     selectOption={selectedDevice}
                     title={"Device"}
                     setSelectOption={setSelectedDevice}
-                    // optionsData={getData}
+                    optionsData={getData}
                 />
                 <Select
                     selectOption={selectedContainer}
