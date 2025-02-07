@@ -2,7 +2,15 @@ import {createSlice} from "@reduxjs/toolkit";
 import {IPacketsSchema} from "./paketsSchema";
 
 const initialState: IPacketsSchema = {
-    data: [],
+    data: [
+        {
+            id: 1,
+            name: "Boshqa",
+            price: 0,
+            extra: true,
+            analysis: []
+        },
+    ],
     loading: false,
     error: undefined
 }
@@ -34,8 +42,14 @@ const packetsSlice = createSlice({
         addPacket: (state, action) => {
             state.data = [action.payload, ...state.data]
         },
+
+        addPackets: (state, action) => {
+            const filtered = state.data.filter(item => item.extra)[0]
+
+            state.data = [filtered,...action.payload]
+
+        },
         addAnalysis: (state, action) => {
-            console.log(action.payload)
             state.data = state.data.map(item => {
                 if (item.extra) {
                     return {
@@ -44,6 +58,24 @@ const packetsSlice = createSlice({
                         analysis: [
                             ...item.analysis,
                             action.payload
+                        ]
+                    }
+                }
+                return item
+            })
+        },
+        addMultipleAnalysis: (state, action) => {
+            console.log(action.payload,"actionPayload")
+            state.data = state.data.map(item => {
+                if (item.extra) {
+
+
+                    console.log(item,"item")
+                    return {
+                        ...item,
+                        price:  action.payload.price,
+                        analysis: [
+                            ...action.payload.analysis
                         ]
                     }
                 }

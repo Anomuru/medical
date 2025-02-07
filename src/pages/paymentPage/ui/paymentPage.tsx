@@ -18,10 +18,10 @@ import {getBranch, getBranchThunk} from "../../../features/branch";
 import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
 import {branchReducers} from "../../../features/branch/model/slice/getBranchSlice";
 import {Packets} from "../../../features/pakets";
-import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
-import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
-import {UserPackets} from "../../../features/pakets/ui/userPackets";
-import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
+import {userAnalysisActions, userAnalysisReducer} from "entities/analysis/model/slice/userAnalysisSlice";
+import {getUserAnalysis} from "entities/analysis/model/selector/userAnalySelector";
+import {UserPackets} from "features/pakets/ui/userPackets";
+import {UserAnalysis} from "features/pakets/ui/userAnalysis";
 
 
 const reducers: ReducersList = {

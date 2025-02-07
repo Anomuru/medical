@@ -24,29 +24,7 @@ import {createCalendarControlsPlugin} from "@schedule-x/calendar-controls";
 import {headers, useHttp} from "shared/api/base";
 
 
-const weekNames = [
-    {
-        id: 1,
-        name: "Monday"
-    }, {
-        id: 2,
-        name: "Tuesday"
-    }, {
-        id: 3,
-        name: "Wednesday"
-    }, {
-        id: 4,
-        name: "Thursday"
-    },
-    {
-        id: 5,
-        name: "Friday"
-    },
-    {
-        id: 6,
-        name: "Sunday"
-    }
-]
+
 
 const types = [
     {
@@ -110,7 +88,6 @@ export const WorkTable = () => {
     const {request} = useHttp()
 
     useEffect(() => {
-        console.log(date, selectedDoctor, type)
         if (date && selectedDoctor && type) {
             request({
                 url: `job_info/job_get/doctor_clients/?type=${type}&doctor_id=${selectedDoctor}&date=${date}`,
@@ -126,12 +103,16 @@ export const WorkTable = () => {
 
     useEffect(() => {
         if (eventsServicePlugin) {
-            console.log(eventsServicePlugin)
             eventsServicePlugin.set(events || [])
 
         }
 
     }, [events, eventsServicePlugin])
+
+    useEffect(() => {
+        if (selectedDoctor)
+        localStorage.setItem("doctorIdTable", JSON.stringify(selectedDoctor))
+    },[selectedDoctor])
 
     const calendar = useCalendarApp({
         defaultView: type,
@@ -178,8 +159,14 @@ export const WorkTable = () => {
                     start: data.substring(data.length - 5, data.length - 3) + ":00",
                     end: (math < 10 ? `0${math}` : math) + ":00"
                 }
+
                 localStorage.setItem("time", JSON.stringify(res))
                 localStorage.setItem("date_calendar", JSON.stringify(data.substring(0, 10)))
+                localStorage.removeItem("changedItemTable")
+            },
+            onDoubleClickEvent(calendarEvent: any) {
+                localStorage.setItem("changedItemTable", calendarEvent.patient)
+                navigate("../hospitalReg")
             },
             onRangeUpdate(range: any) {
                 if (calendarControls) {
@@ -193,7 +180,6 @@ export const WorkTable = () => {
         }
     })
 
-    console.log(events)
     const onChangedSelectedDoctor = (id: number) => {
         setSelectedDoctor(id)
     }
@@ -285,7 +271,6 @@ export const WorkTable = () => {
 
 
 const CustomEvent = (event: any) => {
-    console.log(event)
 
     const {calendarEvent} = event
 
