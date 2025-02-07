@@ -23,12 +23,12 @@ import {
 } from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {Select} from "../../../../shared/ui/select";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
-import {getSelectedLocationData} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
 
 
 export const AnalysisPackageModal = () => {
 
-
+    const selectedLocation = useSelector(getSelectedLocationData)
     const userBranch = localStorage.getItem("branch")
 
     const [active, setActive] = useState<boolean>(false)
@@ -36,7 +36,6 @@ export const AnalysisPackageModal = () => {
     const [activeEditItem, setActiveEditItem] = useState({})
 
     const dispatch = useAppDispatch()
-
 
     useEffect(() => {
 

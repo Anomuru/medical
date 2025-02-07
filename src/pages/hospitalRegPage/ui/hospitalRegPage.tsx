@@ -70,6 +70,7 @@ export const HospitalRegPage = () => {
     const [selectedRadio, setSelectedRadio] = useState<string>("")
     const [isChanging,setIsChanging] = useState(false)
     const [changingData,setChangingData] = useState<string>()
+    const [isActiveType, setIsActiveType] = useState()
 
 
 
@@ -237,7 +238,6 @@ export const HospitalRegPage = () => {
 
 
 
-
     useEffect(() => {
         request({
             url: `job_info/job_get/doctor_list/`,
@@ -329,6 +329,7 @@ export const HospitalRegPage = () => {
         return arrays.reduce((acc, arr) => acc.concat(arr), []);
     }
 
+
     const onSubmit = (data: IHospitalRegPageData) => {
         if (packetsData?.length) {
             const analysisData: number[][] =
@@ -339,7 +340,8 @@ export const HospitalRegPage = () => {
             const timeString = localStorage.getItem("time");
             const date = JSON.parse(localStorage.getItem("date_calendar") as string);
 
-            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : { start: '', end: '' };
+            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : {start: '', end: ''};
+
 
             const res = {
                 ...data,
@@ -390,12 +392,7 @@ export const HospitalRegPage = () => {
 
     const onAddNewAnalysis = (data: IAnalysis) => {
         dispatch(addAnalysis(data))
-        // setAnalysis(prev => prev.filter(item => item.id !== data.id))
     }
-
-
-
-
 
 
     return (
@@ -491,9 +488,9 @@ export const HospitalRegPage = () => {
                         <h1>Ro'yxat</h1>
                         <div className={cls.list__container}>
                             {
-                                packetsData?.map(item => {
+                                packetsData?.map((item, index) => {
                                     return (
-                                        <Packets item={item}/>
+                                        <Packets index={index} item={item}/>
 
                                     )
                                 })

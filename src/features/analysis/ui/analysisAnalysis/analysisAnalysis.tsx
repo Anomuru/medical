@@ -22,7 +22,6 @@ import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/ana
 
 import {analysisContainerThunk} from "../../../../entities/analysis/model/thunk/analysisContainerThunk";
 import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
-
 import {Pagination} from "../../../pagination";
 import {getAnalysisCount} from "../../../../entities/analysis/model/selector/analysisSelector";
 import {data} from "react-router";
@@ -67,13 +66,14 @@ export const AnalysisAnalysis = () => {
 
 
     return (
-        <div className={cls.modal}>
-            <div className={cls.modal__wrapper}>
-                <div onClick={() => setActive(true)} className={cls.modal__add}>
-                    <i className={"fas fa-plus"}/>
+
+            <div className={cls.modal}>
+                <div className={cls.modal__wrapper}>
+                    <div onClick={() => setActive(true)} className={cls.modal__add}>
+                        <i className={"fas fa-plus"}/>
+                    </div>
                 </div>
-            </div>
-            <AnalysisList isChange={getChangedItem}/>
+                <AnalysisList isChange={getChangedItem}/>
 
             <Pagination
                 // @ts-ignore
@@ -83,9 +83,9 @@ export const AnalysisAnalysis = () => {
                 pageSize={pageSize}
             />
 
-            <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
-            <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
-        </div>
+                <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
+                <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
+            </div>
     );
 };
 
@@ -125,7 +125,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
             dispatch(fetchAnalysisPackageList())
 
         dispatch(analysisContainerThunk())
-        dispatch(oftenUsedDeviceListThunk())
+        // dispatch(oftenUsedDeviceListThunk())
     }, [])
 
     useEffect(() => {
@@ -253,7 +253,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
     const [selectedDevice, setSelectedDevice] = useState(NaN)
     const [selectedContainer, setSelectedContainer] = useState(NaN)
 
-    // const getGroupId = useCallback((id: number) => setSelectedGroup(id ?? data?.types), [data?.types, setSelectedGroup]);
+    // const getGroupId = useCallback((id: number) => setSelectedGroup(id ?? data?.type), [data?.type, setSelectedGroup]);
 
 
     const groupAnalysisData = useSelector(getAnalysisGroup)
@@ -284,7 +284,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
                     // rules={{value: data?.code_name}}
                 />
                 <Select
-                    // selectOption={data?.types}
+                    // selectOption={data?.type}
                     selectOption={selectedGroup}
                     title="Group"
                     setSelectOption={setSelectedGroup}

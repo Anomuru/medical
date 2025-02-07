@@ -7,6 +7,7 @@ export interface IAnalysisProps {
     result: string,
     status: boolean,
     user: number,
+    price: number,
     analysis: {
         id: number,
         name: string,
@@ -29,6 +30,7 @@ export interface IPackets {
 export interface IUserPackets {
     packet_id?: number,
     packet_name?: string,
+    total?: string,
     analysis_list: IAnalysisProps[] | []
 }
 

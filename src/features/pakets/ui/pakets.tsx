@@ -6,10 +6,11 @@ import {ConfirmModal} from "shared/ui/confirm";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 interface IPacketProps {
-    item: IPackets
+    item: IPackets,
+    index: number
 }
 
-export const Packets = memo(({item}: IPacketProps) => {
+export const Packets = memo(({item, index}: IPacketProps) => {
 
     const dispatch = useAppDispatch()
     const {
@@ -29,7 +30,7 @@ export const Packets = memo(({item}: IPacketProps) => {
                 price += Number(inner.price)
             })
         dispatch(deleteAnalysis({
-            packageId: item.id,
+            packageId: index,
             analysisId: isActiveAnalysis,
             packagePrice: price
         }))
@@ -47,7 +48,7 @@ export const Packets = memo(({item}: IPacketProps) => {
     }
 
     const onClickPacket = (id: number) => {
-        setIsActivePacket(id)
+        setIsActivePacket(index)
         setIsDeletePacket(true)
     }
 
