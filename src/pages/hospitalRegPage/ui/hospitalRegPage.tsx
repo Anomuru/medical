@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
 
 import {Button} from "shared/ui/button";
@@ -8,11 +8,9 @@ import {Radio} from "shared/ui/radio";
 
 
 import cls from "./hospitalRegPage.module.sass";
-import {API_URL, headers, useHttp} from "shared/api/base";
+import {headers, useHttp} from "shared/api/base";
 import {Packets} from "features/pakets";
-import {IAnalysisPackage} from "entities/analysis/model/types/analysisPackageScheme";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchJobsData, getJobsData} from "entities/oftenUsed";
+import {useSelector} from "react-redux";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {Select} from "shared/ui/select";
 import {analysisPackageReducer, analysisReducer, IAnalysis} from "entities/analysis";
@@ -20,8 +18,15 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {packetsActions, packetsReducer} from "../../../entities/pakets/model/paketsSlice";
+import {packetsActions, packetsReducer} from "entities/pakets";
 import {getPacketsData, IPackets} from "entities/pakets";
+import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
+import {getPaymentData} from "features/paymentFeature/model/paymentSelector";
+import {fetchUserPaymentList} from "features/paymentFeature/model/paymentThunk";
+import {getSelectedBranchData} from "entities/oftenUsed";
+import {Table} from "shared/ui/table";
+import classNames from "classnames";
+import {ifError} from "assert";
 
 
 interface IHospitalRegPageData {
@@ -37,20 +42,28 @@ interface IHospitalRegPageData {
     password: string;
 }
 
-interface IProgress {
-    name: string,
-    status: boolean,
-
-}
-
 const reducers: ReducersList = {
     packetsSlice: packetsReducer,
     analysisSlice: analysisReducer,
-    analysisPackageSlice: analysisPackageReducer
+    analysisPackageSlice: analysisPackageReducer,
+    paymentSlice: paymentReducer
 }
+
+const types = [
+    {
+        id: "create",
+        name: "Yangi"
+    },
+    {
+        id: "change",
+        name: "Eski"
+    }
+]
 
 export const HospitalRegPage = () => {
 
+    const data = useSelector(getPaymentData)
+    const selectedBranch = useSelector(getSelectedBranchData)
     const packetsData = useSelector(getPacketsData)
     const {
         addAnalysis,
@@ -68,10 +81,12 @@ export const HospitalRegPage = () => {
 
     const [doctor, setDoctor] = useState<string>()
     const [selectedRadio, setSelectedRadio] = useState<string>("")
-    const [isChanging,setIsChanging] = useState(false)
-    const [changingData,setChangingData] = useState<string>()
-    const [isActiveType, setIsActiveType] = useState()
-
+    const [isChanging, setIsChanging] = useState(false)
+    const [changingData, setChangingData] = useState<string>()
+    const [isActiveType, setIsActiveType] = useState(types[0]?.id)
+    const [userId, setUserId] = useState<number>()
+    const [userSearch, setUserSearch] = useState("")
+    const [analysisSearch, setAnalysisSearch] = useState("")
 
 
     const {
@@ -84,7 +99,7 @@ export const HospitalRegPage = () => {
     const {request} = useHttp()
 
 
-    const list =  [
+    const list = [
         // {
         //     isInput: true,
         //     name: "username",
@@ -162,6 +177,16 @@ export const HospitalRegPage = () => {
 
 
     useEffect(() => {
+        if (selectedBranch)
+            dispatch(fetchUserPaymentList({selectedBranch, search: ""}))
+    }, [dispatch, selectedBranch])
+
+    useEffect(() => {
+        if (isActiveType === "create")
+            setUserId(undefined)
+    }, [isActiveType])
+
+    useEffect(() => {
         console.log(username)
 
         if (username && changingData) {
@@ -172,12 +197,10 @@ export const HospitalRegPage = () => {
             })
                 .then(res => {
                     setErrorUserName(res.available)
-                    setError("username", { type: "custom", message: "Username allaqachon belgilangan" })
+                    setError("username", {type: "custom", message: "Username allaqachon belgilangan"})
                 })
         }
     }, [username, changingData]);
-
-
 
 
     useEffect(() => {
@@ -193,7 +216,10 @@ export const HospitalRegPage = () => {
             })
                 .then(res => {
 
-                    dispatch(addMultipleAnalysis({analysis: res.analysis_list.individuals, price: res.analysis_list.individual_total_price}))
+                    dispatch(addMultipleAnalysis({
+                        analysis: res.analysis_list.individuals,
+                        price: res.analysis_list.individual_total_price
+                    }))
                     dispatch(addPackets(res.analysis_list.packets))
 
 
@@ -218,9 +244,6 @@ export const HospitalRegPage = () => {
     }, [])
 
 
-
-
-
     useEffect(() => {
         request({
             url: "analysis/paket/get/list/",
@@ -234,8 +257,6 @@ export const HospitalRegPage = () => {
                 })))
             })
     }, [])
-
-
 
 
     useEffect(() => {
@@ -259,11 +280,6 @@ export const HospitalRegPage = () => {
                 setAnalysis(res.results)
             })
     }, [])
-
-
-
-
-
 
 
     const renderInput = useCallback(() => {
@@ -329,6 +345,50 @@ export const HospitalRegPage = () => {
         return arrays.reduce((acc, arr) => acc.concat(arr), []);
     }
 
+    const renderData = () => {
+        const filteredData = data?.filter(item =>
+            item?.surname?.toLowerCase().includes(userSearch?.toLowerCase()) ||
+            item?.name?.toLowerCase().includes(userSearch?.toLowerCase())
+        )
+        return filteredData?.map(item => {
+            return (
+                <div
+                    onClick={() => setUserId(item.id)}
+                    key={item.user_id}
+                    className={classNames(cls.item, {
+                        [cls.active]: userId === item.id
+                    })}
+                >
+                    <span>{item.surname}</span>
+                    <span>{item.name}</span>
+                    <span>{item.user_id}</span>
+                    <span>{item.phone_number}</span>
+                </div>
+            )
+        });
+    }
+
+    const renderAnalysis = () => {
+        const filteredData = analysis?.filter(item =>
+            item?.name?.toLowerCase().includes(analysisSearch?.toLowerCase())
+        )
+        return filteredData.map(item => {
+            return (
+                <div onClick={() => onAddNewAnalysis(item)} className={cls.item}>
+                    <h2>
+                        {item.name}
+                    </h2>
+                    <div
+
+                        className={cls.icon}
+                    >
+                        <i className="fas fa-plus"></i>
+                    </div>
+                </div>
+            )
+        })
+    }
+
 
     const onSubmit = (data: IHospitalRegPageData) => {
         if (packetsData?.length) {
@@ -356,8 +416,8 @@ export const HospitalRegPage = () => {
 
 
             request({
-                url: isChanging? `user/users/crud/update/${changingData}` : "user/users/crud/create/",
-                method: isChanging ? "PUT" :  "POST",
+                url: isChanging ? `user/users/crud/update/${changingData}` : "user/users/crud/create/",
+                method: isChanging ? "PUT" : "POST",
                 body: JSON.stringify(res),
                 headers: headers()
             })
@@ -402,35 +462,58 @@ export const HospitalRegPage = () => {
                     {/*<div className={cls.hospital__progress}>*/}
                     {/*    <div style={{width: `${calc}%`}} className={cls.info}/>*/}
                     {/*</div>*/}
-                    <Form id={"regForm"} onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
-                        <div className={cls.registerForm__form}>
-                            <div className={cls.info}>
-                                {/*<div className={cls.info__percent}>*/}
-                                {/*    <h2 className={cls.text}>Patient Information</h2>*/}
-                                {/*    <p className={cls.percent}>{calc}%</p>*/}
-                                {/*</div>*/}
-                                {
-                                    isChanging ?
-                                    <h1 className={cls.info__title}>Changing Information</h1>
-                                    :
-                                    <h1 className={cls.info__title}>Hospital Registration Form</h1>
-                                }
-                            </div>
+                    <div className={cls.hospital__switch}>
+                        <div className={cls.hospital__switchHeader}>
+                            <Select
+                                title={"Tipi"}
+                                extraClass={cls.select}
+                                optionsData={types}
+                                setSelectOption={setIsActiveType}
+                                selectOption={isActiveType}
+                            />
+                            {isActiveType === "change" && <Input
+                                onChange={setUserSearch}
+                                name={"search"}
+                                placeholder={"Search"}
+                            />}
                         </div>
-                        <div className={cls.content}>
-                            <h2> {!errorUserName ? "Username already exist" : null}</h2>
-                            <Input name={"username"} register={register} required/>
-                            {renderInput()}
-                            <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
-                                    optionsData={doctors}/>
-                        </div>
-                    </Form>
+                        {
+                            isActiveType === "create" ?
+                                <Form id={"regForm"} onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
+                                    <div className={cls.registerForm__form}>
+                                        <div className={cls.info}>
+                                            {/*<div className={cls.info__percent}>*/}
+                                            {/*    <h2 className={cls.text}>Patient Information</h2>*/}
+                                            {/*    <p className={cls.percent}>{calc}%</p>*/}
+                                            {/*</div>*/}
+                                            {
+                                                isChanging ?
+                                                    <h1 className={cls.info__title}>Changing Information</h1>
+                                                    :
+                                                    <h1 className={cls.info__title}>Hospital Registration Form</h1>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className={cls.content}>
+                                        <h2> {!errorUserName ? "Username already exist" : null}</h2>
+                                        <Input name={"username"} register={register} required/>
+                                        {renderInput()}
+                                        <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
+                                                optionsData={doctors}/>
+                                    </div>
+                                </Form> :
+                                <div className={cls.container}>
+
+                                    {renderData()}
+                                </div>
+                        }
+                    </div>
 
                     <div className={cls.analizForm}>
 
                         <div className={cls.header}>
                             <h1>Analiz form</h1>
-                            <Input name={"search"} placeholder={"Search"}/>
+                            <Input onChange={setAnalysisSearch} name={"search"} placeholder={"Search"}/>
                         </div>
 
 
@@ -458,23 +541,7 @@ export const HospitalRegPage = () => {
                             <div className={cls.collection}>
                                 <h1>Analiz</h1>
                                 <div className={cls.container}>
-                                    {
-                                        analysis.map(item => {
-                                            return (
-                                                <div onClick={() => onAddNewAnalysis(item)} className={cls.item}>
-                                                    <h2>
-                                                        {item.name}
-                                                    </h2>
-                                                    <div
-
-                                                        className={cls.icon}
-                                                    >
-                                                        <i className="fas fa-plus"></i>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
+                                    {renderAnalysis()}
 
 
                                 </div>
@@ -504,7 +571,8 @@ export const HospitalRegPage = () => {
                             {isChanging ? "Change" : "Add"}
                         </Button>
                         {
-                            isChanging && <Button id={"regForm"} type={"danger"} extraClass={cls.hospital__btn}>Delete</Button>
+                            isChanging &&
+                            <Button id={"regForm"} type={"danger"} extraClass={cls.hospital__btn}>Delete</Button>
 
                         }
                     </div>

@@ -8,29 +8,28 @@ import {Button} from "shared/ui/button";
 import {
     DynamicModuleLoader,
     ReducersList
-} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {paymentReducer} from "../../../features/paymentFeature/model/paymentSlice";
+} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
 import {useSelector} from "react-redux";
-import {getPaymentData, getPaymentTypeData} from "../../../features/paymentFeature/model/paymentSelector";
-import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {getPaymentData, getPaymentTypeData} from "features/paymentFeature/model/paymentSelector";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {
     fetchUserPaymentList,
     givePaymentThunk,
     paymentTypeThunk
-} from "../../../features/paymentFeature/model/paymentThunk";
-import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
-import {Packets} from "../../../features/pakets";
-import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
-import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
-import {UserPackets} from "../../../features/pakets/ui/userPackets";
-import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
-import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "../../../entities/oftenUsed";
+} from "features/paymentFeature/model/paymentThunk";
+import {fetchUserAnalys} from "entities/analysis/model/thunk/userAnalysisThunk";
+import {userAnalysisActions, userAnalysisReducer} from "entities/analysis/model/slice/userAnalysisSlice";
+import {getUserAnalysis} from "entities/analysis/model/selector/userAnalySelector";
+import {UserPackets} from "features/pakets/ui/userPackets";
+import {UserAnalysis} from "features/pakets/ui/userAnalysis";
+import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "entities/oftenUsed";
 import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
-import {Form} from "../../../shared/ui/form";
+import {Form} from "shared/ui/form";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
-import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
-import {paymentTypeReducer} from "../../../features/paymentFeature/model/paymentTypeSlice";
+import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
+import {paymentTypeReducer} from "features/paymentFeature/model/paymentTypeSlice";
 
 interface IPaymentData {
     date: string,

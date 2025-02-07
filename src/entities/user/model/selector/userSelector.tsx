@@ -1,6 +1,6 @@
 import {StateSchema} from "app/providers/storeProvider";
 
-export const getUserJob = (state: StateSchema) =>
+export const getUserRole = (state: StateSchema) =>
     state.user.role
 export const getUserId = (state: StateSchema) =>
     state.user.user_id

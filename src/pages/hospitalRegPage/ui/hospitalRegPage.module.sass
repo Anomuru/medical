@@ -12,6 +12,117 @@
   justify-content: space-around
   flex-wrap: wrap
   gap: 2rem
+  &__switchHeader
+    display: flex
+    gap: 2rem
+  &__switch
+    width: 35%
+    display: flex
+    flex-direction: column
+    gap: 2rem
+    .select
+      width: fit-content
+    .container
+      box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
+      height: 60rem
+      display: flex
+      flex-direction: column
+      gap: 2rem
+      margin-top: 1.5rem
+      overflow-y: auto
+      overflow-x: hidden
+      //height: 100%
+      padding: 2rem
+
+      .item
+        width: 100%
+
+        background-color: rgba($medical-color, 0.05)
+        display: flex
+        align-items: center
+
+        justify-content: space-between
+        padding: 2rem
+        border-radius: 10px
+        transition: .5s ease
+        &.active
+          box-shadow: 0 4px 4px -4px rgba(12, 12, 13, 5%), 0px 16px 20px -4px rgba(12, 12, 13, 0.1)
+          background: #6ae8ee !important
+        &:hover
+          box-shadow: 0px 4px 4px -4px rgba(12, 12, 13, 5%), 0px 16px 20px -4px rgba(12, 12, 13, 0.1)
+
+        span
+          font-weight: 500
+          font-size: 1.6rem
+          color: #313D62
+    .registerForm
+      width: 100%
+      padding: 2.5rem
+      display: flex
+      flex-direction: column
+      gap: 2rem
+      box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
+      height: fit-content
+      &__form
+        display: flex
+        flex-direction: column
+        gap: 2.5rem
+        border-bottom: 2px solid #AEAEB2
+        padding-bottom: 2.5rem
+        .info
+          display: flex
+          flex-direction: column
+          gap: 2.5rem
+          &__percent
+            display: flex
+            justify-content: space-between
+            .text
+              color: #AEAEB2
+              font-family: sans-serif, Montserrat
+              font-size: 20px
+              font-weight: 400
+              line-height: 24.38px
+              text-underline-position: from-font
+              text-decoration-skip-ink: none
+            .percent
+              color: $medical-color
+              font-family: sans-serif, Montserrat
+              font-size: 20px
+              font-weight: 500
+              line-height: 28px
+              text-underline-position: from-font
+              text-decoration-skip-ink: none
+          &__title
+            color: $medical-color
+            font-family: sans-serif, Montserrat
+            font-size: 36px
+            font-weight: 500
+            line-height: 43.88px
+            text-underline-position: from-font
+            text-decoration-skip-ink: none
+          &__text
+            color: #C7C7CC
+            font-family: sans-serif, Montserrat
+            font-size: 20px
+            font-weight: 400
+            line-height: 24.38px
+            text-underline-position: from-font
+            text-decoration-skip-ink: none
+      .content
+        width: 100%
+        display: flex
+        flex-direction: column
+        gap: 2.5rem
+        .double
+          width: 100%
+          display: flex
+          gap: 5rem
+          &__input
+            width: 100%
+        .radios
+          display: flex
+          justify-content: center
+          gap: 5rem
   &__progress
     height: 1.5rem
     width: 100%
@@ -20,75 +131,6 @@
       height: 100%
       width: 70%
       background: $medical-color
-  .registerForm
-    width: 35%
-    padding: 2.5rem
-    display: flex
-    flex-direction: column
-    gap: 2rem
-    box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
-    height: fit-content
-    &__form
-      display: flex
-      flex-direction: column
-      gap: 2.5rem
-      border-bottom: 2px solid #AEAEB2
-      padding-bottom: 2.5rem
-      .info
-        display: flex
-        flex-direction: column
-        gap: 2.5rem
-        &__percent
-          display: flex
-          justify-content: space-between
-          .text
-            color: #AEAEB2
-            font-family: sans-serif, Montserrat
-            font-size: 20px
-            font-weight: 400
-            line-height: 24.38px
-            text-underline-position: from-font
-            text-decoration-skip-ink: none
-          .percent
-            color: $medical-color
-            font-family: sans-serif, Montserrat
-            font-size: 20px
-            font-weight: 500
-            line-height: 28px
-            text-underline-position: from-font
-            text-decoration-skip-ink: none
-        &__title
-          color: $medical-color
-          font-family: sans-serif, Montserrat
-          font-size: 36px
-          font-weight: 500
-          line-height: 43.88px
-          text-underline-position: from-font
-          text-decoration-skip-ink: none
-        &__text
-          color: #C7C7CC
-          font-family: sans-serif, Montserrat
-          font-size: 20px
-          font-weight: 400
-          line-height: 24.38px
-          text-underline-position: from-font
-          text-decoration-skip-ink: none
-    .content
-      width: 100%
-      display: flex
-      flex-direction: column
-      gap: 2.5rem
-      .double
-        width: 100%
-        display: flex
-        gap: 5rem
-        &__input
-          width: 100%
-      .radios
-        display: flex
-        justify-content: center
-        gap: 5rem
-
 
   .analizForm
     width: 60%
