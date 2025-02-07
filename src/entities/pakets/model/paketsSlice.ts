@@ -72,8 +72,6 @@ const packetsSlice = createSlice({
             console.log(action.payload,"actionPayload")
             state.data = state.data.map(item => {
                 if (item.extra) {
-
-
                     console.log(item,"item")
                     return {
                         ...item,
@@ -85,6 +83,18 @@ const packetsSlice = createSlice({
                 }
                 return item
             })
+        },
+
+        clearAnalysis: (state) => {
+            state.data = [
+                {
+                    id: 1,
+                    name: "Boshqa",
+                    price: 0,
+                    extra: true,
+                    analysis: []
+                }
+            ]
         }
     }
 })

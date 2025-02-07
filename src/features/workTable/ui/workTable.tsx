@@ -165,7 +165,7 @@ export const WorkTable = () => {
                 localStorage.removeItem("changedItemTable")
             },
             onDoubleClickEvent(calendarEvent: any) {
-                localStorage.setItem("changedItemTable", calendarEvent.patient)
+                localStorage.setItem("timeTableIds",JSON.stringify({patient: calendarEvent.patient, requestId: calendarEvent.id}))
                 navigate("../hospitalReg")
             },
             onRangeUpdate(range: any) {

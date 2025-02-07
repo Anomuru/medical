@@ -9,7 +9,7 @@ export const getUserName = (state: StateSchema) =>
 export const getUserSurname = (state: StateSchema) =>
     state.user.surname
 export const getUserBranch = (state: StateSchema) =>
-    state.user.branch
+    state.user.branch_id
 export const getUserLoading = (state: StateSchema) =>
     state.user.isLoading
 export const getUserError = (state: StateSchema) =>

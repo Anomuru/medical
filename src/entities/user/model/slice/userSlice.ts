@@ -7,7 +7,7 @@ const initialState: UserSchema = {
     role: null,
     name: null,
     surname: null,
-    branch: null,
+    branch_id: null,
     isLoading: false,
     error: undefined
 }
@@ -18,16 +18,14 @@ const userSlice = createSlice({
     reducers: {
 
         setAuthData: (state, action: PayloadAction<UserSchema>) => {
-            console.log(action.payload,"action.payload")
             state.user_id = action.payload.user_id
             state.name = action.payload.name
             state.surname = action.payload.surname
-            state.branch = action.payload.branch
+            state.branch_id = action.payload.branch_id
             state.role = action.payload.role
             state.error = undefined
 
-            // @ts-ignore
-            localStorage.setItem("branch" , action.payload.branch_id)
+            localStorage.setItem("branch" , String(action.payload.branch_id))
         }
 
 

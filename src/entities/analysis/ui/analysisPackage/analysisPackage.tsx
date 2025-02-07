@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback} from 'react';
+ import React, {FC, memo, useCallback} from 'react';
 
 import cls from "./analysisPackage.module.sass";
 
