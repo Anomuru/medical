@@ -1,6 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "../types/oftenUsedSchemas";
-import {fetchJobsData, getDoctorsThunk, fetchLocationData, fetchBranchData} from "../thunk/oftenUsedThunk";
+import {
+    fetchJobsData,
+    getDoctorsThunk,
+    fetchLocationData,
+    fetchBranchData,
+    oftenUsedDeviceListThunk
+} from "../thunk/oftenUsedThunk";
 
 const initialState: OftenUsedSchemas = {
     jobs: [],

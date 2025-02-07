@@ -28,8 +28,7 @@ export interface StateSchema {
 
     user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
-    oftenUsedDeviceSlice: IOftenUsedDeviceListSchema
-    branchSlice?: BranchSchema;
+    // branchSlice?: BranchSchema;
     workTableSlice?: WorkTableSchema;
     staffSlice?: StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;

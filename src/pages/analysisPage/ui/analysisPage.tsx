@@ -12,10 +12,12 @@ import {
 import {analysisContainerReducer} from "entities/analysis/model/slice/analysisContainerSlice";
 import {analysisGroupReducer} from "entities/analysis/model/slice/analysisGroupSlice";
 import {analysisPackageReducer} from "entities/analysis/model/slice/analysisPackageSlice";
+import {useSelector} from "react-redux";
+import {getUserBranch} from "../../../entities/user";
 
 
 const reducers: ReducersList = {
-    analysisSlice: analysisReducer ,
+    analysisSlice: analysisReducer,
     analysisContainerSlice: analysisContainerReducer,
     analysisGroupSlice: analysisGroupReducer,
     analysisPackageSlice: analysisPackageReducer
@@ -23,6 +25,7 @@ const reducers: ReducersList = {
 };
 export const AnalysisPage = () => {
     const route = localStorage.getItem("route")
+
 
 
     return (

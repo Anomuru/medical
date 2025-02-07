@@ -7,7 +7,8 @@ import {IAnalysisProps} from "../../../entities/pakets/model/paketsSchema";
 interface IUserAnalysis {
     item: IAnalysisProps[],
     onDeleteAnalysisId?: (arg: number) => void,
-    onDeleteAllAnalysis?: () => void
+    onDeleteAllAnalysis?: () => void,
+
 }
 
 export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis}: IUserAnalysis) => {
@@ -51,6 +52,7 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
         console.log(true)
         setIsDeletePacket(true)
     }
+
 
     return (
         <>

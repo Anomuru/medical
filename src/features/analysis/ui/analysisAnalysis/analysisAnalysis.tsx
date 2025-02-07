@@ -31,7 +31,9 @@ import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
 import {
     getSelectedLocationData
-} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+} from "../../../../entities/oftenUsed";
+import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
+import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
 interface IAddData {
     name: string,
@@ -94,6 +96,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const dispatch = useAppDispatch()
 
     const {register, handleSubmit} = useForm<IAddData>()
+    const userBranch = localStorage.getItem("branch")
 
     const [selectedGroup, setSelectedGroup] = useState(NaN)
     const [selectedPackage, setSelectedPackage] = useState(NaN)
@@ -107,6 +110,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const getContainerId = useCallback((id: number) => setSelectedContainer(id), [])
     const getBranchId = useCallback((id: number) => setSelectedBranch(id), [])
 
+    const getData = useSelector(getOftenDevice)
 
     const groupAnalysisData = useSelector(getAnalysisGroup)
     const analysisPackageData = useSelector(getAnalysisPackage)
@@ -117,7 +121,9 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
 
     useEffect(() => {
         dispatch(fetchAnalysisGroupList())
-        dispatch(fetchAnalysisPackageList())
+
+            dispatch(fetchAnalysisPackageList())
+
         dispatch(analysisContainerThunk())
         dispatch(oftenUsedDeviceListThunk())
     }, [])

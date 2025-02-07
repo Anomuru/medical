@@ -22,7 +22,6 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
     const toggleDropdown = () => setIsOpen(!isOpen);
 
 
-
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -42,10 +41,9 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
                     <hr/>
                     {/*<h2 className={cls.value}>{item.price}</h2>*/}
                     <h2 className={cls.value}>0</h2>
-                    <div onClick={() => onDeleteAnalysis(item.id)} className={cls.minus}>
+                    {item.paid && <div onClick={() => onDeleteAnalysis(item.id)} className={cls.minus}>
                         <i className="fas fa-minus"></i>
-
-                    </div>
+                    </div>}
                 </div>
             )
         })
