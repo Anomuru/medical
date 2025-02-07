@@ -20,6 +20,14 @@ const allPaymentSlice = createSlice({
         },
         onDeletePayment: (state, action) => {
             state.data = state.data?.filter(item => item.id !== action.payload)
+        },
+        onEditPayment: (state, action) => {
+            state.data = state.data.map(item => {
+                if (item.id === action.payload.id) {
+                    return action.payload.data
+                }
+                return item
+            })
         }
 
     },

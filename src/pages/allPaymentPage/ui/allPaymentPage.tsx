@@ -1,17 +1,5 @@
-import {useEffect, useState} from 'react';
-
+import {FC, useEffect, useState} from 'react';
 import {Pagination} from "features/pagination";
-// import {
-//     fetchPatientList,
-//     getPatientData, IPatient,
-//     patientActions,
-//     PatientHeader,
-//     PatientList,
-//     patientReducer
-// } from "entities/patient";
-
-
-
 import {
     AllPaymentHeader,
     AllPaymentList
@@ -24,16 +12,25 @@ import {
 import cls from "./allPaymentPage.module.sass";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useSelector} from "react-redux";
-import {DeleteModal} from "../../../features/deleteModal/ui/DeleteModal";
-import {headers, useHttp} from "../../../shared/api/base";
-import {alertAction} from "../../../features/alert/model/slice/alertSlice";
-import {paymentListActions, paymentListReducer} from "../../../entities/allPayment/model/slice/allPaymentSlice";
-import {getAllPaymentList} from "../../../entities/allPayment/model/selectors/allPaymentSelector";
-import {fetchAllPaymentThunk} from "../../../entities/allPayment/model/thunk/allPaymentThunk";
-import {IPatient, patientActions} from "../../../entities/patient";
+import {DeleteModal} from "features/deleteModal/ui/DeleteModal";
+import {headers, useHttp} from "shared/api/base";
+import {alertAction} from "features/alert/model/slice/alertSlice";
+import {paymentListActions, paymentListReducer} from "entities/allPayment/model/slice/allPaymentSlice";
+import {getAllPaymentList} from "entities/allPayment/model/selectors/allPaymentSelector";
+import {fetchAllPaymentThunk} from "entities/allPayment/model/thunk/allPaymentThunk";
 import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "../../../entities/oftenUsed";
-import {IAllPayment} from "../../../entities/allPayment/model/types/allPaymentSchema";
+import {IAllPayment} from "entities/allPayment/model/types/allPaymentSchema";
+import {useForm} from "react-hook-form";
 
+
+interface IEditProps {
+    payment_type?: string
+}
+interface IEditPaymentModalProps {
+    active: boolean,
+    setActive: (arg: boolean) => void,
+    activeEditItem: any
+}
 
 
 const reducers: ReducersList = {
@@ -105,6 +102,34 @@ export const AllPaymentPage = () => {
             })
 
     }
+
+const EditPaymentModal: FC<IEditPaymentModalProps> = ({active, setActive, activeEditItem}) => {
+    const {register, setValue, handleSubmit} = useForm()
+    const {request} = useHttp()
+
+    useEffect(() => {
+        setValue("payment_type", activeEditItem?.payment_type)
+
+    }, [activeEditItem, active])
+
+    const dispatch = useAppDispatch()
+
+    const onEdit = (data: IEditProps) => {
+
+        request({
+            url: `account/payment/payment/${activeEditItem.id}/`,
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: headers()
+        }).then(res => {
+            setActive(false)
+            dispatch()
+        })
+    }
+
+
+}
+
 
     return (
         <DynamicModuleLoader reducers={reducers}>
