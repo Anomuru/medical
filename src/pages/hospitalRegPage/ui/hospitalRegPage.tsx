@@ -70,6 +70,7 @@ export const HospitalRegPage = () => {
     const [selectedRadio, setSelectedRadio] = useState<string>("")
     const [isChanging,setIsChanging] = useState(false)
     const [changingData,setChangingData] = useState<string>()
+    const [isActiveType, setIsActiveType] = useState()
 
 
 
