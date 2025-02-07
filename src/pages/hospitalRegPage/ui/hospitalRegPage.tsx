@@ -178,7 +178,6 @@ export const HospitalRegPage = () => {
     }, [])
 
 
-
     useEffect(() => {
         if (job)
             request({
@@ -280,23 +279,23 @@ export const HospitalRegPage = () => {
 
 
     console.log(list)
+
     function combineArraysInOneArray<T>(arrays: T[][]): T[] {
         return arrays.reduce((acc, arr) => acc.concat(arr), []);
     }
 
 
-
     const onSubmit = (data: IHospitalRegPageData) => {
         if (packetsData?.length) {
-            const analysisData: number[][]  =
+            const analysisData: number[][] =
                 packetsData.map(item => item.analysis.map(id => id.id))
 
 
-            const analysis = combineArraysInOneArray(analysisData );
+            const analysis = combineArraysInOneArray(analysisData);
             const timeString = localStorage.getItem("time");
             const date = JSON.parse(localStorage.getItem("date_calendar") as string);
 
-            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : { start: '', end: '' };
+            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : {start: '', end: ''};
 
 
             console.log(analysis, "analysis")
@@ -455,9 +454,9 @@ export const HospitalRegPage = () => {
                         <h1>Ro'yxat</h1>
                         <div className={cls.list__container}>
                             {
-                                packetsData?.map(item => {
+                                packetsData?.map((item, index) => {
                                     return (
-                                        <Packets item={item}/>
+                                        <Packets index={index} item={item}/>
 
                                     )
                                 })

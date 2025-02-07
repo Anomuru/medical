@@ -20,8 +20,8 @@ const packetsSlice = createSlice({
                                 id: item.id,
                                 name: item.name,
                                 price: action.payload.packagePrice,
-                                analysis: item.analysis.filter(item =>
-                                    item.id !== action.payload.analysisId)
+                                analysis: item.analysis.filter((item, index) =>
+                                    index !== action.payload.analysisId)
                             }
                         } else return item
                     })
@@ -29,7 +29,8 @@ const packetsSlice = createSlice({
         },
         deletePacket: (state, action) => {
             state.data =
-                state.data.filter(item => item.id !== action.payload)
+                state.data.filter((item, index) =>
+                    index !== action.payload)
         },
         addPacket: (state, action) => {
             state.data = [action.payload, ...state.data]
