@@ -103,32 +103,32 @@ export const AllPaymentPage = () => {
 
     }
 
-const EditPaymentModal: FC<IEditPaymentModalProps> = ({active, setActive, activeEditItem}) => {
-    const {register, setValue, handleSubmit} = useForm()
-    const {request} = useHttp()
-
-    useEffect(() => {
-        setValue("payment_type", activeEditItem?.payment_type)
-
-    }, [activeEditItem, active])
-
-    const dispatch = useAppDispatch()
-
-    const onEdit = (data: IEditProps) => {
-
-        request({
-            url: `account/payment/payment/${activeEditItem.id}/`,
-            method: "PUT",
-            body: JSON.stringify(data),
-            headers: headers()
-        }).then(res => {
-            setActive(false)
-            dispatch()
-        })
-    }
-
-
-}
+// const EditPaymentModal: FC<IEditPaymentModalProps> = ({active, setActive, activeEditItem}) => {
+//     const {register, setValue, handleSubmit} = useForm()
+//     const {request} = useHttp()
+//
+//     useEffect(() => {
+//         setValue("payment_type", activeEditItem?.payment_type)
+//
+//     }, [activeEditItem, active])
+//
+//     const dispatch = useAppDispatch()
+//
+//     const onEdit = (data: IEditProps) => {
+//
+//         request({
+//             url: `account/payment/payment/${activeEditItem.id}/`,
+//             method: "PUT",
+//             body: JSON.stringify(data),
+//             headers: headers()
+//         }).then(res => {
+//             setActive(false)
+//             dispatch()
+//         })
+//     }
+//
+//
+// }
 
 
     return (
