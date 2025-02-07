@@ -14,6 +14,7 @@ interface buttonProps {
     extraClass?: string,
     onClick?: SetStateAction<any> | React.MouseEventHandler<HTMLButtonElement>
     type?: "simple" | "success" | "danger" | "warning" ,
+    disabled?: boolean
 }
 
 export const Button = (props: buttonProps) => {
@@ -23,7 +24,8 @@ export const Button = (props: buttonProps) => {
         id,
         extraClass,
         onClick,
-        type = "simple"
+        type = "simple",
+        disabled
     } = props
 
     return (
@@ -31,6 +33,7 @@ export const Button = (props: buttonProps) => {
             form={id}
             onClick={onClick}
             id={id}
+            disabled={disabled}
             className={classNames(cls.button, extraClass , cls[type])}
         >
             {children}

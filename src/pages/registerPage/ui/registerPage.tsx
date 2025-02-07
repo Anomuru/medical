@@ -167,7 +167,6 @@ export const RegisterPage = () => {
             if (item.isInput) {
                 return (
                     <Input
-                        // @ts-ignore
                         register={register}
                         placeholder={item.label}
                         type={item.type}
@@ -200,7 +199,6 @@ export const RegisterPage = () => {
                     <Select
                         title={item.label}
                         setSelectOption={item.onSelect}
-                        //@ts-ignore
                         optionsData={item.list}
                     />
                 )

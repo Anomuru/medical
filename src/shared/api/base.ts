@@ -1,4 +1,4 @@
-export const API_URL_DOC = `http://192.168.1.61:8000/`
+export const API_URL_DOC = `http://192.168.1.82:8000/`
 // export const API_URL_DOC = `http://26.196.249.247:8000/`
 
 
@@ -61,14 +61,20 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
         } = props;
         try {
             let newUrl = typeUrl === "auto" ? API_URL + url : url;
+            const headersObject = new Headers(headers);
 
-            const response = await fetch(newUrl, {method, mode: 'cors', body, headers: headers});
+            // If body is FormData, remove 'Content-Type' to let browser set it
+            if (body instanceof FormData) {
+                headersObject.delete("Content-Type");
+            }
+            const response = await fetch(newUrl, {method, mode: 'cors', body, headers: headersObject});
+
 
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
             }
 
-            return isJson ? await response.json() : response;
+            return isJson ? await response?.json() : response;
 
         } catch (e) {
             throw e;

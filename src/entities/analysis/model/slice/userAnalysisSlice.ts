@@ -14,7 +14,6 @@ const userAnalysisSlice = createSlice({
     reducers: {
         onGetAnalysis: (state, action) => {
             state.info = action.payload.info
-
         },
         deletePacketAnalysis: (state, action) => {
             state.info.packet =

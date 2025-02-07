@@ -4,8 +4,11 @@ import {headers} from "shared/api/base";
 import {jobsListActions} from "entities/jobList";
 
 interface changeJobThunkProps {
-    data: FormData,
-    id: number
+     data:  {
+        name: string,
+        has_client: boolean
+    }
+        id: number
 }
 
 
@@ -17,7 +20,10 @@ export const changeJobThunk = createAsyncThunk<
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: `job_info/job_crud/update/${authData.id}`, method: "PUT", body: authData.data, headers: headers()
+            url: `job_info/job_crud/update/${authData.id}`,
+            method: "PUT",
+            body: JSON.stringify(authData.data),
+            headers: headers()
         })
 
 

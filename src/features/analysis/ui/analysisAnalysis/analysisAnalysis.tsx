@@ -174,7 +174,11 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
                 <Select title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
                 <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData?.results}/>
                 <Select title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
-                <Select title={"Branch"} setSelectOption={getBranchId} optionsData={branchData}/>
+                <Select
+                    setSelectOption={setSelectedBranch}
+                    optionsData={branchData}
+                    selectOption={selectedBranch}
+                />
                 <Button>Add</Button>
             </Form>
         </Modal>
