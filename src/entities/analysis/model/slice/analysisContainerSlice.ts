@@ -26,7 +26,7 @@ const analysisContainerSlice = createSlice({
                 }
                 return item
             })
-            console.log(action.payload)
+
 
         },
         onDeleteAnalysis: (state, action) => {

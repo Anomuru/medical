@@ -16,20 +16,19 @@ import {
 import {IAnalysisPackageSchema} from "entities/analysis/model/types/analysisPackageScheme";
 import {IAlertState} from "features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
-import {IOftenUsedDeviceListSchema} from "entities/oftenUsed/model/types/oftenUsedDeviceScheme";
+
 import {IPacketsSchema} from "entities/pakets";
-import {BranchSchema} from "features/branch/types/branchSchema";
 import {IPaymentSchema} from "features/paymentFeature/model/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
 import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
+import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/types/profileAnalysisTypes";
 
 
 export interface StateSchema {
 
     user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
-    oftenUsedDeviceSlice: IOftenUsedDeviceListSchema
-    branchSlice?: BranchSchema;
+    // branchSlice?: BranchSchema;
     workTableSlice?: WorkTableSchema;
     staffSlice?: StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;
@@ -51,7 +50,8 @@ export interface StateSchema {
     AlertSlice?: IAlertState
     patientSlice?: IPatientSchema,
     packetsSlice?: IPacketsSchema,
-    userAnalysisSlice?: IUserAnalysisSchema
+    userAnalysisSlice?: IUserAnalysisSchema,
+    profileAnalysisSlice?: IUserProfileAnalysisSchema
 
 }
 
@@ -71,7 +71,7 @@ export interface StateSchema {
 export type StateSchemaKey = keyof StateSchema;
 
 type CustomCombinedState<T> = {
-    [K in keyof T]: Exclude<T[K], undefined>;  // Remove `undefined` from each slice's type
+    [K in keyof T]: Exclude<T[K], undefined>;  // Remove `undefined` from each slice's types
 };
 
 export type MountedReducers = OptionalRecord<StateSchemaKey, boolean>;

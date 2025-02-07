@@ -6,12 +6,18 @@ export type {
 
 export {
     fetchJobsData,
-    fetchLocationData
+    fetchLocationData,
+    fetchBranchData,
+    getDoctorsThunk
 } from "./model/thunk/oftenUsedThunk";
 
 export {
     getJobsData,
     getLocationsData,
+    getBranchesData,
+    getSelectedLocationData,
+    getSelectedBranchData,
+    getDoctorsData,
     getLoading,
     getError
 } from "./model/selector/oftenUsedSelector";

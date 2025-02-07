@@ -1,5 +1,3 @@
-import {IAnalysisProps} from "../../../pakets/model/paketsSchema";
-
 interface IAnalysis {
     id: number;
     name: string;
@@ -11,18 +9,28 @@ interface IPacket {
     name: string;
 }
 
+interface IUserAnalysis {
+    id: number;
+    user: number;
+    analysis: IAnalysis;
+    status: boolean;
+    expected_result: string;
+    result: string;
+    paid: boolean;
+}
+
 interface IUserAnalysisPacket {
     packet_id: number;
     packet_name: string;
-    analysis_list: IAnalysisProps[];
+    analysis_list: IUserAnalysis[];
 }
 
-export interface IUserAnalysisData {
+interface IUserAnalysisData {
     packet: IUserAnalysisPacket[];
-    analysis_list: IAnalysisProps[];
+    analysis_list: IUserAnalysis[];
 }
 
-export interface IUserAnalysisSchema {
+export interface IUserProfileAnalysisSchema {
     info: IUserAnalysisData;
     loading: boolean;
     error?: string;

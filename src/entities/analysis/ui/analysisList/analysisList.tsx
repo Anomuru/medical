@@ -10,7 +10,6 @@ export const AnalysisList = memo(({isChange}: any) => {
 
     const data = useSelector(getAnalysisData)
 
-    console.log(data)
 
     const render = useCallback(() => {
         return data?.map((item, index) => {

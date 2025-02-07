@@ -15,7 +15,7 @@ const deviceListSlice = createSlice({
     reducers: {
         onGetDeviceList: (state, action) => {
            state.data = action.payload
-            console.log("ishladi")
+
         },
 
         addDevice: (state, action) => {

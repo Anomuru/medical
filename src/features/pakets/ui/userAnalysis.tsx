@@ -6,8 +6,9 @@ import {IAnalysisProps} from "../../../entities/pakets/model/paketsSchema";
 
 interface IUserAnalysis {
     item: IAnalysisProps[],
-    onDeleteAnalysisId: (arg: number) => void,
-    onDeleteAllAnalysis: () => void
+    onDeleteAnalysisId?: (arg: number) => void,
+    onDeleteAllAnalysis?: () => void,
+
 }
 
 export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis}: IUserAnalysis) => {
@@ -28,14 +29,18 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
         //     analysisId: isActiveAnalysis,
         //     packagePrice: price
         // }))
-        onDeleteAnalysisId(isActiveAnalysis)
-        setIsDeleteAnalysis(false)
+        if (onDeleteAnalysisId){
+            onDeleteAnalysisId(isActiveAnalysis)
+            setIsDeleteAnalysis(false)
+        }
     }
 
     const onDeletePacket = () => {
         // dispatch(deletePacket(isActivePacket))
-        onDeleteAllAnalysis()
-        setIsDeletePacket(false)
+        if (onDeleteAllAnalysis){
+            onDeleteAllAnalysis()
+            setIsDeletePacket(false)
+        }
     }
 
     const onClickAnalysis = (id: number) => {
@@ -47,6 +52,7 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
         console.log(true)
         setIsDeletePacket(true)
     }
+
 
     return (
         <>
