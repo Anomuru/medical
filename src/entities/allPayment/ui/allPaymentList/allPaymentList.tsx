@@ -27,18 +27,17 @@ export const AllPaymentList: FC<IPatientListProps> = (
         return data?.map((item, index) => {
             return (
                 <tr>
-                    {/*<td>{index + 1}</td>*/}
-                    {/*<td onClick={() => navigate(`../staff/profile/${item.id}`)}>*/}
-                    {/*    <div className={cls.item}>*/}
-                    {/*        <img className={cls.item__image} src="" alt=""/>*/}
-                    {/*        <div className={cls.item__info}>*/}
-                    {/*            <h3>{item.surname}</h3>*/}
-                    {/*            <p>{item.name}</p>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</td>*/}
-                    {/*<td>{item.age}</td>*/}
-                    {/*<td>{item.phone_number}</td>*/}
+                    <td>{index + 1}</td>
+                    <td onClick={() => navigate(`../staff/profile/${item.id}`)}>
+                        <div className={cls.item}>
+                            <div className={cls.item__info}>
+                                <h3>{item.user}</h3>
+                                <p>{item.user}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{item.date}</td>
+                    <td>{item.payment_type === 1 ? "cash" : item.payment_type === 2 ? "click" : item.payment_type === 3 ? "bank" : null}</td>
                     {/*<td>*/}
                     {/*    <div className={cls.check}>*/}
                     {/*        {item.status ? <i className="fa-solid fa-check"/> : <i className={`fa-solid fa-xmark ${cls.red}`}/>}*/}
@@ -61,12 +60,10 @@ export const AllPaymentList: FC<IPatientListProps> = (
         <Table>
             <thead>
             <tr>
-                <th>Number</th>
-                <th>Staff Name</th>
-                <th>Age</th>
-                <th>Contact Number</th>
-                <th>Paid</th>
-                <th>Delete</th>
+                <th>№</th>
+                <th>Ism-familiya</th>
+                <th>To'langan sana</th>
+                <th>To'lov turi</th>
             </tr>
             </thead>
             <tbody>

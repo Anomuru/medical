@@ -27,10 +27,12 @@ import {useSelector} from "react-redux";
 import {DeleteModal} from "../../../features/deleteModal/ui/DeleteModal";
 import {headers, useHttp} from "../../../shared/api/base";
 import {alertAction} from "../../../features/alert/model/slice/alertSlice";
-import {paymentListReducer} from "../../../entities/allPayment/model/slice/allPaymentSlice";
+import {paymentListActions, paymentListReducer} from "../../../entities/allPayment/model/slice/allPaymentSlice";
 import {getAllPaymentList} from "../../../entities/allPayment/model/selectors/allPaymentSelector";
 import {fetchAllPaymentThunk} from "../../../entities/allPayment/model/thunk/allPaymentThunk";
 import {IPatient, patientActions} from "../../../entities/patient";
+import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "../../../entities/oftenUsed";
+import {IAllPayment} from "../../../entities/allPayment/model/types/allPaymentSchema";
 
 
 
@@ -47,14 +49,22 @@ export const AllPaymentPage = () => {
 
     const dispatch = useAppDispatch()
 
+    const selectedLocation = useSelector(getSelectedLocationData)
+    const selectedBranch = useSelector(getSelectedBranchData)
 
     const patientData = useSelector(getAllPaymentList)
     const [activeType, setActiveType] = useState("")
 
     useEffect(() => {
-        dispatch(fetchAllPaymentThunk())
-    }, [])
-    console.log(patientData, 'deded')
+        if (selectedLocation)
+            dispatch(fetchBranchData({id: selectedLocation}))
+    }, [selectedLocation])
+
+
+    useEffect(() => {
+        if (selectedBranch)
+        dispatch(fetchAllPaymentThunk(selectedBranch))
+    }, [selectedBranch])
 
     const {request} = useHttp()
 
@@ -63,47 +73,50 @@ export const AllPaymentPage = () => {
 
     const [activeDelete, setActiveDelete] = useState<boolean>(false)
 
-    const [activeDeleteItem, setActiveDeleteItem] = useState<IPatient>({} as IPatient)
+    const [activeDeleteItem, setActiveDeleteItem] = useState<IAllPayment>({} as IAllPayment)
 
 
 
-    // const onDelete = () => {
-    //     request({
-    //         url: `user/patient/delete/${activeDeleteItem.id}/`,
-    //         method: "DELETE",
-    //         headers: headers()
-    //     })
-    //         .then(res => {
-    //             dispatch(alertAction.onAddAlertOptions({
-    //                 type: "success",
-    //                 status: true,
-    //                 msg: res.message
-    //             }))
-    //             setActiveDeleteItem({} as IPatient)
-    //             setActiveDelete(false)
-    //             dispatch(patientActions.onDeletePatient(activeDeleteItem.id))
-    //         })
-    //         .catch(err => {
-    //
-    //             setActiveDeleteItem({} as IPatient)
-    //             setActiveDelete(false)
-    //             dispatch(alertAction.onAddAlertOptions({
-    //                 type: "error",
-    //                 status: true,
-    //                 msg: "Error"
-    //             }))
-    //         })
-    //
-    // }
+    const onDelete = () => {
+        request({
+            url: `account/payment/payment/${activeDeleteItem.id}/`,
+            method: "DELETE",
+            headers: headers()
+        })
+            .then(res => {
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: res.message
+                }))
+                setActiveDeleteItem({} as IAllPayment)
+                setActiveDelete(false)
+                dispatch(paymentListActions.onDeletePayment(activeDeleteItem.id))
+            })
+            .catch(err => {
+
+                setActiveDeleteItem({} as IAllPayment)
+                setActiveDelete(false)
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "error",
+                    status: true,
+                    msg: "Error"
+                }))
+            })
+
+    }
 
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.patient}>
                 <AllPaymentHeader filter={filter} setActiveType={setActiveType} activeType={activeType}/>
                 <div className={cls.patient__container}>
+                    {
+                        //@ts-ignore
+                        <AllPaymentList data={patientData} setActiveDeleteItem={setActiveDeleteItem}
+                                        setActiveDelete={setActiveDelete}/>
+                    }
 
-                    {/*<AllPaymentList data={patientData} setActiveDeleteItem={setActiveDeleteItem}*/}
-                    {/*             setActiveDelete={setActiveDelete}/>*/}
                 </div>
                 <Pagination
                     totalCount={6}
@@ -113,7 +126,7 @@ export const AllPaymentPage = () => {
                 />
 
 
-                {/*<DeleteModal active={activeDelete} setActive={() => setActiveDelete(false)} onConfirm={onDelete}/>*/}
+                <DeleteModal active={activeDelete} setActive={() => setActiveDelete(false)} onConfirm={onDelete}/>
 
             </div>
         </DynamicModuleLoader>

@@ -14,6 +14,8 @@
     width: 45%
     height: 25rem
     display: flex
+    gap: 3rem
+    background: #00ABB2
     flex-direction: column
     box-shadow: 0 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
     border: 1px solid #D1D1D6
@@ -71,16 +73,23 @@
 
       .item
         width: 100%
-        box-shadow: 0px 4px 4px -4px rgba(12, 12, 13, 5%), 0px 16px 20px -4px rgba(12, 12, 13, 0.1)
+
         background-color: rgba($medical-color, 0.05)
         display: flex
         align-items: center
+
         justify-content: space-between
         padding: 2rem
         border-radius: 10px
+        transition: .5s ease
+        &:hover
+          box-shadow: 0px 4px 4px -4px rgba(12, 12, 13, 5%), 0px 16px 20px -4px rgba(12, 12, 13, 0.1)
 
         span
           font-weight: 500
           font-size: 1.6rem
           color: #313D62
 
+.active
+  box-shadow: 0px 4px 4px -4px rgba(12, 12, 13, 5%), 0px 16px 20px -4px rgba(12, 12, 13, 0.1)
+  background: #6ae8ee !important

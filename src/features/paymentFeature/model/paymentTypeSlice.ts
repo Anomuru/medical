@@ -15,6 +15,7 @@ const paymentTypeSlice = createSlice({
     reducers: {
         onGetPaymentTypeData: (state, action) => {
             state.data = action.payload.results
+            console.log(action.payload.results, 'wssdsdsd')
         }
     },
     extraReducers: builder => {

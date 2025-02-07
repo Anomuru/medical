@@ -23,6 +23,10 @@ const oftenUsedSlice = createSlice({
         fetchSelectedLocation: (state, action) => {
             state.selectedLocation = action.payload
         },
+        onBranch: (state, action) => {
+            state.selectedBranch = action.payload
+            console.log(action.payload, 'bracccccc')
+        },
         onGetDeviceList: (state, action) => {
             state.data = action.payload.results
         },

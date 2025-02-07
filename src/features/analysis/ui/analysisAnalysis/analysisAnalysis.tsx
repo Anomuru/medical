@@ -32,10 +32,8 @@ import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
 import {
     getSelectedLocationData
-} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
-import {
-    DynamicModuleLoader,
-} from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+
 interface IAddData {
     name: string,
     code_name: string,
@@ -68,7 +66,7 @@ export const AnalysisAnalysis = () => {
 
 
     return (
-        <DynamicModuleLoader reducers={reducers}>
+
             <div className={cls.modal}>
                 <div className={cls.modal__wrapper}>
                     <div onClick={() => setActive(true)} className={cls.modal__add}>
@@ -88,7 +86,6 @@ export const AnalysisAnalysis = () => {
                 <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
                 <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
             </div>
-        </DynamicModuleLoader>
     );
 };
 

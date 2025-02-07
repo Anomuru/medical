@@ -26,7 +26,7 @@ export interface IPaymentTypeSchema {
 
 export interface IPayment {
     date: string,
-    payment_type: number,
+    payment_type: string,
     user: number,
 
 }

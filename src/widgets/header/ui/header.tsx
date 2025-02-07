@@ -23,7 +23,7 @@ export const Header = () => {
 
     const dispatch = useAppDispatch()
     const navigation = useNavigate()
-    const {fetchSelectedLocation} = oftenUsedActions
+    const {fetchSelectedLocation, onBranch} = oftenUsedActions
     const [location, setLocation] = useState<number>()
     const [branch, setBranch] = useState<number>()
 
@@ -32,13 +32,17 @@ export const Header = () => {
     }, [])
 
     useEffect(() => {
-        if (location)
+        if (location) {
             dispatch(fetchBranchData({id: location}))
+            dispatch(fetchSelectedLocation(location))
+        }
+
     }, [location])
 
     useEffect(() => {
         if (branch)
-            dispatch(fetchSelectedLocation(branch))
+            dispatch(onBranch(branch))
+        console.log(branch, 'data')
     }, [branch])
 
     const branchData = useSelector(getBranchesData)

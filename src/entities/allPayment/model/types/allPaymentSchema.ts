@@ -1,8 +1,9 @@
 
 export interface IAllPayment {
     id: number,
-    name: string,
-    surname: string,
+    amount: number,
+    user: string,
+    date: string
     payment_type: number,
 }
 
@@ -15,7 +16,7 @@ export interface IAllPaymentProps {
 }
 
 export interface IAllPaymentSchema {
-    data: IAllPaymentProps[],
+    data: IAllPayment[],
     error?: string,
     loading: boolean
 }

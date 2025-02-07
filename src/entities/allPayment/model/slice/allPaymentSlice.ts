@@ -17,7 +17,11 @@ const allPaymentSlice = createSlice({
     reducers: {
         onGetPayment: (state, action) => {
             state.data = action.payload.results
+        },
+        onDeletePayment: (state, action) => {
+            state.data = state.data?.filter(item => item.id !== action.payload)
         }
+
     },
     extraReducers: builder => {
         builder

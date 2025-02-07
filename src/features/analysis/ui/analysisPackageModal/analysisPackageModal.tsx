@@ -23,7 +23,7 @@ import {
 } from "../../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {Select} from "../../../../shared/ui/select";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
-import {getSelectedLocationData} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
 
 
 export const AnalysisPackageModal = () => {
