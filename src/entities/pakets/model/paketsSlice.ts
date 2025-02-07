@@ -22,18 +22,21 @@ const packetsSlice = createSlice({
         deleteAnalysis: (state, action) => {
             state.data =
                 state.data
-                    .map(item => {
-                        if (item.id === action.payload.packageId) {
+                    .map((item, index) => {
+                        console.log(action.payload.packageId, "package")
+                        console.log(index, "package")
+                        if (index === action.payload.packageId) {
                             return {
                                 id: item.id,
                                 name: item.name,
                                 price: action.payload.packagePrice,
+                                extra: item.extra,
                                 analysis: item.analysis.filter((item, index) =>
-                                    index !== action.payload.analysisId)
+                                    item.id !== action.payload.analysisId)
                             }
-                        } else return item
+                        } return item
                     })
-                    .filter(item => item.analysis.length !== 0)
+                    .filter(item => item.name !== "Boshqa" ? item.analysis.length !== 0 : true)
         },
         deletePacket: (state, action) => {
             state.data =

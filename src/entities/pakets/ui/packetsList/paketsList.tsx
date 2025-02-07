@@ -66,12 +66,14 @@ export const PacketsList = memo((props: PropsType) => {
                     <span>Analiz ro’yxatlari :</span>
                     <div className={cls.subrow__wrapper}>
                         <span><img onClick={toggleDropdown} src={arrowContainedSquare} alt=""/></span>
-                        <div
-                            onClick={() => onDeletePacket(id)}
-                            className={cls.minus}
-                        >
-                            <i className="fas fa-minus"></i>
-                        </div>
+                        {!item.extra &&
+                            <div
+                                onClick={() => onDeletePacket(id)}
+                                className={cls.minus}
+                            >
+                                <i className="fas fa-minus"></i>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
