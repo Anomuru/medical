@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useForm} from "react-hook-form";
 
 import {Button} from "shared/ui/button";
@@ -25,7 +25,16 @@ import {getPacketsData, IPackets} from "entities/pakets";
 
 
 interface IHospitalRegPageData {
-
+    username: string;
+    name: string;
+    surname: string;
+    address: string;
+    passport_series: string;
+    passport_number: string;
+    birth_date: string;
+    phone_number: string;
+    email: string;
+    password: string;
 }
 
 interface IProgress {
@@ -45,30 +54,42 @@ export const HospitalRegPage = () => {
     const packetsData = useSelector(getPacketsData)
     const {
         addAnalysis,
-        addPacket
+        addPacket,
+        addMultipleAnalysis,
+        addPackets
     } = packetsActions
+    const dispatch = useAppDispatch()
 
     const [errorUserName, setErrorUserName] = useState<boolean>(false)
     const [pakets, setPakets] = useState<IPackets[]>([])
 
-    const jobs = useSelector(getJobsData)
     const [doctors, setDoctors] = useState([])
     const [analysis, setAnalysis] = useState<IAnalysis[]>([])
 
-    const [job, setJob] = useState()
-    const [doctor, setDoctor] = useState()
+    const [doctor, setDoctor] = useState<string>()
+    const [selectedRadio, setSelectedRadio] = useState<string>("")
+    const [isChanging,setIsChanging] = useState(false)
+    const [changingData,setChangingData] = useState<string>()
+    const [isActiveType, setIsActiveType] = useState()
 
 
-    const [packs, setPacks] = useState([])
-    const [customPack, setCustomPack] = useState([])
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        setError
+    } = useForm<IHospitalRegPageData>()
+    const {request} = useHttp()
 
 
-    const list = useMemo(() => [
-        {
-            isInput: true,
-            name: "username",
-            label: "Username",
-        },
+    const list =  [
+        // {
+        //     isInput: true,
+        //     name: "username",
+        //     label: "Username",
+        // },
         {
             name: "name_surname",
             isInput: true,
@@ -97,7 +118,7 @@ export const HospitalRegPage = () => {
         },
         {
             isInput: true,
-            name: "pasport_number",
+            name: "passport_number",
             label: "Password Seria (Number)",
         },
         {
@@ -132,31 +153,73 @@ export const HospitalRegPage = () => {
             name: "password",
             label: "Password",
             isInput: true,
-            type: "password"
+            type: "password",
         },
 
-    ], [jobs, doctors])
+    ]
 
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        reset
-    } = useForm<IHospitalRegPageData>()
-    const {request} = useHttp()
-
-    const dispatch = useAppDispatch()
+    const username = watch("username");
 
 
     useEffect(() => {
-        setProgress(list.map(item => {
-            let arr
-            if (item.isDouble) {
-                item.items.map(inner => ({name: inner.name, status: false}))
-                return {name: item.name, status: false}
-            } else return {name: item.name, status: false}
-        }))
-    }, [list])
+        console.log(username)
+
+        if (username && changingData) {
+            request({
+                url: `user/users/get/check_username/?username=${username}&user_id=${changingData}`,
+                method: "GET",
+                // headers: headers()
+            })
+                .then(res => {
+                    setErrorUserName(res.available)
+                    setError("username", { type: "custom", message: "Username allaqachon belgilangan" })
+                })
+        }
+    }, [username, changingData]);
+
+
+
+
+    useEffect(() => {
+
+
+        const changedItem = localStorage.getItem("changedItemTable")
+        const doctor_id = JSON.parse(localStorage.getItem("doctorIdTable") as string)
+        if (changedItem) {
+            request({
+                url: `user/users/get/time_table_profile/${changedItem}`,
+                method: "GET",
+                // headers: headers()
+            })
+                .then(res => {
+
+                    dispatch(addMultipleAnalysis({analysis: res.analysis_list.individuals, price: res.analysis_list.individual_total_price}))
+                    dispatch(addPackets(res.analysis_list.packets))
+
+
+                    setValue("username", res.username);
+                    setValue("name", res.name);
+                    setValue("surname", res.surname);
+                    setValue("address", res.address);
+                    setValue("passport_series", res.passport_series);
+                    setValue("passport_number", res.passport_number);
+                    setValue("birth_date", res.birth_date);
+                    setValue("phone_number", res.phone_number);
+                    setValue("email", res.email);
+                    setValue("password", "12345678");
+                    setSelectedRadio(res.sex)
+                    setIsChanging(true)
+                    setChangingData(changedItem)
+
+                })
+
+        }
+        setDoctor(doctor_id)
+    }, [])
+
+
+
+
 
     useEffect(() => {
         request({
@@ -173,22 +236,18 @@ export const HospitalRegPage = () => {
     }, [])
 
 
-    useEffect(() => {
-        dispatch(fetchJobsData())
-    }, [])
 
 
     useEffect(() => {
-        if (job)
-            request({
-                url: `job_info/job_get/doctor_list/?job_id=${job}`,
-                method: "GET",
-                // headers: headers()
+        request({
+            url: `job_info/job_get/doctor_list/`,
+            method: "GET",
+            // headers: headers()
+        })
+            .then(res => {
+                setDoctors(res.results)
             })
-                .then(res => {
-                    setDoctors(res.results)
-                })
-    }, [job])
+    }, [])
 
     useEffect(() => {
         request({
@@ -202,22 +261,15 @@ export const HospitalRegPage = () => {
     }, [])
 
 
-    const [selectedRadio, setSelectedRadio] = useState<string>("")
-    const [progress, setProgress] = useState<IProgress[]>([])
 
 
-    const onProgress = (data: { name: string, value: string }) => {
-        setProgress(
-            prev =>
-                prev.map(item => item.name === data.name ? {name: item.name, status: true} : item)
-        )
-    }
+
+
 
     const renderInput = useCallback(() => {
         return list.map(item => {
 
 
-            console.log(item)
             if (item.isDouble) {
                 return (
                     <div className={cls.double}>
@@ -229,7 +281,6 @@ export const HospitalRegPage = () => {
                                         type={inner.type}
                                         placeholder={inner.label}
                                         name={inner.name}
-                                        onChange={(value) => onProgress({name: inner.name, value})}
                                         register={register}
                                         required
                                     />
@@ -244,8 +295,6 @@ export const HospitalRegPage = () => {
                         <div className={cls.radios}>
                             {
                                 item.value.map(inner => {
-
-
                                     return (
                                         <Radio
                                             name={"radio"}
@@ -268,13 +317,13 @@ export const HospitalRegPage = () => {
                         placeholder={item.label}
                         name={item.name}
                         register={register}
-                        onChange={(value) => onProgress({name: item.name, value})}
                         required={item.isRequired !== undefined ? item.isRequired : true}
                     />
                 )
             }
         })
-    }, [list, selectedRadio])
+    }, [list, register, selectedRadio])
+
 
     function combineArraysInOneArray<T>(arrays: T[][]): T[] {
         return arrays.reduce((acc, arr) => acc.concat(arr), []);
@@ -305,25 +354,16 @@ export const HospitalRegPage = () => {
                 analysis
             }
 
-            console.log(res)
 
             request({
-                url: "user/users/crud/create/",
-                method: "POST",
+                url: isChanging? `user/users/crud/update/${changingData}` : "user/users/crud/create/",
+                method: isChanging ? "PUT" :  "POST",
                 body: JSON.stringify(res),
                 headers: headers()
             })
                 .then(res => {
-                    console.log(res)
                     setErrorUserName(false)
-                    // list.map(item => {
-                    //     if (item.isDouble) {
-                    //
-                    //     } else {
-                    //         setValue(item.name, "")
-                    //     }
-                    // })
-                    reset()
+                    // reset()
                 })
                 .catch(err => {
                     console.log(err)
@@ -369,14 +409,18 @@ export const HospitalRegPage = () => {
                                 {/*    <h2 className={cls.text}>Patient Information</h2>*/}
                                 {/*    <p className={cls.percent}>{calc}%</p>*/}
                                 {/*</div>*/}
-                                <h1 className={cls.info__title}>Hospital Registration Form</h1>
-                                <h2 className={cls.info__text}>Lorem Ipsum has been the industry's standard dummy.</h2>
+                                {
+                                    isChanging ?
+                                    <h1 className={cls.info__title}>Changing Information</h1>
+                                    :
+                                    <h1 className={cls.info__title}>Hospital Registration Form</h1>
+                                }
                             </div>
                         </div>
                         <div className={cls.content}>
-                            <h2> {errorUserName ? "Username already exist" : null}</h2>
+                            <h2> {!errorUserName ? "Username already exist" : null}</h2>
+                            <Input name={"username"} register={register} required/>
                             {renderInput()}
-                            <Select selectOption={job} setSelectOption={setJob} title={"Jobs"} optionsData={jobs}/>
                             <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
                                     optionsData={doctors}/>
                         </div>
@@ -441,19 +485,30 @@ export const HospitalRegPage = () => {
 
 
                     <div className={cls.list}>
-
+                        <h1>Ro'yxat</h1>
                         <div className={cls.list__container}>
                             {
-                                packetsData?.map(item => {
+                                packetsData?.map((item, index) => {
                                     return (
-                                        <Packets item={item}/>
+                                        <Packets index={index} item={item}/>
+
                                     )
                                 })
                             }
                             {/*<Pakets/>*/}
                         </div>
                     </div>
-                    <Button id={"regForm"} extraClass={cls.hospital__btn}>Add</Button>
+
+                    <div className={cls.buttons}>
+                        <Button disabled={errorUserName} id={"regForm"} extraClass={cls.hospital__btn}>
+                            {isChanging ? "Change" : "Add"}
+                        </Button>
+                        {
+                            isChanging && <Button id={"regForm"} type={"danger"} extraClass={cls.hospital__btn}>Delete</Button>
+
+                        }
+                    </div>
+
 
                 </div>
             </div>

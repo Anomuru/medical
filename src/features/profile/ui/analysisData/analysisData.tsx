@@ -20,83 +20,64 @@ import {Packets} from "../../../pakets";
 
 export const AnalysisData = () => {
 
-    const profileData = useSelector(getProfileAnalysis)
 
+    const [activeSwitch, setActiveSwitch] = useState(true)
     const dispatch = useAppDispatch()
     const {id} = useParams()
 
-
-
-
-
-
-    const {request} = useHttp()
 
     useEffect(() => {
         if (id) {
             dispatch(fetchProfileAnalysis(id))
         }
-    }, [id])
-
-
-
-
-    const onDeletePacketAnalysis = (analysisID: number, packetId: number) => {
-
-
-        dispatch(profileAnalysisActions.onDeletePacketAnalysis({packetId: packetId, analysisId: analysisID}))
-
-
-    }
-
-
-    const onDeleteAnalysis = (analysisID: number) => {
-        request({url: `user/user_analysis_crud/delete/${analysisID}`, method: "DELETE", headers: headers()})
-            .then(res => {
-                dispatch(profileAnalysisActions.deleteAnalysis(analysisID))
-            })
-    }
-
+    }, [id, activeSwitch])
 
 
     return (
         <div className={cls.wrapper}>
-            <OldAnalysis/>
 
+            <ClassSwitch onSwitch={() => setActiveSwitch(!activeSwitch)} isActive={activeSwitch}/>
 
-            {/*<div className={cls.paket}>*/}
-            {/*    {*/}
-            {/*        profileData?.packet.map(item => {*/}
-            {/*            return (*/}
-            {/*                <UserPackets*/}
-            {/*                    // @ts-ignore*/}
-            {/*                    item={item}*/}
-            {/*                    onDeletePacketAnalysis={onDeletePacketAnalysis}*/}
-            {/*                    // onDeletePacketId={onDeletePacket}*/}
-            {/*                />*/}
-            {/*            )*/}
-            {/*        })*/}
-            {/*    }*/}
-            {/*</div>*/}
-
-            {/*<div className={cls.analysis}>*/}
-
-            {/*    <UserAnalysis*/}
-            {/*        // @ts-ignore*/}
-            {/*        item={profileData?.analysis_list}*/}
-            {/*        onDeleteAnalysisId={onDeleteAnalysis}*/}
-            {/*        // onDeleteAllAnalysis={onDeleteAllAnalysis}*/}
-            {/*    />*/}
-
-            {/*</div>*/}
-
+            {!activeSwitch ?
+                <OldAnalysis setActiveSwitch={setActiveSwitch}/> :
+                <ProfileUserAnalysis/>
+            }
         </div>
 
 
     );
 };
 
-const OldAnalysis  = () => {
+
+const ClassSwitch = ({isActive, onSwitch}: { isActive: boolean, onSwitch: (isActive: boolean) => void }) => {
+
+
+    const handleSwitch = () => {
+
+        onSwitch(!isActive);
+    };
+
+    return (
+        <div className={cls.switch} onClick={handleSwitch}>
+            <div className={`${cls.switch__left} ${!isActive ? cls.active : ""}`}>
+                {isActive ? <i className="fa-solid fa-vial-circle-check"></i> : <i className="fa-solid fa-vial"></i>}
+                {/*    <div className={cls.switch__wrapper_left}>*/}
+
+                {/*        User Analysis*/}
+
+                {/*    </div>*/}
+                {/*    <div className={cls.switch__wrapper_right}>*/}
+                {/*        Add Analysis*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+            </div>
+
+        </div>
+    );
+}
+
+
+const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) => void }) => {
     const [pakets, setPakets] = useState<IPackets[]>([])
     const [analysis, setAnalysis] = useState<IAnalysis[]>([])
     const [selectedItems, setSelectedItems] = useState<IAnalysis[]>([]);
@@ -134,19 +115,21 @@ const OldAnalysis  = () => {
     }, [])
 
 
-
-
-
-
     const onPostSelectedAnalysis = () => {
         request({
             url: `user/user_analysis_crud/create/`,
             method: "POST",
-            body: JSON.stringify({analysis_list: selectedItemId, user: Number(id)}),
+            body: JSON.stringify({
+                user: Number(id),
+                analysis_list:  selectedItemId,
+                packet_list: selectedPacketItemsId,
+
+            }),
             headers: headers(),
         })
             .then(res => {
                 console.log("fdsf")
+                setActiveSwitch(true)
             })
             .catch(err => {
                 console.log("re")
@@ -172,21 +155,26 @@ const OldAnalysis  = () => {
             return [...prev, item]
         })
         // @ts-ignore
-        setSelectedPacketItemsId(prev => {
-            // @ts-ignore
-            return [...prev , item.analysis]
-        })
+
+
+        setSelectedPacketItemsId(prev => [
+            ...prev,
+            ...item.analysis.map(analysisItem => analysisItem.id)
+        ]);
 
 
     };
-    console.log(selectedPacketItemsId, "selectedPacketItemsId")
+
+
     const onClickPacket = (id: number) => {
         setSelectedPacketItems(prev => {
             return prev.filter(item => item.id !== id)
         })
+        // @ts-ignore
+        setSelectedPacketItemsId(prev => prev.filter(i => i !== id))
     }
 
-    return(
+    return (
         <>
 
             <div className={cls.wrapper__analysis}>
@@ -198,7 +186,7 @@ const OldAnalysis  = () => {
                             {
                                 pakets.map(item => {
                                     return (
-                                        <div onClick={() => handleSelect(item)} className={cls.item} >
+                                        <div onClick={() => handleSelect(item)} className={cls.item}>
                                             <h2>
                                                 {item.name}
                                             </h2>
@@ -209,37 +197,25 @@ const OldAnalysis  = () => {
                                     )
                                 })
                             }
-                            {
-                                pakets.map(item => {
-                                    return (
-                                        <div onClick={() => handleSelect(item)} className={cls.item} >
-                                            <h2>
-                                                {item.name}
-                                            </h2>
-                                            <div className={cls.icon}>
-                                                <i className="fas fa-plus"></i>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                            }
+
 
                         </div>
                     </div>
 
-                    <div className={cls.oldAnalysis__main}>
+                    {selectedPacketItems.length ? <div className={cls.oldAnalysis__main}>
                         {
                             selectedPacketItems?.map(item => {
                                 return (
                                     <div className={cls.oldAnalysis__main_packetList}>
-                                        <PacketsList onDeleteAnalysis={() => console.log("sfsd")} onDeletePacket={onClickPacket} item={item}/>
+                                        <PacketsList onDeleteAnalysis={() => console.log("sfsd")}
+                                                     onDeletePacket={onClickPacket} item={item}/>
                                     </div>
 
                                 )
                             })
                         }
-                    </div>
-
+                    </div> : null
+                    }
 
                 </div>
 
@@ -267,7 +243,7 @@ const OldAnalysis  = () => {
                         </div>
                     </div>
 
-                    <div className={cls.oldAnalysis__main}>
+                    {selectedItems.length ? <div className={cls.oldAnalysis__main}>
                         {selectedItems.map(item => (
                             <div className={cls.oldAnalysis__main_list}>
                                 <div className={cls.oldAnalysis__main_list_name}>
@@ -279,7 +255,7 @@ const OldAnalysis  = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    </div> : null}
 
                 </div>
             </div>
@@ -288,5 +264,64 @@ const OldAnalysis  = () => {
             <Button onClick={onPostSelectedAnalysis} extraClass={cls.button}>Add</Button>
         </>
 
+    )
+}
+
+
+const ProfileUserAnalysis = () => {
+    const profileData = useSelector(getProfileAnalysis)
+
+    const dispatch = useAppDispatch()
+    const {request} = useHttp()
+
+    const onDeletePacketAnalysis = (analysisID: number, packetId: number) => {
+
+        dispatch(profileAnalysisActions.onDeletePacketAnalysis({packetId: packetId, analysisId: analysisID}))
+    }
+    const onDeletePacket = (id: number) => {
+
+        // request({url: `user/user_packet_crud/delete/${id}`, method: "DELETE", headers: headers()})
+        //     .then(res => {
+        //         dispatch(profileAnalysisActions.deletePacket(id))
+        //     })
+    }
+
+
+    const onDeleteAnalysis = (analysisID: number) => {
+        request({url: `user/user_analysis_crud/delete/${analysisID}`, method: "DELETE", headers: headers()})
+            .then(res => {
+                dispatch(profileAnalysisActions.deleteAnalysis(analysisID))
+            })
+    }
+
+    return (
+        <>
+            <div className={cls.paket}>
+                {profileData?.packet.length ?
+                    profileData?.packet.map(item => {
+                        return (
+                            <UserPackets
+                                // @ts-ignore
+                                item={item}
+                                onDeletePacketAnalysis={onDeletePacketAnalysis}
+                                onDeletePacketId={onDeletePacket}
+                            />
+                        )
+                    }) : <h2>Paketlar hali y'oq</h2>
+                }
+            </div>
+
+            <div className={cls.analysis}>
+
+                <UserAnalysis
+
+                    // @ts-ignore
+                    item={profileData?.analysis_list}
+                    onDeleteAnalysisId={onDeleteAnalysis}
+                    // onDeleteAllAnalysis={onDeleteAllAnalysis}
+                />
+
+            </div>
+        </>
     )
 }

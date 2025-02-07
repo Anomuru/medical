@@ -22,8 +22,6 @@ import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/ana
 
 import {analysisContainerThunk} from "../../../../entities/analysis/model/thunk/analysisContainerThunk";
 import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
-import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
-import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 import {Pagination} from "../../../pagination";
 import {getAnalysisCount} from "../../../../entities/analysis/model/selector/analysisSelector";
 import {data} from "react-router";
@@ -32,7 +30,9 @@ import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
 import {
     getSelectedLocationData
-} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+} from "../../../../entities/oftenUsed";
+import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
+import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
 
 interface IAddData {
     name: string,
@@ -75,13 +75,13 @@ export const AnalysisAnalysis = () => {
                 </div>
                 <AnalysisList isChange={getChangedItem}/>
 
-                <Pagination
-                    // @ts-ignore
-                    totalCount={count}
-                    onPageChange={setCurrentPage}
-                    currentPage={currentPage}
-                    pageSize={pageSize}
-                />
+            <Pagination
+                // @ts-ignore
+                totalCount={count}
+                onPageChange={setCurrentPage}
+                currentPage={currentPage}
+                pageSize={pageSize}
+            />
 
                 <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
                 <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
@@ -96,6 +96,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const dispatch = useAppDispatch()
 
     const {register, handleSubmit} = useForm<IAddData>()
+    const userBranch = localStorage.getItem("branch")
 
     const [selectedGroup, setSelectedGroup] = useState(NaN)
     const [selectedPackage, setSelectedPackage] = useState(NaN)
@@ -109,19 +110,22 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const getContainerId = useCallback((id: number) => setSelectedContainer(id), [])
     const getBranchId = useCallback((id: number) => setSelectedBranch(id), [])
 
+    const getData = useSelector(getOftenDevice)
 
     const groupAnalysisData = useSelector(getAnalysisGroup)
     const analysisPackageData = useSelector(getAnalysisPackage)
-    const getData = useSelector(getOftenDevice)
+
     const analysisDate = useSelector(getAnalysisContainer)
     const branchData = useSelector(getBranchesData)
     const selectedLocationId = useSelector(getSelectedLocationData)
 
     useEffect(() => {
         dispatch(fetchAnalysisGroupList())
-        dispatch(fetchAnalysisPackageList())
+
+            dispatch(fetchAnalysisPackageList())
+
         dispatch(analysisContainerThunk())
-        dispatch(oftenUsedDeviceListThunk())
+        // dispatch(oftenUsedDeviceListThunk())
     }, [])
 
     useEffect(() => {

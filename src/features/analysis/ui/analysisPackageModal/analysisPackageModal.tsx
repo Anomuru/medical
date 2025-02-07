@@ -29,6 +29,7 @@ import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUs
 export const AnalysisPackageModal = () => {
 
     const selectedLocation = useSelector(getSelectedLocationData)
+    const userBranch = localStorage.getItem("branch")
 
     const [active, setActive] = useState<boolean>(false)
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
@@ -38,12 +39,11 @@ export const AnalysisPackageModal = () => {
 
     useEffect(() => {
 
-        dispatch(fetchAnalysisPackageList())
+        if (userBranch) {
+            dispatch(fetchAnalysisPackageList())
+        }
     }, [])
-    useEffect(() => {
-        if (selectedLocation)
-            dispatch(fetchBranchData({id: selectedLocation}))
-    }, [selectedLocation])
+
 
     // console.log(branchId)
 
@@ -81,11 +81,15 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
 
     const onClick = (data: {}) => {
 
+        const res = {
+            ...data,
+            branch: selectedBranch
+        }
 
         request({
             url: "packet/crud/create/",
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify(res),
             headers: headers()
         }).then(res => {
             dispatch(analysisPackageAction.onAddAnalysisPackage(res))
@@ -111,6 +115,7 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
                 <Select
                     setSelectOption={setSelectedBranch}
                     optionsData={branchData}
+                    selectOption={selectedBranch}
                 />
                 <Button>Add</Button>
 

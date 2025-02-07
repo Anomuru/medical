@@ -25,6 +25,9 @@ const userSlice = createSlice({
             state.branch = action.payload.branch
             state.role = action.payload.role
             state.error = undefined
+
+            // @ts-ignore
+            localStorage.setItem("branch" , action.payload.branch_id)
         }
 
 

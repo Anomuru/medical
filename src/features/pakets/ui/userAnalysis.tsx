@@ -8,7 +8,8 @@ interface IUserAnalysis {
     item: IAnalysisProps[],
     total: string,
     onDeleteAnalysisId?: (arg: number) => void,
-    onDeleteAllAnalysis?: () => void
+    onDeleteAllAnalysis?: () => void,
+
 }
 
 export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis, total}: IUserAnalysis) => {
@@ -52,6 +53,7 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
         console.log(true)
         setIsDeletePacket(true)
     }
+
 
     return (
         <>

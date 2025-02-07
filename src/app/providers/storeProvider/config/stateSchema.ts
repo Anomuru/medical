@@ -25,11 +25,11 @@ import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/typ
 import {IAllPaymentSchema} from "../../../../entities/allPayment/model/types/allPaymentSchema";
 
 
-
 export interface StateSchema {
 
     user: UserSchema;
     oftenUsedSlice: OftenUsedSchemas;
+    // branchSlice?: BranchSchema;
     workTableSlice?: WorkTableSchema;
     staffSlice?: StaffListSchema;
     staffProfileSlice?: StaffProfileSchema;

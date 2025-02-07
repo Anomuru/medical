@@ -70,7 +70,6 @@ export const useHttp: () => { request: (props: UseHttpProps) => Promise<any> } =
             const response = await fetch(newUrl, {method, mode: 'cors', body, headers: headersObject});
 
 
-
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
             }
