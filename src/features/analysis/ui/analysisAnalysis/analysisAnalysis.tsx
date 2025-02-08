@@ -18,21 +18,18 @@ import {useHttp} from "../../../../shared/api/base";
 import {useDispatch, useSelector} from "react-redux";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {analysisThunk} from "entities/analysis/model/thunk/analysisThunk";
-import {getAnalysisGroup} from "../../../../entities/analysis/model/selector/analysisGroupSelector";
+import {getAnalysisGroup} from "entities/analysis/model/selector/analysisGroupSelector";
 
-import {analysisContainerThunk} from "../../../../entities/analysis/model/thunk/analysisContainerThunk";
-import {getAnalysisContainer} from "../../../../entities/analysis/model/selector/analysisContainerSelector";
+import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
+import {getAnalysisContainer} from "entities/analysis/model/selector/analysisContainerSelector";
 import {Pagination} from "../../../pagination";
-import {getAnalysisCount} from "../../../../entities/analysis/model/selector/analysisSelector";
+import {getAnalysisCount} from "entities/analysis/model/selector/analysisSelector";
 import {data} from "react-router";
 import {alertAction, alertReducer} from "../../../alert/model/slice/alertSlice";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
-import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
-import {
-    getSelectedLocationData
-} from "../../../../entities/oftenUsed";
-import {oftenUsedDeviceListThunk} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
-import {getOftenDevice} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getOftenDevice} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getUserBranch} from "entities/user";
+import {oftenUsedDeviceListThunk} from "entities/oftenUsed/model/thunk/oftenUsedThunk";
 
 interface IAddData {
     name: string,
@@ -50,13 +47,15 @@ export const AnalysisAnalysis = () => {
     const count = useSelector(getAnalysisCount)
 
 
+    const userBranch = useSelector(getUserBranch)
+
     const dispatch = useAppDispatch()
 
 
     useEffect(() => {
-
-        dispatch(analysisThunk(currentPage))
-    }, [currentPage])
+        if (userBranch && currentPage)
+            dispatch(analysisThunk({offset: currentPage, branch: userBranch}))
+    }, [currentPage, userBranch])
 
 
     const getChangedItem = (data: any) => {
@@ -67,13 +66,13 @@ export const AnalysisAnalysis = () => {
 
     return (
 
-            <div className={cls.modal}>
-                <div className={cls.modal__wrapper}>
-                    <div onClick={() => setActive(true)} className={cls.modal__add}>
-                        <i className={"fas fa-plus"}/>
-                    </div>
+        <div className={cls.modal}>
+            <div className={cls.modal__wrapper}>
+                <div onClick={() => setActive(true)} className={cls.modal__add}>
+                    <i className={"fas fa-plus"}/>
                 </div>
-                <AnalysisList isChange={getChangedItem}/>
+            </div>
+            <AnalysisList isChange={getChangedItem}/>
 
             <Pagination
                 // @ts-ignore
@@ -83,9 +82,9 @@ export const AnalysisAnalysis = () => {
                 pageSize={pageSize}
             />
 
-                <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
-                <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
-            </div>
+            <AnalysisAnalysisAddModal active={active} setActive={setActive}/>
+            <AnalysisAnalysisChangeModal active={change} setActive={setChange} data={changedItem}/>
+        </div>
     );
 };
 
@@ -96,7 +95,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const dispatch = useAppDispatch()
 
     const {register, handleSubmit} = useForm<IAddData>()
-    const userBranch = localStorage.getItem("branch")
+    const userBranch = useSelector(getUserBranch)
 
     const [selectedGroup, setSelectedGroup] = useState(NaN)
     const [selectedPackage, setSelectedPackage] = useState(NaN)
@@ -116,23 +115,24 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
     const analysisPackageData = useSelector(getAnalysisPackage)
 
     const analysisDate = useSelector(getAnalysisContainer)
-    const branchData = useSelector(getBranchesData)
-    const selectedLocationId = useSelector(getSelectedLocationData)
+    // const branchData = useSelector(getBranchesData)
+    // const selectedLocationId = useSelector(getSelectedLocationData)
+
 
     useEffect(() => {
-        dispatch(fetchAnalysisGroupList())
-
-            dispatch(fetchAnalysisPackageList())
-
-        dispatch(analysisContainerThunk())
-        // dispatch(oftenUsedDeviceListThunk())
-    }, [])
-
-    useEffect(() => {
-        if (selectedLocationId) {
-            dispatch(fetchBranchData({id: selectedLocationId}))
+        if (userBranch) {
+            dispatch(fetchAnalysisGroupList())
+            dispatch(fetchAnalysisPackageList({branch: userBranch}))
+            dispatch(analysisContainerThunk())
+            dispatch(oftenUsedDeviceListThunk())
         }
-    }, [selectedLocationId])
+    }, [userBranch])
+
+    // useEffect(() => {
+    //     if (selectedLocationId) {
+    //         dispatch(fetchBranchData({id: selectedLocationId}))
+    //     }
+    // }, [selectedLocationId])
 
 
     const onSubmit = (data: IAddData) => {
@@ -142,7 +142,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
             packet: selectedPackage,
             device: selectedDevice,
             container: selectedContainer,
-            branch: selectedBranch
+            branch: userBranch
         }
         request({url: "analysis/analysis/crud/create/", body: JSON.stringify(res), method: "POST"})
             .then(res => {
@@ -179,7 +179,7 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
                 <Select title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
                 <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>
                 <Select title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
-                <Select title={"Branch"} setSelectOption={getBranchId} optionsData={branchData}/>
+                {/*<Select title={"Branch"} setSelectOption={getBranchId} optionsData={branchData}/>*/}
                 <Button>Add</Button>
             </Form>
         </Modal>

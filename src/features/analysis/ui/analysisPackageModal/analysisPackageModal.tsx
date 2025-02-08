@@ -24,12 +24,13 @@ import {
 import {Select} from "../../../../shared/ui/select";
 import {fetchBranchData, getBranchesData} from "../../../../entities/oftenUsed";
 import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getUserBranch} from "entities/user";
 
 
 export const AnalysisPackageModal = () => {
 
     const selectedLocation = useSelector(getSelectedLocationData)
-    const userBranch = localStorage.getItem("branch")
+    const userBranch = useSelector(getUserBranch)
 
     const [active, setActive] = useState<boolean>(false)
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
@@ -38,11 +39,10 @@ export const AnalysisPackageModal = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-
         if (userBranch) {
-            dispatch(fetchAnalysisPackageList())
+            dispatch(fetchAnalysisPackageList({branch: userBranch}))
         }
-    }, [])
+    }, [userBranch])
 
 
     // console.log(branchId)
@@ -71,7 +71,16 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
 
     const branchData = useSelector(getBranchesData)
 
-    const [selectedBranch, setSelectedBranch] = useState<string>()
+    const [selectedBranch, setSelectedBranch] = useState<number>()
+
+    const userBranch = useSelector(getUserBranch)
+
+
+    useEffect(() => {
+        if (userBranch)
+            setSelectedBranch(userBranch)
+    }, [userBranch])
+
 
     const {request} = useHttp()
 
@@ -112,10 +121,10 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
         <Modal title={"Add"} active={active} setActive={setActive}>
             <Form extraClass={cls.modal__form} onSubmit={handleSubmit(onClick)}>
                 <Input name={"name"} register={register}/>
-                <Select
-                    setSelectOption={setSelectedBranch}
-                    optionsData={branchData}
-                />
+                {/*<Select*/}
+                {/*    setSelectOption={setSelectedBranch}*/}
+                {/*    optionsData={branchData}*/}
+                {/*/>*/}
                 <Button>Add</Button>
 
             </Form>
@@ -151,8 +160,6 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
             headers: headers()
         })
             .then(res => {
-                console.log(res)
-
                 dispatch(analysisPackageAction.onEditAnalysisPackage({id: activeEditItem.id, res}))
                 setActive(false)
                 setValue("name", "")
@@ -169,7 +176,6 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
 
     }
     const onDelete = () => {
-
         request({
             url: `packet/crud/delete/${activeEditItem.id}`,
             method: "DELETE",

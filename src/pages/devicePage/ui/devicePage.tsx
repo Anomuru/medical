@@ -15,9 +15,10 @@ import {
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {headerImg, useHttp} from "../../../shared/api/base";
 import {Select} from "../../../shared/ui/select";
-import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {fetchBranchData, getBranchesData} from "../../../entities/oftenUsed";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {fetchBranchData, getBranchesData} from "entities/oftenUsed";
 import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getUserBranch} from "entities/user";
 
 const reducers: ReducersList = {
     deviceListSlice: deviceListReducer,
@@ -27,24 +28,31 @@ export const DevicePage = () => {
     const [addItem, setAddItem] = useState<boolean>(false);
     const [name, setName] = useState<string>();
     const [ipAddress, setIpAddress] = useState<string>();
-    const [selectedBranch, setSelectedBranch] = useState<string>()
+    const [selectedBranch, setSelectedBranch] = useState<number>()
     const {request} = useHttp()
     const dispatch = useAppDispatch()
     const selectedLocationId = useSelector(getSelectedLocationData)
     // const branchData = branch?.results;
     const branchData = useSelector(getBranchesData)
 
+    // useEffect(() => {
+    //     // dispatch(getBranchThunk())
+    //     if (selectedLocationId)
+    //         dispatch(fetchBranchData({id: selectedLocationId}))
+    // }, [selectedLocationId])
+
+    const userBranch = useSelector(getUserBranch)
+
     useEffect(() => {
-        // dispatch(getBranchThunk())
-        if (selectedLocationId)
-            dispatch(fetchBranchData({id: selectedLocationId}))
-    }, [selectedLocationId])
+        if (userBranch) {
+            setSelectedBranch(userBranch)
+        }
+    },[userBranch])
 
     const onPortal = () => {
         setAddItem(!addItem);
     };
 
-    console.log(selectedBranch, "data branch")
 
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -54,7 +62,7 @@ export const DevicePage = () => {
         const formData = new FormData(event.currentTarget);
         formData.append('name', name);
         formData.append('ip_address', ipAddress);
-        formData.append('branch', selectedBranch)
+        formData.append('branch', String(selectedBranch))
         formData.append('img', event.currentTarget.img.files[0]);
         request({
             url: `device/crud/create/`,
@@ -95,11 +103,11 @@ export const DevicePage = () => {
                         <Input extraClass={cls.addItemBox__input} name="ip_address" placeholder="Enter IP Address"
                                onChange={getIpAddress} required/>
                         <Input extraClass={cls.addItemBox__input} name="img" type="file"/>
-                        <Select
-                            extraClass={cls.addItemBox__select}
-                            setSelectOption={setSelectedBranch}
-                            optionsData={branchData}
-                        />
+                        {/*<Select*/}
+                        {/*    extraClass={cls.addItemBox__select}*/}
+                        {/*    setSelectOption={setSelectedBranch}*/}
+                        {/*    optionsData={branchData}*/}
+                        {/*/>*/}
 
                         <Button>Add Device</Button>
                     </Form>

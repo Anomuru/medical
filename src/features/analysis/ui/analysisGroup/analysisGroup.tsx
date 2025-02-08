@@ -255,6 +255,7 @@ import {headers, useHttp} from "../../../../shared/api/base";
 import {useAppDispatch} from "../../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {fetchAnalysisGroupList} from "../../../../entities/analysis";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {getUserBranch} from "entities/user";
 
 
 interface IAnalysisContainerModalProps {
@@ -313,10 +314,11 @@ const AddGroupModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive})
 
 
     const {register, setValue, handleSubmit} = useForm()
-
     const dispatch = useDispatch()
-
     const {request} = useHttp()
+    const userBranch = useSelector(getUserBranch)
+
+
 
     const onClick = (data: IAnalysisContainerModalProps) => {
 
@@ -324,7 +326,7 @@ const AddGroupModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive})
         request({
             url: "analysis/analysis_type/crud/create/",
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify({...data, branch: userBranch}),
             headers: headers()
         }).then(res => {
             setActive(false)

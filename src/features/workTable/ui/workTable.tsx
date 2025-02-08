@@ -60,7 +60,7 @@ interface IEvents {
 export const WorkTable = () => {
 
 
-    const calendarControls = createCalendarControlsPlugin()
+    const calendarControls = useState(() => createCalendarControlsPlugin())[0]
     const eventsServicePlugin = useState(() => createEventsServicePlugin())[0];
 
 
@@ -71,6 +71,9 @@ export const WorkTable = () => {
     const [selectedDoctor, setSelectedDoctor] = useState<number | null>()
     const [type, setType] = useState<string>(types[2].value)
     const [date, setDate] = useState<string>(today.toISOString().split('T')[0])
+
+
+
     const [events, setEvents] = useState<IEvents[]>([])
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
@@ -88,6 +91,18 @@ export const WorkTable = () => {
     const {request} = useHttp()
 
     useEffect(() => {
+        localStorage.removeItem("date_calendar")
+        localStorage.removeItem("time")
+        localStorage.removeItem("doctorIdTable")
+        localStorage.removeItem("date_calendar")
+        localStorage.removeItem("timeTableIds")
+    },[])
+
+    useEffect(() => {
+
+        if (!selectedDoctor) return;
+
+
         if (date && selectedDoctor && type) {
             request({
                 url: `job_info/job_get/doctor_clients/?type=${type}&doctor_id=${selectedDoctor}&date=${date}`,
@@ -102,12 +117,11 @@ export const WorkTable = () => {
 
 
     useEffect(() => {
-        if (eventsServicePlugin) {
-            eventsServicePlugin.set(events || [])
-
+        if (eventsServicePlugin && events.length > 0) {
+            eventsServicePlugin.set([...events]);  // Ensure it's initialized and events exist
         }
+    }, [events]);
 
-    }, [events, eventsServicePlugin])
 
     useEffect(() => {
         if (selectedDoctor)
@@ -116,11 +130,6 @@ export const WorkTable = () => {
 
     const calendar = useCalendarApp({
         defaultView: type,
-
-        /**
-         * The default date to display when the calendar is first rendered. Only accepts YYYY-MM-DD format.
-         * Defaults to the current date
-         * */
         selectedDate: date,
 
         views: [
@@ -130,15 +139,7 @@ export const WorkTable = () => {
         ],
         events: [
             ...events,
-            {
-                id: 3,
-                title: 'Breakfast with Sam',
-                description: 'Discuss the new project',
-                location: 'Starbucks',
-                start: '2025-02-05 11:00',
-                end: '2023-02-05 12:00',
-            }
-            ,],
+        ],
         plugins: [
             // createEventModalPlugin(),
             // createDragAndDropPlugin()
@@ -153,7 +154,6 @@ export const WorkTable = () => {
         callbacks: {
 
             onDoubleClickDateTime(data: any) {
-                console.log(data , "dfs")
                 navigate("../hospitalReg")
                 const math = Number(data.substring(data.length - 5, data.length - 3)) + 1
                 const res = {
@@ -161,30 +161,36 @@ export const WorkTable = () => {
                     end: (math < 10 ? `0${math}` : math) + ":00"
                 }
 
+
                 localStorage.setItem("time", JSON.stringify(res))
                 localStorage.setItem("date_calendar", JSON.stringify(data.substring(0, 10)))
                 localStorage.removeItem("changedItemTable")
             },
             onDoubleClickEvent(calendarEvent: any) {
 
-                // const res = {
-                //     start: calendarEvent.start.substring(calendarEvent.length - 5, calendarEvent.start.length - 3) + ":00",
-                //     end: (calendarEvent.end < 10 ? `0${calendarEvent.end}` : calendarEvent.end) + ":00"
-                // }
-                // localStorage.setItem("date_calendar", JSON.stringify(calendarEvent.date.substring(0, 10)))
-                // localStorage.setItem("time", JSON.stringify(res))
 
+
+                const math = Number(calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3)) + 1
+                const res = {
+                    start: calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3) + ":00",
+                    end: (math < 10 ? `0${math}` : math) + ":00"
+                }
+                localStorage.setItem("date_calendar", JSON.stringify(calendarEvent.date))
+                localStorage.setItem("time", JSON.stringify(res))
                 localStorage.setItem("timeTableIds",JSON.stringify({patient: calendarEvent.patient, requestId: calendarEvent.id}))
                 navigate("../hospitalReg")
             },
             onRangeUpdate(range: any) {
-                if (calendarControls) {
-                    setType(types.filter(item => item.value === calendarControls.getView())[0].name)
+                if (calendarControls && calendarControls.getView) {
+                    const view = calendarControls.getView();
+                    if (view) {
+                        setType(types.find(item => item.value === view)?.name || "default");
+                    }
                 }
             },
 
             onSelectedDateUpdate(date: string) {
-                setDate(date)
+                setDate((prev) => date)
             },
         }
     })
@@ -252,7 +258,6 @@ export const WorkTable = () => {
                 </div>
                 <div className={cls.mainBox__rightSight}>
                     <ScheduleXCalendar
-
                         customComponents={{
                             timeGridEvent: CustomEvent,
                             // dateGridEvent: CustomDateGridEvent,

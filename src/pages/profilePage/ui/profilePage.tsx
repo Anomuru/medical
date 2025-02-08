@@ -16,11 +16,13 @@ import {changeStaffDetails} from "../../../entities/staff/model/thunk/staffProfi
 import {
     DynamicModuleLoader,
     ReducersList
-} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {data, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
 import classNames from "classnames";
 import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileAnalysisSlice";
 import {packetsReducer} from "../../../entities/pakets";
+import {ROLES} from "shared/const/roles";
+import {getUserRole} from "entities/user";
 
 
 const reducers: ReducersList = {
@@ -33,19 +35,23 @@ const reducers: ReducersList = {
 const dataButton = [
     {
         name: "Profile",
-        path: "profile"
+        path: "profile",
+        role: [ROLES.patient,ROLES.admin,ROLES.mainAdmin,ROLES.operator,ROLES.reception]
     },
     {
         name: "TimeTable",
-        path: "timeTable"
+        path: "timeTable",
+        role: [ROLES.admin,ROLES.mainAdmin,ROLES.operator,ROLES.reception]
     },
-    {
-        name: "Schedule",
-        path: "schedule"
-    },
+    // {
+    //     name: "Schedule",
+    //     path: "schedule",
+    //     role: [ROLES.patient]
+    // },
     {
         name: "Analysis",
-        path: "analysis"
+        path: "analysis",
+        role: [ROLES.patient]
     }
 ]
 
@@ -57,7 +63,7 @@ export const ProfilePage = () => {
     const {id: staffId} = useParams()
     const details = useSelector(getStaffProfileData)
 
-
+    const meRole  = useSelector(getUserRole)
 
     const staffDetails = useMemo(() => [
         {
@@ -107,7 +113,6 @@ export const ProfilePage = () => {
     }
 
     const onSubmitPassword = (data: any) => {
-
         if (data.password.length < 8 || data.confirm_password.length < 8) setPasswordError("less_than_8")
         else {
             if (data.password === data.confirm_password) {
@@ -154,10 +159,8 @@ export const ProfilePage = () => {
 
     const render = renderChangeParams()
 
-
-
-
     const [active, setActive] = useState<string>(dataButton[0].name)
+
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.profileBox}>
@@ -178,20 +181,23 @@ export const ProfilePage = () => {
 
                         {
                             dataButton.map(item => {
-                                return (
-                                    <NavLink
-                                        className={classNames(cls.header__item, {
-                                            [cls.active]: item.path === active
-                                        })}
-                                        to={`./../${item.path}`}
-                                        onClick={() => {
-                                            setActive(item.name)
-                                            // localStorage.setItem("route", item.path)
-                                        }}
-                                    >
-                                        <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={`${item.name}`}/>
-                                    </NavLink>
-                                )
+                                console.log(item.role, details?.job)
+                                if (item.role && details?.job && item.role.includes(details?.job)) {
+                                    return (
+                                        <NavLink
+                                            className={classNames(cls.header__item, {
+                                                [cls.active]: item.path === active
+                                            })}
+                                            to={`./../${item.path}`}
+                                            onClick={() => {
+                                                setActive(item.name)
+                                                // localStorage.setItem("route", item.path)
+                                            }}
+                                        >
+                                            <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={`${item.name}`}/>
+                                        </NavLink>
+                                    )
+                                }
                             })
                         }
                     </div>
@@ -262,7 +268,6 @@ export const ProfilePage = () => {
                                                 : null
                                         }
                                     </>
-
                                     {/*<Input*/}
                                     {/*    extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Email"}*/}
                                     {/*    placeholder={"userMail"}*/}
@@ -282,7 +287,10 @@ export const ProfilePage = () => {
                             </Box>
                         </div>
                     </>}/>
+
                     <Route path={"analysis"} element={<AnalysisData/>}/>
+
+
 
                 </Routes>
 

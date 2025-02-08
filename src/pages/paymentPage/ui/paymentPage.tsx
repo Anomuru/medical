@@ -30,6 +30,7 @@ import {useForm} from "react-hook-form";
 import classNames from "classnames";
 import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
 import {paymentTypeReducer} from "features/paymentFeature/model/paymentTypeSlice";
+import {getUserBranch} from "entities/user";
 
 interface IPaymentData {
     date: string,
@@ -56,23 +57,23 @@ export const PaymentPage = () => {
     } = userAnalysisActions
 
     const selectedLocation = useSelector(getSelectedLocationData)
-    const selectedBranch = useSelector(getSelectedBranchData)
+    const selectedBranch = useSelector(getUserBranch)
 
     const {register, setValue, handleSubmit} = useForm()
     const data = useSelector(getPaymentData)
     const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
     const analiz = useSelector(getUserAnalysis)
-    //@ts-ignore
     const prices = analiz?.analysis_list?.map(item => item.price)
     const totalOther = prices?.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
     const payType = useSelector(getPaymentTypeData)
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        if (selectedLocation)
-            dispatch(fetchBranchData({id: selectedLocation}))
-    }, [selectedLocation])
+
+    // useEffect(() => {
+    //     if (selectedLocation)
+    //         dispatch(fetchBranchData({id: selectedLocation}))
+    // }, [selectedLocation])
 
     useEffect(() => {
         dispatch(paymentTypeThunk())
@@ -111,7 +112,6 @@ export const PaymentPage = () => {
     const onDeleteAllAnalysis = () => {
         dispatch(deleteAllAnalysis())
     }
-    console.log(payType, "dfrfr")
 
     const onClick = (completeData: IPaymentData) => {
         const data = {
@@ -123,12 +123,6 @@ export const PaymentPage = () => {
         //@ts-ignore
         dispatch(givePaymentThunk(data))
     }
-
-    //@ts-ignore
-    // const onClickGetId = (e) => {
-    //     setUserId(e)
-    // }
-
 
     const [selectedRadio, setSelectedRadio] = useState<string>("")
 

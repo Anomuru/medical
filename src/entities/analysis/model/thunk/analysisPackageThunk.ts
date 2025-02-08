@@ -6,15 +6,19 @@ import {analysisPackageAction} from "../slice/analysisPackageSlice";
 
 
 
+interface IAnalysisPackageThunkProps {
+    branch: number
+}
+
 export const fetchAnalysisPackageList = createAsyncThunk<
     void,
-    void,
+    IAnalysisPackageThunkProps,
     ThunkConfig<string>
 >('analysisPackageSlice/fetchAnalysisPackageList', async (authData, thunkApi) => {
     const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
-            url: "packet/get/list/", method: "GET", body: null, headers: headers()
+            url: `packet/get/list/?branch=${authData?.branch}`, method: "GET", body: null, headers: headers()
         })
 
 

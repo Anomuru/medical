@@ -26,7 +26,6 @@ import {fetchUserPaymentList} from "features/paymentFeature/model/paymentThunk";
 import {getSelectedBranchData} from "entities/oftenUsed";
 import {Table} from "shared/ui/table";
 import classNames from "classnames";
-import {ifError} from "assert";
 import {getUserBranch} from "entities/user";
 import {useNavigate} from "react-router";
 import {alertAction} from "features/alert/model/slice/alertSlice";
@@ -107,6 +106,8 @@ export const HospitalRegPage = () => {
     const {request} = useHttp()
 
 
+
+
     const list = [
         // {
         //     isInput: true,
@@ -177,6 +178,7 @@ export const HospitalRegPage = () => {
             label: "Password",
             isInput: true,
             type: "password",
+            default: "12345678"
         },
 
     ]
@@ -216,7 +218,6 @@ export const HospitalRegPage = () => {
 
         const ids = JSON.parse(localStorage.getItem("timeTableIds") as any)
         const doctor_id = JSON.parse(localStorage.getItem("doctorIdTable") as string)
-        console.log(ids)
         if (ids?.patient) {
             request({
                 url: `user/users/get/time_table_profile/${ids.patient}?request_id=${ids.requestId}`,
@@ -224,7 +225,6 @@ export const HospitalRegPage = () => {
                 // headers: headers()
             })
                 .then(res => {
-
                     dispatch(addMultipleAnalysis({
                         analysis: res.analysis_list.individuals,
                         price: res.analysis_list.individual_total_price
@@ -336,6 +336,7 @@ export const HospitalRegPage = () => {
                     )
                 } else return (
                     <Input
+                        value={item?.default}
                         type={item.type}
                         placeholder={item.label}
                         name={item.name}
@@ -426,6 +427,8 @@ export const HospitalRegPage = () => {
                 res = {...res, user_request_id: userId}
             }
 
+
+            console.log(res)
             const changingUrl = `user/users/crud/update/${changingData}`
             const mainUrl = `user/users/crud/create/`
 
@@ -451,17 +454,15 @@ export const HospitalRegPage = () => {
                     localStorage.removeItem("time")
                     localStorage.removeItem("doctorIdTable")
                     localStorage.removeItem("date_calendar")
-                    navigate(-1)
+                    navigate("../table")
                     dispatch(alertAction.onAddAlertOptions({
                         type: "success",
                         status: true,
                         msg: "Muvaffaqiyatli qabul qilindi"
-
                     }))
                     // reset()
                 })
                 .catch(err => {
-                    console.log(err)
                     setErrorUserName(true)
                     if (errorUserName){
                         dispatch(alertAction.onAddAlertOptions({
@@ -513,6 +514,13 @@ export const HospitalRegPage = () => {
                 headers: headers()
             })
                 .then(res => {
+                    dispatch(alertAction.onAddAlertOptions({
+                        type: "success",
+                        status: true,
+                        msg: "Ma'lumotlar muvaffaqiyatli o'zgartirldi"
+                    }))
+                    navigate("../table")
+
                     // setErrorUserName(false)
                     // reset()
                 })
@@ -521,8 +529,6 @@ export const HospitalRegPage = () => {
                     // setErrorUserName(true)
                 })
         }
-
-
     }
 
     const onAddedPaket = (id: number) => {
@@ -553,6 +559,14 @@ export const HospitalRegPage = () => {
         })
             .then(res => {
                 // setErrorUserName(false)
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Ma'lumot muvaffaqiyatli o'chirildi"
+
+                }))
+                navigate("../table")
+
             })
             .catch(err => {
                 console.log(err)
@@ -650,8 +664,6 @@ export const HospitalRegPage = () => {
                                 <h1>Analiz</h1>
                                 <div className={cls.container}>
                                     {renderAnalysis()}
-
-
                                 </div>
                             </div>
                         </div>
@@ -685,15 +697,12 @@ export const HospitalRegPage = () => {
                                     Add
                                 </Button>
                         }
-
                         {
                             isChanging &&
                             <Button onClick={onDelete} type={"danger"} extraClass={cls.hospital__btn}>Delete</Button>
 
                         }
                     </div>
-
-
                 </div>
             </div>
         </DynamicModuleLoader>
