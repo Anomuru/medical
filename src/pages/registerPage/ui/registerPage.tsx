@@ -25,6 +25,8 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+import {alertAction} from "features/alert/model/slice/alertSlice";
+import {useNavigate} from "react-router";
 
 interface Branch {
     id: number,
@@ -83,6 +85,7 @@ export const RegisterPage = () => {
     const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
     const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
     const getSelectedBranch = useCallback((data: string) => setSelectedBranch(data), [])
+    const navigate = useNavigate()
 
     const registerStaff = useMemo(() => [
         {
@@ -234,9 +237,15 @@ export const RegisterPage = () => {
             })
                 .then(res => {
                     console.log(res)
+                    navigate(-1)
                     setSelectedRadio(NaN)
                     setSelectedJob("")
                     reset()
+                    dispatch(alertAction.onAddAlertOptions({
+                        type: "success",
+                        status: true,
+                        msg: "Muvaffaqiyatli roʻyxatdan oʻtkazildi "
+                    }))
                 })
                 .catch(err => console.log(err))
         }

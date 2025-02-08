@@ -153,6 +153,7 @@ export const WorkTable = () => {
         callbacks: {
 
             onDoubleClickDateTime(data: any) {
+                console.log(data , "dfs")
                 navigate("../hospitalReg")
                 const math = Number(data.substring(data.length - 5, data.length - 3)) + 1
                 const res = {
@@ -165,6 +166,14 @@ export const WorkTable = () => {
                 localStorage.removeItem("changedItemTable")
             },
             onDoubleClickEvent(calendarEvent: any) {
+
+                // const res = {
+                //     start: calendarEvent.start.substring(calendarEvent.length - 5, calendarEvent.start.length - 3) + ":00",
+                //     end: (calendarEvent.end < 10 ? `0${calendarEvent.end}` : calendarEvent.end) + ":00"
+                // }
+                // localStorage.setItem("date_calendar", JSON.stringify(calendarEvent.date.substring(0, 10)))
+                // localStorage.setItem("time", JSON.stringify(res))
+
                 localStorage.setItem("timeTableIds",JSON.stringify({patient: calendarEvent.patient, requestId: calendarEvent.id}))
                 navigate("../hospitalReg")
             },

@@ -16,6 +16,8 @@ import {IAnalysis} from "entities/analysis";
 import {Button} from "shared/ui/button";
 import {IPackets, PacketsList} from "entities/pakets";
 import {Packets} from "../../../pakets";
+import {Alert} from "features/alert/ui/alert";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 
 export const AnalysisData = () => {
@@ -86,6 +88,7 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
     const [selectedPacketItemsId, setSelectedPacketItemsId] = useState<[]>([]);
     const {id} = useParams()
 
+    const dispatch = useAppDispatch()
     const {request} = useHttp()
 
     useEffect(() => {
@@ -128,6 +131,11 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
             headers: headers(),
         })
             .then(res => {
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli yaratildi"
+                }))
                 console.log("fdsf")
                 setActiveSwitch(true)
             })
@@ -289,6 +297,11 @@ const ProfileUserAnalysis = () => {
         })
             .then(res => {
                 dispatch(profileAnalysisActions.deletePacket(packet_id))
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli o'chirildi"
+                }))
 
             })
         // request({url: `user/user_packet_crud/delete/${id}`, method: "DELETE", headers: headers()})
@@ -306,6 +319,11 @@ const ProfileUserAnalysis = () => {
         })
             .then(res => {
                 dispatch(profileAnalysisActions.deleteAnalysis(analysisID))
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli o'chirildi"
+                }))
             })
     }
 

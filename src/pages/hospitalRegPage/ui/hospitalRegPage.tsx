@@ -28,6 +28,8 @@ import {Table} from "shared/ui/table";
 import classNames from "classnames";
 import {ifError} from "assert";
 import {getUserBranch} from "entities/user";
+import {useNavigate} from "react-router";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 
 interface IHospitalRegPageData {
@@ -91,12 +93,16 @@ export const HospitalRegPage = () => {
     const [analysisSearch, setAnalysisSearch] = useState("")
 
 
+    const navigate = useNavigate()
+
+
     const {
         register,
         handleSubmit,
         setValue,
         watch,
-        setError
+        setError,
+        reset
     } = useForm<IHospitalRegPageData>()
     const {request} = useHttp()
 
@@ -178,7 +184,7 @@ export const HospitalRegPage = () => {
     const username = watch("username");
 
     useEffect(() => {
-        if (username && changingData) {
+        if (username ) {
             request({
                 url: `user/users/get/check_username/?username=${username}&user_id=${changingData}`,
                 method: "GET",
@@ -189,7 +195,7 @@ export const HospitalRegPage = () => {
                     setError("username", {type: "custom", message: "Username allaqachon belgilangan"})
                 })
         }
-    }, [username, changingData]);
+    }, [username]);
 
 
     useEffect(() => {
@@ -431,11 +437,40 @@ export const HospitalRegPage = () => {
             })
                 .then(res => {
                     setErrorUserName(false)
+                    if (isChanging){
+                        navigate(-1)
+                        dispatch(alertAction.onAddAlertOptions({
+                            type: "success",
+                            status: true,
+                            msg: "Запись успешно обновлена"
+
+                        }))
+                    }
+                    reset()
+                    localStorage.removeItem("timeTableIds")
+                    localStorage.removeItem("time")
+                    localStorage.removeItem("doctorIdTable")
+                    localStorage.removeItem("date_calendar")
+                    navigate(-1)
+                    dispatch(alertAction.onAddAlertOptions({
+                        type: "success",
+                        status: true,
+                        msg: "Muvaffaqiyatli qabul qilindi"
+
+                    }))
                     // reset()
                 })
                 .catch(err => {
                     console.log(err)
                     setErrorUserName(true)
+                    if (errorUserName){
+                        dispatch(alertAction.onAddAlertOptions({
+                            type: "error",
+                            status: true,
+                            msg: "Foydalanuvchi mavjud"
+
+                        }))
+                    }
                 })
 
 
@@ -568,7 +603,7 @@ export const HospitalRegPage = () => {
                                         </div>
                                     </div>
                                     <div className={cls.content}>
-                                        <h2 style={{color: "red"}}> {!errorUserName ? "Username already exist" : null}</h2>
+                                        <h2 style={{color: !errorUserName ? "red" : "green"}}> {!errorUserName ? "Foydalanuvchi nomi mavjud" : "Foydalanuchi nomi bo'sh"}</h2>
                                         <Input name={"username"} register={register} canChange={false}/>
                                         {renderInput()}
                                         <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
