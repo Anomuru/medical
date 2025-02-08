@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
 
 import {Button} from "shared/ui/button";
@@ -8,11 +8,9 @@ import {Radio} from "shared/ui/radio";
 
 
 import cls from "./hospitalRegPage.module.sass";
-import {API_URL, headers, useHttp} from "shared/api/base";
+import {headers, useHttp} from "shared/api/base";
 import {Packets} from "features/pakets";
-import {IAnalysisPackage} from "entities/analysis/model/types/analysisPackageScheme";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchJobsData, getJobsData} from "entities/oftenUsed";
+import {useSelector} from "react-redux";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {Select} from "shared/ui/select";
 import {analysisPackageReducer, analysisReducer, IAnalysis} from "entities/analysis";
@@ -20,55 +18,95 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {packetsActions, packetsReducer} from "../../../entities/pakets/model/paketsSlice";
+import {packetsActions, packetsReducer} from "entities/pakets";
 import {getPacketsData, IPackets} from "entities/pakets";
+import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
+import {getPaymentData} from "features/paymentFeature/model/paymentSelector";
+import {fetchUserPaymentList} from "features/paymentFeature/model/paymentThunk";
+import {getSelectedBranchData} from "entities/oftenUsed";
+import {Table} from "shared/ui/table";
+import classNames from "classnames";
+import {ifError} from "assert";
+import {getUserBranch} from "entities/user";
 
 
 interface IHospitalRegPageData {
-
-}
-
-interface IProgress {
-    name: string,
-    status: boolean,
-
+    username: string;
+    name: string;
+    surname: string;
+    address: string;
+    passport_series: string;
+    passport_number: string;
+    birth_date: string;
+    phone_number: string;
+    email: string;
+    password: string;
 }
 
 const reducers: ReducersList = {
     packetsSlice: packetsReducer,
     analysisSlice: analysisReducer,
-    analysisPackageSlice: analysisPackageReducer
+    analysisPackageSlice: analysisPackageReducer,
+    paymentSlice: paymentReducer
 }
+
+const types = [
+    {
+        id: "create",
+        name: "Yangi"
+    },
+    {
+        id: "change",
+        name: "Eski"
+    }
+]
 
 export const HospitalRegPage = () => {
 
+    const data = useSelector(getPaymentData)
+    const selectedBranch = useSelector(getUserBranch)
     const packetsData = useSelector(getPacketsData)
     const {
         addAnalysis,
-        addPacket
+        addPacket,
+        addMultipleAnalysis,
+        addPackets,
+        clearAnalysis
     } = packetsActions
+    const dispatch = useAppDispatch()
 
     const [errorUserName, setErrorUserName] = useState<boolean>(false)
     const [pakets, setPakets] = useState<IPackets[]>([])
 
-    const jobs = useSelector(getJobsData)
     const [doctors, setDoctors] = useState([])
     const [analysis, setAnalysis] = useState<IAnalysis[]>([])
 
-    const [job, setJob] = useState()
-    const [doctor, setDoctor] = useState()
+    const [doctor, setDoctor] = useState<string>()
+    const [selectedRadio, setSelectedRadio] = useState<string>("")
+    const [isChanging, setIsChanging] = useState(false)
+    const [changingData, setChangingData] = useState<string>()
+    const [isActiveType, setIsActiveType] = useState(types[0]?.id)
+    const [userId, setUserId] = useState<number>()
+    const [userSearch, setUserSearch] = useState("")
+    const [analysisSearch, setAnalysisSearch] = useState("")
 
 
-    const [packs, setPacks] = useState([])
-    const [customPack, setCustomPack] = useState([])
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        setError
+    } = useForm<IHospitalRegPageData>()
+    const {request} = useHttp()
 
 
-    const list = useMemo(() => [
-        {
-            isInput: true,
-            name: "username",
-            label: "Username",
-        },
+    const list = [
+        // {
+        //     isInput: true,
+        //     name: "username",
+        //     label: "Username",
+        // },
         {
             name: "name_surname",
             isInput: true,
@@ -97,7 +135,7 @@ export const HospitalRegPage = () => {
         },
         {
             isInput: true,
-            name: "pasport_number",
+            name: "passport_number",
             label: "Password Seria (Number)",
         },
         {
@@ -132,31 +170,80 @@ export const HospitalRegPage = () => {
             name: "password",
             label: "Password",
             isInput: true,
-            type: "password"
+            type: "password",
         },
 
-    ], [jobs, doctors])
+    ]
 
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        reset
-    } = useForm<IHospitalRegPageData>()
-    const {request} = useHttp()
+    const username = watch("username");
 
-    const dispatch = useAppDispatch()
+    useEffect(() => {
+        if (username && changingData) {
+            request({
+                url: `user/users/get/check_username/?username=${username}&user_id=${changingData}`,
+                method: "GET",
+                // headers: headers()
+            })
+                .then(res => {
+                    setErrorUserName(res.available)
+                    setError("username", {type: "custom", message: "Username allaqachon belgilangan"})
+                })
+        }
+    }, [username, changingData]);
 
 
     useEffect(() => {
-        setProgress(list.map(item => {
-            let arr
-            if (item.isDouble) {
-                item.items.map(inner => ({name: inner.name, status: false}))
-                return {name: item.name, status: false}
-            } else return {name: item.name, status: false}
-        }))
-    }, [list])
+        if (selectedBranch)
+            dispatch(fetchUserPaymentList({selectedBranch, search: ""}))
+    }, [selectedBranch])
+
+    useEffect(() => {
+        if (isActiveType === "create") {
+            setUserId(undefined)
+        }
+
+    }, [isActiveType])
+
+
+    useEffect(() => {
+
+
+        const ids = JSON.parse(localStorage.getItem("timeTableIds") as any)
+        const doctor_id = JSON.parse(localStorage.getItem("doctorIdTable") as string)
+        console.log(ids)
+        if (ids?.patient) {
+            request({
+                url: `user/users/get/time_table_profile/${ids.patient}?request_id=${ids.requestId}`,
+                method: "GET",
+                // headers: headers()
+            })
+                .then(res => {
+
+                    dispatch(addMultipleAnalysis({
+                        analysis: res.analysis_list.individuals,
+                        price: res.analysis_list.individual_total_price
+                    }))
+                    dispatch(addPackets(res.analysis_list.packets))
+                    setValue("username", res.username);
+                    setValue("name", res.name);
+                    setValue("surname", res.surname);
+                    setValue("address", res.address);
+                    setValue("passport_series", res.passport_series);
+                    setValue("passport_number", res.passport_number);
+                    setValue("birth_date", res.birth_date);
+                    setValue("phone_number", res.phone_number);
+                    setValue("email", res.email);
+                    setValue("password", "12345678");
+                    setSelectedRadio(res.sex)
+                    setIsChanging(true)
+                    setChangingData(ids.patient)
+                    setUserId(ids.requestId)
+
+                })
+        }
+        setDoctor(doctor_id)
+    }, [])
+
 
     useEffect(() => {
         request({
@@ -174,21 +261,15 @@ export const HospitalRegPage = () => {
 
 
     useEffect(() => {
-        dispatch(fetchJobsData())
-    }, [])
-
-
-    useEffect(() => {
-        if (job)
-            request({
-                url: `job_info/job_get/doctor_list/?job_id=${job}`,
-                method: "GET",
-                // headers: headers()
+        request({
+            url: `job_info/job_get/doctor_list/`,
+            method: "GET",
+            // headers: headers()
+        })
+            .then(res => {
+                setDoctors(res.results)
             })
-                .then(res => {
-                    setDoctors(res.results)
-                })
-    }, [job])
+    }, [])
 
     useEffect(() => {
         request({
@@ -202,22 +283,10 @@ export const HospitalRegPage = () => {
     }, [])
 
 
-    const [selectedRadio, setSelectedRadio] = useState<string>("")
-    const [progress, setProgress] = useState<IProgress[]>([])
-
-
-    const onProgress = (data: { name: string, value: string }) => {
-        setProgress(
-            prev =>
-                prev.map(item => item.name === data.name ? {name: item.name, status: true} : item)
-        )
-    }
-
     const renderInput = useCallback(() => {
         return list.map(item => {
 
 
-            console.log(item)
             if (item.isDouble) {
                 return (
                     <div className={cls.double}>
@@ -229,7 +298,6 @@ export const HospitalRegPage = () => {
                                         type={inner.type}
                                         placeholder={inner.label}
                                         name={inner.name}
-                                        onChange={(value) => onProgress({name: inner.name, value})}
                                         register={register}
                                         required
                                     />
@@ -244,8 +312,6 @@ export const HospitalRegPage = () => {
                         <div className={cls.radios}>
                             {
                                 item.value.map(inner => {
-
-
                                     return (
                                         <Radio
                                             name={"radio"}
@@ -268,16 +334,60 @@ export const HospitalRegPage = () => {
                         placeholder={item.label}
                         name={item.name}
                         register={register}
-                        onChange={(value) => onProgress({name: item.name, value})}
                         required={item.isRequired !== undefined ? item.isRequired : true}
                     />
                 )
             }
         })
-    }, [list, selectedRadio])
+    }, [list, register, selectedRadio])
+
 
     function combineArraysInOneArray<T>(arrays: T[][]): T[] {
         return arrays.reduce((acc, arr) => acc.concat(arr), []);
+    }
+
+    const renderData = () => {
+        const filteredData = data?.filter(item =>
+            item?.surname?.toLowerCase().includes(userSearch?.toLowerCase()) ||
+            item?.name?.toLowerCase().includes(userSearch?.toLowerCase())
+        )
+        return filteredData?.map(item => {
+            return (
+                <div
+                    onClick={() => setUserId(item.id)}
+                    key={item.user_id}
+                    className={classNames(cls.item, {
+                        [cls.active]: userId === item.id
+                    })}
+                >
+                    <span>{item.surname}</span>
+                    <span>{item.name}</span>
+                    <span>{item.user_id}</span>
+                    <span>{item.phone_number}</span>
+                </div>
+            )
+        });
+    }
+
+    const renderAnalysis = () => {
+        const filteredData = analysis?.filter(item =>
+            item?.name?.toLowerCase().includes(analysisSearch?.toLowerCase())
+        )
+        return filteredData.map(item => {
+            return (
+                <div onClick={() => onAddNewAnalysis(item)} className={cls.item}>
+                    <h2>
+                        {item.name}
+                    </h2>
+                    <div
+
+                        className={cls.icon}
+                    >
+                        <i className="fas fa-plus"></i>
+                    </div>
+                </div>
+            )
+        })
     }
 
 
@@ -294,40 +404,86 @@ export const HospitalRegPage = () => {
             const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : {start: '', end: ''};
 
 
-            const res = {
+            let res : object = {
                 ...data,
                 sex: selectedRadio,
-                branch: 1,
+                branch: selectedBranch,
                 from_date: time.start,
                 to_date: time.end,
                 doctor_id: doctor,
                 date,
-                analysis
+                analysis,
             }
 
-            console.log(res)
+
+            if (isChanging) {
+                res = {...res, user_request_id: userId}
+            }
+
+            const changingUrl = `user/users/crud/update/${changingData}`
+            const mainUrl = `user/users/crud/create/`
 
             request({
-                url: "user/users/crud/create/",
+                url: isChanging ? changingUrl : mainUrl,
+                method: isChanging ? "PUT" : "POST",
+                body: JSON.stringify(res),
+                headers: headers()
+            })
+                .then(res => {
+                    setErrorUserName(false)
+                    // reset()
+                })
+                .catch(err => {
+                    console.log(err)
+                    setErrorUserName(true)
+                })
+
+
+            localStorage.removeItem("timeTableIds")
+
+        }
+
+
+    }
+    const onSubmitOldUser = () => {
+        if (packetsData?.length) {
+            const analysisData: number[][] =
+                packetsData.map(item => item.analysis.map(id => id.id))
+
+
+            const analysis = combineArraysInOneArray(analysisData);
+            const timeString = localStorage.getItem("time");
+            const date = JSON.parse(localStorage.getItem("date_calendar") as string);
+
+            const time: { start: string; end: string } = timeString ? JSON.parse(timeString) : {start: '', end: ''};
+
+
+            const res = {
+                branch: selectedBranch,
+                from_date: time.start,
+                to_date: time.end,
+                doctor_id: doctor,
+                date,
+                analysis,
+                id: userId
+            }
+
+
+            const mainUrl =  `user/users/crud/add_user_request/`
+
+            request({
+                url: mainUrl,
                 method: "POST",
                 body: JSON.stringify(res),
                 headers: headers()
             })
                 .then(res => {
-                    console.log(res)
-                    setErrorUserName(false)
-                    // list.map(item => {
-                    //     if (item.isDouble) {
-                    //
-                    //     } else {
-                    //         setValue(item.name, "")
-                    //     }
-                    // })
-                    reset()
+                    // setErrorUserName(false)
+                    // reset()
                 })
                 .catch(err => {
                     console.log(err)
-                    setErrorUserName(true)
+                    // setErrorUserName(true)
                 })
         }
 
@@ -354,6 +510,21 @@ export const HospitalRegPage = () => {
         dispatch(addAnalysis(data))
     }
 
+    const onDelete = () => {
+        request({
+            url: `user_request/crud/delete_request_analysis/?user_request_id=${userId}`,
+            method: "DELETE",
+            headers: headers()
+        })
+            .then(res => {
+                // setErrorUserName(false)
+            })
+            .catch(err => {
+                console.log(err)
+                // setErrorUserName(true)
+            })
+    }
+
 
     return (
         <DynamicModuleLoader reducers={reducers}>
@@ -362,31 +533,60 @@ export const HospitalRegPage = () => {
                     {/*<div className={cls.hospital__progress}>*/}
                     {/*    <div style={{width: `${calc}%`}} className={cls.info}/>*/}
                     {/*</div>*/}
-                    <Form id={"regForm"} onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
-                        <div className={cls.registerForm__form}>
-                            <div className={cls.info}>
-                                {/*<div className={cls.info__percent}>*/}
-                                {/*    <h2 className={cls.text}>Patient Information</h2>*/}
-                                {/*    <p className={cls.percent}>{calc}%</p>*/}
-                                {/*</div>*/}
-                                <h1 className={cls.info__title}>Hospital Registration Form</h1>
-                                <h2 className={cls.info__text}>Lorem Ipsum has been the industry's standard dummy.</h2>
-                            </div>
+                    <div className={cls.hospital__switch}>
+                        <div className={cls.hospital__switchHeader}>
+                            {
+                                !isChanging &&
+                                <Select
+                                    title={"Fo'ydalanuvchi turi"}
+                                    extraClass={cls.select}
+                                    optionsData={types}
+                                    setSelectOption={setIsActiveType}
+                                    selectOption={isActiveType}
+                                />
+                            }
+
+                            {
+                                isActiveType === "change" && <Input
+                                    onChange={setUserSearch}
+                                    name={"search"}
+                                    placeholder={"Search"}
+                                />
+                            }
                         </div>
-                        <div className={cls.content}>
-                            <h2> {errorUserName ? "Username already exist" : null}</h2>
-                            {renderInput()}
-                            <Select selectOption={job} setSelectOption={setJob} title={"Jobs"} optionsData={jobs}/>
-                            <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
-                                    optionsData={doctors}/>
-                        </div>
-                    </Form>
+                        {
+                            isActiveType === "create" ?
+                                <Form id={"regForm"} onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerForm}>
+                                    <div className={cls.registerForm__form}>
+                                        <div className={cls.info}>
+                                            {
+                                                isChanging ?
+                                                    <h1 className={cls.info__title}>Changing Information</h1>
+                                                    :
+                                                    <h1 className={cls.info__title}>Hospital Registration Form</h1>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className={cls.content}>
+                                        <h2 style={{color: "red"}}> {!errorUserName ? "Username already exist" : null}</h2>
+                                        <Input name={"username"} register={register} canChange={false}/>
+                                        {renderInput()}
+                                        <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
+                                                optionsData={doctors}/>
+                                    </div>
+                                </Form> :
+                                <div className={cls.container}>
+
+                                    {renderData()}
+                                </div>
+                        }
+                    </div>
 
                     <div className={cls.analizForm}>
 
                         <div className={cls.header}>
                             <h1>Analiz form</h1>
-                            <Input name={"search"} placeholder={"Search"}/>
+                            <Input onChange={setAnalysisSearch} name={"search"} placeholder={"Search"}/>
                         </div>
 
 
@@ -414,23 +614,7 @@ export const HospitalRegPage = () => {
                             <div className={cls.collection}>
                                 <h1>Analiz</h1>
                                 <div className={cls.container}>
-                                    {
-                                        analysis.map(item => {
-                                            return (
-                                                <div onClick={() => onAddNewAnalysis(item)} className={cls.item}>
-                                                    <h2>
-                                                        {item.name}
-                                                    </h2>
-                                                    <div
-
-                                                        className={cls.icon}
-                                                    >
-                                                        <i className="fas fa-plus"></i>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
+                                    {renderAnalysis()}
 
 
                                 </div>
@@ -441,19 +625,39 @@ export const HospitalRegPage = () => {
 
 
                     <div className={cls.list}>
-
+                        <h1>Ro'yxat</h1>
                         <div className={cls.list__container}>
                             {
-                                packetsData?.map(item => {
+                                packetsData?.map((item, index) => {
                                     return (
-                                        <Packets item={item}/>
+                                        <Packets index={index} item={item}/>
                                     )
                                 })
                             }
                             {/*<Pakets/>*/}
                         </div>
                     </div>
-                    <Button id={"regForm"} extraClass={cls.hospital__btn}>Add</Button>
+
+                    <div className={cls.buttons}>
+                        {
+                            isActiveType === "create" ?
+                                <Button disabled={errorUserName === undefined && errorUserName === false} id={"regForm"}
+                                        extraClass={cls.hospital__btn}>
+                                    {isChanging ? "Change" : "Add"}
+                                </Button>
+                                :
+                                <Button onClick={onSubmitOldUser} extraClass={cls.hospital__btn}>
+                                    Add
+                                </Button>
+                        }
+
+                        {
+                            isChanging &&
+                            <Button onClick={onDelete} type={"danger"} extraClass={cls.hospital__btn}>Delete</Button>
+
+                        }
+                    </div>
+
 
                 </div>
             </div>

@@ -38,7 +38,7 @@ export const fetchBranchData = createAsyncThunk<
     IBranchThunkProps,
     ThunkConfig<string>
 >('oftenUsedSlice/fetchBranchData', async (authData, thunkApi) => {
-    const { extra,  rejectWithValue } = thunkApi;
+    const { extra, dispatch,  rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
             url: `branch_info/branch_get/?${ParamUrl({location: authData.id})}`,
@@ -50,6 +50,7 @@ export const fetchBranchData = createAsyncThunk<
         if (!response) {
             throw new Error();
         }
+        // dispatch(oftenUsedActions.onBranch(response))
         return response.results;
     } catch (e) {
         console.log(e);

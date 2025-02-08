@@ -8,25 +8,42 @@ import {Button} from "shared/ui/button";
 import {
     DynamicModuleLoader,
     ReducersList
-} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {paymentReducer} from "../../../features/paymentFeature/model/paymentSlice";
+} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
 import {useSelector} from "react-redux";
-import {getPaymentData} from "../../../features/paymentFeature/model/paymentSelector";
-import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {fetchUserPaymentList} from "../../../features/paymentFeature/model/paymentThunk";
-import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
-import {Packets} from "../../../features/pakets";
-import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
-import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
-import {UserPackets} from "../../../features/pakets/ui/userPackets";
-import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
-import {fetchBranchData, getSelectedBranchData} from "../../../entities/oftenUsed";
-import {getSelectedLocationData} from "../../../entities/oftenUsed/model/selector/oftenUsedSelector";
+import {getPaymentData, getPaymentTypeData} from "features/paymentFeature/model/paymentSelector";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {
+    fetchUserPaymentList,
+    givePaymentThunk,
+    paymentTypeThunk
+} from "features/paymentFeature/model/paymentThunk";
+import {fetchUserAnalys} from "entities/analysis/model/thunk/userAnalysisThunk";
+import {userAnalysisActions, userAnalysisReducer} from "entities/analysis/model/slice/userAnalysisSlice";
+import {getUserAnalysis} from "entities/analysis/model/selector/userAnalySelector";
+import {UserPackets} from "features/pakets/ui/userPackets";
+import {UserAnalysis} from "features/pakets/ui/userAnalysis";
+import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "entities/oftenUsed";
+import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+import {Form} from "shared/ui/form";
+import {useForm} from "react-hook-form";
+import classNames from "classnames";
+import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
+import {paymentTypeReducer} from "features/paymentFeature/model/paymentTypeSlice";
 
+interface IPaymentData {
+    date: string,
+    payment_type: string,
+    user: number,
+
+
+}
 
 const reducers: ReducersList = {
     userAnalysisSlice: userAnalysisReducer,
     paymentSlice: paymentReducer,
+    givePaymentSlice: givePaymentReducer,
+    paymentTypeSlice: paymentTypeReducer
 }
 
 export const PaymentPage = () => {
@@ -40,21 +57,34 @@ export const PaymentPage = () => {
 
     const selectedLocation = useSelector(getSelectedLocationData)
     const selectedBranch = useSelector(getSelectedBranchData)
+
+    const {register, setValue, handleSubmit} = useForm()
     const data = useSelector(getPaymentData)
     const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
     const analiz = useSelector(getUserAnalysis)
+    //@ts-ignore
+    const prices = analiz?.analysis_list?.map(item => item.price)
+    const totalOther = prices?.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    const payType = useSelector(getPaymentTypeData)
     const dispatch = useAppDispatch()
     useEffect(() => {
-        // dispatch(getBranchThunk())
         if (selectedLocation)
             dispatch(fetchBranchData({id: selectedLocation}))
     }, [selectedLocation])
 
     useEffect(() => {
+        dispatch(paymentTypeThunk())
+    }, [])
+
+    useEffect(() => {
         if (selectedBranch)
+
             dispatch(fetchUserPaymentList({selectedBranch, search}))
     }, [selectedBranch])
+
+
 
     useEffect(() => {
         if (userId)
@@ -81,6 +111,18 @@ export const PaymentPage = () => {
     const onDeleteAllAnalysis = () => {
         dispatch(deleteAllAnalysis())
     }
+    console.log(payType, "dfrfr")
+
+    const onClick = (completeData: IPaymentData) => {
+        const data = {
+            ...completeData,
+            payment_type: selectedRadio,
+            user: userId,
+            branch: selectedBranch
+        }
+        //@ts-ignore
+        dispatch(givePaymentThunk(data))
+    }
 
     //@ts-ignore
     // const onClickGetId = (e) => {
@@ -94,7 +136,9 @@ export const PaymentPage = () => {
         const filteredData = data?.filter(item => item?.surname?.toLowerCase().includes(search?.toLowerCase()));
         return filteredData?.map(item => {
             return (
-                <div onClick={() => setUserId(item.id)} key={item.user_id} className={cls.item}>
+                <div onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
+                    [cls.active] : userId === item.id
+                })}>
                     <span>{item.surname}</span>
                     <span>{item.name}</span>
                     <span>{item.user_id}</span>
@@ -104,11 +148,7 @@ export const PaymentPage = () => {
         });
     }
 
-    const list = {
-        name: "unknown",
-        value: [{label: "Cash", id: "cash"}, {label: "Click", id: "click"}, {label: "Bank", id: "bank"}],
-        isRadio: true,
-    }
+
 
     return (
         <DynamicModuleLoader reducers={reducers}>
@@ -130,52 +170,62 @@ export const PaymentPage = () => {
                 </div>
 
                 <div className={cls.payment__list}>
-                    {
-                        analiz?.packet.map(item => {
-                            return (
-                                <UserPackets
-                                    item={item}
-                                    onDeletePacketAnalysis={onDeletePacketAnalysis}
-                                    onDeletePacketId={onDeletePacket}
-                                />
-                            )
-                        })
-                    }
-                    {analiz?.analysis_list.length ? <UserAnalysis
-                        item={analiz?.analysis_list}
-                        onDeleteAnalysisId={onDeleteAnalysis}
-                        onDeleteAllAnalysis={onDeleteAllAnalysis}
-                    /> : null}
+                    {analiz?.packet && analiz?.packet.length > 0 ? (
+                        analiz.packet.map(item => (
+                            <UserPackets
+                                item={item}
+                                onDeletePacketAnalysis={onDeletePacketAnalysis}
+                                onDeletePacketId={onDeletePacket}
+                            />
+                        ))
+                    ) : null}
+                    {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
+                        <UserAnalysis
+                            item={analiz.analysis_list}
+                            // @ts-ignore
+                            total={totalOther}
+                            onDeleteAnalysisId={onDeleteAnalysis}
+                            onDeleteAllAnalysis={onDeleteAllAnalysis}
+                        />
+                    ) : null}
+                    {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
+                        <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Iltimos bemorlardan birini tanlang 😊</h1>
+                    )}
                 </div>
 
 
-                <div className={cls.cashier}>
+
+                <Form extraClass={cls.cashier}>
                     <h1>Kassir</h1>
-                    <Input name={"id"} title={"Hisob raqami (ID)"}/>
+                    <Input name={"date"} title={"Kun"} type={"date"} register={register}/>
                     <div className={cls.types}>
                         {
-                            list.value.map(item => {
+                            payType?.map(item => {
                                 return (
                                     <Radio
-                                        name={list.name}
+                                        name={item.payment_type}
                                         // @ts-ignore
                                         value={item.id}
                                         // @ts-ignore
                                         onChange={setSelectedRadio}
+                                        //@ts-ignore
                                         checked={item.id === selectedRadio}
                                     >
-                                        {item.label}
+                                        {item.payment_type}
                                     </Radio>
                                 )
                             })
                         }
 
                     </div>
+                    {
+                        //@ts-ignore
+                        <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Add</Button>
+                    }
 
-                    <Button extraClass={cls.submit}>Add</Button>
 
 
-                </div>
+                </Form>
 
 
             </div>

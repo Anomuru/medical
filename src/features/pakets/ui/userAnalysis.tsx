@@ -2,16 +2,17 @@ import React, {memo, useState} from 'react';
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {packetsActions, PacketsList, PacketsUserList} from "../../../entities/pakets";
 import {ConfirmModal} from "../../../shared/ui/confirm";
-import {IAnalysisProps} from "../../../entities/pakets/model/paketsSchema";
+import {IAnalysisProps, IUserPackets} from "../../../entities/pakets/model/paketsSchema";
 
 interface IUserAnalysis {
     item: IAnalysisProps[],
+    total: string,
     onDeleteAnalysisId?: (arg: number) => void,
     onDeleteAllAnalysis?: () => void,
 
 }
 
-export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis}: IUserAnalysis) => {
+export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis, total}: IUserAnalysis) => {
 
     const [isDeleteAnalysis, setIsDeleteAnalysis] = useState(false)
     const [isDeletePacket, setIsDeletePacket] = useState(false)
@@ -59,6 +60,7 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
             <PacketsUserList
                 packet_id={1}
                 list={item}
+                total={total}
                 onDeleteAnalysis={onClickAnalysis}
                 onDeletePacket={onClickPacket}
             />

@@ -16,14 +16,15 @@ import {
     oftenUsedActions
 } from "entities/oftenUsed";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {getUserId, getUserName, getUserSurname} from "../../../entities/user";
+import {getUserId, getUserRole, getUserName, getUserSurname} from "../../../entities/user";
 import {useNavigate} from "react-router";
+import {ROLES} from "shared/const/roles";
 
 export const Header = () => {
 
     const dispatch = useAppDispatch()
     const navigation = useNavigate()
-    const {fetchSelectedLocation} = oftenUsedActions
+    const {fetchSelectedLocation, onBranch} = oftenUsedActions
     const [location, setLocation] = useState<number>()
     const [branch, setBranch] = useState<number>()
 
@@ -32,13 +33,17 @@ export const Header = () => {
     }, [])
 
     useEffect(() => {
-        if (location)
+        if (location) {
             dispatch(fetchBranchData({id: location}))
+            dispatch(fetchSelectedLocation(location))
+        }
+
     }, [location])
 
     useEffect(() => {
         if (branch)
-            dispatch(fetchSelectedLocation(branch))
+            dispatch(onBranch(branch))
+        console.log(branch, 'data')
     }, [branch])
 
     const branchData = useSelector(getBranchesData)
@@ -46,6 +51,7 @@ export const Header = () => {
     const userSurname = useSelector(getUserSurname)
     const userName = useSelector(getUserName)
     const userId = useSelector(getUserId)
+    const userRole = useSelector(getUserRole)
 
     const getLocation = useCallback((arg: number) => setLocation(arg), [])
     const getBranch = useCallback((arg: number) => setBranch(arg), [])
@@ -58,8 +64,12 @@ export const Header = () => {
                 alt=""
             />
             <div className={cls.setting}>
-                <Select optionsData={locationData} title={"Location"} setSelectOption={getLocation}/>
-                <Select optionsData={branchData} title={"Branch"} setSelectOption={getBranch}/>
+                {userRole === ROLES.mainAdmin && (
+                    <>
+                        <Select optionsData={locationData} title={"Location"} setSelectOption={getLocation}/>
+                        <Select optionsData={branchData} title={"Branch"} setSelectOption={getBranch}/>
+                    </>
+                )}
                 {/*<div className={cls.setting__search}>*/}
                 {/*    <i className={classNames("fa-solid fa-search", cls.setting__icon)}/>*/}
                 {/*    <Input extraClass={cls.setting__input} name={"search"}/>*/}

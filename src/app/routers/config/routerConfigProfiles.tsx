@@ -15,7 +15,7 @@ import {PaymentPage} from "pages/paymentPage";
 
 import {PatientPage} from "pages/patientPage";
 import {AnalysisPage} from "pages/analysisPage";
-
+import {AllPaymentPage} from "../../../pages/allPaymentPage";
 import {
     getDashboardRoute,
     getRegisterRoute,
@@ -31,7 +31,8 @@ import {
     getPatientRoute,
     getAnalysisRoute,
     getWorkerProfile,
-    getPaymentRoute
+    getPaymentRoute,
+    getAllPaymentsPageRoute
 } from "shared/const/routers";
 
 interface IRouterConfigProfiles {
@@ -116,5 +117,10 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "analysis",
         element: <AnalysisPage/>,
         path: getAnalysisRoute()
+    },
+    {
+        name: "allPayment",
+        element: <AllPaymentPage/>,
+        path: getAllPaymentsPageRoute()
     }
 ]

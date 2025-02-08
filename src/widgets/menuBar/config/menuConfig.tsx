@@ -67,5 +67,10 @@ export const menuConfig = [
         to: "devicePage",
         image: deviceImage,
         roles: [ROLES.admin]
+    },
+    {
+        to: "allPayment",
+        image: deviceImage,
+        roles: [ROLES.admin]
     }
 ]

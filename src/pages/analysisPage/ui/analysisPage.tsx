@@ -12,8 +12,6 @@ import {
 import {analysisContainerReducer} from "entities/analysis/model/slice/analysisContainerSlice";
 import {analysisGroupReducer} from "entities/analysis/model/slice/analysisGroupSlice";
 import {analysisPackageReducer} from "entities/analysis/model/slice/analysisPackageSlice";
-import {useSelector} from "react-redux";
-import {getUserBranch} from "../../../entities/user";
 
 
 const reducers: ReducersList = {

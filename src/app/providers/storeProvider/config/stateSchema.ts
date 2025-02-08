@@ -18,10 +18,11 @@ import {IAlertState} from "features/alert/model/slice/alertSlice";
 import {IPatientSchema} from "entities/patient";
 
 import {IPacketsSchema} from "entities/pakets";
-import {IPaymentSchema} from "features/paymentFeature/model/paymentTypes";
+import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "features/paymentFeature/model/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
 import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
 import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/types/profileAnalysisTypes";
+import {IAllPaymentSchema} from "../../../../entities/allPayment/model/types/allPaymentSchema";
 
 
 export interface StateSchema {
@@ -34,9 +35,9 @@ export interface StateSchema {
     staffProfileSlice?: StaffProfileSchema;
     deviceListSlice?: DeviceListSchema;
     loginForm?: LoginSchema;
-    jobList?: JobListSchema
-
-
+    jobList?: JobListSchema;
+    paymentTypeSlice?: IPaymentTypeSchema
+    givePaymentSlice?: IGivePaymentSchema;
     paymentSlice?: IPaymentSchema,
 
 
@@ -52,6 +53,7 @@ export interface StateSchema {
     packetsSlice?: IPacketsSchema,
     userAnalysisSlice?: IUserAnalysisSchema,
     profileAnalysisSlice?: IUserProfileAnalysisSchema
+    allPaymentSlice?: IAllPaymentSchema
 
 }
 
