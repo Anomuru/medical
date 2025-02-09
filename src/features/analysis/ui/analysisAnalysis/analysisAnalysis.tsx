@@ -175,10 +175,10 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
                     placeholder={"Narxi"}
                     name={"price"}
                 />
-                <Select title={"Group"} setSelectOption={getGroupId} optionsData={groupAnalysisData}/>
-                <Select title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
-                <Select title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>
-                <Select title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
+                <Select autoSelect={false} title={"Group"} setSelectOption={getGroupId} optionsData={groupAnalysisData}/>
+                <Select autoSelect={false} title={"Paket"} setSelectOption={getPackageId} optionsData={analysisPackageData}/>
+                <Select autoSelect={false} title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>
+                <Select autoSelect={false} title={"Container"} setSelectOption={getContainerId} optionsData={analysisDate}/>
                 {/*<Select title={"Branch"} setSelectOption={getBranchId} optionsData={branchData}/>*/}
                 <Button>Add</Button>
             </Form>
