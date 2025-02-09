@@ -23,7 +23,7 @@ const analysisPackageSlice = createSlice({
 
             state.data = state?.data?.map(item => {
                 if (item.id === action.payload.id) {
-                    return action.payload.res
+                    return {...item, ...action.payload}
                 }
                 return item
             })

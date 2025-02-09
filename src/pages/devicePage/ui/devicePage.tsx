@@ -68,7 +68,6 @@ export const DevicePage = () => {
             url: `device/crud/create/`,
             method: "POST",
             body: formData,
-            //@ts-ignore
             headers: headerImg()
         })
             .then(res => {

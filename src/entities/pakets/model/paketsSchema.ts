@@ -30,7 +30,7 @@ export interface IPackets {
 export interface IUserPackets {
     packet_id?: number,
     packet_name?: string,
-    total?: string,
+    total?: number,
     analysis_list: IAnalysisProps[] | []
 }
 

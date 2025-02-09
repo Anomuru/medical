@@ -41,9 +41,9 @@ interface IList {
 
 interface IDeviceUserResponse {
     count: number;
-    next?: string;
-    previous?: string;
-    results?: IList[];
+    next: string;
+    previous: string;
+    results: IList[];
 }
 
 const reducers: ReducersList = {
@@ -75,7 +75,7 @@ export const DeviceProfile = () => {
     const dispatch = useAppDispatch()
     const getData: any = useSelector(getProfile)
     //@ts-ignore
-    const getUsers = useSelector(getProfileUsers) as IDeviceUserResponse
+    const getUsers = useSelector(getProfileUsers) as IDeviceUserResponse;
     const {id} = useParams()
     const {request} = useHttp()
 
