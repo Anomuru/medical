@@ -23,8 +23,8 @@ const allPaymentSlice = createSlice({
         },
         onEditPayment: (state, action) => {
             state.data = state.data.map(item => {
-                if (item.id === action.payload.id) {
-                    return action.payload.data
+                if (item.id === action.payload.data) {
+                    return action.payload
                 }
                 return item
             })

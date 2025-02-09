@@ -35,7 +35,6 @@ export const DevicePage = () => {
     const branchData = useSelector(getBranchesData)
 
     useEffect(() => {
-        // dispatch(getBranchThunk())
         if (selectedLocationId)
             dispatch(fetchBranchData({id: selectedLocationId}))
     }, [selectedLocationId])
@@ -60,7 +59,6 @@ export const DevicePage = () => {
             url: `device/crud/create/`,
             method: "POST",
             body: formData,
-            //@ts-ignore
             headers: headerImg()
         })
             .then(res => {

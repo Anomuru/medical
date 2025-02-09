@@ -7,9 +7,9 @@ import {paymentTypeActions} from "./paymentTypeSlice";
 import {givePaymentActions} from "./givePaymentSlice";
 
 interface PaymentProps {
-    date: string,
-    payment_type: string,
-    user: number
+    date: string | undefined,
+    payment_type: string | undefined,
+    user: number | undefined
 }
 
 export const fetchUserPaymentList = createAsyncThunk<
