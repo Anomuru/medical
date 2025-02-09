@@ -4,7 +4,10 @@ export interface IAllPayment {
     amount: number,
     user: string,
     date: string
-    payment_type: number,
+    payment_type: {
+        id: number,
+        payment_type: string
+    },
 }
 
 

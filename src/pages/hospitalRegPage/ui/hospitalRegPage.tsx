@@ -400,11 +400,14 @@ export const HospitalRegPage = () => {
 
     const onSubmit = (data: IHospitalRegPageData) => {
         if (packetsData?.length) {
-            const analysisData: number[][] =
-                packetsData.map(item => item.analysis.map(id => id.id))
+            const analysisData: number[][] = packetsData.filter(item => !item.extra).map(item => item.analysis.map(id => id.id))
 
 
-            const analysis = combineArraysInOneArray(analysisData);
+            const pakets = combineArraysInOneArray(analysisData);
+
+            const analysis_list = [...packetsData.filter(item => item.extra).map(item => item.analysis.map(id => id.id))[0]]
+
+
             const timeString = localStorage.getItem("time");
             const date = JSON.parse(localStorage.getItem("date_calendar") as string);
 
@@ -419,7 +422,9 @@ export const HospitalRegPage = () => {
                 to_date: time.end,
                 doctor_id: doctor,
                 date,
-                analysis,
+                // analysis,
+                analysis_list,
+                packet_list: pakets
             }
 
 
@@ -428,7 +433,6 @@ export const HospitalRegPage = () => {
             }
 
 
-            console.log(res)
             const changingUrl = `user/users/crud/update/${changingData}`
             const mainUrl = `user/users/crud/create/`
 

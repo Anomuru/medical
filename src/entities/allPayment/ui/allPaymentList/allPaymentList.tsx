@@ -37,7 +37,8 @@ export const AllPaymentList: FC<IPatientListProps> = (
                         </div>
                     </td>
                     <td>{item.date}</td>
-                    <td>{item.payment_type === 1 ? "cash" : item.payment_type === 2 ? "click" : item.payment_type === 3 ? "bank" : null}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.payment_type?.payment_type}</td>
                     <td>
                         <div onClick={() => {
                             setActiveDeleteItem(item)
@@ -58,12 +59,13 @@ export const AllPaymentList: FC<IPatientListProps> = (
                 <th>№</th>
                 <th>Ism-familiya</th>
                 <th>To'langan sana</th>
+                <th>To'lov</th>
                 <th>To'lov turi</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            {render()}
+             {render()}
 
             </tbody>
         </Table>
