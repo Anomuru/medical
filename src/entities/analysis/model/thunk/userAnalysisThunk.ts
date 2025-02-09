@@ -11,7 +11,7 @@ export const fetchUserAnalys = createAsyncThunk<
     const {extra, dispatch, rejectWithValue} = thunkApi;
     try {
         const response = await extra.api({
-            url: `user/user_analysis_get/?user=${userId}&paid=true`, method: "GET", body: null, headers: headers()
+            url: `user/user_analysis_get/?user=${userId}&paid=false`, method: "GET", body: null, headers: headers()
         })
         if (!response){
             throw new Error()

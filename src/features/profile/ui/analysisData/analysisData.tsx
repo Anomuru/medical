@@ -5,17 +5,19 @@ import cls from "./profileAnalysis.module.sass"
 import {useSelector} from "react-redux";
 
 import {getProfileAnalysis} from "../../model/selector/profileAnalysisSelector";
-import {useAppDispatch} from "../../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {fetchProfileAnalysis} from "../../model/thunk/profileAnalysisThunk";
 import {useParams} from "react-router";
 
 import {UserAnalysis} from "../../../pakets/ui/userAnalysis";
 import {profileAnalysisActions} from "../../model/slice/profileAnalysisSlice";
-import {headers, useHttp} from "../../../../shared/api/base";
-import {IAnalysis} from "../../../../entities/analysis";
-import {Button} from "../../../../shared/ui/button";
-import {IPackets, PacketsList} from "../../../../entities/pakets";
+import {headers, useHttp} from "shared/api/base";
+import {IAnalysis} from "entities/analysis";
+import {Button} from "shared/ui/button";
+import {IPackets, PacketsList} from "entities/pakets";
 import {Packets} from "../../../pakets";
+import {Alert} from "features/alert/ui/alert";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 
 export const AnalysisData = () => {
@@ -86,6 +88,7 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
     const [selectedPacketItemsId, setSelectedPacketItemsId] = useState<[]>([]);
     const {id} = useParams()
 
+    const dispatch = useAppDispatch()
     const {request} = useHttp()
 
     useEffect(() => {
@@ -121,13 +124,18 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
             method: "POST",
             body: JSON.stringify({
                 user: Number(id),
-                analysis_list:  selectedItemId,
+                analysis_list: selectedItemId,
                 packet_list: selectedPacketItemsId,
 
             }),
             headers: headers(),
         })
             .then(res => {
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli yaratildi"
+                }))
                 console.log("fdsf")
                 setActiveSwitch(true)
             })
@@ -274,23 +282,48 @@ const ProfileUserAnalysis = () => {
     const dispatch = useAppDispatch()
     const {request} = useHttp()
 
+    const {id} = useParams()
     const onDeletePacketAnalysis = (analysisID: number, packetId: number) => {
 
         dispatch(profileAnalysisActions.onDeletePacketAnalysis({packetId: packetId, analysisId: analysisID}))
     }
-    const onDeletePacket = (id: number) => {
+    const onDeletePacket = (packet_id: number) => {
 
+        request({
+            url: `user/user_analysis_crud/delete/`,
+            method: "DELETE",
+            body: JSON.stringify({packet_id: packet_id , type: "packet" , user: Number(id)}),
+            headers: headers()
+        })
+            .then(res => {
+                dispatch(profileAnalysisActions.deletePacket(packet_id))
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli o'chirildi"
+                }))
+
+            })
         // request({url: `user/user_packet_crud/delete/${id}`, method: "DELETE", headers: headers()})
         //     .then(res => {
-        //         dispatch(profileAnalysisActions.deletePacket(id))
         //     })
     }
 
 
     const onDeleteAnalysis = (analysisID: number) => {
-        request({url: `user/user_analysis_crud/delete/${analysisID}`, method: "DELETE", headers: headers()})
+        request({
+            url: `user/user_analysis_crud/delete/`,
+            method: "DELETE",
+            body: JSON.stringify({analysis_id: analysisID , type: "analysis" , user: Number(id)}),
+            headers: headers()
+        })
             .then(res => {
                 dispatch(profileAnalysisActions.deleteAnalysis(analysisID))
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli o'chirildi"
+                }))
             })
     }
 

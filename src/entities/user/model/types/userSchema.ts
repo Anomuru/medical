@@ -7,7 +7,7 @@ export interface UserSchema {
     name: string | null,
     role: string | null,
     surname: string | null,
-    branch: number | null,
+    branch_id: number | null ,
     isLoading: boolean,
     error?: string,
 }

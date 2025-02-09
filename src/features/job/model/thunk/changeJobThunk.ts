@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ThunkConfig} from "app/providers/storeProvider";
 import {headers} from "shared/api/base";
 import {jobsListActions} from "entities/jobList";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 interface changeJobThunkProps {
      data:  {
@@ -34,6 +35,11 @@ export const changeJobThunk = createAsyncThunk<
 
 
         dispatch(jobsListActions.changeJob(response));
+        dispatch(alertAction.onAddAlertOptions({
+            type: "success",
+            status: true,
+            msg: "Muvaffaqiyatli o'zgartirildi"
+        }))
         return response.data;
     } catch (e) {
         console.log(e);

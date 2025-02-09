@@ -67,18 +67,25 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
 
                 </td>
 
-                <td onClick={() => onClickChange(item)}>
-                    <div className={cls.edit}>
-                        Edit
-                    </div>
+
+                <td>
+                    {
+                        item.can_delete &&
+                        <div onClick={() => onClickChange(item)} className={cls.edit}>
+                            Edit
+                        </div>
+                    }
+
                 </td>
 
 
-                <td onClick={() => onClickDelete(item)}>
+                <td >
+                    {
+                        item.can_delete && <div onClick={() => onClickDelete(item)} className={cls.delete}>
+                            Delete
+                        </div>
+                    }
 
-                    <div className={cls.delete}>
-                        Delete
-                    </div>
                 </td>
                 <td>
                     {

@@ -16,7 +16,7 @@ export const menuConfig = [
     {
         to: "payment",
         image: paymentImage,
-        roles: [ROLES.operator, ROLES.reception]
+        roles: [ROLES.operator, ROLES.reception,ROLES.admin]
     },
     // {
     //     to: "dashboard",

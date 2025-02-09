@@ -29,6 +29,7 @@ import {
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {deviceListActions} from "../../deviceList";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 
 interface IList {
@@ -99,8 +100,10 @@ export const DeviceProfile = () => {
 
     const onEditModal = (e: React.MouseEvent) => {
 
+        if (files) {
 
-        formData.append("img", files[0])
+            formData.append("img", files[0])
+        }
 
         formData.append("name", name)
         if (ip) formData.append("ip_address", ip)
@@ -120,6 +123,11 @@ export const DeviceProfile = () => {
                 dispatch(deviceProfileActions.onEditName(res))
                 console.log(res)
                 setPortal(false)
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli o'zgartirildi"
+                }))
             })
             .catch(err => {
                 console.log(err)
@@ -162,7 +170,8 @@ export const DeviceProfile = () => {
     });
     const renderPatientsData = useCallback(() => {
         return getUsers?.results?.map((item, index) => (
-            <tr onClick={() => setUserId(item?.user_analysis)} className={cls.profileContainer__leftSight__arounder__head__users}>
+            <tr onClick={() => setUserId(item?.user_analysis)}
+                className={cls.profileContainer__leftSight__arounder__head__users}>
                 <td>{index + 1}</td>
                 <td>
                     <div className={cls.profile}>
@@ -180,149 +189,150 @@ export const DeviceProfile = () => {
 
 
     return (
-       <DynamicModuleLoader reducers={reducers}>
-           <div className={cls.profileContainer}>
-               <div className={cls.profileContainer__leftSight}>
-                   <Box extraClass={cls.profileContainer__leftSight__deviceBox}>
-                       <div className={cls.profileContainer__leftSight__deviceBox__content}>
-                           <div className={cls.profileContainer__leftSight__deviceBox__content__imgBox}>
-                               <img className={cls.profileContainer__leftSight__deviceBox__content__imgBox__img}
-                                    src={getData?.img || deviceImg} alt=""/>
-                           </div>
-                           <h1 className={cls.profileContainer__leftSight__deviceBox__content__text}>
-                               <img src={deviceIcon} alt=""/>
-                               {getData?.name}</h1>
-                       </div>
-                       <i onClick={() => {
-                           onClick(portal)
-                       }} className={classNames("fa-solid fa-list", cls.colorsEd)}/>
-                       {getData?.can_delete &&
-                           <i onClick={() => setActiveDelete(true)} className={classNames("fa-solid fa-trash", cls.colors)}/>}
-                   </Box>
-                   <h1 className={cls.profileContainer__leftSight__content}>Patients</h1>
-                   <div className={cls.profileContainer__leftSight__arounder}>
-                       <Table>
-                           <thead className={cls.profileContainer__leftSight__arounder__head}>
-                           <tr>
-                               <th>Number</th>
-                               <th>Name/Surname</th>
-                           </tr>
-                           </thead>
-                           <tbody>
-                           {renderPatientsData()}
-                           </tbody>
-                       </Table>
-                       <Pagination
-                           totalCount={getUsers?.count}
-                           onPageChange={setCurrentPage}
-                           currentPage={currentPage}
-                           pageSize={pageSize}
-                       />
-                   </div>
-               </div>
-               <Box extraClass={cls.profileContainer__rightContainer}>
-                   <h1 className={cls.profileContainer__rightContainer__content}>Analiz</h1>
-                   <h1 className={cls.profileContainer__rightContainer__content}>Standart</h1>
-                   <div className={cls.profileContainer__rightContainer__analizBox}>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
-                           name="oxygen"
-                           placeholder="7.56-7.80"
-                           title="Oksigen (O₂) miqdori"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="pH darajasi"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Positive End-Expiratory Pressure"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Tidal hajm (VT)"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Karbondioksid (CO₂)"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Nafas olish tezligi (RR)"/>
-                   </div>
-                   <div className={cls.profileContainer__rightContainer__nameBox}>
-                       <h1 className={cls.profileContainer__rightContainer__nameBox__content}>
-                           Javoblari
-                       </h1>
-                       <h1 className={cls.profileContainer__rightContainer__nameBox__content}>
-                           John Smith
-                       </h1>
-                   </div>
-                   <div className={cls.profileContainer__rightContainer__analizCurrentBox}>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
-                           name="oxygen"
-                           placeholder="7.56-7.80"
-                           title="Oksigen (O₂) miqdori"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="pH darajasi"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Positive End-Expiratory Pressure"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Tidal hajm (VT)"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Karbondioksid (CO₂)"/>
-                       <Input
-                           extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
-                           name="heartCount"
-                           placeholder="80-100 mmHg"
-                           title="Nafas olish tezligi (RR)"/>
-                   </div>
-               </Box>
-               <Modal extraClass={cls.profileContainer__modal} active={portal} setActive={setPortal}>
-                   <Form extraClass={cls.profileContainer__modal__form}>
-                       <div {...getRootProps({className: cls.dropzone})}>
-                           <input  {...getInputProps()}/>
+        <DynamicModuleLoader reducers={reducers}>
+            <div className={cls.profileContainer}>
+                <div className={cls.profileContainer__leftSight}>
+                    <Box extraClass={cls.profileContainer__leftSight__deviceBox}>
+                        <div className={cls.profileContainer__leftSight__deviceBox__content}>
+                            <div className={cls.profileContainer__leftSight__deviceBox__content__imgBox}>
+                                <img className={cls.profileContainer__leftSight__deviceBox__content__imgBox__img}
+                                     src={getData?.img || deviceImg} alt=""/>
+                            </div>
+                            <h1 className={cls.profileContainer__leftSight__deviceBox__content__text}>
+                                <img src={deviceIcon} alt=""/>
+                                {getData?.name}</h1>
+                        </div>
+                        <i onClick={() => {
+                            onClick(portal)
+                        }} className={classNames("fa-solid fa-list", cls.colorsEd)}/>
+                        {getData?.can_delete &&
+                            <i onClick={() => setActiveDelete(true)}
+                               className={classNames("fa-solid fa-trash", cls.colors)}/>}
+                    </Box>
+                    <h1 className={cls.profileContainer__leftSight__content}>Patients</h1>
+                    <div className={cls.profileContainer__leftSight__arounder}>
+                        <Table>
+                            <thead className={cls.profileContainer__leftSight__arounder__head}>
+                            <tr>
+                                <th>Number</th>
+                                <th>Name/Surname</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {renderPatientsData()}
+                            </tbody>
+                        </Table>
+                        <Pagination
+                            totalCount={getUsers?.count}
+                            onPageChange={setCurrentPage}
+                            currentPage={currentPage}
+                            pageSize={pageSize}
+                        />
+                    </div>
+                </div>
+                <Box extraClass={cls.profileContainer__rightContainer}>
+                    <h1 className={cls.profileContainer__rightContainer__content}>Analiz</h1>
+                    <h1 className={cls.profileContainer__rightContainer__content}>Standart</h1>
+                    <div className={cls.profileContainer__rightContainer__analizBox}>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
+                            name="oxygen"
+                            placeholder="7.56-7.80"
+                            title="Oksigen (O₂) miqdori"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="pH darajasi"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Positive End-Expiratory Pressure"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Tidal hajm (VT)"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Karbondioksid (CO₂)"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Nafas olish tezligi (RR)"/>
+                    </div>
+                    <div className={cls.profileContainer__rightContainer__nameBox}>
+                        <h1 className={cls.profileContainer__rightContainer__nameBox__content}>
+                            Javoblari
+                        </h1>
+                        <h1 className={cls.profileContainer__rightContainer__nameBox__content}>
+                            John Smith
+                        </h1>
+                    </div>
+                    <div className={cls.profileContainer__rightContainer__analizCurrentBox}>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
+                            name="oxygen"
+                            placeholder="7.56-7.80"
+                            title="Oksigen (O₂) miqdori"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="pH darajasi"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Positive End-Expiratory Pressure"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Tidal hajm (VT)"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Karbondioksid (CO₂)"/>
+                        <Input
+                            extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
+                            name="heartCount"
+                            placeholder="80-100 mmHg"
+                            title="Nafas olish tezligi (RR)"/>
+                    </div>
+                </Box>
+                <Modal extraClass={cls.profileContainer__modal} active={portal} setActive={setPortal}>
+                    <Form extraClass={cls.profileContainer__modal__form}>
+                        <div {...getRootProps({className: cls.dropzone})}>
+                            <input  {...getInputProps()}/>
 
-                           {!files ? <div className={cls.editDrop}>
-                                   <i className={classNames("fa-solid fa-upload",)}></i>
-                               </div> :
+                            {!files ? <div className={cls.editDrop}>
+                                    <i className={classNames("fa-solid fa-upload",)}></i>
+                                </div> :
 
-                               <img style={{width: "30rem", height: "20rem"}}
-                                    src={files?.map((item: { preview: any; }) => item?.preview)}
-                                    alt=""/>
+                                <img style={{width: "30rem", height: "20rem"}}
+                                     src={files?.map((item: { preview: any; }) => item?.preview)}
+                                     alt=""/>
 
-                           }
-                       </div>
-                       <Input title={"Change name"} extraClass={cls.profileContainer__modal__form__input} name={"name"}
-                              onChange={setName}/>
-                       <Input title={"Change address"} extraClass={cls.profileContainer__modal__form__input}
-                              name={"ip_address"} onChange={setIp}/>
-                       <Button extraClass={cls.profileContainer__modal__form__input} onClick={onEditModal}>Apply
-                           changes</Button>
-                   </Form>
-               </Modal>
-               <ConfirmModal setActive={setActiveDelete} active={activeDelete}
-                             title={"Rostanham o'chirmoqchimisiz"} onClick={onDelete}/>
-           </div>
+                            }
+                        </div>
+                        <Input title={"Change name"} extraClass={cls.profileContainer__modal__form__input} name={"name"}
+                               onChange={setName}/>
+                        <Input title={"Change address"} extraClass={cls.profileContainer__modal__form__input}
+                               name={"ip_address"} onChange={setIp}/>
+                        <Button extraClass={cls.profileContainer__modal__form__input} onClick={onEditModal}>Apply
+                            changes</Button>
+                    </Form>
+                </Modal>
+                <ConfirmModal setActive={setActiveDelete} active={activeDelete}
+                              title={"Rostanham o'chirmoqchimisiz"} onClick={onDelete}/>
+            </div>
 
-       </DynamicModuleLoader>
+        </DynamicModuleLoader>
     );
 };

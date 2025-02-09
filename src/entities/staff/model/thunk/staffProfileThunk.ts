@@ -15,6 +15,6 @@ export const changeStaffDetails = createAsyncThunk(
     // @ts-ignore
     ({staffId, data}) => {
         const {request} = useHttp()
-        return request({url: `user/staff/crud/update/${staffId}`, method: "PATCH", body: JSON.stringify(data)})
+        return request({url: `user/staff/crud/update_password/${staffId}`, method: "PATCH", body: JSON.stringify(data)})
     }
 )

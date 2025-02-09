@@ -14,7 +14,8 @@ export interface Staff {
     branch: number,
     email: string,
     passport_series: string,
-    passport_number: string
+    passport_number: string,
+    role: string
 }
 
 export interface StaffListSchema {

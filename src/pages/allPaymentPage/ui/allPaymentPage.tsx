@@ -18,7 +18,7 @@ import {alertAction} from "features/alert/model/slice/alertSlice";
 import {paymentListActions, paymentListReducer} from "entities/allPayment/model/slice/allPaymentSlice";
 import {getAllPaymentList} from "entities/allPayment/model/selectors/allPaymentSelector";
 import {fetchAllPaymentThunk} from "entities/allPayment/model/thunk/allPaymentThunk";
-import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "../../../entities/oftenUsed";
+import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "entities/oftenUsed";
 import {IAllPayment} from "entities/allPayment/model/types/allPaymentSchema";
 import {useForm} from "react-hook-form";
 import {Modal} from "shared/ui/modal";
@@ -90,7 +90,6 @@ export const AllPaymentPage = () => {
             payment_type: selectedRadio
         }
 
-        console.log('item')
 
         request({
             url: `account/payment/payment/${activeEditItem.id}/`,
@@ -109,7 +108,6 @@ export const AllPaymentPage = () => {
             }))
         })
     }
-
 
     const onDelete = () => {
         request({
@@ -137,7 +135,6 @@ export const AllPaymentPage = () => {
                     msg: "Error"
                 }))
             })
-
     }
 
 

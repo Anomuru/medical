@@ -297,11 +297,8 @@ export const PricePage = () => {
             <Modal extraClass={cls.itemEdit} active={isAddItem} setActive={setIsAddItem} title={"Add"}>
 
                 <Form extraClass={cls.itemEdit__container}>
-                    {/*// @ts-ignore*/}
                     <Input register={register} name={"name"} placeholder={"Name"}/>
-                    {/*// @ts-ignore*/}
                     <Input name={"price"} register={register} placeholder={"Price"}/>
-                    {/*// @ts-ignore*/}
                     <Select setSelectOption={setSelectedOption} optionsData={deviceSelect}/>
                     <Button onClick={handleSubmit(onPostData)} extraClass={cls.itemEdit__btn}>
                         Add
@@ -313,16 +310,12 @@ export const PricePage = () => {
             <Modal extraClass={cls.itemEdit} active={isEditItem} setActive={setIsEditItem} title={"Edit"}>
 
                 <Form extraClass={cls.itemEdit__container}>
-                    {/*// @ts-ignore*/}
 
                     <Input name={"name"} register={register} placeholder={"Name"}/>
-                    {/*// @ts-ignore*/}
 
                     <Input name={"price"} placeholder={"Price"} register={register}/>
-                    {/*// @ts-ignore*/}
 
                     <Select setSelectOption={setDeviceType} optionsData={deviceSelect}/>
-                    {/*// @ts-ignore*/}
 
                     <Select setSelectOption={setSelectType} selectOption={selectType}  optionsData={type}/>
                     <div className={cls.btns}>
@@ -341,7 +334,6 @@ export const PricePage = () => {
             <Modal extraClass={cls.itemEdit} active={isAdd} setActive={setIsAdd} title={"Add"}>
                 <Form extraClass={cls.itemEdit__container}>
 
-                    {/*// @ts-ignore*/}
                     <Input name={"name"} register={register} placeholder={"Name"}/>
                     {/*<Input name={"price"} placeholder={"Price"}/>*/}
                     <Button onClick={handleSubmit(onPost)} extraClass={cls.itemEdit__btn}>
@@ -354,7 +346,6 @@ export const PricePage = () => {
             <Modal extraClass={cls.itemEdit} active={isEdit} setActive={setIsEdit} title={"Edit"}>
 
                 <Form extraClass={cls.itemEdit__container}>
-                    {/*// @ts-ignore*/}
                     <Input register={register} name={"name"} placeholder={"Name"}/>
                     {/*<Input name={"price"} placeholder={"Price"}/>*/}
                     <div className={cls.btns}>

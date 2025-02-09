@@ -13,6 +13,7 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {getJobsThunk} from "../../../entities/jobList/model/thunk/jobListThunk";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 
 const reducers: ReducersList = {
@@ -76,6 +77,11 @@ export const JobListPage = () => {
         if (changingData?.id)
 
         dispatch(deleteJobThunk({...data,id: changingData.id}))
+        dispatch(alertAction.onAddAlertOptions({
+            type: "success",
+            status: true,
+            msg: "Muvaffaqiyatli o'chirildi"
+        }))
         onCloseDeleteModal()
 
     }
