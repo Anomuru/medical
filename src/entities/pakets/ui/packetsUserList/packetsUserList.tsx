@@ -31,6 +31,9 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+    const formatSalary = () => {
+        return Number(total).toLocaleString();
+    };
 
     const render = useCallback(() => {
 
@@ -59,7 +62,7 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
                     <span>{packet_name ?? "Boshqa"}</span>
                     {/*<span>Name</span>*/}
                     {/*<span>{price}</span>*/}
-                    <span>{total}</span>
+                    <span>{formatSalary()}</span>
                 </div>
                 <div className={cls.subrow}>
                     <span>Analiz ro’yxatlari :</span>

@@ -327,6 +327,7 @@ const ProfileUserAnalysis = () => {
             })
     }
 
+    const totalPrice = profileData?.analysis_list.reduce((sum, item) => sum + item.price, 0);
     return (
         <>
             <div className={cls.paket}>
@@ -348,6 +349,7 @@ const ProfileUserAnalysis = () => {
 
                 <UserAnalysis
 
+                    total={`${totalPrice}`}
                     // @ts-ignore
                     item={profileData?.analysis_list}
                     onDeleteAnalysisId={onDeleteAnalysis}
