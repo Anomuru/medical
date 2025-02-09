@@ -16,7 +16,7 @@ export const AppRouter = () => {
                     path={"login"}
                     element={<LogInPage/>}
                 />
-                <Route element={<RequireAuth/>}>
+                {/*<Route element={<RequireAuth/>}>*/}
                     <Route element={<Layout/>} path={"platform"}>
                         {
                             routersConfigProfile.map(item => {
@@ -32,7 +32,7 @@ export const AppRouter = () => {
                     </Route>
 
 
-                </Route>
+                {/*</Route>*/}
 
 
                 <Route

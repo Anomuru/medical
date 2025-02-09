@@ -11,11 +11,13 @@ export const menuConfig = [
     {
         to: "table",
         image: timeTableImage,
+        label: "Time table",
         roles: [ROLES.operator, ROLES.reception, ROLES.admin]
     },
     {
         to: "payment",
         image: paymentImage,
+        label: "Payment",
         roles: [ROLES.operator, ROLES.reception]
     },
     // {
@@ -34,21 +36,25 @@ export const menuConfig = [
     {
         to: "staff",
         image: staffImage,
+        label: "Staff",
         roles: [ROLES.admin]
     },
     {
         to: "analysisGroup",
         image: analysisImage,
+        label: "Analysis",
         roles: [ROLES.operator, ROLES.reception, ROLES.admin]
     },
     {
         to: "jobPage",
         image: jobListImage,
+        label: "Job",
         roles: [ROLES.admin]
     },
     {
         to: "patient",
         image: patientImage,
+        label: "Patients",
         roles: [ROLES.admin]
     },
     // {
@@ -63,14 +69,16 @@ export const menuConfig = [
     //     to: "pricePage",
     //     image: dashboardImage
     // },
-    {
-        to: "devicePage",
-        image: deviceImage,
-        roles: [ROLES.admin]
-    },
-    {
-        to: "allPayment",
-        image: deviceImage,
-        roles: [ROLES.admin]
-    }
+    // {
+    //     to: "devicePage",
+    //     image: deviceImage,
+    //     label: "Device",
+    //     roles: [ROLES.admin]
+    // },
+    // {
+    //     to: "allPayment",
+    //     image: deviceImage,
+    //     label: "Payments",
+    //     roles: [ROLES.admin]
+    // }
 ]
