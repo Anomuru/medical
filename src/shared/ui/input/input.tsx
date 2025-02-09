@@ -31,6 +31,7 @@ export interface InputProps extends HTMLInputProps {
     rules?: RegisterOptions,
     required?: boolean,
     error?: ErrorType,
+    canChange?: boolean
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -48,12 +49,13 @@ export const Input: React.FC<InputProps> = (props) => {
         required,
         error,
         onChangeState,
-        value
+        value,
+        canChange= true
     } = props
 
     const textField = register && register(name, rules)
 
-    // console.log(required, name)
+
 
     const [passwordActive, setPasswordActive] = useState<boolean>(false)
 
@@ -61,9 +63,10 @@ export const Input: React.FC<InputProps> = (props) => {
         <label className={classNames(cls.label, extraLabelClass)}>
             {title && <span className={cls.label__title}>{title}</span>}
             <input
+                {...textField}
                 required={required}
                 id={name}
-                {...textField}
+
                 className={classNames(cls.label__input, extraClass)}
                 type={(type === "password" && passwordActive) ? "text" : type}
                 placeholder={placeholder}
@@ -72,7 +75,18 @@ export const Input: React.FC<InputProps> = (props) => {
                 //     onChange && onChange(e.target.value)
                 //     textField && textField.onChange(e)
                 // }}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange ? onChange(e.target.value) : onChangeState ? onChangeState(e.target.value) : null}
+                onChange={(e) => {
+                    if (canChange) {
+                        if (onChange) {
+                            onChange(e.target.value);
+                        } else if (onChangeState) {
+                            onChangeState(e.target.value);
+                        }
+                    }
+                    textField?.onChange(e); // Ensure react-hook-form receives changes
+                }}
+
+
             />
             {
                 error &&

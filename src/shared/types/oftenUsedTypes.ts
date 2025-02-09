@@ -2,7 +2,8 @@
 export interface JobSchema {
     id: number,
     name: string,
-    has_client: boolean
+    has_client: boolean,
+    can_delete: boolean
 }
 
 

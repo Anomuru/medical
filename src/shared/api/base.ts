@@ -3,9 +3,12 @@ export const API_URL_DOC = `http://192.168.1.61:8000/`
 
 
 export const API_URL: string = `${API_URL_DOC}api/`
-export const CLASSROOM_API_URL: string = `https://classroom.gennis.uz/`
-export const CLASSROOM_API_URL_DOC: string = `https://classroom.gennis.uz/`
 
+
+// export const API_URL_DOC = `/`
+
+
+// export const API_URL: string = `${API_URL_DOC}api/`
 
 export const headers = () => {
     // const token = sessionStorage.getItem("token")

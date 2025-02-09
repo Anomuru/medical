@@ -275,6 +275,7 @@ import {headers, useHttp} from "../../../../shared/api/base";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
 import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {getUserBranch} from "entities/user";
 
 
 interface IAnalysisContainerModalProps {
@@ -336,17 +337,15 @@ const AddContainerModal: FC<IAddAnalysisContainerModalProps> = ({active, setActi
 
     const {register, setValue, handleSubmit} = useForm();
     const dispatch = useDispatch();
-
+    const userBranch = useSelector(getUserBranch)
 
     const {request} = useHttp()
 
     const onClick = (data: IAnalysisContainerModalProps) => {
-
-
         request({
             url: "container/crud/create/",
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify({...data, branch: userBranch}),
             headers: headers()
         }).then(res => {
             setActive(false)

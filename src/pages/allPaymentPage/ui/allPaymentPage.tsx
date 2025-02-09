@@ -31,6 +31,7 @@ import {getAllPaymentList} from "entities/allPayment/model/selectors/allPaymentS
 import {fetchAllPaymentThunk} from "entities/allPayment/model/thunk/allPaymentThunk";
 import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "entities/oftenUsed";
 import {IAllPayment} from "entities/allPayment/model/types/allPaymentSchema";
+import {getUserBranch} from "entities/user";
 
 
 const reducers: ReducersList = {
@@ -46,16 +47,11 @@ export const AllPaymentPage = () => {
 
     const dispatch = useAppDispatch()
 
-    const selectedLocation = useSelector(getSelectedLocationData)
-    const selectedBranch = useSelector(getSelectedBranchData)
+    const selectedBranch = useSelector(getUserBranch)
 
     const patientData = useSelector(getAllPaymentList)
     const [activeType, setActiveType] = useState("")
 
-    useEffect(() => {
-        if (selectedLocation)
-            dispatch(fetchBranchData({id: selectedLocation}))
-    }, [selectedLocation])
 
 
     useEffect(() => {

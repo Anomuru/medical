@@ -25,6 +25,9 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+import {alertAction} from "features/alert/model/slice/alertSlice";
+import {useNavigate} from "react-router";
+import {getUserBranch} from "entities/user";
 
 interface Branch {
     id: number,
@@ -58,31 +61,40 @@ interface IBranchResponse {
 }
 
 
+interface IOptionsJobs {
+    value: number,
+    label: string
+}
+
+
+
 export const RegisterPage = () => {
 
     const dispatch = useAppDispatch()
     const {request} = useHttp()
-    const selectedLocationId = useSelector(getSelectedLocationData)
 
     useEffect(() => {
         dispatch(fetchJobsData())
-        dispatch(fetchLocationData())
     }, [])
 
-    useEffect(() => {
-        if (selectedLocationId)
-            dispatch(fetchBranchData({id: selectedLocationId}))
-    }, [selectedLocationId])
+
 
     const jobsList = useSelector(getJobsData)
-    const locationsList = useSelector(getLocationsData)
     const branch = useSelector(getBranchesData)
-    const [selectedJob, setSelectedJob] = useState<string>()
-    const [selectedLocation, setSelectedLocation] = useState<string>()
-    const [selectedBranch, setSelectedBranch] = useState<string>()
-    const getSelectedJob = useCallback((data: string) => setSelectedJob(data), [])
-    const getSelectedLocation = useCallback((data: string) => setSelectedLocation(data), [])
-    const getSelectedBranch = useCallback((data: string) => setSelectedBranch(data), [])
+    const [selectedJob, setSelectedJob] = useState<IOptionsJobs[]>([])
+    const [selectedBranch, setSelectedBranch] = useState<number | null >()
+    const getSelectedJob = useCallback((data: any) => setSelectedJob(data), [])
+    const navigate = useNavigate()
+
+    const userBranch = useSelector(getUserBranch)
+
+
+    useEffect(() => {
+        setSelectedBranch(userBranch)
+    },[userBranch])
+
+
+
 
     const registerStaff = useMemo(() => [
         {
@@ -101,56 +113,52 @@ export const RegisterPage = () => {
             name: "address",
             label: "Address",
             isInput: true,
-        }, {
-            name: "branch",
-            label: "Branch",
-            isSelect: true,
-            onSelect: getSelectedBranch,
-            list: branch
-        }, {
-            name: "location",
-            label: "Location",
-            isSelect: true,
-            onSelect: getSelectedLocation,
-            list: locationsList
-        }, {
+        },
+        {
             name: "job",
             label: "Job",
             isMultiSelect: true,
             onSelect: getSelectedJob,
-            list: jobsList?.map(item => ({label: item.name, id: item.id}))
-        }, {
+            list: jobsList?.map(item => ({label: item.name, value: item.id}))
+        },
+        {
             name: "passport_series",
             label: "Pasport seria (A B)",
             isInput: true,
-        }, {
+        },
+        {
             name: "passport_number",
             label: "Password seria number",
             isInput: true,
-        }, {
+        },
+        {
             name: "birth_date",
             label: "Birthday date",
             isInput: true,
             type: "date"
-        }, {
+        },
+        {
             name: "phone_number",
             label: "Phone number",
             isInput: true,
-        }, {
+        },
+        {
             name: "email",
             label: "Email adress",
             isInput: true,
-        }, {
+        },
+        {
             name: "unknown",
             label: [{label: "Man", id: 1}, {label: "Woman", id: 2}],
             isRadio: true,
-        }, {
+        },
+        {
             name: "password",
             label: "Password",
             isInput: true,
             type: "password"
         },
-    ], [branch, jobsList, locationsList])
+    ], [branch, jobsList])
 
     const {
         register,
@@ -167,6 +175,7 @@ export const RegisterPage = () => {
             if (item.isInput) {
                 return (
                     <Input
+                        // @ts-ignore
                         register={register}
                         placeholder={item.label}
                         type={item.type}
@@ -194,15 +203,6 @@ export const RegisterPage = () => {
                         }
                     </div>
                 )
-            } else if (item.isSelect) {
-                return (
-                    <Select
-                        title={item.label}
-                        setSelectOption={item.onSelect}
-                        //@ts-ignore
-                        optionsData={item.list}
-                    />
-                )
             } else if (item.isMultiSelect) {
                 return (
                     <MultiSelect
@@ -216,12 +216,14 @@ export const RegisterPage = () => {
 
 
     const onSubmit = (data: ISubmitData) => {
-        if (selectedRadio && selectedJob && selectedLocation) {
+        console.log(selectedRadio,selectedJob,selectedBranch)
+        if (selectedRadio && selectedJob && selectedBranch ) {
             const res = {
                 ...data,
                 sex: selectedRadio,
-                jobs: selectedJob,
-                location_id: selectedLocation,
+                jobs: selectedJob.map(item => {
+                    return {label: item.label, id: item.value}
+                }),
                 branch: selectedBranch
             }
 
@@ -233,9 +235,15 @@ export const RegisterPage = () => {
             })
                 .then(res => {
                     console.log(res)
+                    navigate(-1)
                     setSelectedRadio(NaN)
-                    setSelectedJob("")
+                    setSelectedJob([])
                     reset()
+                    dispatch(alertAction.onAddAlertOptions({
+                        type: "success",
+                        status: true,
+                        msg: "Muvaffaqiyatli roʻyxatdan oʻtkazildi "
+                    }))
                 })
                 .catch(err => console.log(err))
         }

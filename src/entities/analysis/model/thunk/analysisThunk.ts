@@ -4,15 +4,22 @@ import {ThunkConfig} from "app/providers/storeProvider";
 import {analysisActions} from "../slice/analysisSlice";
 import {data} from "react-router";
 
+
+interface IAnalysisThunkProps {
+    branch: number,
+    offset: number
+}
+
+
 export const analysisThunk = createAsyncThunk<
     void,
-    number, // Thunk argument sifatida `page` qabul qilinadi
+    IAnalysisThunkProps, // Thunk argument sifatida `page` qabul qilinadi
     ThunkConfig<string>
->('analysisSlice/analysisThunk', async (page, thunkApi) => {
+>('analysisSlice/analysisThunk', async (data, thunkApi) => {
     const {extra, dispatch, rejectWithValue} = thunkApi;
     try {
         const response = await extra.api({
-            url: `analysis/analysis/crud/create/?offset=${(page - 1) * 50}`,
+            url: `analysis/analysis/get/list/?offset=${(data.offset - 1) * 50}&branch=${data.branch}`,
             method: "GET",
             body: null,
             headers: headers()

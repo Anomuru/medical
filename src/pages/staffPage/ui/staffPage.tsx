@@ -20,6 +20,8 @@ import {
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {useNavigate} from "react-router";
 import {headers, useHttp} from "../../../shared/api/base";
+import {DeleteModal} from "features/deleteModal/ui/DeleteModal";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 const reducers: ReducersList = {
     staffSlice: staffReducer
@@ -31,6 +33,7 @@ export const StaffPage = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {deleteStaff} = staffActions
+    const [active , setActive] = useState(false)
 
     useEffect(() => {
         // @ts-ignore
@@ -42,14 +45,23 @@ export const StaffPage = () => {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [currentTableData, setCurrentTableData] = useState<Staff[]>([])
     const pageSize = useMemo(() => 10, [])
+    const [activeItem, setActiveItem] = useState<Staff>({} as Staff)
 
-    const onDelete = (id: number) => {
-        // @ts-ignore
-        request({url: `user/staff/crud/delete/${id}`, method: "DELETE", headers: headers(), isJson: false})
-            .finally(()=>dispatch(deleteStaff(id)))
+    const onDelete = () => {
+
+        request({url: `user/staff/crud/delete/${activeItem.id}`, method: "DELETE", headers: headers(), isJson: false})
+            .finally(()=>dispatch(deleteStaff(activeItem.id)))
+            .then(res => {
+                setActive(false)
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Muvaffaqiyatli o'chirildi"
+                }))
+            })
     }
 
-    console.log(staffList, 'wdwededed')
+
 
     return (
         <DynamicModuleLoader reducers={reducers}>
@@ -59,7 +71,8 @@ export const StaffPage = () => {
                     <Button extraClass={cls.staffPage__btn} onClick={() => navigate("/platform/register")}>+</Button>
                 </div>
                 <StaffList
-                    onDelete={onDelete}
+                    onDelete={setActive}
+                    setActiveItem={setActiveItem}
                     currentTableData={staffList}
                 />
                 {/*{*/}
@@ -74,6 +87,9 @@ export const StaffPage = () => {
                 {/*        setCurrentTableData={setCurrentTableData}*/}
                 {/*    />*/}
                 {/*}*/}
+
+
+                <DeleteModal active={active} setActive={() => setActive(false)} onConfirm={onDelete}/>
             </div>
         </DynamicModuleLoader>
     );

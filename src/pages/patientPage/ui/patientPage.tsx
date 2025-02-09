@@ -17,9 +17,9 @@ import {
 import cls from "./patientPage.module.sass";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useSelector} from "react-redux";
-import {DeleteModal} from "../../../features/deleteModal/ui/DeleteModal";
-import {headers, useHttp} from "../../../shared/api/base";
-import {alertAction} from "../../../features/alert/model/slice/alertSlice";
+import {DeleteModal} from "features/deleteModal/ui/DeleteModal";
+import {headers, useHttp} from "shared/api/base";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 
 

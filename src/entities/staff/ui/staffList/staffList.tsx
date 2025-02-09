@@ -10,10 +10,11 @@ import {useDispatch} from "react-redux";
 
 interface StaffListProps {
     currentTableData?: Staff[],
-    onDelete: (arg: number) => void
+    onDelete: (arg: boolean) => void,
+    setActiveItem: (arg : any) => void
 }
 
-export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete}) => {
+export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete , setActiveItem}) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -42,7 +43,10 @@ export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete}
                                 "fa-solid fa-times",
                                 cls.staffPage__delete
                             )}
-                            onClick={() => onDelete(item.id)}
+                            onClick={() => {
+                                onDelete(true)
+                                setActiveItem(item)
+                            }}
                         />
                     </td>
                 </tr>

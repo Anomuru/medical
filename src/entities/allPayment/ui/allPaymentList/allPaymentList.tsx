@@ -8,15 +8,15 @@ import {IAllPayment} from "../../model/types/allPaymentSchema";
 
 interface IPatientListProps {
     data: IAllPayment[],
-    // setActiveDeleteItem: (item: IPatient) => void,
-    // setActiveDelete: (arg: boolean) => void
+    setActiveDeleteItem: (item: IAllPayment) => void,
+    setActiveDelete: (arg: boolean) => void
 
 }
 
 export const AllPaymentList: FC<IPatientListProps> = (
     {data ,
-        // setActiveDeleteItem ,
-        // setActiveDelete
+        setActiveDeleteItem ,
+        setActiveDelete
     }) => {
 
 
@@ -37,20 +37,16 @@ export const AllPaymentList: FC<IPatientListProps> = (
                         </div>
                     </td>
                     <td>{item.date}</td>
-                    <td>{item.payment_type === 1 ? "cash" : item.payment_type === 2 ? "click" : item.payment_type === 3 ? "bank" : null}</td>
-                    {/*<td>*/}
-                    {/*    <div className={cls.check}>*/}
-                    {/*        {item.status ? <i className="fa-solid fa-check"/> : <i className={`fa-solid fa-xmark ${cls.red}`}/>}*/}
-                    {/*    </div>*/}
-                    {/*</td>*/}
-                    {/*{!item.deleted && <td>*/}
-                    {/*    <div onClick={() => {*/}
-                    {/*        setActiveDeleteItem(item)*/}
-                    {/*        setActiveDelete(true)*/}
-                    {/*    }} style={{background: "#FAECEC"}} className={cls.check}>*/}
-                    {/*        <i style={{color: "#FF0000"}} className="fas fa-times"/>*/}
-                    {/*    </div>*/}
-                    {/*</td>}*/}
+                    <td>{item.amount}</td>
+                    <td>{item.payment_type?.payment_type}</td>
+                    <td>
+                        <div onClick={() => {
+                            setActiveDeleteItem(item)
+                            setActiveDelete(true)
+                        }} style={{background: "#FAECEC"}} className={cls.check}>
+                            <i style={{color: "#FF0000"}} className="fas fa-times"/>
+                        </div>
+                    </td>
                 </tr>
             )
         })
@@ -63,11 +59,13 @@ export const AllPaymentList: FC<IPatientListProps> = (
                 <th>№</th>
                 <th>Ism-familiya</th>
                 <th>To'langan sana</th>
+                <th>To'lov</th>
                 <th>To'lov turi</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            {render()}
+             {render()}
 
             </tbody>
         </Table>

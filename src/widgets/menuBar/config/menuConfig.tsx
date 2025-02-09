@@ -18,7 +18,7 @@ export const menuConfig = [
         to: "payment",
         image: paymentImage,
         label: "Payment",
-        roles: [ROLES.operator, ROLES.reception]
+        roles: [ROLES.operator, ROLES.reception,ROLES.admin]
     },
     // {
     //     to: "dashboard",
@@ -69,16 +69,16 @@ export const menuConfig = [
     //     to: "pricePage",
     //     image: dashboardImage
     // },
-    // {
-    //     to: "devicePage",
-    //     image: deviceImage,
-    //     label: "Device",
-    //     roles: [ROLES.admin]
-    // },
-    // {
-    //     to: "allPayment",
-    //     image: deviceImage,
-    //     label: "Payments",
-    //     roles: [ROLES.admin]
-    // }
+    {
+        to: "devicePage",
+        image: deviceImage,
+        label: "Device",
+        roles: [ROLES.admin]
+    },
+    {
+        to: "allPayment",
+        image: deviceImage,
+        label: "Payments",
+        roles: [ROLES.admin]
+    }
 ]

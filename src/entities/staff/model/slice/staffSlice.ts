@@ -22,7 +22,8 @@ const initialState: StaffListSchema = {
         passport_number: "",
         passport_series: "",
         password: "",
-        username: ""
+        username: "",
+        role: ""
     },
     error: undefined
 }
