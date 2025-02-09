@@ -15,6 +15,13 @@
 
       &__img
         width: 50%
+        border-radius: 50%
+        object-fit: cover
+      &__imgs
+        width: 100%
+        height: 100%
+        border-radius: 50%
+        object-fit: cover
       &__name
         width: 100%
         color: #00ABB2
@@ -62,7 +69,7 @@
     &__profileSetBox
       display: flex
       flex-direction: column
-      gap: 2rem
+      gap: 6rem
       padding: 3rem !important
       &__heading
         font-family: Montserrat
@@ -86,7 +93,27 @@
           font-size: 1.6rem
           position: absolute
           top: 7rem
-
+.dropzone
+  display: flex
+  justify-content: center
+  align-items: center
+  .editDrop
+    width: 13rem!important
+    height: 13rem!important
+    border-radius: 50%
+    overflow: hidden
+    border: 5px dotted #00ABB2
+    display: flex
+    justify-content: center
+    align-items: center
+    i
+      font-size: 2rem
+      color: #00ABB2
+.formEdit
+  display: flex
+  gap: 3rem
+  align-items: center
+  flex-direction: column
 @media (max-width: 1440px)
   .profileBox
     &__rigthSide

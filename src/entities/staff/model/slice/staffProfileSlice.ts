@@ -17,6 +17,9 @@ const staffProfileSlice = createSlice({
             console.log(action.payload, "id")
             state.loading = true
             state.id = action.payload
+        },
+        onEditProfile: (state, action) => {
+            state.details = {...state.details, ...action.payload}
         }
     },
     extraReducers: builder =>
