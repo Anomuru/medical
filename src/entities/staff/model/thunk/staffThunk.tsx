@@ -11,8 +11,7 @@ export const fetchStaffListData = createAsyncThunk(
 
 export const deleteStaffData = createAsyncThunk(
     "staffSlice/deleteStaffData",
-    // @ts-ignore
-    ({id}) => {
+    ({id}:{id:string}) => {
         const {request} = useHttp()
         return request({url: `user/staff/crud/delete/${id}`, method: "DELETE", headers: headers()})
     }

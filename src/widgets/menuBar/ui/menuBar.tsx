@@ -35,7 +35,10 @@ export const MenuBar = () => {
                 {renderMenuItems()}
             </div>
             <Link
-                onClick={() => localStorage.clear()}
+                onClick={() => {
+                    localStorage.clear()
+                    sessionStorage.clear()
+                }}
                 extraClass={classNames(cls.menu__exit)}
                 to={"/login"}
             >

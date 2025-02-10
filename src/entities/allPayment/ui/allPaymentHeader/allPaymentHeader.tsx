@@ -16,10 +16,9 @@ interface IPatientFilter {
 export const AllPaymentHeader: FC<IPatientFilter> = memo(({filter , setActiveType , activeType}) => {
 
 
-    const handleCheckboxChange = (status: string) => {
-        // @ts-ignore
-        setActiveType((prev: string) => (prev === status ? null : status));
-    };
+    // const handleCheckboxChange = (status: string) => {
+    //     setActiveType((prev: string) => (prev === status ? null : status));
+    // };
 
     // const filterRender = () => {
     //     return filter?.map((item, index) => (

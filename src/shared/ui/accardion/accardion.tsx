@@ -10,7 +10,7 @@ interface IAccordionProps {
     backOpen: boolean,
     setBackOpen: (arg: boolean) => void,
     clazz?: string,
-    btns?: [],
+    btns?: JSX.Element[],
     number?: string | number
 }
 
@@ -31,12 +31,12 @@ export const Accordion: React.FC<IAccordionProps> = (props) => {
     const [open, setOpen] = useState(false)
 
 
-    const contentHeight: React.MutableRefObject<{ current?: { scrollHeight?: string } }> = useRef({})
+    const contentHeight = useRef<HTMLDivElement>(null)
 
-    // @ts-ignore
-    const toggleOpen = (e) => {
+    const toggleOpen = (e: React.MouseEvent<HTMLElement>) => {
+        const target = e.target as HTMLElement
 
-        if (e.target.tagName !== "BUTTON") {
+        if (target.tagName !== "BUTTON") {
             if (backOpen !== undefined) {
                 setBackOpen(!backOpen)
             } else {
@@ -69,11 +69,7 @@ export const Accordion: React.FC<IAccordionProps> = (props) => {
 
                 <div className={cls.btns}>
                     {subtitle && <div className={cls.checkbox}>{subtitle}</div>}
-                    {
-                        btns && btns.map(item => {
-                            return item
-                        })
-                    }
+                    {btns && btns.map((item, index) => <React.Fragment key={index}>{item}</React.Fragment>)}
                     <div onClick={toggleOpen} className={classNames(cls.arrow, {
                         [cls.active]: backOpen || open
                     })}>
@@ -84,11 +80,9 @@ export const Accordion: React.FC<IAccordionProps> = (props) => {
             <div
                 style={
                     backOpen || open
-                        // @ts-ignore
-                        ? {height: contentHeight.current.scrollHeight}
+                        ? {height: contentHeight?.current?.scrollHeight}
                         : {height: "0px"}
                 }
-                // @ts-ignore
                 ref={contentHeight}
                 className={cls.wrapper}
             >

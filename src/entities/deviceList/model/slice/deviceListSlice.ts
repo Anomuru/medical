@@ -5,7 +5,7 @@ import {deviceListThunk} from "../thunk/deviceListThunk";
 
 const initialState: DeviceListSchema = {
     loading: false,
-    data: {},
+    data: { results: []},
     error: undefined
 }
 
@@ -23,7 +23,6 @@ const deviceListSlice = createSlice({
 
 
             state.data = {
-                // @ts-ignore
                 results: [...state.data.results, action.payload],
                 next: state.data?.next,
                 previous: state.data?.previous,

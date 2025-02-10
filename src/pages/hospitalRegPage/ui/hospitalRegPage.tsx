@@ -321,9 +321,7 @@ export const HospitalRegPage = () => {
                                     return (
                                         <Radio
                                             name={"radio"}
-                                            // @ts-ignore
                                             value={inner.id}
-                                            // @ts-ignore
                                             onChange={setSelectedRadio}
                                             checked={inner.id === selectedRadio}
                                         >

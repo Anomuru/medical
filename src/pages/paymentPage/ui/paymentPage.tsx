@@ -59,7 +59,7 @@ export const PaymentPage = () => {
     const selectedLocation = useSelector(getSelectedLocationData)
     const selectedBranch = useSelector(getUserBranch)
 
-    const {register, setValue, handleSubmit} = useForm()
+    const {register, setValue, handleSubmit} = useForm<IPaymentData>()
     const data = useSelector(getPaymentData)
     const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
@@ -114,14 +114,15 @@ export const PaymentPage = () => {
     }
 
     const onClick = (completeData: IPaymentData) => {
-        const data = {
-            ...completeData,
-            payment_type: selectedRadio,
-            user: userId,
-            branch: selectedBranch
+        if (userId && selectedBranch) {
+            const data = {
+                ...completeData,
+                payment_type: selectedRadio,
+                user: userId,
+                branch: selectedBranch
+            }
+            dispatch(givePaymentThunk(data))
         }
-        //@ts-ignore
-        dispatch(givePaymentThunk(data))
     }
 
     const [selectedRadio, setSelectedRadio] = useState<string>("")
@@ -176,7 +177,6 @@ export const PaymentPage = () => {
                     {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
                         <UserAnalysis
                             item={analiz.analysis_list}
-                            // @ts-ignore
                             total={totalOther}
                             onDeleteAnalysisId={onDeleteAnalysis}
                             onDeleteAllAnalysis={onDeleteAllAnalysis}
@@ -189,7 +189,7 @@ export const PaymentPage = () => {
 
 
 
-                <Form extraClass={cls.cashier}>
+                <Form onSubmit={handleSubmit(onClick)} extraClass={cls.cashier}>
                     <h1>Kassir</h1>
                     <Input name={"date"} title={"Kun"} type={"date"} register={register}/>
                     <div className={cls.types}>
@@ -198,12 +198,9 @@ export const PaymentPage = () => {
                                 return (
                                     <Radio
                                         name={item.payment_type}
-                                        // @ts-ignore
                                         value={item.id}
-                                        // @ts-ignore
                                         onChange={setSelectedRadio}
-                                        //@ts-ignore
-                                        checked={item.id === selectedRadio}
+                                        checked={item.id === Number(selectedRadio)}
                                     >
                                         {item.payment_type}
                                     </Radio>
@@ -213,8 +210,7 @@ export const PaymentPage = () => {
 
                     </div>
                     {
-                        //@ts-ignore
-                        <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Add</Button>
+                        <Button extraClass={cls.submit}>Add</Button>
                     }
 
 

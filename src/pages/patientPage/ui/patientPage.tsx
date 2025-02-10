@@ -38,7 +38,7 @@ export const PatientPage = () => {
 
 
     const patientData = useSelector(getPatientData)
-    const [activeType, setActiveType] = useState("")
+    const [activeType, setActiveType] = useState<string>("")
 
     useEffect(() => {
         dispatch(fetchPatientList({branchId: 1 , filter: activeType}))

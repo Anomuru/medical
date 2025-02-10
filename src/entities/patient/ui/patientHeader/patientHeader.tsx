@@ -8,7 +8,7 @@ import cls from "./patientHeader.module.sass";
 
 interface IPatientFilter {
     filter?: {name: string , status: string}[],
-    setActiveType: (arg: string) => void,
+    setActiveType: React.Dispatch<React.SetStateAction<string>>,
     activeType: string
 }
 
@@ -17,8 +17,7 @@ export const PatientHeader: FC<IPatientFilter> = memo(({filter , setActiveType ,
 
 
     const handleCheckboxChange = (status: string) => {
-        // @ts-ignore
-        setActiveType((prev: string) => (prev === status ? null : status));
+        setActiveType((prev: string) => (prev === status ? "" : status));
     };
 
     const filterRender = () => {

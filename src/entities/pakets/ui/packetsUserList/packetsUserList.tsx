@@ -8,7 +8,7 @@ interface IPacketsUser {
     packet_id?: number,
     packet_name?: string,
     list?: IAnalysisProps[],
-    total?: string,
+    total?: string | number,
     onDeleteAnalysis: (arg: number) => void
     onDeletePacket: (arg?: number) => void
 }

@@ -103,7 +103,6 @@ interface IDeviceListResponse {
 
 export const DeviceList: React.FC = () => {
     const dispatch = useAppDispatch();
-    //ts-ignore
     const getData = useSelector(getDeviceList) as IDeviceListResponse;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pageSize = useMemo(() => 50, []);
@@ -116,7 +115,6 @@ export const DeviceList: React.FC = () => {
 
 
             // useEffect(() => {
-            //     //@ts-ignore
             //     dispatch(deviceProfileThunk())
             // }, [])
     const devices = useCallback(() => {

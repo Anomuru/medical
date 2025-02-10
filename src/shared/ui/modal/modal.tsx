@@ -11,7 +11,7 @@ interface IModalProps {
     extraClass?: string,
     type?: string,
     typeIcon?: JSX.Element | JSX.Element[],
-    title? : string
+    title?: string
 }
 
 export const Modal: React.FC<IModalProps> = memo((props) => {
@@ -26,9 +26,9 @@ export const Modal: React.FC<IModalProps> = memo((props) => {
         title
     } = props
 
-    // @ts-ignore
-    const onClick = (target) => {
-        if (target && typeof target.className === 'string') {
+    const onClick = (event: React.MouseEvent<HTMLElement>): void => {
+        const target = event.target as HTMLElement
+        if (target && target.classList) {
             if (target.className.includes('outClose') || target.className.includes('innerClose')) {
                 setActive(false);
             }
@@ -44,7 +44,7 @@ export const Modal: React.FC<IModalProps> = memo((props) => {
                 createPortal(
                     <div
                         className={classNames(cls.modal, "outClose")}
-                        onClick={(e) => onClick(e.target)}
+                        onClick={onClick}
                     >
                         <div className={classNames(cls.modal__inner, extraClass)}>
 
@@ -53,7 +53,7 @@ export const Modal: React.FC<IModalProps> = memo((props) => {
                                 <h1>{title}</h1>
                                 {!typeIcon ?
                                     <i
-                                        onClick={(e) => onClick(e.target)}
+                                        onClick={onClick}
                                         className={classNames(cls.modal__close, "innerClose", "fas fa-times")}
                                     />
                                     // <img
@@ -82,7 +82,7 @@ export const Modal: React.FC<IModalProps> = memo((props) => {
             createPortal(
                 <div
                     className={classNames(cls.modal, "outClose")}
-                    onClick={(e) => onClick(e.target)}
+                    onClick={onClick}
                 >
                     {children}
                 </div>,

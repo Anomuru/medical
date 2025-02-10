@@ -22,6 +22,7 @@ import {useNavigate} from "react-router";
 import {headers, useHttp} from "../../../shared/api/base";
 import {DeleteModal} from "features/deleteModal/ui/DeleteModal";
 import {alertAction} from "features/alert/model/slice/alertSlice";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 const reducers: ReducersList = {
     staffSlice: staffReducer
@@ -30,13 +31,12 @@ const reducers: ReducersList = {
 export const StaffPage = () => {
 
     const {request} = useHttp()
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const {deleteStaff} = staffActions
     const [active , setActive] = useState(false)
 
     useEffect(() => {
-        // @ts-ignore
         dispatch(fetchStaffListData())
     }, [])
 

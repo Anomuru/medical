@@ -14,7 +14,6 @@ export const deviceThunk = createAsyncThunk(
                 url: `device/crud/create/`,
                 method: "POST",
                 body: data,
-                //@ts-ignore
                 headers: headerImg()
             });
             return response;

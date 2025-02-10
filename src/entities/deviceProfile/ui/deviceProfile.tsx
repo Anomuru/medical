@@ -40,7 +40,7 @@ interface IList {
 }
 
 interface IDeviceUserResponse {
-    count: number;
+    count?: number;
     next?: string;
     previous?: string;
     results?: IList[];
@@ -74,22 +74,20 @@ export const DeviceProfile = () => {
 
     const dispatch = useAppDispatch()
     const getData: any = useSelector(getProfile)
-    //@ts-ignore
     const getUsers = useSelector(getProfileUsers) as IDeviceUserResponse
     const {id} = useParams()
     const {request} = useHttp()
 
     useEffect(() => {
-        // @ts-ignore
-        dispatch(deviceProfileThunk(id))
-        // @ts-ignore
-        dispatch(deviceProfileUsersThunk(id))
+        if (id) {
+            dispatch(deviceProfileThunk({id}))
+            dispatch(deviceProfileUsersThunk({id}))
+        }
     }, [id])
 
     useEffect(() => {
 
-        // @ts-ignore
-        if (userId) dispatch(deviceAnalisThunk(userId))
+        if (userId) dispatch(deviceAnalisThunk({userId}))
     }, [userId])
 
     const onClick = (portal: boolean) => {
@@ -222,12 +220,12 @@ export const DeviceProfile = () => {
                             {renderPatientsData()}
                             </tbody>
                         </Table>
-                        <Pagination
+                        {getUsers.count && <Pagination
                             totalCount={getUsers?.count}
                             onPageChange={setCurrentPage}
                             currentPage={currentPage}
                             pageSize={pageSize}
-                        />
+                        />}
                     </div>
                 </div>
                 <Box extraClass={cls.profileContainer__rightContainer}>

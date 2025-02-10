@@ -7,14 +7,14 @@ export interface Device {
 
 
 export interface DeviceProps {
-    results?: Device[]
+    results: Device[]
     count?: number
     next?: string
     previous?: string
 }
 
 export interface DeviceListSchema {
-    data?: DeviceProps,
+    data: DeviceProps,
     list?: DeviceAdd[],
     error?: "error",
     loading: boolean

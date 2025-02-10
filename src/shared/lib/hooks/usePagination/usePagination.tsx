@@ -1,7 +1,7 @@
 import {FC, useMemo} from 'react';
 
 interface IUsePaginationProps {
-    totalCount?: number,
+    totalCount: number,
     pageSize: number,
     siblingCount?: number,
     currentPage: number
@@ -14,13 +14,14 @@ const range = (start: number, end: number): number[] => {
     return Array.from({length}, (_, idx) => idx + start);
 };
 
-// @ts-ignore
-export const usePagination: (props: IUsePaginationProps) => number[] | (string | number)[] = (props) => {
+export const usePagination = ({
+                                  totalCount,
+                                  pageSize,
+                                  siblingCount = 1,
+                                  currentPage,
+                              }: IUsePaginationProps): Array<number | string> => {
 
-    const {totalCount, pageSize, siblingCount = 1, currentPage} = props
-
-    return useMemo(() => {
-        // @ts-ignore
+    return useMemo<Array<number | string>>(() => {
         const totalPageCount = Math.ceil(totalCount / pageSize);
 
         // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
@@ -62,5 +63,6 @@ export const usePagination: (props: IUsePaginationProps) => number[] | (string |
             let middleRange = range(leftSiblingIndex, rightSiblingIndex);
             return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
         }
+        return []
     }, [totalCount, pageSize, siblingCount, currentPage]);
 };
