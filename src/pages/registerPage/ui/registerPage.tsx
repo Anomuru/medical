@@ -175,7 +175,6 @@ export const RegisterPage = () => {
             if (item.isInput) {
                 return (
                     <Input
-                        // @ts-ignore
                         register={register}
                         placeholder={item.label}
                         type={item.type}

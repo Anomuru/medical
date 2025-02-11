@@ -30,6 +30,7 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {Pagination} from "../../../features/pagination";
+import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 
 
@@ -59,7 +60,7 @@ export const PricePage = () => {
 
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pageSize = useMemo(() => 50, []);
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
 
     const type = useSelector(getPriceTypes)
@@ -68,12 +69,9 @@ export const PricePage = () => {
 
     useEffect(() => {
 
-        // @ts-ignore
-        dispatch(fetchPriceType(currentPage))
+        dispatch(fetchPriceType())
 
-        // @ts-ignore
         dispatch(fetchPriceTypes())
-        // @ts-ignore
 
         dispatch(fetchDeviceList())
 

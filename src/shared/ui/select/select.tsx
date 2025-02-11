@@ -12,6 +12,7 @@ interface ISelectProps {
     optionsData?: any[],
     keyValue?: string,
     status?: string,
+    autoSelect?: boolean
 }
 
 export const Select: React.FC<ISelectProps> = (props) => {
@@ -25,6 +26,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
         optionsData,
         keyValue,
         status,
+        autoSelect = true
     } = props
 
 
@@ -52,12 +54,12 @@ export const Select: React.FC<ISelectProps> = (props) => {
 
     // Agar faqat bitta ma'lumot kelsa, uni avtomatik tanlash
     useEffect(() => {
-        if (optionsData?.length === 1) {
+        if (autoSelect && optionsData?.length === 1) {
             const item = optionsData[0];
             const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
             setSelectOption(value);
         }
-    }, [optionsData, keyValue, setSelectOption]);
+    }, [optionsData, keyValue, setSelectOption, autoSelect]);
 
     const renderedOptions = renderOptionsOfSelect();
 

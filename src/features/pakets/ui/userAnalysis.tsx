@@ -6,7 +6,7 @@ import {IAnalysisProps, IUserPackets} from "../../../entities/pakets/model/paket
 
 interface IUserAnalysis {
     item: IAnalysisProps[],
-    total: number | undefined,
+    total?: string | number,
     onDeleteAnalysisId?: (arg: number) => void,
     onDeleteAllAnalysis?: () => void,
 

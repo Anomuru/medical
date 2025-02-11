@@ -88,8 +88,6 @@ const priceSlice = createSlice({
                     return {
                         ...item,
                         analyses: item.analyses.filter(
-                            // @ts-ignore
-
                             analysis => analysis.id !== action.payload.analyses
                         )
                     };

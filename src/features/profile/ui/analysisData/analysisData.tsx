@@ -18,6 +18,7 @@ import {IPackets, PacketsList} from "entities/pakets";
 import {Packets} from "../../../pakets";
 import {Alert} from "features/alert/ui/alert";
 import {alertAction} from "features/alert/model/slice/alertSlice";
+import {IAnalysisProps, IUserPackets} from "../../../../entities/pakets/model/paketsSchema";
 
 
 export const AnalysisData = () => {
@@ -85,7 +86,7 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
     const [selectedItems, setSelectedItems] = useState<IAnalysis[]>([]);
     const [selectedItemId, setSelectedItemId] = useState<number[]>([]);
     const [selectedPacketItems, setSelectedPacketItems] = useState<IPackets[]>([]);
-    const [selectedPacketItemsId, setSelectedPacketItemsId] = useState<[]>([]);
+    const [selectedPacketItemsId, setSelectedPacketItemsId] = useState<number[]>([]);
     const {id} = useParams()
 
     const dispatch = useAppDispatch()
@@ -162,7 +163,6 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
         setSelectedPacketItems(prev => {
             return [...prev, item]
         })
-        // @ts-ignore
 
 
         setSelectedPacketItemsId(prev => [
@@ -178,7 +178,6 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
         setSelectedPacketItems(prev => {
             return prev.filter(item => item.id !== id)
         })
-        // @ts-ignore
         setSelectedPacketItemsId(prev => prev.filter(i => i !== id))
     }
 
@@ -276,8 +275,10 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
 }
 
 
+interface IProfileDataProps {packet: IUserPackets[], analysis_list:IAnalysisProps[]}
+
 const ProfileUserAnalysis = () => {
-    const profileData = useSelector(getProfileAnalysis)
+    const profileData = useSelector(getProfileAnalysis) as IProfileDataProps
 
     const dispatch = useAppDispatch()
     const {request} = useHttp()
@@ -292,7 +293,7 @@ const ProfileUserAnalysis = () => {
         request({
             url: `user/user_analysis_crud/delete/`,
             method: "DELETE",
-            body: JSON.stringify({packet_id: packet_id , type: "packet" , user: Number(id)}),
+            body: JSON.stringify({packet_id: packet_id, type: "packet", user: Number(id)}),
             headers: headers()
         })
             .then(res => {
@@ -314,7 +315,7 @@ const ProfileUserAnalysis = () => {
         request({
             url: `user/user_analysis_crud/delete/`,
             method: "DELETE",
-            body: JSON.stringify({analysis_id: analysisID , type: "analysis" , user: Number(id)}),
+            body: JSON.stringify({analysis_id: analysisID, type: "analysis", user: Number(id)}),
             headers: headers()
         })
             .then(res => {
@@ -334,7 +335,6 @@ const ProfileUserAnalysis = () => {
                     profileData?.packet.map(item => {
                         return (
                             <UserPackets
-                                // @ts-ignore
                                 item={item}
                                 onDeletePacketAnalysis={onDeletePacketAnalysis}
                                 onDeletePacketId={onDeletePacket}
@@ -348,7 +348,6 @@ const ProfileUserAnalysis = () => {
 
                 <UserAnalysis
 
-                    // @ts-ignore
                     item={profileData?.analysis_list}
                     onDeleteAnalysisId={onDeleteAnalysis}
                     // onDeleteAllAnalysis={onDeleteAllAnalysis}

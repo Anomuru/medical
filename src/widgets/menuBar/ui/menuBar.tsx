@@ -6,6 +6,7 @@ import {Link} from "shared/ui/link";
 import {menuConfig} from "../config/menuConfig";
 
 import cls from "./menuBar.module.sass";
+import classNames from "classnames";
 
 export const MenuBar = () => {
 
@@ -16,12 +17,13 @@ export const MenuBar = () => {
         return menuConfig.map(item => {
             if (userRole && item.roles.includes(userRole))
                 return (
-                    <Link to={item.to}>
+                    <Link extraClass={cls.item} to={item.to}>
                         <img
                             style={{color: "white"}}
                             src={item.image}
                             alt={item.to}
                         />
+                        <p>{item.label}</p>
                     </Link>
                 )
         })
@@ -29,7 +31,20 @@ export const MenuBar = () => {
 
     return (
         <div className={cls.menu}>
-            {renderMenuItems()}
+            <div className={cls.menu__items}>
+                {renderMenuItems()}
+            </div>
+            <Link
+                onClick={() => {
+                    localStorage.clear()
+                    sessionStorage.clear()
+                }}
+                extraClass={classNames(cls.menu__exit)}
+                to={"/login"}
+            >
+                <i className="fas fa-sign-out-alt"/>
+                <p>Log out</p>
+            </Link>
         </div>
     );
 }

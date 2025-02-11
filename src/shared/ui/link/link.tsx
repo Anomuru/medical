@@ -7,7 +7,8 @@ import cls from "./link.module.sass";
 interface ILinkProps {
     to: string,
     extraClass?: string,
-    children: JSX.Element | string
+    children: JSX.Element | JSX.Element[] | string,
+    onClick?: () => void
 }
 
 export const Link = (props: ILinkProps) => {
@@ -15,13 +16,16 @@ export const Link = (props: ILinkProps) => {
     const {
         to,
         extraClass,
-        children
+        children,
+        onClick
     } = props
 
     return (
         <NavLink
+            onClick={onClick}
             className={({isActive}) =>
-                isActive ? classNames(cls.link, cls.active) : cls.link
+                isActive ? classNames(cls.link, cls.active, extraClass)
+                    : classNames(cls.link, extraClass)
             }
             to={to}
         >

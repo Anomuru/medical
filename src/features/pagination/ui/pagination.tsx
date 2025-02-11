@@ -37,7 +37,6 @@
 //
 //
 //     useEffect(() => {
-//         // @ts-ignore
 //         setCurrentTableData(() => {
 //             const firstPageIndex = (currentPage - 1) * pageSize;
 //             const lastPageIndex = firstPageIndex + pageSize;
@@ -45,7 +44,6 @@
 //         })
 //     }, [pageSize, currentPage, users, setCurrentTableData])
 //
-//     // @ts-ignore
 //     const paginationRange: number[] | (string & number)[] = usePagination({
 //         currentPage,
 //         totalCount: users?.length,
@@ -55,7 +53,6 @@
 //
 //     const renderPageNumbers = useCallback(() => {
 //         return paginationRange?.map((pageNumber, index) => {
-//             // @ts-ignore
 //             if (pageNumber === DOTS) {
 //                 return <li key={index} className={classNames(cls.pagination_item, "dots")}>&#8230;</li>;
 //             }
@@ -167,18 +164,19 @@ export const Pagination: React.FC<IPaginationProps> = ({
             if (pageNumber === DOTS) {
                 return <li key={index} className={classNames(cls.pagination_item, 'dots')}>&#8230;</li>;
             }
-            return (
-                <li
-                    key={index}
-                    className={classNames(cls.pagination_item, {
-                        [cls.selected]: pageNumber === currentPage
-                    })}
-                    // @ts-ignore
-                    onClick={() => onPageChange(pageNumber)}
-                >
-                    {pageNumber}
-                </li>
-            );
+            if (typeof pageNumber === "number") {
+                return (
+                    <li
+                        key={index}
+                        className={classNames(cls.pagination_item, {
+                            [cls.selected]: pageNumber === currentPage
+                        })}
+                        onClick={() => onPageChange(pageNumber)}
+                    >
+                        {pageNumber}
+                    </li>
+                );
+            }
         });
     }, [currentPage, onPageChange, paginationRange]);
 
