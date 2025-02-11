@@ -54,11 +54,11 @@ const reducers: ReducersList = {
 const types = [
     {
         id: "create",
-        name: "Yangi"
+        name: "Новый"
     },
     {
         id: "change",
-        name: "Eski"
+        name: "Старый"
     }
 ]
 
@@ -612,9 +612,9 @@ export const HospitalRegPage = () => {
                                         <div className={cls.info}>
                                             {
                                                 isChanging ?
-                                                    <h1 className={cls.info__title}>Changing Information</h1>
+                                                    <h1 className={cls.info__title}>Изменение информации</h1>
                                                     :
-                                                    <h1 className={cls.info__title}>Hospital Registration Form</h1>
+                                                    <h1 className={cls.info__title}>Форма регистрации в больнице</h1>
                                             }
                                         </div>
                                     </div>

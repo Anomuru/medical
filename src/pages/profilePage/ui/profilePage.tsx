@@ -46,12 +46,12 @@ const reducers: ReducersList = {
 
 const dataButton = [
     {
-        name: "Profile",
+        name: "Профиль",
         path: "profile",
         role: [ROLES.patient, ROLES.admin, ROLES.mainAdmin, ROLES.operator, ROLES.reception]
     },
     {
-        name: "TimeTable",
+        name: "Расписание",
         path: "timeTable",
         role: [ROLES.admin, ROLES.mainAdmin, ROLES.operator, ROLES.reception]
     },
@@ -61,7 +61,7 @@ const dataButton = [
     //     role: [ROLES.patient]
     // },
     {
-        name: "Analysis",
+        name: "Анализ",
         path: "analysis",
         role: [ROLES.patient]
     }
@@ -99,27 +99,27 @@ export const ProfilePage = () => {
         {
             name: "username",
             placeholder: "Введите имя пользователя",
-            title: "Username",
+            title: "Имя пользователя",
             rules: {value: details?.username}
         }, {
             name: "name",
             placeholder: "Введите имя",
-            title: "Name",
+            title: "Имя",
             rules: {value: details?.name}
         }, {
             name: "surname",
             placeholder: "Введите фамилию",
-            title: "Surname",
+            title: "Фамилия",
             rules: {value: details?.surname}
         }, {
             name: "email",
             placeholder: "Введите адрес электронной почты",
-            title: "Email",
+            title: "Электронная почта",
             rules: {value: details?.email}
         }, {
             name: "phone_number",
             placeholder: "Введите телефон",
-            title: "Phone",
+            title: "Телефон",
             type: "number",
             rules: {value: details?.phone_number}
         },
@@ -167,6 +167,26 @@ export const ProfilePage = () => {
         }
     }
 
+    const onImgChange = () => {
+        if (files) {
+            formData.append("photo", files[0])
+        }
+        request({
+            url: `user/users/crud/update/${staffId}`,
+            method: "PATCH",
+            body: formData,
+            headers: headers()
+        }).then(res => {
+            dispatch(staffProfileActions.onEditProfile(res))
+        })
+        dispatch(alertAction.onAddAlertOptions({
+            type: "success",
+            status: true,
+            msg: "Успешно изменено"
+        }))
+        setEditModal(false)
+    }
+
     const onCheckUsername = (data: string) => {
 
         request({
@@ -211,7 +231,6 @@ export const ProfilePage = () => {
                 <div className={cls.profileBox__leftSide}>
                     <Box extraClass={cls.profileBox__leftSide__profileContainer}>
                         {
-                            //@ts-ignore
                             <img onClick={() => setEditModal(!editModal)} className={cls.profileBox__leftSide__profileContainer__img} src={details?.photo ? details.photo : profileImg} alt=""/>
 
                         }
@@ -286,7 +305,7 @@ export const ProfilePage = () => {
                                       onSubmit={handleSubmit(onSubmitPassword)}>
                                     <Input
                                         // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
-                                        title={"Password"}
+                                        title={"Пароль"}
                                         placeholder={"Введите пароль"}
                                         name={"password"}
                                         register={register}
@@ -294,7 +313,7 @@ export const ProfilePage = () => {
                                     />
                                     <Input
                                         // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
-                                        title={"Confirm Password"}
+                                        title={"Подтвердите пароль"}
                                         placeholder={"Подтвердите пароль"}
                                         name={"confirm_password"}
                                         register={register}
@@ -339,14 +358,13 @@ export const ProfilePage = () => {
                 </Routes>
 
             </div>
-            <Modal title={"Profile edit"} active={editModal} setActive={setEditModal}>
+            <Modal title={"Редактировать профиль"} active={editModal} setActive={setEditModal}>
                 <Form onSubmit={handleSubmit(onImgChange)} extraClass={cls.formEdit}>
                     <div {...getRootProps({className: cls.dropzone})}>
                         <input{...getInputProps()}/>
 
                         {!files ? <div className={cls.editDrop}>
                             {
-                                //@ts-ignore
                                 <img className={cls.profileBox__leftSide__profileContainer__imgs} src={details?.photo ? details?.photo : profileImg} alt=""/>
 
                             }
@@ -360,7 +378,7 @@ export const ProfilePage = () => {
 
                         }
                     </div>
-                    <Button children={"Save photo"}/>
+                    <Button children={"Сохранить фото"}/>
                 </Form>
 
             </Modal>
