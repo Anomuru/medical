@@ -23,7 +23,7 @@ import {createEventsServicePlugin} from "@schedule-x/events-service";
 import {createCalendarControlsPlugin} from "@schedule-x/calendar-controls";
 import {headers, useHttp} from "shared/api/base";
 
-
+import "./schedule.sass"
 
 
 const types = [
@@ -62,6 +62,7 @@ export const WorkTable = () => {
 
     const calendarControls = useState(() => createCalendarControlsPlugin())[0]
     const eventsServicePlugin = useState(() => createEventsServicePlugin())[0];
+
 
 
     const today = new Date();
@@ -152,6 +153,8 @@ export const WorkTable = () => {
             start: '08:00',
             end: '00:00',
         },
+
+
         callbacks: {
 
             onDoubleClickDateTime(data: any) {
@@ -259,6 +262,7 @@ export const WorkTable = () => {
                 </div>
                 <div className={cls.mainBox__rightSight}>
                     <ScheduleXCalendar
+                        style={{ fontSize: 25+ "px" }}
                         customComponents={{
                             timeGridEvent: CustomEvent,
                             // dateGridEvent: CustomDateGridEvent,
