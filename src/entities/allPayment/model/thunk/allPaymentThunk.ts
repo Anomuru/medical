@@ -7,7 +7,7 @@ import {paymentListActions} from "../slice/allPaymentSlice";
 
 export const fetchAllPaymentThunk  = createAsyncThunk<
     void,
-    { branch: number | undefined, payType?: number | undefined },
+    { branch: any, payType?: number | undefined },
     ThunkConfig<string>
 >("allPaymentSlice/fetchAllPaymentThunk", async ({branch, payType}, thunkApi) => {
     const {extra, dispatch, rejectWithValue} = thunkApi;

@@ -173,13 +173,13 @@ export const HospitalRegPage = () => {
             value: [{label: "Man", id: "man"}, {label: "Woman", id: "woman"}],
             isRadio: true,
         },
-        {
-            name: "password",
-            label: "Password",
-            isInput: true,
-            type: "password",
-            default: "12345678"
-        },
+        // {
+        //     name: "password",
+        //     label: "Password",
+        //     isInput: true,
+        //     type: "password",
+        //     default: "12345678"
+        // },
 
     ]
 
@@ -276,6 +276,7 @@ export const HospitalRegPage = () => {
                 setDoctors(res.results)
             })
     }, [])
+    console.log(doctors)
 
     useEffect(() => {
         request({
@@ -336,7 +337,7 @@ export const HospitalRegPage = () => {
                     )
                 } else return (
                     <Input
-                        value={item?.default}
+                        // value={item?.default}
                         type={item.type}
                         placeholder={item.label}
                         name={item.name}

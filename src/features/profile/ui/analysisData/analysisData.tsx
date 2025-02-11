@@ -349,7 +349,7 @@ const ProfileUserAnalysis = () => {
 
                 <UserAnalysis
 
-                    total={`${totalPrice}`}
+                    total={totalPrice}
                     // @ts-ignore
                     item={profileData?.analysis_list}
                     onDeleteAnalysisId={onDeleteAnalysis}
