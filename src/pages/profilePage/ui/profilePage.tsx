@@ -25,8 +25,8 @@ import {
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {data, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
 import classNames from "classnames";
-import {profileAnalysisReducer} from "features/profile/model/slice/profileAnalysisSlice";
-import {packetsReducer} from "entities/pakets";
+import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileAnalysisSlice";
+import {packetsReducer} from "../../../entities/pakets";
 import {ROLES} from "shared/const/roles";
 import {getUserRole} from "entities/user";
 import {useDropzone} from "react-dropzone";
@@ -34,7 +34,6 @@ import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
 import {Modal} from "../../../shared/ui/modal";
 import {alertAction} from "../../../features/alert/model/slice/alertSlice";
-import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 
 const reducers: ReducersList = {
@@ -67,35 +66,17 @@ const dataButton = [
     }
 ]
 
-interface ISubmitProps {
-    username: string,
-    name: string,
-    surname: string,
-    email: string,
-    phone_number: string,
-}
-
 export const ProfilePage = () => {
 
     const {request} = useHttp()
-    const dispatch = useAppDispatch()
-    const {
-        register,
-        handleSubmit,
-        setValue
-    } = useForm<ISubmitProps>()
+    const dispatch = useDispatch()
+    const {register, handleSubmit, setValue} = useForm()
     const {id: staffId} = useParams()
     const details = useSelector(getStaffProfileData)
 
-    const meRole = useSelector(getUserRole)
+    const meRole  = useSelector(getUserRole)
 
-    const staffDetails : {
-        name: "username" | "name" | "surname" | "email" | "phone_number",
-        placeholder: string,
-        title: string
-        rules: any,
-        type?: string
-    }[] = useMemo(() => [
+    const staffDetails = useMemo(() => [
         {
             name: "username",
             placeholder: "Enter username",
@@ -128,6 +109,7 @@ export const ProfilePage = () => {
     useEffect(() => {
         if (staffId) {
             console.log(staffId, "id 2")
+            // @ts-ignore
             dispatch(fetchStaffProfileData({staffId}))
         }
     }, [dispatch, staffId])
@@ -153,9 +135,6 @@ export const ProfilePage = () => {
         },
     });
 
-    const onSubmit = (data: ISubmitProps) => {
-        if (staffId)
-            dispatch(changeStaffDetails({staffId, data}))
     const onSubmit = (data: any) => {
         const { password, confirm_password, ...dataToSubmit } = data;
         if (password && confirm_password) {
@@ -194,7 +173,8 @@ export const ProfilePage = () => {
     const onSubmitPassword = (data: any) => {
         if (data.password.length < 8 || data.confirm_password.length < 8) setPasswordError("less_than_8")
         else {
-            if (data.password === data.confirm_password && staffId) {
+            if (data.password === data.confirm_password) {
+                // @ts-ignore
                 dispatch(changeStaffDetails({staffId, data}))
                 setPasswordError("")
             } else setPasswordError("identical")
@@ -276,14 +256,14 @@ export const ProfilePage = () => {
                                                 // localStorage.setItem("route", item.path)
                                             }}
                                         >
-                                            <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn}
-                                                    children={`${item.name}`}/>
+                                            <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={`${item.name}`}/>
                                         </NavLink>
                                     )
                                 }
                             })
                         }
                     </div>
+
 
 
                 </div>
@@ -373,6 +353,7 @@ export const ProfilePage = () => {
                     <Route path={"analysis"} element={<AnalysisData/>}/>
 
 
+
                 </Routes>
 
             </div>
@@ -382,11 +363,11 @@ export const ProfilePage = () => {
                         <input{...getInputProps()}/>
 
                         {!files ? <div className={cls.editDrop}>
-                            {
-                                //@ts-ignore
-                                <img className={cls.profileBox__leftSide__profileContainer__imgs} src={details?.photo ? details?.photo : profileImg} alt=""/>
+                                {
+                                    //@ts-ignore
+                                    <img className={cls.profileBox__leftSide__profileContainer__imgs} src={details?.photo ? details?.photo : profileImg} alt=""/>
 
-                            }
+                                }
                             </div> :
                             <div className={cls.editDrop}>
                                 <img  className={cls.profileBox__leftSide__profileContainer__imgs}
