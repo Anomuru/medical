@@ -5,7 +5,7 @@ import {MenuBar} from "widgets/menuBar";
 import {Header} from "widgets/header";
 
 import cls from "./layout.module.sass";
-import {Alert} from "../../../features/alert/ui/alert";
+import {Alert} from "features/alert/ui/alert";
 
 export const Layout = () => {
     return (
