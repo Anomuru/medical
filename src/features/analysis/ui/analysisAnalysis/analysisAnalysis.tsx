@@ -231,6 +231,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
         request({url: `analysis/analysis/crud/update/${itemId}/`, body: JSON.stringify(res), method: "PUT"})
             .then(res => {
                 setActive(false)
+                setDeleteConfirm(false)
                 dispatch(analysisActions.editAnalysis({id: itemId, data: res}))
                 dispatch(alertAction.onAddAlertOptions({type: "success", status: true, msg: "Успешно изменено"}))
             })
@@ -242,6 +243,8 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
         request({url: `analysis/analysis/crud/delete/${itemId}/`, method: "DELETE"})
             .then(res => {
                 setActive(false)
+                setDeleteConfirm(false)
+
                 dispatch(analysisActions.deleteAnalysis(itemId))
                 dispatch(alertAction.onAddAlertOptions({type: "success", status: true, msg: res.message}))
 

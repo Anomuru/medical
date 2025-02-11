@@ -10,7 +10,7 @@ export interface Staff {
     sex: string | number,
     birth_date: string,
     address: string,
-    password: string,
+    password?: string,
     branch: number,
     email: string,
     passport_series: string,

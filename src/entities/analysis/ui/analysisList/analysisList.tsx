@@ -22,6 +22,7 @@ export const AnalysisList = memo(({isChange}: any) => {
                     <td>{item?.packet}</td>
                     <td>{item?.device}</td>
                     <td>{item?.container}</td>
+                    <td>{item.price}</td>
                     <td>
                         <i onClick={() => isChange(item)} className={"fas fa-edit"}/>
                     </td>
@@ -41,6 +42,7 @@ export const AnalysisList = memo(({isChange}: any) => {
                 <th>Пакет</th>
                 <th>Устройство</th>
                 <th>Контейнер</th>
+                <th>Цена</th>
                 <th/>
             </tr>
             </thead>

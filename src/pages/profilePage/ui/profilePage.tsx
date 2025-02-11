@@ -2,7 +2,13 @@ import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'rea
 import {useDispatch, useSelector} from "react-redux";
 
 import {AnalysisData, ProfileModal} from "features/profile";
-import {getStaffId, fetchStaffProfileData, getStaffProfileData, staffProfileReducer} from "entities/staff";
+import {
+    getStaffId,
+    fetchStaffProfileData,
+    getStaffProfileData,
+    staffProfileReducer,
+    staffProfileActions
+} from "entities/staff";
 import {Box} from "shared/ui/box";
 import {Button} from "shared/ui/button";
 import {Form} from "shared/ui/form";
@@ -11,7 +17,7 @@ import {Input} from "shared/ui/input";
 import cls from './profilePage.module.sass'
 import profileImg from 'shared/assets/images/profileImage.png'
 import {useForm, useWatch} from "react-hook-form";
-import {useHttp} from "shared/api/base";
+import {headers, useHttp} from "shared/api/base";
 import {changeStaffDetails} from "../../../entities/staff/model/thunk/staffProfileThunk";
 import {
     DynamicModuleLoader,
@@ -24,6 +30,11 @@ import {packetsReducer} from "entities/pakets";
 import {ROLES} from "shared/const/roles";
 import {getUserRole} from "entities/user";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {useDropzone} from "react-dropzone";
+import {Simulate} from "react-dom/test-utils";
+import change = Simulate.change;
+import {Modal} from "../../../shared/ui/modal";
+import {alertAction} from "../../../features/alert/model/slice/alertSlice";
 
 
 const reducers: ReducersList = {
@@ -121,7 +132,25 @@ export const ProfilePage = () => {
     }, [dispatch, staffId])
 
     const [isTimeTable, setIsTimeTable] = useState<boolean>(false)
+    const [editModal, setEditModal] = useState<boolean>(false)
     const [passwordError, setPasswordError] = useState<string>("")
+    const [files, setFiles] = useState<any>(null);
+    const formData = new FormData()
+
+    const {getRootProps, getInputProps} = useDropzone({
+        accept: {
+            'image/*': [],
+        },
+        onDrop: (acceptedFiles) => {
+            setFiles(
+                acceptedFiles.map((file) =>
+                    Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                    })
+                )
+            );
+        },
+    });
 
     const onSubmit = (data: ISubmitProps) => {
         if (staffId)
@@ -181,7 +210,11 @@ export const ProfilePage = () => {
             <div className={cls.profileBox}>
                 <div className={cls.profileBox__leftSide}>
                     <Box extraClass={cls.profileBox__leftSide__profileContainer}>
-                        <img className={cls.profileBox__leftSide__profileContainer__img} src={profileImg} alt=""/>
+                        {
+                            //@ts-ignore
+                            <img onClick={() => setEditModal(!editModal)} className={cls.profileBox__leftSide__profileContainer__img} src={details?.photo ? details.photo : profileImg} alt=""/>
+
+                        }
                         <h1 className={cls.profileBox__leftSide__profileContainer__name}>{details?.name} {details?.surname}</h1>
                         <h2 className={cls.profileBox__leftSide__profileContainer__mail}>{details?.email}</h2>
                     </Box>
@@ -199,17 +232,15 @@ export const ProfilePage = () => {
                                 if (item.role && details?.job && item.role.includes(details?.job)) {
                                     return (
                                         <NavLink
-                                            className={classNames(cls.header__item, {
-                                                [cls.active]: item.path === active
-                                            })}
                                             to={`./../${item.path}`}
                                             onClick={() => {
                                                 setActive(item.name)
                                                 // localStorage.setItem("route", item.path)
                                             }}
                                         >
-                                            <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn}
-                                                    children={`${item.name}`}/>
+                                            <Button extraClass={classNames(cls.profileBox__leftSide__menuBox__editBtn , {
+                                                [cls.active] : item.name === active
+                                            })} children={`${item.name}`}/>
                                         </NavLink>
                                     )
                                 }
@@ -229,7 +260,7 @@ export const ProfilePage = () => {
                         <div className={cls.profileBox__rigthSide}>
                             <Box extraClass={cls.profileBox__rigthSide__profileSetBox}>
                                 <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Профиль</h1>
-                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Подробности</h1>
+                                {/*<h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Подробности</h1>*/}
                                 <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
                                       onSubmit={handleSubmit(onSubmit)}>
                                     {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Name"}*/}
@@ -308,7 +339,31 @@ export const ProfilePage = () => {
                 </Routes>
 
             </div>
+            <Modal title={"Profile edit"} active={editModal} setActive={setEditModal}>
+                <Form onSubmit={handleSubmit(onImgChange)} extraClass={cls.formEdit}>
+                    <div {...getRootProps({className: cls.dropzone})}>
+                        <input{...getInputProps()}/>
 
+                        {!files ? <div className={cls.editDrop}>
+                            {
+                                //@ts-ignore
+                                <img className={cls.profileBox__leftSide__profileContainer__imgs} src={details?.photo ? details?.photo : profileImg} alt=""/>
+
+                            }
+                            </div> :
+                            <div className={cls.editDrop}>
+                                <img  className={cls.profileBox__leftSide__profileContainer__imgs}
+                                      src={files?.map((item: { preview: any; }) => item?.preview)}
+                                      alt=""/>
+                            </div>
+
+
+                        }
+                    </div>
+                    <Button children={"Save photo"}/>
+                </Form>
+
+            </Modal>
             <ProfileModal active={isTimeTable} setActive={setIsTimeTable}/>
         </DynamicModuleLoader>
     )

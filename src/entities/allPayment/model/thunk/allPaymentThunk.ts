@@ -1,19 +1,19 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ThunkConfig} from "../../../../app/providers/storeProvider";
-import {headers} from "../../../../shared/api/base";
+import {headers, ParamUrl} from "../../../../shared/api/base";
 import {paymentListActions} from "../slice/allPaymentSlice";
 
 
 
 export const fetchAllPaymentThunk  = createAsyncThunk<
     void,
-    number,
+    { branch: any, payType?: number | undefined },
     ThunkConfig<string>
->("allPaymentSlice/fetchAllPaymentThunk", async (selectedBranch, thunkApi) => {
+>("allPaymentSlice/fetchAllPaymentThunk", async ({branch, payType}, thunkApi) => {
     const {extra, dispatch, rejectWithValue} = thunkApi;
     try {
         const response = await  extra.api({
-            url: `account/payment/payment_list/?branch=${selectedBranch}`,
+            url: `account/payment/payment_list/?${ParamUrl({branch: branch, payment_type: payType})}`,
             method: "GET",
             body: null,
             headers: headers()

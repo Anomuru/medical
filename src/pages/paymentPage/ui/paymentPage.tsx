@@ -1,147 +1,146 @@
-import React, {FC, useEffect, useState} from 'react';
+    import React, {FC, useEffect, useState} from 'react';
 
 
-import cls from "./paymentPage.module.sass"
-import {Input} from "shared/ui/input";
-import {Radio} from "shared/ui/radio";
-import {Button} from "shared/ui/button";
-import {
-    DynamicModuleLoader,
-    ReducersList
-} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
-import {useSelector} from "react-redux";
-import {getPaymentData, getPaymentTypeData} from "features/paymentFeature/model/paymentSelector";
-import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {
-    fetchUserPaymentList,
-    givePaymentThunk,
-    paymentTypeThunk
-} from "features/paymentFeature/model/paymentThunk";
-import {fetchUserAnalys} from "entities/analysis/model/thunk/userAnalysisThunk";
-import {userAnalysisActions, userAnalysisReducer} from "entities/analysis/model/slice/userAnalysisSlice";
-import {getUserAnalysis} from "entities/analysis/model/selector/userAnalySelector";
-import {UserPackets} from "features/pakets/ui/userPackets";
-import {UserAnalysis} from "features/pakets/ui/userAnalysis";
-import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "entities/oftenUsed";
-import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
-import {Form} from "shared/ui/form";
-import {useForm} from "react-hook-form";
-import classNames from "classnames";
-import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
-import {paymentTypeReducer} from "features/paymentFeature/model/paymentTypeSlice";
-import {getUserBranch} from "entities/user";
+    import cls from "./paymentPage.module.sass"
+    import {Input} from "shared/ui/input";
+    import {Radio} from "shared/ui/radio";
+    import {Button} from "shared/ui/button";
+    import {
+        DynamicModuleLoader,
+        ReducersList
+    } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+    import {paymentReducer} from "../../../features/paymentFeature/model/paymentSlice";
+    import {useSelector} from "react-redux";
+    import {getPaymentData, getPaymentTypeData} from "../../../features/paymentFeature/model/paymentSelector";
+    import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+    import {
+        fetchUserPaymentList,
+        givePaymentThunk,
+        paymentTypeThunk
+    } from "../../../features/paymentFeature/model/paymentThunk";
+    import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
+    import {Packets} from "../../../features/pakets";
+    import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
+    import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
+    import {UserPackets} from "../../../features/pakets/ui/userPackets";
+    import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
+    import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "../../../entities/oftenUsed";
+    import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+    import {Form} from "../../../shared/ui/form";
+    import {SubmitHandler, useForm} from "react-hook-form";
+    import classNames from "classnames";
+    import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
+    import {paymentTypeReducer} from "../../../features/paymentFeature/model/paymentTypeSlice";
 
-interface IPaymentData {
-    date: string,
-    payment_type: string,
-    user: number,
-
-
-}
-
-const reducers: ReducersList = {
-    userAnalysisSlice: userAnalysisReducer,
-    paymentSlice: paymentReducer,
-    givePaymentSlice: givePaymentReducer,
-    paymentTypeSlice: paymentTypeReducer
-}
-
-export const PaymentPage = () => {
-
-    const {
-        deletePacketAnalysis,
-        deletePacket,
-        deleteAnalysis,
-        deleteAllAnalysis
-    } = userAnalysisActions
-
-    const selectedLocation = useSelector(getSelectedLocationData)
-    const selectedBranch = useSelector(getUserBranch)
-
-    const {register, setValue, handleSubmit} = useForm<IPaymentData>()
-    const data = useSelector(getPaymentData)
-    const [userId, setUserId] = useState<number>()
-    const [search, setSearch] = useState("")
-    const analiz = useSelector(getUserAnalysis)
-    const prices = analiz?.analysis_list?.map(item => item.price)
-    const totalOther = prices?.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-    const payType = useSelector(getPaymentTypeData)
-    const dispatch = useAppDispatch()
-
-    // useEffect(() => {
-    //     if (selectedLocation)
-    //         dispatch(fetchBranchData({id: selectedLocation}))
-    // }, [selectedLocation])
-
-    useEffect(() => {
-        dispatch(paymentTypeThunk())
-    }, [])
-
-    useEffect(() => {
-        if (selectedBranch)
-
-            dispatch(fetchUserPaymentList({selectedBranch, search}))
-    }, [selectedBranch])
+    interface IPaymentData {
+        date: string,
+        payment_type: string,
+        user: number,
 
 
-
-    useEffect(() => {
-        if (userId)
-            dispatch(fetchUserAnalys({userId}))
-    }, [userId])
-
-
-    const onChangeSearch = (e: string) => {
-        setSearch(e);
     }
 
-    const onDeletePacketAnalysis = (id: number, packetId: number) => {
-        dispatch(deletePacketAnalysis({packetId: packetId, analysisId: id}))
+    const reducers: ReducersList = {
+        userAnalysisSlice: userAnalysisReducer,
+        paymentSlice: paymentReducer,
+        givePaymentSlice: givePaymentReducer,
+        paymentTypeSlice: paymentTypeReducer
     }
 
-    const onDeletePacket = (id: number) => {
-        dispatch(deletePacket(id))
-    }
+    export const PaymentPage = () => {
 
-    const onDeleteAnalysis = (id: number) => {
-        dispatch(deleteAnalysis(id))
-    }
+        const {
+            deletePacketAnalysis,
+            deletePacket,
+            deleteAnalysis,
+            deleteAllAnalysis
+        } = userAnalysisActions
 
-    const onDeleteAllAnalysis = () => {
-        dispatch(deleteAllAnalysis())
-    }
+        const selectedLocation = useSelector(getSelectedLocationData)
+        // const selectedBranch = useSelector(getSelectedBranchData)
 
-    const onClick = (completeData: IPaymentData) => {
-        if (userId && selectedBranch) {
+        const selectedBranch = localStorage.getItem("branch")
+        const {register, setValue, handleSubmit} = useForm<IPaymentData>()
+        const data = useSelector(getPaymentData)
+        const [userId, setUserId] = useState<number>()
+        const [search, setSearch] = useState("")
+        const analiz = useSelector(getUserAnalysis)
+        const prices = analiz?.analysis_list?.map(item => item.price)
+        const totalOther = prices?.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        const payType = useSelector(getPaymentTypeData)
+        const dispatch = useAppDispatch()
+        useEffect(() => {
+            if (selectedLocation)
+                dispatch(fetchBranchData({id: selectedLocation}))
+        }, [selectedLocation])
+
+        useEffect(() => {
+            dispatch(paymentTypeThunk())
+        }, [])
+
+        useEffect(() => {
+            dispatch(fetchUserPaymentList({selectedBranch : Number(selectedBranch), search}))
+        }, [])
+
+
+
+        useEffect(() => {
+            if (userId)
+                dispatch(fetchUserAnalys({userId}))
+        }, [userId])
+
+
+        const onChangeSearch = (e: string) => {
+            setSearch(e);
+        }
+
+        const onDeletePacketAnalysis = (id: number, packetId: number) => {
+            dispatch(deletePacketAnalysis({packetId: packetId, analysisId: id}))
+        }
+
+        const onDeletePacket = (id: number) => {
+            dispatch(deletePacket(id))
+        }
+
+        const onDeleteAnalysis = (id: number) => {
+            dispatch(deleteAnalysis(id))
+        }
+
+        const onDeleteAllAnalysis = () => {
+            dispatch(deleteAllAnalysis())
+        }
+        console.log(payType, "dfrfr")
+
+        const onClick: SubmitHandler<IPaymentData> = (completeData) => {
             const data = {
                 ...completeData,
                 payment_type: selectedRadio,
                 user: userId,
                 branch: selectedBranch
             }
+
             dispatch(givePaymentThunk(data))
         }
-    }
 
-    const [selectedRadio, setSelectedRadio] = useState<string>("")
 
-    const renderData = () => {
-        const filteredData = data?.filter(item => item?.surname?.toLowerCase().includes(search?.toLowerCase()));
-        return filteredData?.map(item => {
-            return (
-                <div onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
-                    [cls.active] : userId === item.id
-                })}>
-                    <span>{item.surname}</span>
-                    <span>{item.name}</span>
-                    <span>{item.user_id}</span>
-                    <span>{item.phone_number}</span>
-                </div>
-            )
-        });
-    }
+
+        const [selectedRadio, setSelectedRadio] = useState<string>("")
+
+        const renderData = () => {
+            const filteredData = data?.filter(item => item?.surname?.toLowerCase().includes(search?.toLowerCase()));
+            return filteredData?.map(item => {
+                return (
+                    <div onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
+                        [cls.active] : userId === item.id
+                    })}>
+                        <span>{item.surname}</span>
+                        <span>{item.name}</span>
+                        <span>{item.user_id}</span>
+                        <span>{item.phone_number}</span>
+                    </div>
+                )
+            });
+        }
 
 
 
@@ -158,11 +157,11 @@ export const PaymentPage = () => {
                             value={search}/>
                     </div>
 
-                    <div className={cls.container}>
+                        <div className={cls.container}>
 
-                        {renderData()}
+                            {renderData()}
+                        </div>
                     </div>
-                </div>
 
                 <div className={cls.payment__list}>
                     {analiz?.packet && analiz?.packet.length > 0 ? (
@@ -215,11 +214,11 @@ export const PaymentPage = () => {
 
 
 
-                </Form>
+                    </Form>
 
 
-            </div>
-        </DynamicModuleLoader>
-    );
-};
+                </div>
+            </DynamicModuleLoader>
+        );
+    };
 

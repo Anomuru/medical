@@ -173,13 +173,13 @@ export const HospitalRegPage = () => {
             value: [{label: "Мужчина", id: "man"}, {label: "Женщина", id: "woman"}],
             isRadio: true,
         },
-        {
-            name: "password",
-            label: "Пароль",
-            isInput: true,
-            type: "password",
-            default: "12345678"
-        },
+        // {
+        //     name: "password",
+        //     label: "Password",
+        //     isInput: true,
+        //     type: "password",
+        //     default: "12345678"
+        // },
 
     ]
 
@@ -334,7 +334,7 @@ export const HospitalRegPage = () => {
                     )
                 } else return (
                     <Input
-                        value={item?.default}
+                        // value={item?.default}
                         type={item.type}
                         placeholder={item.label}
                         name={item.name}
