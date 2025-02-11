@@ -3,6 +3,14 @@ import {headers} from "shared/api/base";
 import {ThunkConfig} from "app/providers/storeProvider";
 import {Staff} from "../types/staffSchema";
 
+interface IChangeStaff {
+    username: string,
+    name: string,
+    surname: string,
+    email: string,
+    phone_number: string,
+}
+
 export const fetchStaffProfileData = createAsyncThunk<
     Staff,
     string,
@@ -26,14 +34,6 @@ export const fetchStaffProfileData = createAsyncThunk<
         return rejectWithValue('error');
     }
 })
-
-interface IChangeStaff {
-    username: string,
-    name: string,
-    surname: string,
-    email: string,
-    phone_number: string,
-}
 
 export const changeStaffDetails = createAsyncThunk<
     Staff,

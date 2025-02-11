@@ -15,7 +15,7 @@ import {PaymentPage} from "pages/paymentPage";
 
 import {PatientPage} from "pages/patientPage";
 import {AnalysisPage} from "pages/analysisPage";
-import {AllPaymentPage} from "../../../pages/allPaymentPage";
+import {AllPaymentPage} from "pages/allPaymentPage";
 import {
     getDashboardRoute,
     getRegisterRoute,
@@ -54,6 +54,7 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
     // },
     {
         name: "staffPage/profile",
+        //@ts-ignore
         element: <ProfilePage/>,
         path: getProfileRoute(":id")
     },
