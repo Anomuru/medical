@@ -31,9 +31,10 @@
     import classNames from "classnames";
     import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
     import {paymentTypeReducer} from "../../../features/paymentFeature/model/paymentTypeSlice";
+    import {Table} from "shared/ui/table";
+    import {Pagination} from "features/pagination";
 
     interface IPaymentData {
-        date: string,
         payment_type: string,
         user: number,
 
@@ -57,9 +58,8 @@
         } = userAnalysisActions
 
         const selectedLocation = useSelector(getSelectedLocationData)
-        // const selectedBranch = useSelector(getSelectedBranchData)
-
         const selectedBranch = localStorage.getItem("branch")
+        const [currentPage, setCurrentPage] = useState<number>(1);
         const {register, setValue, handleSubmit} = useForm<IPaymentData>()
         const data = useSelector(getPaymentData)
         const [userId, setUserId] = useState<number>()
@@ -111,9 +111,8 @@
         }
         console.log(payType, "dfrfr")
 
-        const onClick: SubmitHandler<IPaymentData> = (completeData) => {
+        const onClick: SubmitHandler<IPaymentData> = () => {
             const data = {
-                ...completeData,
                 payment_type: selectedRadio,
                 user: userId,
                 branch: selectedBranch
@@ -127,17 +126,20 @@
         const [selectedRadio, setSelectedRadio] = useState<string>("")
 
         const renderData = () => {
-            const filteredData = data?.filter(item => item?.surname?.toLowerCase().includes(search?.toLowerCase()));
+            const filteredData = data?.filter(item => item?.user_id?.toString().includes(search.toLowerCase()) || item?.surname?.toLowerCase().includes(search?.toLowerCase()));
             return filteredData?.map(item => {
                 return (
-                    <div onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
+                    <tr onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
                         [cls.active] : userId === item.id
                     })}>
-                        <span>{item.surname}</span>
-                        <span>{item.name}</span>
-                        <span>{item.user_id}</span>
-                        <span>{item.phone_number}</span>
-                    </div>
+
+                        <td>{item.surname}</td>
+                        <td>{item.name}</td>
+                        <td>{item.user_id}</td>
+                        <td>{item.phone_number}</td>
+                        {/*</div>*/}
+                    </tr>
+
                 )
             });
         }
@@ -158,9 +160,28 @@
                         </div>
 
                         <div className={cls.container}>
+                            <Table>
+                                <thead>
+                                <tr>
+                                    <th>Surname</th>
+                                    <th>Name</th>
+                                    <th>User id</th>
+                                    <th>Phone number</th>
+                                </tr>
 
-                            {renderData()}
+                                </thead>
+                                <tbody>
+                                {renderData()}
+                                </tbody>
+                            </Table>
+
                         </div>
+                        <Pagination
+                            totalCount={6}
+                            onPageChange={setCurrentPage}
+                            currentPage={currentPage}
+                            pageSize={10}
+                        />
                     </div>
 
                     <div className={cls.payment__list}>
@@ -190,7 +211,7 @@
 
                     <Form extraClass={cls.cashier}>
                         <h1>Kassir</h1>
-                        <Input name={"date"} title={"Kun"} type={"date"} register={register}/>
+                        {/*<Input name={"date"} title={"Kun"} type={"date"} register={register}/>*/}
                         <div className={cls.types}>
                             {
                                 payType?.map(item => {

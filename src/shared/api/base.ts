@@ -1,11 +1,11 @@
-// export const API_URL_DOC = `http://26.12.122.72:8000/`
+export const API_URL_DOC = `http://26.12.122.72:8000/`
 // // export const API_URL_DOC = `http://26.196.249.247:8000/`
 //
 //
 // export const API_URL: string = `${API_URL_DOC}api/`
 
 
-export const API_URL_DOC = `/`
+// export const API_URL_DOC = `/`
 
 
 export const API_URL: string = `${API_URL_DOC}api/`

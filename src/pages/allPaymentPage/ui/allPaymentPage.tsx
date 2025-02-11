@@ -51,7 +51,8 @@ export const AllPaymentPage = () => {
     const [activeEdit, setActiveEdit] = useState<boolean>(false)
     const [activeEditItem, setActiveEditItem] = useState<any>()
     const selectedLocation = useSelector(getSelectedLocationData)
-    const selectedBranch = useSelector(getSelectedBranchData)
+    // const selectedBranch = useSelector(getSelectedBranchData)
+    const selectedBranch = localStorage.getItem("branch")
     const patientData = useSelector(getAllPaymentList)
     const [activeType, setActiveType] = useState("")
     const payType = useSelector(getPaymentTypeData)
@@ -69,7 +70,7 @@ export const AllPaymentPage = () => {
     }, [])
 
 
-
+    console.log(selectedBranch, 'wweweweewe')
 
     useEffect(() => {
         if (selectedBranch)
