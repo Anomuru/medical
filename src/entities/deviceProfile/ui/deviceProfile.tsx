@@ -92,7 +92,6 @@ export const DeviceProfile = () => {
 
     const onClick = (portal: boolean) => {
         setPortal(!portal)
-        console.log(portal)
     }
 
 
@@ -108,7 +107,6 @@ export const DeviceProfile = () => {
 
 
         e.preventDefault()
-        console.log(files[0], name, ip)
 
         request({
             url: `device/crud/update/${id}/`,
@@ -119,12 +117,11 @@ export const DeviceProfile = () => {
             .then(res => {
                 dispatch(deviceListActions.onEditDevice({id: id, data: res}))
                 dispatch(deviceProfileActions.onEditName(res))
-                console.log(res)
                 setPortal(false)
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
-                    msg: "Muvaffaqiyatli o'zgartirildi"
+                    msg: "Успешно изменено"
                 }))
             })
             .catch(err => {
@@ -144,7 +141,6 @@ export const DeviceProfile = () => {
                 dispatch(deviceListActions.onDeleteDevice(id))
                 navigate(-1)
 
-                console.log(res)
             })
             .catch(err => {
                 console.log(err)
@@ -212,8 +208,8 @@ export const DeviceProfile = () => {
                         <Table>
                             <thead className={cls.profileContainer__leftSight__arounder__head}>
                             <tr>
-                                <th>Number</th>
-                                <th>Name/Surname</th>
+                                <th>№</th>
+                                <th>Имя/Фамилия</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -229,43 +225,43 @@ export const DeviceProfile = () => {
                     </div>
                 </div>
                 <Box extraClass={cls.profileContainer__rightContainer}>
-                    <h1 className={cls.profileContainer__rightContainer__content}>Analiz</h1>
-                    <h1 className={cls.profileContainer__rightContainer__content}>Standart</h1>
+                    <h1 className={cls.profileContainer__rightContainer__content}>Анализ</h1>
+                    <h1 className={cls.profileContainer__rightContainer__content}>Стандарт</h1>
                     <div className={cls.profileContainer__rightContainer__analizBox}>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
                             name="oxygen"
                             placeholder="7.56-7.80"
-                            title="Oksigen (O₂) miqdori"/>
+                            title="Содержание кислорода (O₂)"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="pH darajasi"/>
+                            title="уровень pH"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Positive End-Expiratory Pressure"/>
+                            title="Положительное давление в конце выдоха"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Tidal hajm (VT)"/>
+                            title="Дыхательный объем (ДО)"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Karbondioksid (CO₂)"/>
+                            title="Углекислый газ (CO₂)"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Nafas olish tezligi (RR)"/>
+                            title="Частота дыхания (ЧД)"/>
                     </div>
                     <div className={cls.profileContainer__rightContainer__nameBox}>
                         <h1 className={cls.profileContainer__rightContainer__nameBox__content}>
-                            Javoblari
+                            Ответы
                         </h1>
                         <h1 className={cls.profileContainer__rightContainer__nameBox__content}>
                             John Smith
@@ -276,32 +272,32 @@ export const DeviceProfile = () => {
                             extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
                             name="oxygen"
                             placeholder="7.56-7.80"
-                            title="Oksigen (O₂) miqdori"/>
+                            title="Содержание кислорода (O₂)"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="pH darajasi"/>
+                            title="уровень pH"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Positive End-Expiratory Pressure"/>
+                            title="Положительное давление в конце выдоха"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Tidal hajm (VT)"/>
+                            title="Дыхательный объем (ДО)"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Karbondioksid (CO₂)"/>
+                            title="Углекислый газ (CO₂)"/>
                         <Input
                             extraClass={cls.profileContainer__rightContainer__analizCurrentBox__disabledInput}
                             name="heartCount"
                             placeholder="80-100 mmHg"
-                            title="Nafas olish tezligi (RR)"/>
+                            title="Частота дыхания (ЧД)"/>
                     </div>
                 </Box>
                 <Modal extraClass={cls.profileContainer__modal} active={portal} setActive={setPortal}>
@@ -319,16 +315,14 @@ export const DeviceProfile = () => {
 
                             }
                         </div>
-                        <Input title={"Change name"} extraClass={cls.profileContainer__modal__form__input} name={"name"}
+                        <Input title={"Изменить имя"} extraClass={cls.profileContainer__modal__form__input} name={"name"}
                                onChange={setName}/>
-                        <Input title={"Change address"} extraClass={cls.profileContainer__modal__form__input}
+                        <Input title={"Изменить адрес"} extraClass={cls.profileContainer__modal__form__input}
                                name={"ip_address"} onChange={setIp}/>
-                        <Button extraClass={cls.profileContainer__modal__form__input} onClick={onEditModal}>Apply
-                            changes</Button>
+                        <Button extraClass={cls.profileContainer__modal__form__input} onClick={onEditModal}>Применить изменения</Button>
                     </Form>
                 </Modal>
-                <ConfirmModal setActive={setActiveDelete} active={activeDelete}
-                              title={"Rostanham o'chirmoqchimisiz"} onClick={onDelete}/>
+                <ConfirmModal setActive={setActiveDelete} active={activeDelete} onClick={onDelete}/>
             </div>
 
         </DynamicModuleLoader>

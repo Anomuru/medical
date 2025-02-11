@@ -80,7 +80,7 @@ export const JobListPage = () => {
         dispatch(alertAction.onAddAlertOptions({
             type: "success",
             status: true,
-            msg: "Muvaffaqiyatli o'chirildi"
+            msg: "Успешно удалено"
         }))
         onCloseDeleteModal()
 
@@ -91,7 +91,7 @@ export const JobListPage = () => {
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.tableBox}>
                 <div className={cls.tableBox__header}>
-                    <h1>Job list </h1>
+                    <h1>Список вакансий</h1>
                     <div className={cls.tableBox__header__buttonPanel}>
                         {/*<Button extraClass={cls.tableBox__header__buttonPanel__btn} children={<img src={settingImage} alt=""/>}/>*/}
                         <Button onClick={onShowModal} extraClass={cls.tableBox__header__buttonPanel__btn}  children={<img src={plusImage} alt=""/>} />

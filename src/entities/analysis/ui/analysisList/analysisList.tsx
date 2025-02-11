@@ -34,13 +34,13 @@ export const AnalysisList = memo(({isChange}: any) => {
         <Table>
             <thead>
             <tr>
-                <th>Number</th>
-                <th>Analiz nomi</th>
-                <th>Kod nomi</th>
-                <th>Guruh</th>
-                <th>Paket</th>
-                <th>Device</th>
-                <th>Conatiner</th>
+                <th>№</th>
+                <th>Название анализа</th>
+                <th>Кодовое имя</th>
+                <th>Группа</th>
+                <th>Пакет</th>
+                <th>Устройство</th>
+                <th>Контейнер</th>
                 <th/>
             </tr>
             </thead>

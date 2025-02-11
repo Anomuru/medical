@@ -14,7 +14,7 @@ interface ChangeJobModalProps {
 
 export const ChangeJobModal = ({active,setActive,changedData} : ChangeJobModalProps) => {
     return (
-        <Modal title={"Change"} active={active} setActive={setActive}>
+        <Modal title={"Изменять"} active={active} setActive={setActive}>
             <JobCrudForm onSuccess={setActive} changedData={changedData}/>
         </Modal>
     );

@@ -28,15 +28,15 @@ import {headers, useHttp} from "shared/api/base";
 
 const types = [
     {
-        name: "month",
+        name: "месяц",
         value: "month-grid"
     },
     {
-        name: "day",
+        name: "день",
         value: "day"
     },
     {
-        name: "week",
+        name: "неделя",
         value: "week"
     }
 ]
@@ -129,6 +129,7 @@ export const WorkTable = () => {
     },[selectedDoctor])
 
     const calendar = useCalendarApp({
+        translations: "ru",
         defaultView: type,
         selectedDate: date,
 
@@ -215,7 +216,7 @@ export const WorkTable = () => {
             <div className={cls.mainBox}>
                 <div className={cls.mainBox__leftSight}>
                     <div className={cls.mainBox__leftSight__arounder}>
-                        <h1 className={cls.mainBox__leftSight__arounder__content}>Staff list</h1>
+                        <h1 className={cls.mainBox__leftSight__arounder__content}>Список персонала</h1>
                         <Button
                             onClick={handleClick}
                             extraClass={cls.mainBox__leftSight__arounder__btn}
@@ -298,7 +299,7 @@ const CustomEvent = (event: any) => {
                     [cls.active] : status
                 })}
             >
-                {status ? "to'landi" : "to'lanmadi"}
+                {status ? "оплаченный" : "неоплаченный"}
             </h2>
         </div>
     )

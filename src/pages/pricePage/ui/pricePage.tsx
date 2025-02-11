@@ -144,7 +144,6 @@ export const PricePage = () => {
                 dispatch(priceActions.onAddPriceType(res))
                 setIsAdd(false)
                 setValue("name", "")
-                console.log(res)
             })
             .catch(err => {
                 console.log(err)
@@ -214,7 +213,6 @@ export const PricePage = () => {
 
                 setValue("name" , "")
                 setValue("price" , "")
-                console.log(res)
 
             })
             .catch(err => {
@@ -273,7 +271,7 @@ export const PricePage = () => {
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.pricePage}>
-                <h1 className={cls.pricePage__title}>Analysis price list</h1>
+                <h1 className={cls.pricePage__title}>Цена анализов</h1>
                 <Button onClick={() => setIsAdd(true)} extraClass={cls.pricePage__btn}>
                     <i className={classNames("fa-solid fa-plus")}/>
                 </Button>
@@ -292,26 +290,26 @@ export const PricePage = () => {
             {/*    pageSize={pageSize}*/}
             {/*/>*/}
 
-            <Modal extraClass={cls.itemEdit} active={isAddItem} setActive={setIsAddItem} title={"Add"}>
+            <Modal extraClass={cls.itemEdit} active={isAddItem} setActive={setIsAddItem} title={"Добавлять"}>
 
                 <Form extraClass={cls.itemEdit__container}>
-                    <Input register={register} name={"name"} placeholder={"Name"}/>
-                    <Input name={"price"} register={register} placeholder={"Price"}/>
+                    <Input register={register} name={"name"} placeholder={"Имя"}/>
+                    <Input name={"price"} register={register} placeholder={"Цена"}/>
                     <Select setSelectOption={setSelectedOption} optionsData={deviceSelect}/>
                     <Button onClick={handleSubmit(onPostData)} extraClass={cls.itemEdit__btn}>
-                        Add
+                        Добавлять
                     </Button>
                 </Form>
             </Modal>
 
 
-            <Modal extraClass={cls.itemEdit} active={isEditItem} setActive={setIsEditItem} title={"Edit"}>
+            <Modal extraClass={cls.itemEdit} active={isEditItem} setActive={setIsEditItem} title={"Редактировать"}>
 
                 <Form extraClass={cls.itemEdit__container}>
 
-                    <Input name={"name"} register={register} placeholder={"Name"}/>
+                    <Input name={"name"} register={register} placeholder={"Имя"}/>
 
-                    <Input name={"price"} placeholder={"Price"} register={register}/>
+                    <Input name={"price"} placeholder={"Цена"} register={register}/>
 
                     <Select setSelectOption={setDeviceType} optionsData={deviceSelect}/>
 
@@ -319,39 +317,39 @@ export const PricePage = () => {
                     <div className={cls.btns}>
                         <Button type={"danger"} onClick={handleSubmit(onDeleteAnalysisItem)}
                                 extraClass={cls.itemEdit__btn}>
-                            Delete
+                            Удалить
                         </Button>
                         <Button onClick={handleSubmit(onEditAnalysisItem)} extraClass={cls.itemEdit__btn}>
-                            Edit
+                            Редактировать
                         </Button>
                     </div>
                 </Form>
             </Modal>
 
 
-            <Modal extraClass={cls.itemEdit} active={isAdd} setActive={setIsAdd} title={"Add"}>
+            <Modal extraClass={cls.itemEdit} active={isAdd} setActive={setIsAdd} title={"Добавлять"}>
                 <Form extraClass={cls.itemEdit__container}>
 
-                    <Input name={"name"} register={register} placeholder={"Name"}/>
+                    <Input name={"name"} register={register} placeholder={"Имя"}/>
                     {/*<Input name={"price"} placeholder={"Price"}/>*/}
                     <Button onClick={handleSubmit(onPost)} extraClass={cls.itemEdit__btn}>
-                        Add
+                        Добавлять
                     </Button>
                 </Form>
             </Modal>
 
 
-            <Modal extraClass={cls.itemEdit} active={isEdit} setActive={setIsEdit} title={"Edit"}>
+            <Modal extraClass={cls.itemEdit} active={isEdit} setActive={setIsEdit} title={"Редактировать"}>
 
                 <Form extraClass={cls.itemEdit__container}>
-                    <Input register={register} name={"name"} placeholder={"Name"}/>
+                    <Input register={register} name={"name"} placeholder={"Имя"}/>
                     {/*<Input name={"price"} placeholder={"Price"}/>*/}
                     <div className={cls.btns}>
                         <Button onClick={handleSubmit(onDeleteType)} type={"danger"}>
-                            Delete
+                            Удалить
                         </Button>
                         <Button onClick={handleSubmit(onEditAnalysisName)}>
-                            Edit
+                            Редактировать
                         </Button>
 
                     </div>

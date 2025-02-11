@@ -28,8 +28,8 @@ const reducers: ReducersList = {
 };
 
 const filter = [
-    {name: "Paid" , status: "true"},
-    {name: "Unpaid" , status: "false"}
+    {name: "Оплаченный" , status: "true"},
+    {name: "Неоплаченный" , status: "false"}
 ]
 
 export const PatientPage = () => {

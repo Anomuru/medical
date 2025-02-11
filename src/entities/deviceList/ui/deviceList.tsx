@@ -108,7 +108,6 @@ export const DeviceList: React.FC = () => {
     const pageSize = useMemo(() => 50, []);
     const navigate = useNavigate()
 
-    console.log(getData)
     useEffect(() => {
         dispatch(deviceListThunk(currentPage));
     }, [currentPage, dispatch]);

@@ -27,7 +27,7 @@ export const AnalysisContainer: FC<IAnalysisContainerProps> = ({data, setActiveE
                     <div className={cls.wrapper__box_header_box}>
                         <span className={cls.wrapper__box_header_title}>{item.name}</span>
                         <div className={cls.wrapper__box_header_name}>
-                            Container nomi
+                            Имя контейнера
                         </div>
                     </div>
 
@@ -41,8 +41,8 @@ export const AnalysisContainer: FC<IAnalysisContainerProps> = ({data, setActiveE
                 </div>
 
                 <ul className={cls.wrapper__box_list}>
-                    <li>Hajm : <div>{item.size}</div></li>
-                    <li>Rang : <div
+                    <li>Размер : <div>{item.size}</div></li>
+                    <li>Цвет : <div
                         style={{width: "2rem", height: "2rem", background: item.color, borderRadius: "50%"}}></div></li>
                 </ul>
 

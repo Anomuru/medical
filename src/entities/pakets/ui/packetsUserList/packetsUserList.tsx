@@ -56,13 +56,13 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
         <div className={cls.paket}>
             <div className={cls.header}>
                 <div className={cls.row}>
-                    <span>{packet_name ?? "Boshqa"}</span>
+                    <span>{packet_name ?? "Другой"}</span>
                     {/*<span>Name</span>*/}
                     {/*<span>{price}</span>*/}
                     <span>{total}</span>
                 </div>
                 <div className={cls.subrow}>
-                    <span>Analiz ro’yxatlari :</span>
+                    <span>Списки анализа :</span>
                     <div className={cls.subrow__wrapper}>
                         <span><img onClick={toggleDropdown} src={arrowContainedSquare} alt=""/></span>
                         <div

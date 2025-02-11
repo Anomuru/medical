@@ -150,11 +150,11 @@ export const PaymentPage = () => {
             <div className={cls.payment}>
                 <div className={cls.patientsList}>
                     <div className={cls.header}>
-                        <h2>Patients list</h2>
+                        <h2>Список пациентов</h2>
                         <Input
                             onChange={onChangeSearch}
                             name={"search"}
-                            placeholder={"search"}
+                            placeholder={"Поиск"}
                             value={search}/>
                     </div>
 
@@ -183,15 +183,15 @@ export const PaymentPage = () => {
                         />
                     ) : null}
                     {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
-                        <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Iltimos bemorlardan birini tanlang 😊</h1>
+                        <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Пожалуйста, выберите одного из пациентов 😊</h1>
                     )}
                 </div>
 
 
 
                 <Form onSubmit={handleSubmit(onClick)} extraClass={cls.cashier}>
-                    <h1>Kassir</h1>
-                    <Input name={"date"} title={"Kun"} type={"date"} register={register}/>
+                    <h1>Кассир</h1>
+                    <Input name={"date"} title={"День"} type={"date"} register={register}/>
                     <div className={cls.types}>
                         {
                             payType?.map(item => {
@@ -210,7 +210,7 @@ export const PaymentPage = () => {
 
                     </div>
                     {
-                        <Button extraClass={cls.submit}>Add</Button>
+                        <Button extraClass={cls.submit}>Добавлять</Button>
                     }
 
 

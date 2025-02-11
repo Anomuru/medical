@@ -59,12 +59,12 @@ export const PatientList: FC<IPatientListProps> = ({data , setActiveDeleteItem ,
         <Table>
             <thead>
             <tr>
-                <th>Number</th>
-                <th>Staff Name</th>
-                <th>Age</th>
-                <th>Contact Number</th>
-                <th>Paid</th>
-                <th>Delete</th>
+                <th>№</th>
+                <th>Имя пациента</th>
+                <th>Возраст</th>
+                <th>Контактный номер</th>
+                <th>Оплаченный</th>
+                <th>Удалить</th>
             </tr>
             </thead>
             <tbody>

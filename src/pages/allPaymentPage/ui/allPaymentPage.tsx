@@ -92,7 +92,7 @@ export const AllPaymentPage = () => {
                 dispatch(alertAction.onAddAlertOptions({
                     type: "error",
                     status: true,
-                    msg: "Error"
+                    msg: "Ошибка"
                 }))
             })
     }
@@ -103,7 +103,6 @@ export const AllPaymentPage = () => {
                 <AllPaymentHeader filter={filter} setActiveType={setActiveType} activeType={activeType}/>
                 <div className={cls.patient__container}>
                     {
-                        //@ts-ignore
                         <AllPaymentList data={patientData} setActiveDeleteItem={setActiveDeleteItem}
                                         setActiveDelete={setActiveDelete}/>
                     }

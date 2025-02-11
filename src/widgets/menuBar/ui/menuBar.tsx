@@ -15,7 +15,7 @@ export const MenuBar = () => {
 
     const renderMenuItems = useCallback(() => {
         return menuConfig.map(item => {
-            if (userRole && item.roles.includes(userRole))
+            // if (userRole && item.roles.includes(userRole))
                 return (
                     <Link extraClass={cls.item} to={item.to}>
                         <img
@@ -43,7 +43,7 @@ export const MenuBar = () => {
                 to={"/login"}
             >
                 <i className="fas fa-sign-out-alt"/>
-                <p>Log out</p>
+                <p>Выйти</p>
             </Link>
         </div>
     );

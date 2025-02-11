@@ -12,7 +12,7 @@ export const WorkerProfile = () => {
     return (
         <div className={cls.profileBox}>
             <div className={cls.profileBox__leftSight}>
-                <h1>Good morning <strong>Alexander Thomas!</strong></h1>
+                <h1>Доброе утро <strong>Alexander Thomas!</strong></h1>
                 <Box extraClass={cls.profileBox__leftSight__box}>
                     <div className={cls.profileBox__leftSight__box__wrapper}>
                         <h1 className={cls.profileBox__leftSight__box__wrapper__content}>Visits for today</h1>

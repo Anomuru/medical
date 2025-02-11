@@ -122,28 +122,28 @@ export const HospitalRegPage = () => {
             items: [
                 {
                     name: "name",
-                    label: "Name",
+                    label: "Имя",
                 },
                 {
                     name: "surname",
-                    label: "Surname",
+                    label: "Фамилия",
                 },
             ]
         },
         {
             isInput: true,
             name: "address",
-            label: "Address",
+            label: "Адрес",
         },
         {
             isInput: true,
             name: "passport_series",
-            label: "Pasport Seria (AB or AD)",
+            label: "Серия паспорта (AB или AD)",
         },
         {
             isInput: true,
             name: "passport_number",
-            label: "Password Seria (Number)",
+            label: "Пароль Серийный (Номер)Серийный пароль (номер)",
         },
         {
             name: "birth_date__phone",
@@ -153,29 +153,29 @@ export const HospitalRegPage = () => {
                 {
                     type: "date",
                     name: "birth_date",
-                    label: "Birth Date",
+                    label: "Дата рождения",
                 },
                 {
                     name: "phone_number",
-                    label: "Phone",
+                    label: "Телефон",
                 },
             ]
         },
         {
             isInput: true,
             name: "email",
-            label: "Email Adress",
+            label: "Адрес электронной почты",
             type: "email",
             isRequired: false
         },
         {
             name: "unknown",
-            value: [{label: "Man", id: "man"}, {label: "Woman", id: "woman"}],
+            value: [{label: "Мужчина", id: "man"}, {label: "Женщина", id: "woman"}],
             isRadio: true,
         },
         {
             name: "password",
-            label: "Password",
+            label: "Пароль",
             isInput: true,
             type: "password",
             default: "12345678"
@@ -194,7 +194,7 @@ export const HospitalRegPage = () => {
             })
                 .then(res => {
                     setErrorUserName(res.available)
-                    setError("username", {type: "custom", message: "Username allaqachon belgilangan"})
+                    setError("username", {type: "custom", message: "Имя пользователя уже установлено"})
                 })
         }
     }, [username]);
@@ -460,7 +460,7 @@ export const HospitalRegPage = () => {
                     dispatch(alertAction.onAddAlertOptions({
                         type: "success",
                         status: true,
-                        msg: "Muvaffaqiyatli qabul qilindi"
+                        msg: "Успешно принято"
                     }))
                     // reset()
                 })
@@ -470,7 +470,7 @@ export const HospitalRegPage = () => {
                         dispatch(alertAction.onAddAlertOptions({
                             type: "error",
                             status: true,
-                            msg: "Foydalanuvchi mavjud"
+                            msg: "Пользователь существует"
 
                         }))
                     }
@@ -519,7 +519,7 @@ export const HospitalRegPage = () => {
                     dispatch(alertAction.onAddAlertOptions({
                         type: "success",
                         status: true,
-                        msg: "Ma'lumotlar muvaffaqiyatli o'zgartirldi"
+                        msg: "Данные успешно изменены"
                     }))
                     navigate("../table")
 
@@ -564,7 +564,7 @@ export const HospitalRegPage = () => {
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
-                    msg: "Ma'lumot muvaffaqiyatli o'chirildi"
+                    msg: "Данные успешно удалены"
 
                 }))
                 navigate("../table")
@@ -589,7 +589,7 @@ export const HospitalRegPage = () => {
                             {
                                 !isChanging &&
                                 <Select
-                                    title={"Fo'ydalanuvchi turi"}
+                                    title={"Тип пользователя"}
                                     extraClass={cls.select}
                                     optionsData={types}
                                     setSelectOption={setIsActiveType}
@@ -601,7 +601,7 @@ export const HospitalRegPage = () => {
                                 isActiveType === "change" && <Input
                                     onChange={setUserSearch}
                                     name={"search"}
-                                    placeholder={"Search"}
+                                    placeholder={"Поиск"}
                                 />
                             }
                         </div>
@@ -619,10 +619,10 @@ export const HospitalRegPage = () => {
                                         </div>
                                     </div>
                                     <div className={cls.content}>
-                                        <h2 style={{color: !errorUserName ? "red" : "green"}}> {!errorUserName ? "Foydalanuvchi nomi mavjud" : "Foydalanuchi nomi bo'sh"}</h2>
+                                        <h2 style={{color: !errorUserName ? "red" : "green"}}> {!errorUserName ? "Имя пользователя занято" : "Имя пользователя доступно"}</h2>
                                         <Input name={"username"} register={register} canChange={false}/>
                                         {renderInput()}
-                                        <Select selectOption={doctor} setSelectOption={setDoctor} title={"Doctor"}
+                                        <Select selectOption={doctor} setSelectOption={setDoctor} title={"Доктор"}
                                                 optionsData={doctors}/>
                                     </div>
                                 </Form> :
@@ -636,14 +636,14 @@ export const HospitalRegPage = () => {
                     <div className={cls.analizForm}>
 
                         <div className={cls.header}>
-                            <h1>Analiz form</h1>
-                            <Input onChange={setAnalysisSearch} name={"search"} placeholder={"Search"}/>
+                            <h1>Форма анализа</h1>
+                            <Input onChange={setAnalysisSearch} name={"search"} placeholder={"Поиск"}/>
                         </div>
 
 
                         <div className={cls.content}>
                             <div className={cls.collection}>
-                                <h1>Paket</h1>
+                                <h1>Пакеты</h1>
                                 <div className={cls.container}>
                                     {
                                         pakets.map(item => {
@@ -663,7 +663,7 @@ export const HospitalRegPage = () => {
                                 </div>
                             </div>
                             <div className={cls.collection}>
-                                <h1>Analiz</h1>
+                                <h1>Анализы</h1>
                                 <div className={cls.container}>
                                     {renderAnalysis()}
                                 </div>
@@ -674,7 +674,7 @@ export const HospitalRegPage = () => {
 
 
                     <div className={cls.list}>
-                        <h1>Ro'yxat</h1>
+                        <h1>Список</h1>
                         <div className={cls.list__container}>
                             {
                                 packetsData?.map((item, index) => {
@@ -692,16 +692,16 @@ export const HospitalRegPage = () => {
                             isActiveType === "create" ?
                                 <Button disabled={errorUserName === undefined && errorUserName === false} id={"regForm"}
                                         extraClass={cls.hospital__btn}>
-                                    {isChanging ? "Change" : "Add"}
+                                    {isChanging ? "Изменять" : "Добавлять"}
                                 </Button>
                                 :
                                 <Button onClick={onSubmitOldUser} extraClass={cls.hospital__btn}>
-                                    Add
+                                    Добавлять
                                 </Button>
                         }
                         {
                             isChanging &&
-                            <Button onClick={onDelete} type={"danger"} extraClass={cls.hospital__btn}>Delete</Button>
+                            <Button onClick={onDelete} type={"danger"} extraClass={cls.hospital__btn}>Удалить</Button>
 
                         }
                     </div>

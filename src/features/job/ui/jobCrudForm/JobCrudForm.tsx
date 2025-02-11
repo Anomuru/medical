@@ -40,14 +40,9 @@ export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
             setClient(changedData.has_client)
         }
     },[changedData])
-    console.log(changedData, 'ssdsdsds')
-
-
 
 
     const dispatch = useAppDispatch()
-
-
 
 
     const onChangeName = (e: string) => {
@@ -91,10 +86,10 @@ export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
                 <Input register={register} value={name} onChange={onChangeName}   name={"asds"} />
                 <div>
                     <label className={cls.label}>
-                        Has client
+                        Имеет клиента
                         <input
                             className={cls.inputs}
-                            title={"Has client"}
+                            title={"Имеет клиента"}
                             name={"client"}
                             type={"checkbox"}
                             checked={client}
@@ -107,8 +102,8 @@ export const JobCrudForm = ( {changedData,onSuccess}: JobCrudFormProps)=> {
                 <div className={cls.btn}>
                     {
                         changedData && isChanging ?
-                            <Button type={"success"} id={"form"} >Edit</Button> :
-                            <Button type={"success"} id={"form"} >Add</Button>
+                            <Button type={"success"} id={"form"} >Редактировать</Button> :
+                            <Button type={"success"} id={"form"} >Добавлять</Button>
                     }
 
                 </div>

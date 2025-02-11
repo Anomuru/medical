@@ -59,11 +59,11 @@ export const StaffList: React.FC<StaffListProps> = ({currentTableData, onDelete 
             <Table>
                 <thead>
                 <tr>
-                    <th>Number</th>
-                    <th>Staff Name</th>
-                    <th>Age</th>
-                    <th>Contact Number</th>
-                    <th>Delete</th>
+                    <th>№</th>
+                    <th>Имя сотрудника</th>
+                    <th>Возраст</th>
+                    <th>Контактный номер</th>
+                    <th>Удалить</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -93,13 +93,13 @@ export const DevicePage = () => {
                 <DeviceList/>
 
                 <Modal type={"simple"} extraClass={cls.addItemBox} active={addItem} setActive={setAddItem}
-                       title={"Add device"}>
+                       title={"Добавить устройство"}>
                     <Form onSubmit={handleFormSubmit}>
-                        <Input extraClass={cls.addItemBox__input} name="name" placeholder="Name device"
+                        <Input extraClass={cls.addItemBox__input} name="name" placeholder="Имя устройства"
                                onChange={getName}
                                required
                         />
-                        <Input extraClass={cls.addItemBox__input} name="ip_address" placeholder="Enter IP Address"
+                        <Input extraClass={cls.addItemBox__input} name="ip_address" placeholder="Введите IP-адрес"
                                onChange={getIpAddress} required/>
                         <Input extraClass={cls.addItemBox__input} name="img" type="file"/>
                         {/*<Select*/}
@@ -108,7 +108,7 @@ export const DevicePage = () => {
                         {/*    optionsData={branchData}*/}
                         {/*/>*/}
 
-                        <Button>Add Device</Button>
+                        <Button>Добавить устройство</Button>
                     </Form>
                 </Modal>
             </div>

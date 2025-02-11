@@ -19,7 +19,7 @@ export const ConfirmModal : FC<IConfirmModal> = (
         setActive,
         active,
         onClick,
-        title= "Rostanham o'chirmoqchimisiz",
+        title= "Вы действительно хотите его удалить?",
         text,
     }) => {
 
@@ -33,8 +33,8 @@ export const ConfirmModal : FC<IConfirmModal> = (
                     </div> : null
                 }
                 <div className={cls.deleteButtons}>
-                    <Button type={"danger"}  extraClass={cls.deleteButton} children={"Xa"} onClick={onClick}/>
-                    <Button   children={"Yo'q"} onClick={() => setActive(!active)}/>
+                    <Button type={"danger"}  extraClass={cls.deleteButton} children={"Да"} onClick={onClick}/>
+                    <Button   children={"Нет"} onClick={() => setActive(!active)}/>
                 </div>
             </div>
         </Modal>

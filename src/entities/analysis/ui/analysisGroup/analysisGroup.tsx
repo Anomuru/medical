@@ -24,7 +24,7 @@ export const AnalysisGroup: FC<IAnalysisGroupProps> = ({data, setActiveEdit, set
                     <div className={cls.wrapper__box_header_box}>
                         <span className={cls.wrapper__box_header_title}>{item.name}</span>
                         <div className={cls.wrapper__box_header_name}>
-                            1-Guruh
+                            Группа 1
                         </div>
                     </div>
 

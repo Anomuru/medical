@@ -25,7 +25,7 @@ export const AnalysisPackage: FC<IAnalysisContainerProps> = memo(({data, setActi
                     <div className={cls.wrapper__box_header_box}>
                         <span className={cls.wrapper__box_header_title}>{item.name}</span>
                         <div className={cls.wrapper__box_header_name}>
-                            Paket nomi
+                            Имя пакета
                         </div>
                     </div>
 

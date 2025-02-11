@@ -46,7 +46,7 @@ export const DeleteModal = ({active,setActive,onConfirm}: DeleteModalProps) => {
     }
 
     return (
-        <Modal active={active} setActive={setActive} title={"Delete"}>
+        <Modal active={active} setActive={setActive} title={"Удалить"}>
             <div className={cls.deleteModal}>
 
                 <Form
@@ -61,7 +61,7 @@ export const DeleteModal = ({active,setActive,onConfirm}: DeleteModalProps) => {
                             <Textarea
                                 value={field.value}
                                 onChange={field.onChange}
-                                placeholder="Reason"
+                                placeholder="Причина"
                                 required
                             />
                         )}
@@ -71,10 +71,10 @@ export const DeleteModal = ({active,setActive,onConfirm}: DeleteModalProps) => {
 
                     <div className={cls.btns}>
                         <Button id={"submit"}  type={"danger"} >
-                            Delete
+                            Удалить
                         </Button>
                         <Button id={"cancel"} type={"success"} onClick={onClickCancel}>
-                            Cancel
+                            Отмена
                         </Button>
                     </div>
 

@@ -135,13 +135,12 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
-                    msg: "Muvaffaqiyatli yaratildi"
+                    msg: "Успешно создано"
                 }))
-                console.log("fdsf")
                 setActiveSwitch(true)
             })
             .catch(err => {
-                console.log("re")
+                console.log(err)
             })
     }
 
@@ -188,7 +187,7 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
 
                 <div className={cls.oldAnalysis__basic}>
                     <div className={cls.collection}>
-                        <h1>Paket</h1>
+                        <h1>Пакет</h1>
                         <div className={cls.container}>
                             {
                                 pakets.map(item => {
@@ -228,7 +227,7 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
 
                 <div className={cls.oldAnalysis__basic}>
                     <div className={cls.collection}>
-                        <h1>Analiz</h1>
+                        <h1>Анализ</h1>
                         <div className={cls.container}>
                             {
                                 analysis.map(item => {
@@ -254,10 +253,10 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
                         {selectedItems.map(item => (
                             <div className={cls.oldAnalysis__main_list}>
                                 <div className={cls.oldAnalysis__main_list_name}>
-                                    Nomi : <span>{item.name}</span>
+                                    Название : <span>{item.name}</span>
                                 </div>
                                 <div className={cls.oldAnalysis__main_list_price}>
-                                    Narxi : <span>{item.price}</span>
+                                    Цена : <span>{item.price}</span>
                                     <i onClick={() => handleRemove(item)} className={"fa fa-minus"}/>
                                 </div>
                             </div>
@@ -268,7 +267,7 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
             </div>
 
 
-            <Button onClick={onPostSelectedAnalysis} extraClass={cls.button}>Add</Button>
+            <Button onClick={onPostSelectedAnalysis} extraClass={cls.button}>Добавлять</Button>
         </>
 
     )
@@ -301,7 +300,7 @@ const ProfileUserAnalysis = () => {
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
-                    msg: "Muvaffaqiyatli o'chirildi"
+                    msg: "Успешно удалено"
                 }))
 
             })
@@ -323,7 +322,7 @@ const ProfileUserAnalysis = () => {
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
-                    msg: "Muvaffaqiyatli o'chirildi"
+                    msg: "Успешно удалено"
                 }))
             })
     }
@@ -340,7 +339,7 @@ const ProfileUserAnalysis = () => {
                                 onDeletePacketId={onDeletePacket}
                             />
                         )
-                    }) : <h2>Paketlar hali y'oq</h2>
+                    }) : <h2>Пакетов пока нет</h2>
                 }
             </div>
 

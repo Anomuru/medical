@@ -87,27 +87,27 @@ export const ProfilePage = () => {
     }[] = useMemo(() => [
         {
             name: "username",
-            placeholder: "Enter username",
+            placeholder: "Введите имя пользователя",
             title: "Username",
             rules: {value: details?.username}
         }, {
             name: "name",
-            placeholder: "Enter name",
+            placeholder: "Введите имя",
             title: "Name",
             rules: {value: details?.name}
         }, {
             name: "surname",
-            placeholder: "Enter surname",
+            placeholder: "Введите фамилию",
             title: "Surname",
             rules: {value: details?.surname}
         }, {
             name: "email",
-            placeholder: "Enter email",
+            placeholder: "Введите адрес электронной почты",
             title: "Email",
             rules: {value: details?.email}
         }, {
             name: "phone_number",
-            placeholder: "Enter phone",
+            placeholder: "Введите телефон",
             title: "Phone",
             type: "number",
             rules: {value: details?.phone_number}
@@ -116,7 +116,6 @@ export const ProfilePage = () => {
 
     useEffect(() => {
         if (staffId) {
-            console.log(staffId, "id 2")
             dispatch(fetchStaffProfileData(staffId))
         }
     }, [dispatch, staffId])
@@ -197,7 +196,6 @@ export const ProfilePage = () => {
 
                         {
                             dataButton.map(item => {
-                                console.log(item.role, details?.job)
                                 if (item.role && details?.job && item.role.includes(details?.job)) {
                                     return (
                                         <NavLink
@@ -230,8 +228,8 @@ export const ProfilePage = () => {
                     <Route path={"profile"} element={<>
                         <div className={cls.profileBox__rigthSide}>
                             <Box extraClass={cls.profileBox__rigthSide__profileSetBox}>
-                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Profile</h1>
-                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
+                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Профиль</h1>
+                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Подробности</h1>
                                 <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
                                       onSubmit={handleSubmit(onSubmit)}>
                                     {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Name"}*/}
@@ -250,7 +248,7 @@ export const ProfilePage = () => {
                                         {render}
                                     </>
                                     <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn}
-                                            children={"Save changes"}/>
+                                            children={"Сохранить изменения"}/>
                                 </Form>
                                 <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
                                 <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
@@ -258,7 +256,7 @@ export const ProfilePage = () => {
                                     <Input
                                         // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
                                         title={"Password"}
-                                        placeholder={"Enter Password"}
+                                        placeholder={"Введите пароль"}
                                         name={"password"}
                                         register={register}
                                         type={"password"}
@@ -266,7 +264,7 @@ export const ProfilePage = () => {
                                     <Input
                                         // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
                                         title={"Confirm Password"}
-                                        placeholder={"Confirm Password"}
+                                        placeholder={"Подтвердите пароль"}
                                         name={"confirm_password"}
                                         register={register}
                                         type={"password"}
@@ -277,8 +275,8 @@ export const ProfilePage = () => {
                                             passwordError ?
                                                 <p className={cls.profileBox__rigthSide__profileSetBox__formBox__error}>
                                                     {
-                                                        passwordError === "identical" ? "The passwords are not identical" :
-                                                            passwordError === "less_than_8" ? "The passwords are less than 8 symbols" : null
+                                                        passwordError === "identical" ? "Пароли не идентичны" :
+                                                            passwordError === "less_than_8" ? "Пароли короче 8 символов" : null
                                                     }
                                                 </p>
                                                 : null
@@ -297,7 +295,7 @@ export const ProfilePage = () => {
                                     {/*    types={'number'}*/}
                                     {/*/>*/}
                                     <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn}
-                                            children={"Save changes"}/>
+                                            children={"Сохранить изменения"}/>
                                 </Form>
 
                             </Box>
