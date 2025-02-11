@@ -36,6 +36,8 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
         }
     }
 
+
+
     const onDeletePacket = () => {
         // dispatch(deletePacket(isActivePacket))
         if (onDeleteAllAnalysis){

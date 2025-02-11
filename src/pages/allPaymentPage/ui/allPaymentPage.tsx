@@ -69,6 +69,8 @@ export const AllPaymentPage = () => {
     }, [])
 
 
+
+
     useEffect(() => {
         if (selectedBranch)
             dispatch(fetchAllPaymentThunk({branch: selectedBranch, payType: selectedRadio}))

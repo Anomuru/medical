@@ -57,8 +57,9 @@
         } = userAnalysisActions
 
         const selectedLocation = useSelector(getSelectedLocationData)
-        const selectedBranch = useSelector(getSelectedBranchData)
+        // const selectedBranch = useSelector(getSelectedBranchData)
 
+        const selectedBranch = localStorage.getItem("branch")
         const {register, setValue, handleSubmit} = useForm<IPaymentData>()
         const data = useSelector(getPaymentData)
         const [userId, setUserId] = useState<number>()
@@ -78,10 +79,8 @@
         }, [])
 
         useEffect(() => {
-            if (selectedBranch)
-
-                dispatch(fetchUserPaymentList({selectedBranch, search}))
-        }, [selectedBranch])
+            dispatch(fetchUserPaymentList({selectedBranch : Number(selectedBranch), search}))
+        }, [])
 
 
 

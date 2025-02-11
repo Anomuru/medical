@@ -25,6 +25,7 @@ export const fetchUserPaymentList = createAsyncThunk<
         if (!response) {
             throw new Error();
         }
+        console.log(response , "res")
         dispatch(paymentActions.onGetPaymentData(response));
         return response.data;
     } catch (e) {

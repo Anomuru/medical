@@ -17,6 +17,7 @@ interface IUserAnalysis {
     expected_result: string;
     result: string;
     paid: boolean;
+    price: number
 }
 
 interface IUserAnalysisPacket {

@@ -247,16 +247,15 @@ export const ProfilePage = () => {
                                 if (item.role && details?.job && item.role.includes(details?.job)) {
                                     return (
                                         <NavLink
-                                            className={classNames(cls.header__item, {
-                                                [cls.active]: item.path === active
-                                            })}
                                             to={`./../${item.path}`}
                                             onClick={() => {
                                                 setActive(item.name)
                                                 // localStorage.setItem("route", item.path)
                                             }}
                                         >
-                                            <Button extraClass={cls.profileBox__leftSide__menuBox__editBtn} children={`${item.name}`}/>
+                                            <Button extraClass={classNames(cls.profileBox__leftSide__menuBox__editBtn , {
+                                                [cls.active] : item.name === active
+                                            })} children={`${item.name}`}/>
                                         </NavLink>
                                     )
                                 }
