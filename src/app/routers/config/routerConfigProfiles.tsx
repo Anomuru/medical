@@ -54,7 +54,6 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
     // },
     {
         name: "staffPage/profile",
-        //@ts-ignore
         element: <ProfilePage/>,
         path: getProfileRoute(":id")
     },
