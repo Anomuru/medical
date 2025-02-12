@@ -5,9 +5,9 @@ import {analysisContainerActions} from "../../../entities/analysis/model/slice/a
 import {paymentActions} from "./paymentSlice";
 import {paymentTypeActions} from "./paymentTypeSlice";
 import {givePaymentActions} from "./givePaymentSlice";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 interface PaymentProps {
-    date: string | undefined,
     payment_type: string | undefined,
     user: number | undefined
 }
@@ -66,6 +66,12 @@ export const givePaymentThunk = createAsyncThunk<
         const response = await extra.api({
             url: `account/payment/payment/`, method: "POST", body: JSON.stringify(data), headers: headers()
         })
+
+                dispatch(alertAction.onAddAlertOptions({
+                    type: "success",
+                    status: true,
+                    msg: "Payment done !"
+                }))
         dispatch(givePaymentActions.onAddPayment(response));
         return response.data
     }catch (e){

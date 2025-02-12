@@ -23,10 +23,10 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
+import {data, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
 import classNames from "classnames";
-import {profileAnalysisReducer} from "features/profile/model/slice/profileAnalysisSlice";
-import {packetsReducer} from "entities/pakets";
+import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileAnalysisSlice";
+import {packetsReducer} from "../../../entities/pakets";
 import {ROLES} from "shared/const/roles";
 import {getUserRole} from "entities/user";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
@@ -152,19 +152,19 @@ export const ProfilePage = () => {
         },
     });
 
-    const onSubmit = (data: ISubmitProps) => {
-        if (staffId)
-            dispatch(changeStaffDetails({staffId, data}))
-    }
-
-    const onSubmitPassword = (data: any) => {
-        if (data.password.length < 8 || data.confirm_password.length < 8) setPasswordError("less_than_8")
-        else {
-            if (data.password === data.confirm_password && staffId) {
-                dispatch(changeStaffDetails({staffId, data}))
-                setPasswordError("")
-            } else setPasswordError("identical")
+    const onSubmit = (data: any) => {
+        const { password, confirm_password, ...dataToSubmit } = data;
+        if (password && confirm_password) {
+            dataToSubmit.password = password;
+            dataToSubmit.confirm_password = confirm_password
         }
+        // @ts-ignore
+        dispatch(changeStaffDetails({staffId, dataToSubmit}))
+        dispatch(alertAction.onAddAlertOptions({
+            type: "success",
+            status: true,
+            msg: "Successfully changed"
+        }))
     }
 
     const onImgChange = () => {
@@ -185,6 +185,17 @@ export const ProfilePage = () => {
             msg: "Успешно изменено"
         }))
         setEditModal(false)
+    }
+
+    const onSubmitPassword = (data: any) => {
+        if (data.password.length < 8 || data.confirm_password.length < 8) setPasswordError("less_than_8")
+        else {
+            if (data.password === data.confirm_password) {
+                // @ts-ignore
+                dispatch(changeStaffDetails({staffId, data}))
+                setPasswordError("")
+            } else setPasswordError("identical")
+        }
     }
 
     const onCheckUsername = (data: string) => {
