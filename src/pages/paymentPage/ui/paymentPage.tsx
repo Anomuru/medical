@@ -95,7 +95,7 @@ export const PaymentPage = () => {
             dispatch(userPaymentThunk(userId))
     }, [userId])
 
-    console.log(getPayment, "ssdssss")
+
     const onChangeSearch = (e: string) => {
         setSearch(e);
     }
@@ -147,171 +147,122 @@ export const PaymentPage = () => {
     }
 
 
-    const [selectedRadio, setSelectedRadio] = useState<string>("")
+        const [selectedRadio, setSelectedRadio] = useState<string>("")
 
-    const renderData = () => {
-        const filteredData = data?.filter(item => item?.user_id?.toString().includes(search.toLowerCase()) || item?.surname?.toLowerCase().includes(search?.toLowerCase()));
-        return filteredData?.map(item => {
-            return (
-                <tr onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
-                    [cls.active]: userId === item.id
-                })}>
+        const renderData = () => {
+            const filteredData = data?.filter(item => item?.user_id?.toString().includes(search.toLowerCase()) || item?.surname?.toLowerCase().includes(search?.toLowerCase()));
+            return filteredData?.map(item => {
+                return (
+                    <tr onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
+                        [cls.active] : userId === item.id
+                    })}>
 
-                    <td>{item.surname}</td>
-                    <td>{item.name}</td>
-                    <td>{item.user_id}</td>
-                    <td>{item.phone_number}</td>
-                    {/*</div>*/}
-                </tr>
+                        <td>{item.surname}</td>
+                        <td>{item.name}</td>
+                        <td>{item.user_id}</td>
+                        <td>{item.phone_number}</td>
+                        {/*</div>*/}
+                    </tr>
 
-            )
-        });
-    }
-
-    const renderPayment = useCallback(() => {
-        return getPayment?.map((item, index) => {
-            return(
-                <tr>
-                    {
-                        !item.deleted &&
-                        <>
-                            <td>{index + 1}</td>
-                            <td>
-                                <div className={cls.item}>
-                                    <div className={cls.item__info}>
-                                        <h3>{item.user}</h3>
-                                        <p>{item.user}</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{item.date}</td>
-                            <td>{item.payment_type?.payment_type}</td>
-                        </>
-                    }
-                </tr>
-            )
-        })
-    }, [getPayment])
+                )
+            });
+        }
 
 
-    return (
-        <DynamicModuleLoader reducers={reducers}>
-            <div className={cls.payment}>
-                <div className={cls.patientsList}>
-                    <div className={cls.header}>
-                        <h2>Patients list</h2>
-                        <Input
-                            onChange={onChangeSearch}
-                            name={"search"}
-                            placeholder={"search"}
-                            value={search}/>
-                    </div>
 
-                    <div className={cls.container}>
-                        <Table>
-                            <thead>
-                            <tr>
-                                <th>Surname</th>
-                                <th>Name</th>
-                                <th>User id</th>
-                                <th>Phone number</th>
-                            </tr>
+        return (
+            <DynamicModuleLoader reducers={reducers}>
+                <div className={cls.payment}>
+                    <div className={cls.patientsList}>
+                        <div className={cls.header}>
+                            <h2>Список пациентов</h2>
+                            <Input
+                                onChange={onChangeSearch}
+                                name={"search"}
+                                placeholder={"Поиск"}
+                                value={search}/>
+                        </div>
 
-                            </thead>
-                            <tbody>
-                            {renderData()}
-                            </tbody>
-                        </Table>
+                        <div className={cls.container}>
+                            <Table>
+                                <thead>
+                                <tr>
+                                    <th>Фамилия</th>
+                                    <th>Имя</th>
+                                    <th>ID пользователя</th>
+                                    <th>Номер телефона</th>
+                                </tr>
 
-                    </div>
-                    <Pagination
-                        totalCount={6}
-                        onPageChange={setCurrentPage}
-                        currentPage={currentPage}
-                        pageSize={10}
-                    />
-                </div>
+                                </thead>
+                                <tbody>
+                                {renderData()}
+                                </tbody>
+                            </Table>
 
-                <div className={cls.payment__list}>
-                    {analiz?.packet && analiz?.packet.length > 0 ? (
-                        analiz.packet.map(item => (
-                            <UserPackets
-                                item={item}
-                                onDeletePacketAnalysis={onDeletePacketAnalysis}
-                                onDeletePacketId={onDeletePacket}
-                            />
-                        ))
-                    ) : null}
-                    {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
-                        <UserAnalysis
-                            item={analiz.analysis_list}
-                            total={totalOther}
-                            onDeleteAnalysisId={onDeleteAnalysis}
-                            onDeleteAllAnalysis={onDeleteAllAnalysis}
+                        </div>
+                        <Pagination
+                            totalCount={6}
+                            onPageChange={setCurrentPage}
+                            currentPage={currentPage}
+                            pageSize={10}
                         />
-                    ) : null}
-                    {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
-                        <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Iltimos
-                            bemorlardan birini tanlang 😊</h1>
-                    )}
-                </div>
-
-
-                <Form extraClass={cls.cashier}>
-                    <div className={cls.cashier__box}>
-                        <h1>Kassir</h1>
-                        <ClassSwitch onSwitch={() => setActiveSwitch(!activeSwitch)} isActive={activeSwitch}/>
                     </div>
-                    {
-                        activeSwitch ? <>
-                            <div className={cls.types}>
-                                {
-                                    payType?.map(item => {
-                                        return (
-                                            <Radio
-                                                name={item.payment_type}
-                                                value={item.id}
-                                                onChange={setSelectedRadio}
 
-                                                checked={item.id === Number(selectedRadio)}
-                                            >
-                                                {item.payment_type}
-                                            </Radio>
-                                        )
-                                    })
-                                }
-
-                            </div>
-
-                            <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Add</Button>
-                        </> :
-                            <>
-                                <Table>
-                                    <thead>
-                                    <tr>
-                                        <th>№</th>
-                                        <th>Ism-familiya</th>
-                                        <th>To'langan sana</th>
-                                        <th>To'lov turi</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {renderPayment()}
-                                    </tbody>
-                                </Table>
-                        </>
-                    }
+                    <div className={cls.payment__list}>
+                        {analiz?.packet && analiz?.packet.length > 0 ? (
+                            analiz.packet.map(item => (
+                                <UserPackets
+                                    item={item}
+                                    onDeletePacketAnalysis={onDeletePacketAnalysis}
+                                    onDeletePacketId={onDeletePacket}
+                                />
+                            ))
+                        ) : null}
+                        {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
+                            <UserAnalysis
+                                item={analiz.analysis_list}
+                                total={totalOther}
+                                onDeleteAnalysisId={onDeleteAnalysis}
+                                onDeleteAllAnalysis={onDeleteAllAnalysis}
+                            />
+                        ) : null}
+                        {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
+                            <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Пожалуйста, выберите одного из пациентов 😊</h1>
+                        )}
+                    </div>
 
 
 
+                    <Form extraClass={cls.cashier}>
+                        <h1>Кассир</h1>
+                        <Input name={"date"} title={"День"} type={"date"} register={register}/>
+                        <Input name={"price"} title={"Цена"} disabled register={register}/>
+                        <div className={cls.types}>
+                            {
+                                payType?.map(item => {
+                                    return (
+                                        <Radio
+                                            name={item.payment_type}
+                                            value={item.id}
+                                            onChange={setSelectedRadio}
 
-                </Form>
+                                            checked={item.id === Number(selectedRadio)}
+                                        >
+                                            {item.payment_type}
+                                        </Radio>
+                                    )
+                                })
+                            }
+
+                        </div>
+
+                        <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Добавлять</Button>
+
+                    </Form>
 
 
-            </div>
-        </DynamicModuleLoader>
-    );
-};
+                </div>
+            </DynamicModuleLoader>
+        );
+    };
 

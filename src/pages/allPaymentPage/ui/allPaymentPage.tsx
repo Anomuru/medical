@@ -41,8 +41,8 @@ const reducers: ReducersList = {
 };
 
 const filter = [
-    {name: "Paid", status: "true"},
-    {name: "Unpaid", status: "false"}
+    {name: "Оплаченный", status: "true"},
+    {name: "Неоплаченный", status: "false"}
 ]
 
 export const AllPaymentPage = () => {
@@ -106,7 +106,7 @@ export const AllPaymentPage = () => {
             dispatch(alertAction.onAddAlertOptions({
                 type: "success",
                 status: true,
-                msg: "Successfully Changed"
+                msg: "Успешно изменено"
             }))
         })
     }
@@ -134,7 +134,7 @@ export const AllPaymentPage = () => {
                 dispatch(alertAction.onAddAlertOptions({
                     type: "error",
                     status: true,
-                    msg: "Error"
+                    msg: "Ошибка"
                 }))
             })
     }
@@ -161,7 +161,7 @@ export const AllPaymentPage = () => {
                 <Modal
                     active={activeEdit}
                     setActive={setActiveEdit}
-                    title={"Edit"}
+                    title={"Редактировать"}
                 >
 
                     <Form extraClass={cls.modal__form} onSubmit={handleSubmit(onEdit)}>
@@ -187,7 +187,7 @@ export const AllPaymentPage = () => {
                                 })
                             }
                             <Button extraClass={cls.modal__button}>
-                                Edit
+                                Редактировать
                             </Button>
                         </div>
                     </Form>

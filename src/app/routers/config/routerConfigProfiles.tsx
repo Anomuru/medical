@@ -47,14 +47,13 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         element: <RegisterPage/>,
         path: getRegisterRoute()
     },
-    {
-        name: "dashboardPage",
-        element: <RegisterPage/>,
-        path: getDashboardRoute()
-    },
+    // {
+    //     name: "dashboardPage",
+    //     element: <RegisterPage/>,
+    //     path: getDashboardRoute()
+    // },
     {
         name: "staffPage/profile",
-        //@ts-ignore
         element: <ProfilePage/>,
         path: getProfileRoute(":id")
     },
@@ -82,12 +81,12 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         element: <PaymentPage/>,
         path: getPaymentRoute()
     },
-    {
-        name: "platformHomePage",
-        element: <PlatformHomePage/>,
-        path: getPlatformHomePage()
-
-    },
+    // {
+    //     name: "platformHomePage",
+    //     element: <PlatformHomePage/>,
+    //     path: getPlatformHomePage()
+    //
+    // },
     {
         name: "pricePage",
         element: <PricePage/>,
@@ -109,11 +108,11 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         element: <WorkTablePage/>,
         path: getWorkTableRoute()
     },
-    {
-        name: "table/workerProfile",
-        element: <WorkerProfilePage/>,
-        path: getWorkerProfile()
-    },
+    // {
+    //     name: "table/workerProfile",
+    //     element: <WorkerProfilePage/>,
+    //     path: getWorkerProfile()
+    // },
     {
         name: "analysis",
         element: <AnalysisPage/>,

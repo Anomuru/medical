@@ -6,19 +6,19 @@ import classNames from "classnames";
 
 const list = [
     {
-        label: "Paket",
+        label: "Пакет",
         path: "package"
     },
     {
-        label: "Guruh",
+        label: "Группа",
         path: "group"
     },
     {
-        label: "Container",
+        label: "Контейнер",
         path: "container"
     },
     {
-        label: "Analiz",
+        label: "Анализ",
         path: "analysisGroup"
     }
 ]

@@ -29,6 +29,7 @@ import {profileAnalysisReducer} from "../../../features/profile/model/slice/prof
 import {packetsReducer} from "../../../entities/pakets";
 import {ROLES} from "shared/const/roles";
 import {getUserRole} from "entities/user";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useDropzone} from "react-dropzone";
 import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
@@ -45,14 +46,14 @@ const reducers: ReducersList = {
 
 const dataButton = [
     {
-        name: "Profile",
+        name: "Профиль",
         path: "profile",
-        role: [ROLES.patient,ROLES.admin,ROLES.mainAdmin,ROLES.operator,ROLES.reception]
+        role: [ROLES.patient, ROLES.admin, ROLES.mainAdmin, ROLES.operator, ROLES.reception]
     },
     {
-        name: "TimeTable",
+        name: "Расписание",
         path: "timeTable",
-        role: [ROLES.admin,ROLES.mainAdmin,ROLES.operator,ROLES.reception]
+        role: [ROLES.admin, ROLES.mainAdmin, ROLES.operator, ROLES.reception]
     },
     // {
     //     name: "Schedule",
@@ -60,47 +61,65 @@ const dataButton = [
     //     role: [ROLES.patient]
     // },
     {
-        name: "Analysis",
+        name: "Анализ",
         path: "analysis",
         role: [ROLES.patient]
     }
 ]
 
+interface ISubmitProps {
+    username: string,
+    name: string,
+    surname: string,
+    email: string,
+    phone_number: string,
+}
+
 export const ProfilePage = () => {
 
     const {request} = useHttp()
-    const dispatch = useDispatch()
-    const {register, handleSubmit, setValue} = useForm()
+    const dispatch = useAppDispatch()
+    const {
+        register,
+        handleSubmit,
+        setValue
+    } = useForm<ISubmitProps>()
     const {id: staffId} = useParams()
     const details = useSelector(getStaffProfileData)
 
-    const meRole  = useSelector(getUserRole)
+    const meRole = useSelector(getUserRole)
 
-    const staffDetails = useMemo(() => [
+    const staffDetails : {
+        name: "username" | "name" | "surname" | "email" | "phone_number",
+        placeholder: string,
+        title: string
+        rules: any,
+        type?: string
+    }[] = useMemo(() => [
         {
             name: "username",
-            placeholder: "Enter username",
-            title: "Username",
+            placeholder: "Введите имя пользователя",
+            title: "Имя пользователя",
             rules: {value: details?.username}
         }, {
             name: "name",
-            placeholder: "Enter name",
-            title: "Name",
+            placeholder: "Введите имя",
+            title: "Имя",
             rules: {value: details?.name}
         }, {
             name: "surname",
-            placeholder: "Enter surname",
-            title: "Surname",
+            placeholder: "Введите фамилию",
+            title: "Фамилия",
             rules: {value: details?.surname}
         }, {
             name: "email",
-            placeholder: "Enter email",
-            title: "Email",
+            placeholder: "Введите адрес электронной почты",
+            title: "Электронная почта",
             rules: {value: details?.email}
         }, {
             name: "phone_number",
-            placeholder: "Enter phone",
-            title: "Phone",
+            placeholder: "Введите телефон",
+            title: "Телефон",
             type: "number",
             rules: {value: details?.phone_number}
         },
@@ -108,9 +127,7 @@ export const ProfilePage = () => {
 
     useEffect(() => {
         if (staffId) {
-            console.log(staffId, "id 2")
-            // @ts-ignore
-            dispatch(fetchStaffProfileData({staffId}))
+            dispatch(fetchStaffProfileData(staffId))
         }
     }, [dispatch, staffId])
 
@@ -165,7 +182,7 @@ export const ProfilePage = () => {
         dispatch(alertAction.onAddAlertOptions({
             type: "success",
             status: true,
-            msg: "Successfully changed"
+            msg: "Успешно изменено"
         }))
         setEditModal(false)
     }
@@ -225,7 +242,6 @@ export const ProfilePage = () => {
                 <div className={cls.profileBox__leftSide}>
                     <Box extraClass={cls.profileBox__leftSide__profileContainer}>
                         {
-                            //@ts-ignore
                             <img onClick={() => setEditModal(!editModal)} className={cls.profileBox__leftSide__profileContainer__img} src={details?.photo ? details.photo : profileImg} alt=""/>
 
                         }
@@ -243,7 +259,6 @@ export const ProfilePage = () => {
 
                         {
                             dataButton.map(item => {
-                                console.log(item.role, details?.job)
                                 if (item.role && details?.job && item.role.includes(details?.job)) {
                                     return (
                                         <NavLink
@@ -264,7 +279,6 @@ export const ProfilePage = () => {
                     </div>
 
 
-
                 </div>
                 <Outlet/>
 
@@ -275,8 +289,8 @@ export const ProfilePage = () => {
                     <Route path={"profile"} element={<>
                         <div className={cls.profileBox__rigthSide}>
                             <Box extraClass={cls.profileBox__rigthSide__profileSetBox}>
-                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Profile</h1>
-                                {/*<h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>*/}
+                                <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Профиль</h1>
+                                {/*<h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Подробности</h1>*/}
                                 <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
                                       onSubmit={handleSubmit(onSubmit)}>
                                     {/*<Input extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input} title={"Name"}*/}
@@ -295,23 +309,23 @@ export const ProfilePage = () => {
                                         {render}
                                     </>
                                     <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn}
-                                            children={"Save changes"}/>
+                                            children={"Сохранить изменения"}/>
                                 </Form>
                                 <h1 className={cls.profileBox__rigthSide__profileSetBox__heading}>Details</h1>
                                 <Form extraClass={cls.profileBox__rigthSide__profileSetBox__formBox}
                                       onSubmit={handleSubmit(onSubmitPassword)}>
                                     <Input
                                         // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
-                                        title={"Password"}
-                                        placeholder={"Enter Password"}
+                                        title={"Пароль"}
+                                        placeholder={"Введите пароль"}
                                         name={"password"}
                                         register={register}
                                         type={"password"}
                                     />
                                     <Input
                                         // extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__input}
-                                        title={"Confirm Password"}
-                                        placeholder={"Confirm Password"}
+                                        title={"Подтвердите пароль"}
+                                        placeholder={"Подтвердите пароль"}
                                         name={"confirm_password"}
                                         register={register}
                                         type={"password"}
@@ -322,8 +336,8 @@ export const ProfilePage = () => {
                                             passwordError ?
                                                 <p className={cls.profileBox__rigthSide__profileSetBox__formBox__error}>
                                                     {
-                                                        passwordError === "identical" ? "The passwords are not identical" :
-                                                            passwordError === "less_than_8" ? "The passwords are less than 8 symbols" : null
+                                                        passwordError === "identical" ? "Пароли не идентичны" :
+                                                            passwordError === "less_than_8" ? "Пароли короче 8 символов" : null
                                                     }
                                                 </p>
                                                 : null
@@ -342,7 +356,7 @@ export const ProfilePage = () => {
                                     {/*    types={'number'}*/}
                                     {/*/>*/}
                                     <Button extraClass={cls.profileBox__rigthSide__profileSetBox__formBox__btn}
-                                            children={"Save changes"}/>
+                                            children={"Сохранить изменения"}/>
                                 </Form>
 
                             </Box>
@@ -352,21 +366,19 @@ export const ProfilePage = () => {
                     <Route path={"analysis"} element={<AnalysisData/>}/>
 
 
-
                 </Routes>
 
             </div>
-            <Modal title={"Profile edit"} active={editModal} setActive={setEditModal}>
+            <Modal title={"Редактировать профиль"} active={editModal} setActive={setEditModal}>
                 <Form onSubmit={handleSubmit(onImgChange)} extraClass={cls.formEdit}>
                     <div {...getRootProps({className: cls.dropzone})}>
                         <input{...getInputProps()}/>
 
                         {!files ? <div className={cls.editDrop}>
-                                {
-                                    //@ts-ignore
-                                    <img className={cls.profileBox__leftSide__profileContainer__imgs} src={details?.photo ? details?.photo : profileImg} alt=""/>
+                            {
+                                <img className={cls.profileBox__leftSide__profileContainer__imgs} src={details?.photo ? details?.photo : profileImg} alt=""/>
 
-                                }
+                            }
                             </div> :
                             <div className={cls.editDrop}>
                                 <img  className={cls.profileBox__leftSide__profileContainer__imgs}
@@ -377,7 +389,7 @@ export const ProfilePage = () => {
 
                         }
                     </div>
-                    <Button children={"Save photo"}/>
+                    <Button children={"Сохранить фото"}/>
                 </Form>
 
             </Modal>

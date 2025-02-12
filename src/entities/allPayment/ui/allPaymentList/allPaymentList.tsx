@@ -77,11 +77,11 @@ export const AllPaymentList: FC<IPatientListProps> = (
             <thead>
             <tr>
                 <th>№</th>
-                <th>Ism-familiya</th>
-                <th>To'langan sana</th>
-                <th>To'lov turi</th>
-                <th></th>
-                <th></th>
+                <th>Имя и фамилия</th>
+                <th>Дата оплаты</th>
+                <th>Оплата</th>
+                <th>Тип оплаты</th>
+                <th/>
             </tr>
             </thead>
             <tbody>

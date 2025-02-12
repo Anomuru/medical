@@ -37,7 +37,7 @@ export const AllPaymentHeader: FC<IPatientFilter> = memo(({filter , setActiveTyp
 
     return (
         <div className={cls.header}>
-            <h1>Payment list</h1>
+            <h1>Список платежей</h1>
             <div className={cls.header__filter}>
                 {
                     paymentType?.map(item => {

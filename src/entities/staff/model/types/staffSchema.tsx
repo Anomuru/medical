@@ -15,7 +15,8 @@ export interface Staff {
     email: string,
     passport_series: string,
     passport_number: string,
-    role: string
+    role: string,
+    photo?: string
 }
 
 export interface StaffListSchema {

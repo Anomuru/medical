@@ -39,21 +39,21 @@ export const ProfileModal: React.FC<IProfileModal> = (props) => {
 
     return (
         <Modal extraClass={cls.profileModal} active={active} setActive={setActive}>
-            <h1 className={cls.profileModal__title}>Add</h1>
+            <h1 className={cls.profileModal__title}>Добавлять</h1>
             <Form extraClass={cls.profileModal__container} onSubmit={handleSubmit(onSubmit)}>
                 <Select
-                    title={"Doctors"}
+                    title={"Врачи"}
                     setSelectOption={setSelectedDoctor}
                     optionsData={[]}
                 />
                 <Select
-                    title={"Days"}
+                    title={"Дни"}
                     setSelectOption={setSelectedDay}
                     optionsData={[]}
                 />
-                <Input type={"time"} title={"Start time"} name={"start"}/>
-                <Input type={"time"} title={"End time"} name={"end"}/>
-                <Button extraClass={cls.formBtn}>Add</Button>
+                <Input type={"time"} title={"Время начала"} name={"start"}/>
+                <Input type={"time"} title={"Время окончания"} name={"end"}/>
+                <Button extraClass={cls.formBtn}>Добавлять</Button>
             </Form>
         </Modal>
     )

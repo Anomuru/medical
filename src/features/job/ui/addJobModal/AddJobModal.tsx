@@ -14,7 +14,7 @@ interface AddJobModalProps {
 
 export const AddJobModal = ({active,setActive} : AddJobModalProps) => {
     return (
-        <Modal title={"Add"} active={active} setActive={setActive}>
+        <Modal title={"Добавлять"} active={active} setActive={setActive}>
 
             <JobCrudForm onSuccess={setActive}/>
         </Modal>

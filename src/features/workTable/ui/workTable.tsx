@@ -23,20 +23,20 @@ import {createEventsServicePlugin} from "@schedule-x/events-service";
 import {createCalendarControlsPlugin} from "@schedule-x/calendar-controls";
 import {headers, useHttp} from "shared/api/base";
 
-
+import "./schedule.sass"
 
 
 const types = [
     {
-        name: "month",
+        name: "месяц",
         value: "month-grid"
     },
     {
-        name: "day",
+        name: "день",
         value: "day"
     },
     {
-        name: "week",
+        name: "неделя",
         value: "week"
     }
 ]
@@ -62,6 +62,7 @@ export const WorkTable = () => {
 
     const calendarControls = useState(() => createCalendarControlsPlugin())[0]
     const eventsServicePlugin = useState(() => createEventsServicePlugin())[0];
+
 
 
     const today = new Date();
@@ -129,6 +130,7 @@ export const WorkTable = () => {
     },[selectedDoctor])
 
     const calendar = useCalendarApp({
+        translations: "ru",
         defaultView: type,
         selectedDate: date,
 
@@ -139,6 +141,16 @@ export const WorkTable = () => {
         ],
         events: [
             ...events,
+            {
+                id: 2,
+                start: '2025-02-11 08:00',
+                end: '2025-02-11 08:30',
+            },
+            {
+                id: 2,
+                start: '2025-02-11 08:30',
+                end: '2025-02-11 09:05',
+            }
         ],
         plugins: [
             // createEventModalPlugin(),
@@ -151,6 +163,8 @@ export const WorkTable = () => {
             start: '08:00',
             end: '00:00',
         },
+
+
         callbacks: {
 
             onDoubleClickDateTime(data: any) {
@@ -215,7 +229,7 @@ export const WorkTable = () => {
             <div className={cls.mainBox}>
                 <div className={cls.mainBox__leftSight}>
                     <div className={cls.mainBox__leftSight__arounder}>
-                        <h1 className={cls.mainBox__leftSight__arounder__content}>Staff list</h1>
+                        <h1 className={cls.mainBox__leftSight__arounder__content}>Список персонала</h1>
                         <Button
                             onClick={handleClick}
                             extraClass={cls.mainBox__leftSight__arounder__btn}
@@ -258,6 +272,7 @@ export const WorkTable = () => {
                 </div>
                 <div className={cls.mainBox__rightSight}>
                     <ScheduleXCalendar
+                        style={{ fontSize: 25+ "px" }}
                         customComponents={{
                             timeGridEvent: CustomEvent,
                             // dateGridEvent: CustomDateGridEvent,
@@ -298,7 +313,7 @@ const CustomEvent = (event: any) => {
                     [cls.active] : status
                 })}
             >
-                {status ? "to'landi" : "to'lanmadi"}
+                {status ? "оплаченный" : "неоплаченный"}
             </h2>
         </div>
     )

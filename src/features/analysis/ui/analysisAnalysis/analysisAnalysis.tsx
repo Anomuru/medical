@@ -74,7 +74,7 @@ export const AnalysisAnalysis = () => {
             </div>
             <AnalysisList isChange={getChangedItem}/>
 
-            {count && <Pagination
+            {!!count && <Pagination
                 totalCount={count}
                 onPageChange={setCurrentPage}
                 currentPage={currentPage}
@@ -145,7 +145,6 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
         }
         request({url: "analysis/analysis/crud/create/", body: JSON.stringify(res), method: "POST"})
             .then(res => {
-                console.log(res)
                 setActive(false)
                 dispatch(analysisActions.createAnalysis(res))
             })
@@ -154,35 +153,35 @@ const AnalysisAnalysisAddModal = ({active, setActive}: { active: boolean, setAct
 
 
     return (
-        <Modal title={"Add"} active={active} setActive={setActive}>
+        <Modal title={"Добавлять"} active={active} setActive={setActive}>
             <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.modal__form}>
                 <Input
                     required
                     register={register}
-                    placeholder={"Name"}
+                    placeholder={"Имя"}
                     name={"name"}
                 />
                 <Input
                     required
                     register={register}
-                    placeholder={"Kod nomi"}
+                    placeholder={"Кодовое имя"}
                     name={"code_name"}
                 />
                 <Input
                     required
                     register={register}
-                    placeholder={"Narxi"}
+                    placeholder={"Цена"}
                     name={"price"}
                 />
-                <Select autoSelect={false} title={"Group"} setSelectOption={getGroupId}
+                <Select autoSelect={false} title={"Группа"} setSelectOption={getGroupId}
                         optionsData={groupAnalysisData}/>
-                <Select autoSelect={false} title={"Paket"} setSelectOption={getPackageId}
+                <Select autoSelect={false} title={"Пакет"} setSelectOption={getPackageId}
                         optionsData={analysisPackageData}/>
-                <Select autoSelect={false} title={"Device"} setSelectOption={getDeviceId} optionsData={getData}/>
-                <Select autoSelect={false} title={"Container"} setSelectOption={getContainerId}
+                <Select autoSelect={false} title={"Устройство"} setSelectOption={getDeviceId} optionsData={getData}/>
+                <Select autoSelect={false} title={"Контейнер"} setSelectOption={getContainerId}
                         optionsData={analysisDate}/>
                 {/*<Select title={"Branch"} setSelectOption={getBranchId} optionsData={branchData}/>*/}
-                <Button>Add</Button>
+                <Button>Добавлять</Button>
             </Form>
         </Modal>
     )
@@ -234,7 +233,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
                 setActive(false)
                 setDeleteConfirm(false)
                 dispatch(analysisActions.editAnalysis({id: itemId, data: res}))
-                dispatch(alertAction.onAddAlertOptions({type: "success", status: true, msg: "Successfully Changed"}))
+                dispatch(alertAction.onAddAlertOptions({type: "success", status: true, msg: "Успешно изменено"}))
             })
             .catch(err => console.log(err))
     }
@@ -268,12 +267,12 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
 
 
     return (
-        <Modal title={"Change"} active={active} setActive={setActive}>
+        <Modal title={"Редактировать"} active={active} setActive={setActive}>
             <Form extraClass={cls.modal__form}>
                 <Input
                     required
                     register={register}
-                    placeholder={"Name"}
+                    placeholder={"Имя"}
                     name={"name"}
 
                     // rules={{value: data?.name}}
@@ -282,7 +281,7 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
                 <Input
                     required
                     register={register}
-                    placeholder={"Kod nomi"}
+                    placeholder={"Кодовое имя"}
                     name={"code_name"}
 
 
@@ -291,33 +290,33 @@ const AnalysisAnalysisChangeModal = ({active, setActive, data}: {
                 <Select
                     // selectOption={data?.type}
                     selectOption={selectedGroup}
-                    title="Group"
+                    title="Группа"
                     setSelectOption={setSelectedGroup}
                     optionsData={groupAnalysisData}
                 />
 
                 <Select
                     selectOption={selectedPackage}
-                    title={"Paket"}
+                    title={"Пакет"}
                     setSelectOption={setSelectedPackage}
                     optionsData={analysisPackageData}
                 />
                 <Select
 
                     selectOption={selectedDevice}
-                    title={"Device"}
+                    title={"Устройство"}
                     setSelectOption={setSelectedDevice}
                     optionsData={getData}
                 />
                 <Select
                     selectOption={selectedContainer}
-                    title={"Container"}
+                    title={"Контейнер"}
                     setSelectOption={setSelectedContainer}
                     optionsData={analysisDate}
                 />
                 <div style={{display: "flex", justifyContent: "space-between"}}>
-                    <Button onClick={handleSubmit(onSubmit)}>Add</Button>
-                    <Button type={"danger"} onClick={handleSubmit(() => setDeleteConfirm(true))}>Delete</Button>
+                    <Button onClick={handleSubmit(onSubmit)}>Редактировать</Button>
+                    <Button type={"danger"} onClick={handleSubmit(() => setDeleteConfirm(true))}>Удалить</Button>
                 </div>
             </Form>
             <DeleteModal active={deleteConfirm} setActive={() => setDeleteConfirm(false)} onConfirm={onDelete}/>

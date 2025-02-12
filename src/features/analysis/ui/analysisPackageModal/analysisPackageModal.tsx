@@ -45,8 +45,6 @@ export const AnalysisPackageModal = () => {
     }, [userBranch])
 
 
-    // console.log(branchId)
-
     const analysisPackageData = useSelector(getAnalysisPackage)
 
     return (
@@ -107,7 +105,7 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
             dispatch(alertAction.onAddAlertOptions({
                 type: "success",
                 status: true,
-                msg: "Successfully added"
+                msg: "Успешно добавлено"
             }))
         })
             .catch(err => {
@@ -118,14 +116,14 @@ const AddPackageAddModal = ({active, setActive}: { active: boolean, setActive: (
     }
 
     return (
-        <Modal title={"Add"} active={active} setActive={setActive}>
+        <Modal title={"Добавлять"} active={active} setActive={setActive}>
             <Form extraClass={cls.modal__form} onSubmit={handleSubmit(onClick)}>
                 <Input name={"name"} register={register}/>
                 {/*<Select*/}
                 {/*    setSelectOption={setSelectedBranch}*/}
                 {/*    optionsData={branchData}*/}
                 {/*/>*/}
-                <Button>Add</Button>
+                <Button>Добавлять</Button>
 
             </Form>
         </Modal>
@@ -166,7 +164,7 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
-                    msg: "Successfully Changed"
+                    msg: "Успешно изменено"
                 }))
             })
             .catch(err => {
@@ -199,12 +197,12 @@ const EditPackageAddModal = ({active, setActive, activeEditItem}: {
         setActiveConfirm(false);
     }, []);
     return (
-        <Modal title={"Edit"} active={active} setActive={setActive}>
+        <Modal title={"Редактировать"} active={active} setActive={setActive}>
             <Form extraClass={cls.modal__form}>
                 <Input name={"name"} register={register}/>
                 <div className={cls.modal__buttons}>
-                    <Button onClick={handleSubmit(onClick)}>Edit</Button>
-                    <Button type={"danger"} onClick={handleSubmit(() => setActiveConfirm(true))}>Delete</Button>
+                    <Button onClick={handleSubmit(onClick)}>Редактировать</Button>
+                    <Button type={"danger"} onClick={handleSubmit(() => setActiveConfirm(true))}>Удалить</Button>
                 </div>
 
             </Form>

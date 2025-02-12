@@ -38,7 +38,7 @@ export const PatientHeader: FC<IPatientFilter> = memo(({filter , setActiveType ,
 
     return (
         <div className={cls.header}>
-            <h1>Patient list</h1>
+            <h1>Список пациентов</h1>
             <div className={cls.header__filter}>
                 {filterRender()}
 

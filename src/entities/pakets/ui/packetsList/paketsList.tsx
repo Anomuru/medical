@@ -63,7 +63,7 @@ export const PacketsList = memo((props: PropsType) => {
                     <span>{price}</span>
                 </div>
                 <div className={cls.subrow}>
-                    <span>Analiz ro’yxatlari :</span>
+                    <span>Списки анализа :</span>
                     <div className={cls.subrow__wrapper}>
                         <span><img onClick={toggleDropdown} src={arrowContainedSquare} alt=""/></span>
                         {!item.extra &&

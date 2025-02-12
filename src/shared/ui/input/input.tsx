@@ -50,7 +50,8 @@ export const Input: React.FC<InputProps> = (props) => {
         error,
         onChangeState,
         value,
-        canChange= true
+        canChange= true,
+        checked
     } = props
 
     const textField = register && register(name, rules)
@@ -66,7 +67,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 {...textField}
                 required={required}
                 id={name}
-
+                checked={checked}
                 className={classNames(cls.label__input, extraClass)}
                 type={(type === "password" && passwordActive) ? "text" : type}
                 placeholder={placeholder}

@@ -57,23 +57,23 @@ export const LogInPage = () => {
             <div className={cls.loginPage}>
                 <div className={cls.loginPage__content}>
                     <img className={cls.loginPage__logo} src={logo} alt=""/>
-                    <h1 className={cls.loginPage__title}>Login</h1>
+                    <h1 className={cls.loginPage__title}>Авторизоваться</h1>
                     <Form
                         extraClass={cls.loginPage__form}
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <div className={cls.loginPage__wrapper}>
                             <Input
-                                title={"E-mail"}
-                                placeholder={"Enter your Email"}
+                                title={"Имя пользователя"}
+                                placeholder={"Введите свое имя пользователя"}
                                 register={register}
                                 name={"username"}
                             />
                             <Input
                                 type={"password"}
-                                title={"Password"}
+                                title={"Пароль"}
 
-                                placeholder={"Enter your password"}
+                                placeholder={"Введите свой пароль"}
                                 register={register}
                                 name={"password"}
                             />
@@ -81,7 +81,7 @@ export const LogInPage = () => {
                         <Button
                             extraClass={cls.loginPage__btn}
                         >
-                            Login
+                            Авторизоваться
                         </Button>
                     </Form>
                 </div>

@@ -335,7 +335,7 @@ const AddGroupModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive})
             dispatch(alertAction.onAddAlertOptions({
                 type: "success",
                 status: true,
-                msg: "Successfully added"
+                msg: "Успешно добавлено"
             }))
         })
 
@@ -345,13 +345,13 @@ const AddGroupModal: FC<IAddAnalysisContainerModalProps> = ({active, setActive})
         <Modal
             active={active}
             setActive={setActive}
-            title={"Add"}
+            title={"Добавлять"}
         >
             <Form extraClass={cls.modal__form}>
-                <Input required extraClass={cls.modal__input} name={"name"} placeholder={"Nomi"} register={register}/>
+                <Input required extraClass={cls.modal__input} name={"name"} placeholder={"Имя"} register={register}/>
                 {/*<Input required extraClass={cls.modal__input} name={"size"} placeholder={"Hajmi"} register={register}/>*/}
                 <Button extraClass={cls.modal__button} onClick={handleSubmit(onClick)}>
-                    Add
+                    Добавлять
                 </Button>
             </Form>
         </Modal>
@@ -395,7 +395,7 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
             dispatch(alertAction.onAddAlertOptions({
                 type: "success",
                 status: true,
-                msg: "Successfully Changed"
+                msg: "Успешно изменено"
             }))
         })
         //
@@ -428,17 +428,17 @@ const EditContainerModal: FC<IEditAnalysisContainerModalProps> = ({active, setAc
         <Modal
             active={active}
             setActive={setActive}
-            title={"Add"}
+            title={"Редактировать"}
         >
             <Form extraClass={cls.modal__form}>
-                <Input extraClass={cls.modal__input} name={"name"} placeholder={"Nomi"} register={register}/>
+                <Input extraClass={cls.modal__input} name={"name"} placeholder={"Имя"} register={register}/>
                 <div style={{display: "flex", justifyContent: "space-between"}}>
                     <Button extraClass={cls.modal__button} onClick={handleSubmit(onEdit)}>
-                        Edit
+                        Редактировать
                     </Button>
                     <Button type={"danger"} extraClass={cls.modal__button}
                             onClick={handleSubmit(() => setActiveConfirm(true))}>
-                        Delete
+                        Удалить
                     </Button>
                 </div>
             </Form>

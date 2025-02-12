@@ -43,7 +43,7 @@ export const MenuBar = () => {
                 to={"/login"}
             >
                 <i className="fas fa-sign-out-alt"/>
-                <p>Log out</p>
+                <p>Выйти</p>
             </Link>
         </div>
     );

@@ -114,10 +114,10 @@ export const JobList = ({setChangeActive,setDeleteActive,setChangingData}: JobLi
                     <thead className={cls.theadBody}>
                     <tr>
                         <th>№</th>
-                        <th>Name</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                        <th>Client</th>
+                        <th>Имя</th>
+                        <th>Редактировать</th>
+                        <th>Удалить</th>
+                        <th>Клиент</th>
                     </tr>
                     </thead>
                     <tbody className={cls.thBody}>

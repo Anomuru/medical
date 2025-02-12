@@ -99,62 +99,62 @@ export const RegisterPage = () => {
     const registerStaff = useMemo(() => [
         {
             name: "username",
-            label: "Username",
+            label: "Имя пользователя",
             isInput: true,
         }, {
             name: "name",
-            label: "Name",
+            label: "Имя",
             isInput: true,
         }, {
             name: "surname",
-            label: "Surname",
+            label: "Фамилия",
             isInput: true,
         }, {
             name: "address",
-            label: "Address",
+            label: "Адрес",
             isInput: true,
         },
         {
             name: "job",
-            label: "Job",
+            label: "Работа",
             isMultiSelect: true,
             onSelect: getSelectedJob,
             list: jobsList?.map(item => ({label: item.name, value: item.id}))
         },
         {
             name: "passport_series",
-            label: "Pasport seria (A B)",
+            label: "Серия паспорта (A B)",
             isInput: true,
         },
         {
             name: "passport_number",
-            label: "Password seria number",
+            label: "Пароль серийный номер",
             isInput: true,
         },
         {
             name: "birth_date",
-            label: "Birthday date",
+            label: "Дата рождения",
             isInput: true,
             type: "date"
         },
         {
             name: "phone_number",
-            label: "Phone number",
+            label: "Номер телефона",
             isInput: true,
         },
         {
             name: "email",
-            label: "Email adress",
+            label: "Адрес электронной почты",
             isInput: true,
         },
         {
             name: "unknown",
-            label: [{label: "Man", id: 1}, {label: "Woman", id: 2}],
+            label: [{label: "Мужчина", id: 1}, {label: "Женщина", id: 2}],
             isRadio: true,
         },
         {
             name: "password",
-            label: "Password",
+            label: "Пароль",
             isInput: true,
             type: "password"
         },
@@ -241,7 +241,7 @@ export const RegisterPage = () => {
                     dispatch(alertAction.onAddAlertOptions({
                         type: "success",
                         status: true,
-                        msg: "Muvaffaqiyatli roʻyxatdan oʻtkazildi "
+                        msg: "Успешно зарегистрирован"
                     }))
                 })
                 .catch(err => console.log(err))
@@ -266,11 +266,11 @@ export const RegisterPage = () => {
     return (
         <div className={cls.registerPage}>
             <Form onSubmit={handleSubmit(onSubmit)} extraClass={cls.registerPage__form}>
-                <h1>Register Staff</h1>
+                <h1>Регистрация персонала</h1>
                 <div className={cls.container}>
                     {render()}
                 </div>
-                <Button extraClass={cls.registerPage__btn}>Register</Button>
+                <Button extraClass={cls.registerPage__btn}>Зарегистрироваться</Button>
             </Form>
             <div className={cls.registerPage__image}>
                 <img src={image} alt=""/>

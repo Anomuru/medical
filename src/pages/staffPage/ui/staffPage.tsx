@@ -56,7 +56,7 @@ export const StaffPage = () => {
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
-                    msg: "Muvaffaqiyatli o'chirildi"
+                    msg: "Успешно удалено"
                 }))
             })
     }
@@ -67,7 +67,7 @@ export const StaffPage = () => {
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.staffPage}>
                 <div className={cls.staffPage__header}>
-                    <h2 className={cls.staffPage__title}>Staff list</h2>
+                    <h2 className={cls.staffPage__title}>Список персонала</h2>
                     <Button extraClass={cls.staffPage__btn} onClick={() => navigate("/platform/register")}>+</Button>
                 </div>
                 <StaffList
