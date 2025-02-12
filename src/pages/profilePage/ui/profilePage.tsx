@@ -129,8 +129,9 @@ export const ProfilePage = () => {
         if (staffId) {
             dispatch(fetchStaffProfileData(staffId))
         }
-    }, [dispatch, staffId])
+    }, [])
 
+    console.log(details , "det")
     const [isTimeTable, setIsTimeTable] = useState<boolean>(false)
     const [editModal, setEditModal] = useState<boolean>(false)
     const [passwordError, setPasswordError] = useState<string>("")

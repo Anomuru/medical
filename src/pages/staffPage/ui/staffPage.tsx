@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import {Pagination} from "features/pagination";
@@ -91,6 +91,12 @@ export const StaffPage = () => {
 
                 <DeleteModal active={active} setActive={() => setActive(false)} onConfirm={onDelete}/>
             </div>
+            <Pagination
+                totalCount={6}
+                onPageChange={setCurrentPage}
+                currentPage={currentPage}
+                pageSize={10}
+            />
         </DynamicModuleLoader>
     );
 }

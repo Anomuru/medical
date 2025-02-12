@@ -56,6 +56,7 @@ export const AllPaymentList: FC<IPatientListProps> = (
                                     <i style={{color: "#5bd563"}} className="fa-solid fa-edit"/>
                                 </div>
                             </td>
+                            <td>{item.amount}</td>n
                             <td>
                                 <div onClick={() => {
                                     setActiveDeleteItem(item)
@@ -81,6 +82,7 @@ export const AllPaymentList: FC<IPatientListProps> = (
                 <th>Дата оплаты</th>
                 <th>Оплата</th>
                 <th>Тип оплаты</th>
+                <th>Сумма</th>
                 <th/>
             </tr>
             </thead>
