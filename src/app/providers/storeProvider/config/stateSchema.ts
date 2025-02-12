@@ -53,7 +53,8 @@ export interface StateSchema {
     packetsSlice?: IPacketsSchema,
     userAnalysisSlice?: IUserAnalysisSchema,
     profileAnalysisSlice?: IUserProfileAnalysisSchema
-    allPaymentSlice?: IAllPaymentSchema
+    allPaymentSlice?: IAllPaymentSchema,
+    userPaymentSlice?: IAllPaymentSchema
 
 }
 

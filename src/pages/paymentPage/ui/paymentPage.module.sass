@@ -29,6 +29,11 @@
     border: 1px solid #D1D1D6
     border-radius: 10px
     padding: 2.5rem
+    &__box
+      width: 100%
+      display: flex
+      justify-content: space-between
+      align-items: center
 
     h1
       font-size: 1.6rem
@@ -92,3 +97,45 @@
 .active
   box-shadow: 0px 4px 4px -4px rgba(12, 12, 13, 5%), 0px 16px 20px -4px rgba(12, 12, 13, 0.1)
   background: #6ae8ee !important
+
+.switch
+  width: 9rem
+  border-radius: 30px
+  background-color: #00ABB2
+  padding: 2rem
+  height: 3rem
+  display: flex
+  align-items: center
+  align-self: flex-end
+  position: relative
+  transition: .5s
+  &__left
+    position: absolute
+    left: 5px
+    background-color: #FFFFFF
+    width: 3rem
+    height: 3rem
+    border-radius: 50%
+    transition: .4s all
+    display: flex
+    justify-content: center
+    align-items: center
+    transition: .5s
+    i
+      font-size: 2rem
+  .active
+    left: 5.5rem
+    transition: .5s
+
+.item
+  display: flex
+  gap: .2rem
+  &__image
+    width: 4.5rem
+    height: 4.5rem
+  &__info
+    display: flex
+    flex-direction: column
+    gap: .2rem
+    p
+      color: $medical-color

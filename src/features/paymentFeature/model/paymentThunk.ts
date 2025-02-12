@@ -1,11 +1,12 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ThunkConfig} from "../../../app/providers/storeProvider";
-import {headers} from "../../../shared/api/base";
+import {headers, ParamUrl} from "../../../shared/api/base";
 import {analysisContainerActions} from "../../../entities/analysis/model/slice/analysisContainerSlice";
 import {paymentActions} from "./paymentSlice";
 import {paymentTypeActions} from "./paymentTypeSlice";
 import {givePaymentActions} from "./givePaymentSlice";
 import {alertAction} from "features/alert/model/slice/alertSlice";
+import {userPaymentActions} from "features/paymentFeature/model/userPaymentSlice";
 
 interface PaymentProps {
     payment_type: string | undefined,
@@ -80,3 +81,24 @@ export const givePaymentThunk = createAsyncThunk<
     }
 })
 
+export const userPaymentThunk = createAsyncThunk<
+    void,
+    number | undefined,
+    ThunkConfig<string>
+>('paymnetTypeSlice/userPaymentThunk', async (authData, thunkApi) => {
+    const {extra, dispatch, rejectWithValue} = thunkApi
+    try{
+        const response = await extra.api({
+            url: `account/payment/payment_list/${authData}/`, method: "GET", body: null, headers: headers()
+        })
+        if (!response) {
+            throw new Error();
+        }
+        dispatch(userPaymentActions.onGetUserPaymentData(response));
+        return response.data;
+    }catch (e) {
+        console.log(e);
+        return rejectWithValue("error");
+    }
+
+})
