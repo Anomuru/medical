@@ -109,7 +109,6 @@
         const onDeleteAllAnalysis = () => {
             dispatch(deleteAllAnalysis())
         }
-        console.log(payType, "dfrfr")
 
         const onClick: SubmitHandler<IPaymentData> = () => {
             const data = {
@@ -151,11 +150,11 @@
                 <div className={cls.payment}>
                     <div className={cls.patientsList}>
                         <div className={cls.header}>
-                            <h2>Patients list</h2>
+                            <h2>Список пациентов</h2>
                             <Input
                                 onChange={onChangeSearch}
                                 name={"search"}
-                                placeholder={"search"}
+                                placeholder={"Поиск"}
                                 value={search}/>
                         </div>
 
@@ -163,10 +162,10 @@
                             <Table>
                                 <thead>
                                 <tr>
-                                    <th>Surname</th>
-                                    <th>Name</th>
-                                    <th>User id</th>
-                                    <th>Phone number</th>
+                                    <th>Фамилия</th>
+                                    <th>Имя</th>
+                                    <th>ID пользователя</th>
+                                    <th>Номер телефона</th>
                                 </tr>
 
                                 </thead>
@@ -203,15 +202,16 @@
                             />
                         ) : null}
                         {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
-                            <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Iltimos bemorlardan birini tanlang 😊</h1>
+                            <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Пожалуйста, выберите одного из пациентов 😊</h1>
                         )}
                     </div>
 
 
 
                     <Form extraClass={cls.cashier}>
-                        <h1>Kassir</h1>
-                        {/*<Input name={"date"} title={"Kun"} type={"date"} register={register}/>*/}
+                        <h1>Кассир</h1>
+                        <Input name={"date"} title={"День"} type={"date"} register={register}/>
+                        <Input name={"price"} title={"Цена"} disabled register={register}/>
                         <div className={cls.types}>
                             {
                                 payType?.map(item => {
@@ -231,7 +231,7 @@
 
                         </div>
 
-                        <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Add</Button>
+                        <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Добавлять</Button>
 
                     </Form>
 
