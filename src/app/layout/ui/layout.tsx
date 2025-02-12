@@ -12,9 +12,12 @@ export const Layout = () => {
 
         <div className={cls.layout}>
             <Alert/>
-            <MenuBar/>
+            {/*<div style={{display: "flex" , flexDirection: "column"}}>*/}
+                {/*<Header/>*/}
+                <MenuBar/>
+            {/*</div>*/}
             <main className={cls.layout__content}>
-                <Header/>
+                {/*<Header/>*/}
                 <div className={cls.wrapper}>
                     <Outlet/>
                 </div>

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import {AnalysisData, ProfileModal} from "features/profile";
+import {AnalysisData, PaymentsList, ProfileModal} from "features/profile";
 import {
     getStaffId,
     fetchStaffProfileData,
@@ -25,7 +25,7 @@ import {
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {data, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
 import classNames from "classnames";
-import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileAnalysisSlice";
+import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileSlice";
 import {packetsReducer} from "../../../entities/pakets";
 import {ROLES} from "shared/const/roles";
 import {getUserRole} from "entities/user";
@@ -35,12 +35,14 @@ import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
 import {Modal} from "../../../shared/ui/modal";
 import {alertAction} from "../../../features/alert/model/slice/alertSlice";
+import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
 
 
 const reducers: ReducersList = {
     packetsSlice: packetsReducer,
     staffProfileSlice: staffProfileReducer,
     profileAnalysisSlice: profileAnalysisReducer,
+    givePaymentSlice: givePaymentReducer
 
 }
 
@@ -63,6 +65,11 @@ const dataButton = [
     {
         name: "Анализ",
         path: "analysis",
+        role: [ROLES.patient]
+    },
+    {
+        name: "Платежи",
+        path: "payments",
         role: [ROLES.patient]
     }
 ]
@@ -365,6 +372,7 @@ export const ProfilePage = () => {
                     </>}/>
 
                     <Route path={"analysis"} element={<AnalysisData/>}/>
+                    <Route path={"payments"} element={<PaymentsList/>}/>
 
 
                 </Routes>

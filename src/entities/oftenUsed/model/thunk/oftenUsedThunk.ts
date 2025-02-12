@@ -4,6 +4,7 @@ import {ThunkConfig} from "../../../../app/providers/storeProvider";
 
 import {oftenUsedActions} from "../slice/oftenUsedSlice";
 import {DoctorSchema} from "shared/types/oftenUsedTypes";
+import {paymentTypeActions} from "../../../../features/paymentFeature/model/paymentTypeSlice";
 
 export const fetchJobsData = createAsyncThunk(
     "oftenUsedSlice/fetchJobsData",
@@ -118,3 +119,28 @@ export const oftenUsedDeviceListThunk = createAsyncThunk<
         return rejectWithValue('error');
     }
 });
+
+
+
+export const oftenPaymentTypes = createAsyncThunk<
+    void,
+    void,
+    ThunkConfig<string>
+>('paymnetTypeSlice/paymentTypeThunk', async (authData, thunkApi) => {
+    const {extra, dispatch, rejectWithValue} = thunkApi
+    try{
+        const response = await extra.api({
+            url: `account/payment_types/payment_type/`, method: "GET", body: null, headers: headers()
+        })
+        if (!response) {
+            throw new Error();
+        }
+        dispatch(oftenUsedActions.onGetPaymentTypes(response));
+
+        return response.data;
+    }catch (e) {
+        console.log(e);
+        return rejectWithValue("error");
+    }
+
+})

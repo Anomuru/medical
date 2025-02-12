@@ -1,4 +1,5 @@
 import {DoctorSchema, JobSchema} from "shared/types/oftenUsedTypes";
+import {IPaymentType} from "../../../../features/paymentFeature/model/paymentTypes";
 
 
 export interface Device {
@@ -9,7 +10,10 @@ export interface Device {
 
 
 
-
+interface IOftenPaymentType {
+    id: number,
+    payment_type: string
+}
 
 
 
@@ -22,5 +26,6 @@ export interface OftenUsedSchemas {
     selectedBranch?: number,
     error?: "error"
     loading: boolean,
-    data: []
+    data: [],
+    paymentTypes: IOftenPaymentType[]
 }

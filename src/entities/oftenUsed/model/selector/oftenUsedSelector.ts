@@ -21,3 +21,4 @@ export const getError = (state: StateSchema) =>
 
 
 export const getOftenDevice = (state: StateSchema) => state.oftenUsedSlice?.data
+export const getOftenPaymentTypes = (state: StateSchema) => state.oftenUsedSlice?.paymentTypes

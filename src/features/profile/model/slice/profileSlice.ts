@@ -5,10 +5,11 @@ import {IUserProfileAnalysisSchema} from "../types/profileAnalysisTypes";
 const initialState: IUserProfileAnalysisSchema = {
     info: {packet: [], analysis_list: []},
     loading: false,
-    error: undefined
+    error: undefined,
+    paymentsData: []
 }
 
-const profileAnalysisSlice = createSlice({
+const profileSlice = createSlice({
     name: "profileAnalysisSlice",
     initialState,
     reducers: {
@@ -43,9 +44,24 @@ const profileAnalysisSlice = createSlice({
         },
         deleteAllAnalysis: (state) => {
             state.info.analysis_list = []
+        },
+        onGetPaymentsData: (state , action) => {
+            state.paymentsData = action.payload.results
+        },
+        onChangePaymentType: (state , action) => {
+            console.log(action.payload)
+            state.paymentsData = state.paymentsData.map(item => {
+                if (item.id === action.payload.id){
+                    return action.payload.data
+                }
+                return item
+            })
+        },
+        onDeletePayments: (state , action) => {
+            state.paymentsData = state.paymentsData.filter(item => item.id !== action.payload)
         }
     },
 })
 
-export const {reducer: profileAnalysisReducer} = profileAnalysisSlice
-export const {actions: profileAnalysisActions} = profileAnalysisSlice
+export const {reducer: profileAnalysisReducer} = profileSlice
+export const {actions: profileAnalysisActions} = profileSlice

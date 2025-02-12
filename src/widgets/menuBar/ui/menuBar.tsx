@@ -1,18 +1,22 @@
 import React, {useCallback} from 'react';
 import {useSelector} from "react-redux";
 
-import {getUserRole} from "entities/user";
+import {getUserId, getUserName, getUserRole, getUserSurname} from "entities/user";
 import {Link} from "shared/ui/link";
 import {menuConfig} from "../config/menuConfig";
 
 import cls from "./menuBar.module.sass";
 import classNames from "classnames";
+import {useNavigate} from "react-router";
 
 export const MenuBar = () => {
 
     const userRole = useSelector(getUserRole)
     // const userRole = localStorage.getItem("role")
-
+    const navigation = useNavigate()
+    const userSurname = useSelector(getUserSurname)
+    const userName = useSelector(getUserName)
+    const userId = useSelector(getUserId)
     const renderMenuItems = useCallback(() => {
         return menuConfig.map(item => {
             if (userRole && item.roles.includes(userRole))
@@ -29,9 +33,15 @@ export const MenuBar = () => {
         })
     }, [userRole])
 
+
     return (
         <div className={cls.menu}>
+
+
             <div className={cls.menu__items}>
+                <div onClick={() => navigation(`/platform/staff/profile/${userId}`, {replace: true})} className={cls.menu__header}>
+                    {userSurname} {userName}
+                </div>
                 {renderMenuItems()}
             </div>
             <Link

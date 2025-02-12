@@ -17,7 +17,8 @@ const initialState: OftenUsedSchemas = {
     selectedBranch: undefined,
     loading: false,
     error: undefined,
-    data: []
+    data: [],
+    paymentTypes: []
 }
 
 const oftenUsedSlice = createSlice({
@@ -35,6 +36,9 @@ const oftenUsedSlice = createSlice({
         onGetDeviceList: (state, action) => {
             state.data = action.payload.results
         },
+        onGetPaymentTypes: (state , action) => {
+            state.paymentTypes = action.payload.results
+        }
 
     },
     extraReducers: builder =>
