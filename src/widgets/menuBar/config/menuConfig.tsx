@@ -15,10 +15,22 @@ export const menuConfig = [
         roles: [ROLES.operator, ROLES.reception, ROLES.admin]
     },
     {
+        to: "patient",
+        image: patientImage,
+        label: "Пациенты",
+        roles: [ROLES.admin]
+    },
+    {
         to: "payment",
         image: paymentImage,
         label: "Оплата",
         roles: [ROLES.operator, ROLES.reception,ROLES.admin]
+    },
+    {
+        to: "analysisGroup",
+        image: analysisImage,
+        label: "Анализ",
+        roles: [ROLES.operator, ROLES.reception, ROLES.admin]
     },
     // {
     //     to: "dashboard",
@@ -40,21 +52,9 @@ export const menuConfig = [
         roles: [ROLES.admin]
     },
     {
-        to: "analysisGroup",
-        image: analysisImage,
-        label: "Анализ",
-        roles: [ROLES.operator, ROLES.reception, ROLES.admin]
-    },
-    {
         to: "jobPage",
         image: jobListImage,
         label: "Работа",
-        roles: [ROLES.admin]
-    },
-    {
-        to: "patient",
-        image: patientImage,
-        label: "Пациенты",
         roles: [ROLES.admin]
     },
     // {
