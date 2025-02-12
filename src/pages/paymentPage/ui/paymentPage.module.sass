@@ -21,6 +21,14 @@
     border: 1px solid #D1D1D6
     border-radius: 10px
     padding: 2.5rem
+    &__header
+      display: flex
+      width: 100%
+      justify-content: space-between
+    &__section
+      display: flex
+      flex-direction: column
+      gap: 2rem
 
   .cashier
     width: 45%
@@ -103,12 +111,14 @@
 .switch
   width: 9rem
   border-radius: 30px
-  background-color: #00ABB2
+  background-color: #fff
   padding: 2rem
   height: 3rem
   display: flex
   align-items: center
+  border: 1px solid #ccc
   align-self: flex-end
+  box-shadow: rgba(50, 50, 93, 0.25) 0 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset
   position: relative
   transition: .5s
   &__left
@@ -130,7 +140,6 @@
     transition: .5s
 
 .item
-  display: flex
   gap: .2rem
   &__image
     width: 4.5rem

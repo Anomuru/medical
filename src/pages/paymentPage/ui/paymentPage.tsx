@@ -73,6 +73,8 @@ export const PaymentPage = () => {
     const payType = useSelector(getPaymentTypeData)
     const [activeSwitch, setActiveSwitch] = useState(true)
     const getPayment = useSelector(getUserPaymentData)
+    const totalAnalis = analiz?.packet.map(item => item.total)
+    const generalAmount = Number(totalAnalis) + Number(totalOther)
 
     const dispatch = useAppDispatch()
     useEffect(() => {
@@ -138,8 +140,8 @@ export const PaymentPage = () => {
         return (
             <div className={cls.switch} onClick={handleSwitch}>
                 <div className={`${cls.switch__left} ${!isActive ? cls.active : ""}`}>
-                    {isActive ? <i className="fa-solid fa-vial-circle-check"></i> :
-                        <i className="fa-solid fa-vial"></i>}
+                    {isActive ? <i style={{color: "#02B2B9FF"}} className="fa-solid fa-credit-card"></i> :
+                        <i style={{color: "green"}} className="fa-solid fa-circle-check"></i>}
                 </div>
 
             </div>
@@ -167,6 +169,30 @@ export const PaymentPage = () => {
                 )
             });
         }
+    const renderPayment = useCallback(() => {
+        return getPayment?.map((item, index) => {
+            return(
+                <tr>
+                    {
+                        !item.deleted &&
+                        <>
+                            <td>{index + 1}</td>
+                            <td>
+                                <div className={cls.item}>
+                                    <div className={cls.item__info}>
+                                        <h3>{item.user}</h3>
+                                        <p>{item.user}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{item.date}</td>
+                            <td>{item.payment_type?.payment_type}</td>
+                        </>
+                    }
+                </tr>
+            )
+        })
+    }, [getPayment])
 
 
 
@@ -209,54 +235,83 @@ export const PaymentPage = () => {
                     </div>
 
                     <div className={cls.payment__list}>
-                        {analiz?.packet && analiz?.packet.length > 0 ? (
-                            analiz.packet.map(item => (
-                                <UserPackets
-                                    item={item}
-                                    onDeletePacketAnalysis={onDeletePacketAnalysis}
-                                    onDeletePacketId={onDeletePacket}
+                        <div className={cls.payment__list__header}>
+                            <h1>Общая сумма:</h1>
+                            <h1>{generalAmount}</h1>
+                        </div>
+                        <div className={cls.payment__list__section}>
+                            {analiz?.packet && analiz?.packet.length > 0 ? (
+                                analiz.packet.map(item => (
+                                    <UserPackets
+                                        item={item}
+                                        onDeletePacketAnalysis={onDeletePacketAnalysis}
+                                        onDeletePacketId={onDeletePacket}
+                                    />
+                                ))
+                            ) : null}
+                            {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
+                                <UserAnalysis
+                                    item={analiz.analysis_list}
+                                    total={totalOther}
+                                    onDeleteAnalysisId={onDeleteAnalysis}
+                                    onDeleteAllAnalysis={onDeleteAllAnalysis}
                                 />
-                            ))
-                        ) : null}
-                        {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
-                            <UserAnalysis
-                                item={analiz.analysis_list}
-                                total={totalOther}
-                                onDeleteAnalysisId={onDeleteAnalysis}
-                                onDeleteAllAnalysis={onDeleteAllAnalysis}
-                            />
-                        ) : null}
-                        {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
-                            <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Пожалуйста, выберите одного из пациентов 😊</h1>
-                        )}
+                            ) : null}
+                            {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
+                                <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Пожалуйста, выберите одного из пациентов 😊</h1>
+                            )}
+                        </div>
                     </div>
 
 
 
                     <Form extraClass={cls.cashier}>
-                        <h1>Кассир</h1>
-                        <Input name={"date"} title={"День"} type={"date"} register={register}/>
-                        <Input name={"price"} title={"Цена"} disabled register={register}/>
-                        <div className={cls.types}>
-                            {
-                                payType?.map(item => {
-                                    return (
-                                        <Radio
-                                            name={item.payment_type}
-                                            value={item.id}
-                                            onChange={setSelectedRadio}
-
-                                            checked={item.id === Number(selectedRadio)}
-                                        >
-                                            {item.payment_type}
-                                        </Radio>
-                                    )
-                                })
-                            }
-
+                        <div className={cls.cashier__box}>
+                            <h1>{
+                                activeSwitch ?
+                                "Кассир" : "История платежей"
+                            }</h1>
+                            <ClassSwitch onSwitch={() => setActiveSwitch(!activeSwitch)} isActive={activeSwitch}/>
                         </div>
+                        {
+                            activeSwitch ? <>
+                                    <div className={cls.types}>
+                                        {
+                                            payType?.map(item => {
+                                                return (
+                                                    <Radio
+                                                        name={item.payment_type}
+                                                        value={item.id}
+                                                        onChange={setSelectedRadio}
 
-                        <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Добавлять</Button>
+                                                        checked={item.id === Number(selectedRadio)}
+                                                    >
+                                                        {item.payment_type}
+                                                    </Radio>
+                                                )
+                                            })
+                                        }
+
+                                    </div>
+
+                                    <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Добавлять</Button>
+                                </> :
+                                <>
+                                    <Table>
+                                        <thead>
+                                        <tr>
+                                            <th>№</th>
+                                            <th>Фамилия и Имя </th>
+                                            <th>Дата оплаты</th>
+                                            <th>Тип оплаты</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {renderPayment()}
+                                        </tbody>
+                                    </Table>
+                                </>
+                        }
 
                     </Form>
 

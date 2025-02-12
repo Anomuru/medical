@@ -10,6 +10,7 @@ interface IPacketsProps {
     item: IUserPackets,
     onDeletePacketAnalysis?: (arg: number, arg2: number) => void,
     onDeletePacketId?: (arg: number) => void
+
 }
 
 export const UserPackets = memo(({item, onDeletePacketAnalysis, onDeletePacketId}: IPacketsProps) => {

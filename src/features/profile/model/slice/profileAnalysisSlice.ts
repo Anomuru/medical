@@ -22,6 +22,7 @@ const profileAnalysisSlice = createSlice({
                         if (item.packet_id === action.payload.packetId) {
                             return {
                                 packet_id: item.packet_id,
+                                total: item.total,
                                 packet_name: item.packet_name,
                                 analysis_list: item.analysis_list
                                     .filter(item =>
