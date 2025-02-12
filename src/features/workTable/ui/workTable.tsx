@@ -141,6 +141,16 @@ export const WorkTable = () => {
         ],
         events: [
             ...events,
+            {
+                id: 2,
+                start: '2025-02-11 08:00',
+                end: '2025-02-11 08:30',
+            },
+            {
+                id: 2,
+                start: '2025-02-11 08:30',
+                end: '2025-02-11 09:05',
+            }
         ],
         plugins: [
             // createEventModalPlugin(),
