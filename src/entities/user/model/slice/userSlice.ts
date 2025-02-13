@@ -3,6 +3,7 @@ import {UserSchema} from "entities/user/model/types/userSchema";
 import {fetchRefresh} from "../thunk/userThunk";
 
 const initialState: UserSchema = {
+    photo: "",
     user_id: null,
     role: null,
     name: null,
@@ -10,6 +11,8 @@ const initialState: UserSchema = {
     branch_id: null,
     isLoading: false,
     error: undefined
+
+
 }
 
 const userSlice = createSlice({
@@ -22,8 +25,14 @@ const userSlice = createSlice({
             state.name = action.payload.name
             state.surname = action.payload.surname
             state.branch_id = action.payload.branch_id
+
             state.role = action.payload.role
             state.error = undefined
+
+            localStorage.setItem("photo" , action.payload.photo)
+
+
+
 
             localStorage.setItem("branch" , String(action.payload.branch_id))
         }

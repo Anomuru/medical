@@ -1,5 +1,5 @@
-// export const API_URL_DOC = `http://176.221.28.164/`
-export const API_URL_DOC = `http://26.196.249.247:8000/`
+export const API_URL_DOC = `http://192.168.1.61:8000/`
+// export const API_URL_DOC = `http://26.12.122.72:8000/`
 
 
 export const API_URL: string = `${API_URL_DOC}api/`

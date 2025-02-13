@@ -17,7 +17,7 @@ import {Input} from "shared/ui/input";
 import cls from './profilePage.module.sass'
 import profileImg from 'shared/assets/images/profileImage.png'
 import {useForm, useWatch} from "react-hook-form";
-import {headers, useHttp} from "shared/api/base";
+import {API_URL_DOC, headers, useHttp} from "shared/api/base";
 import {changeStaffDetails} from "../../../entities/staff/model/thunk/staffProfileThunk";
 import {
     DynamicModuleLoader,
@@ -33,9 +33,9 @@ import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useDropzone} from "react-dropzone";
 import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
-import {Modal} from "../../../shared/ui/modal";
-import {alertAction} from "../../../features/alert/model/slice/alertSlice";
-import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
+import {Modal} from "shared/ui/modal";
+import {alertAction} from "features/alert/model/slice/alertSlice";
+import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
 
 
 const reducers: ReducersList = {
@@ -94,6 +94,7 @@ export const ProfilePage = () => {
     const {id: staffId} = useParams()
     const details = useSelector(getStaffProfileData)
 
+
     const meRole = useSelector(getUserRole)
 
     const staffDetails : {
@@ -136,9 +137,8 @@ export const ProfilePage = () => {
         if (staffId) {
             dispatch(fetchStaffProfileData(staffId))
         }
-    }, [])
+    }, [staffId])
 
-    console.log(details , "det")
     const [isTimeTable, setIsTimeTable] = useState<boolean>(false)
     const [editModal, setEditModal] = useState<boolean>(false)
     const [passwordError, setPasswordError] = useState<string>("")
@@ -175,6 +175,7 @@ export const ProfilePage = () => {
         }))
     }
 
+
     const onImgChange = () => {
         if (files) {
             formData.append("photo", files[0])
@@ -185,14 +186,18 @@ export const ProfilePage = () => {
             body: formData,
             headers: headers()
         }).then(res => {
+            if (details?.job === "admin") {
+                localStorage.setItem("photo", res.photo)
+            }
             dispatch(staffProfileActions.onEditProfile(res))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Успешно изменено"
+            }))
+            setEditModal(false)
         })
-        dispatch(alertAction.onAddAlertOptions({
-            type: "success",
-            status: true,
-            msg: "Успешно изменено"
-        }))
-        setEditModal(false)
+
     }
 
     const onSubmitPassword = (data: any) => {
@@ -249,10 +254,12 @@ export const ProfilePage = () => {
             <div className={cls.profileBox}>
                 <div className={cls.profileBox__leftSide}>
                     <Box extraClass={cls.profileBox__leftSide__profileContainer}>
-                        {
-                            <img onClick={() => setEditModal(!editModal)} className={cls.profileBox__leftSide__profileContainer__img} src={details?.photo ? details.photo : profileImg} alt=""/>
+                        <div className={cls.profileBox__leftSide__profileContainer__img}>
+                            {
+                                <img onClick={() => setEditModal(!editModal)}  src={details?.photo ? details.photo : profileImg} alt=""/>
 
-                        }
+                            }
+                        </div>
                         <h1 className={cls.profileBox__leftSide__profileContainer__name}>{details?.name} {details?.surname}</h1>
                         <h2 className={cls.profileBox__leftSide__profileContainer__mail}>{details?.email}</h2>
                     </Box>

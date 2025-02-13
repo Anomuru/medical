@@ -9,14 +9,19 @@ import cls from "./menuBar.module.sass";
 import classNames from "classnames";
 import {useNavigate} from "react-router";
 
+import {API_URL_DOC} from "shared/api/base";
+
 export const MenuBar = () => {
 
     const userRole = useSelector(getUserRole)
     // const userRole = localStorage.getItem("role")
     const navigation = useNavigate()
     const userSurname = useSelector(getUserSurname)
-    const userName = useSelector(getUserName)
+    // const userName = useSelector(getUserName)
     const userId = useSelector(getUserId)
+    const userPhoto = localStorage.getItem("photo")
+
+
     const renderMenuItems = useCallback(() => {
         return menuConfig.map(item => {
             if (userRole && item.roles.includes(userRole))
@@ -40,7 +45,7 @@ export const MenuBar = () => {
 
             <div className={cls.menu__items}>
                 <div onClick={() => navigation(`/platform/staff/profile/${userId}`, {replace: true})} className={cls.menu__header}>
-                    {userSurname} {userName}
+                    <img src={`${API_URL_DOC}${userPhoto}`} alt=""/>
                 </div>
                 {renderMenuItems()}
             </div>

@@ -1,24 +1,21 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
-import {useAppDispatch} from "../../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 import {useSelector} from "react-redux"
 
 import {fetchProfilePaymentsData} from "../../model/thunk/profileThunk";
 import {getProfilePaymentsData} from "../../model/selector/profileSelector";
-import {Table} from "../../../../shared/ui/table";
+import {Table} from "shared/ui/table";
 import cls from "./profilePayments.module.sass"
-import {Modal} from "../../../../shared/ui/modal";
-import {Form} from "../../../../shared/ui/form";
-import {Input} from "../../../../shared/ui/input";
+import {Modal} from "shared/ui/modal";
+import {Form} from "shared/ui/form";
 import {set, useForm} from "react-hook-form";
-import {paymentTypeThunk} from "../../../paymentFeature/model/paymentThunk";
-import {Radio} from "../../../../shared/ui/radio";
-import {getPaymentTypeData} from "../../../paymentFeature/model/paymentSelector";
-import {Button} from "../../../../shared/ui/button";
-import {headers, useHttp} from "../../../../shared/api/base";
-import {getOftenPaymentTypes} from "../../../../entities/oftenUsed/model/selector/oftenUsedSelector";
-import {oftenPaymentTypes} from "../../../../entities/oftenUsed/model/thunk/oftenUsedThunk";
+import {Radio} from "shared/ui/radio";
+import {Button} from "shared/ui/button";
+import {headers, useHttp} from "shared/api/base";
+import {getOftenPaymentTypes} from "entities/oftenUsed/model/selector/oftenUsedSelector";
+import {oftenPaymentTypes} from "entities/oftenUsed/model/thunk/oftenUsedThunk";
 import {IUserPaymentsData} from "../../model/types/profileAnalysisTypes";
 import {profileAnalysisActions} from "../../model/slice/profileSlice";
 import {alertAction} from "../../../alert/model/slice/alertSlice";

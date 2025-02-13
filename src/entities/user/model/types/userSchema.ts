@@ -3,6 +3,8 @@
 
 
 export interface UserSchema {
+    photo: string;
+
     user_id: number | null,
     name: string | null,
     role: string | null,
@@ -10,5 +12,6 @@ export interface UserSchema {
     branch_id: number | null ,
     isLoading: boolean,
     error?: string,
+
 }
 

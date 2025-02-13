@@ -20,9 +20,9 @@ import {IPatientSchema} from "entities/patient";
 import {IPacketsSchema} from "entities/pakets";
 import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "features/paymentFeature/model/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
-import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
-import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/types/profileAnalysisTypes";
-import {IAllPaymentSchema} from "../../../../entities/allPayment/model/types/allPaymentSchema";
+import {IUserAnalysisSchema} from "entities/analysis/model/types/userAnalysisSchema";
+import {IUserProfileAnalysisSchema} from "features/profile/model/types/profileAnalysisTypes";
+import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchema";
 
 
 export interface StateSchema {
