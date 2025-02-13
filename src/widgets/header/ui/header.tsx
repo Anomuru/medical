@@ -43,7 +43,6 @@ export const Header = () => {
     useEffect(() => {
         if (branch)
             dispatch(onBranch(branch))
-        console.log(branch, 'data')
     }, [branch])
 
     const branchData = useSelector(getBranchesData)

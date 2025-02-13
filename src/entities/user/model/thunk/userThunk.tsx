@@ -24,7 +24,6 @@ export const fetchRefresh = createAsyncThunk<
             url: "token/refresh/", method: "POST", body: JSON.stringify(data), headers: headers()
         })
 
-        console.log(response, "response")
         if (!response) {
             throw new Error();
         }
@@ -43,7 +42,6 @@ export const fetchRefresh = createAsyncThunk<
 
         return response.data;
     } catch (e) {
-        console.log(e);
         return rejectWithValue('error');
     }
 });

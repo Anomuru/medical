@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {packetsActions, PacketsList, PacketsUserList} from "../../../entities/pakets";
 import {ConfirmModal} from "../../../shared/ui/confirm";
@@ -9,15 +9,55 @@ interface IUserAnalysis {
     total?: string | number,
     onDeleteAnalysisId?: (arg: number) => void,
     onDeleteAllAnalysis?: () => void,
-
+    onGetSelectedAnalysis?: (arg: number[]) => void,
+    selectedAnalysis?: number[]
 }
 
-export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis, total}: IUserAnalysis) => {
+interface ICurrentList extends IAnalysisProps {
+    isChecked?: boolean
+}
+
+export const UserAnalysis = memo((props: IUserAnalysis) => {
+
+    const {
+        item,
+        onDeleteAnalysisId,
+        onDeleteAllAnalysis,
+        total,
+        onGetSelectedAnalysis,
+        selectedAnalysis
+    } = props
 
     const [isDeleteAnalysis, setIsDeleteAnalysis] = useState(false)
     const [isDeletePacket, setIsDeletePacket] = useState(false)
     const [isActiveAnalysis, setIsActiveAnalysis] = useState(NaN)
-    const [isActivePacket, setIsActivePacket] = useState(NaN)
+    // const [isActivePacket, setIsActivePacket] = useState(NaN)
+
+    const [currentList, setCurrentList] = useState<ICurrentList[]>([])
+
+    useEffect(() => {
+        if (item && currentList.length !== item.length) {
+            if (!!selectedAnalysis) {
+                setCurrentList(
+                    item.map(item => selectedAnalysis.includes(item.id)
+                        ? {...item, isChecked: true}
+                        : {...item, isChecked: false}
+                    )
+                )
+            } else
+                setCurrentList(item.map(item => ({...item, isChecked: false})))
+        }
+    }, [currentList.length, item, selectedAnalysis])
+
+    useEffect(() => {
+        if (onGetSelectedAnalysis) {
+            const selected = currentList
+                .filter(item => item.isChecked)
+                .map(item => item.id)
+            if (selected.length !== selectedAnalysis?.length)
+                onGetSelectedAnalysis(selected)
+        }
+    }, [onGetSelectedAnalysis, currentList, selectedAnalysis?.length])
 
     const onDeleteAnalysis = () => {
         let price: number = 0;
@@ -30,18 +70,17 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
         //     analysisId: isActiveAnalysis,
         //     packagePrice: price
         // }))
-        if (onDeleteAnalysisId){
+        if (onDeleteAnalysisId) {
             onDeleteAnalysisId(isActiveAnalysis)
             setIsDeleteAnalysis(false)
         }
     }
 
-
-
     const onDeletePacket = () => {
         // dispatch(deletePacket(isActivePacket))
-        if (onDeleteAllAnalysis){
+        if (onDeleteAllAnalysis) {
             onDeleteAllAnalysis()
+            // setSelectedAnalysis([])
             setIsDeletePacket(false)
         }
     }
@@ -56,12 +95,34 @@ export const UserAnalysis = memo(({item, onDeleteAnalysisId, onDeleteAllAnalysis
         setIsDeletePacket(true)
     }
 
+    const onChange = (id: number | "all") => {
+        if (id === "all") {
+            if (currentList.every(item => item.isChecked)) {
+                setCurrentList(prevState =>
+                    prevState.map(item => ({...item, isChecked: false})))
+            } else {
+                setCurrentList(prevState =>
+                    prevState.map(item => ({...item, isChecked: true})))
+            }
+        } else {
+            setCurrentList(prevState =>
+                prevState
+                    .map(item => {
+                        if (item.id === id) {
+                            return {...item, isChecked: !item.isChecked}
+                        }
+                        return item
+                    })
+            )
+        }
+    }
 
     return (
         <>
             <PacketsUserList
+                onChange={onChange}
                 packet_id={1}
-                list={item}
+                list={currentList}
                 total={total}
                 onDeleteAnalysis={onClickAnalysis}
                 onDeletePacket={onClickPacket}
