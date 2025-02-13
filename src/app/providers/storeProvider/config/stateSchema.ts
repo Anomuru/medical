@@ -55,7 +55,8 @@ export interface StateSchema {
     userAnalysisSlice?: IUserAnalysisSchema,
     profileAnalysisSlice?: IUserProfileAnalysisSchema
     allPaymentSlice?: IAllPaymentSchema,
-    paymentPacketSlice?: IPaymentPacketSchema
+    paymentPacketSlice?: IPaymentPacketSchema,
+    userPaymentSlice?: IAllPaymentSchema
 
 }
 

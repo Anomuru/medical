@@ -23,6 +23,7 @@ interface IUserAnalysis {
 interface IUserAnalysisPacket {
     packet_id: number;
     packet_name: string;
+    total: number;
     analysis_list: IUserAnalysis[];
 }
 

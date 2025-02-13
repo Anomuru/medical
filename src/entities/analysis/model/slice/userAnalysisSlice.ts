@@ -23,6 +23,7 @@ const userAnalysisSlice = createSlice({
                             return {
                                 packet_id: item.packet_id,
                                 packet_name: item.packet_name,
+                                total: item.total,
                                 analysis_list: item.analysis_list
                                     .filter(item =>
                                         item.id !== action.payload.analysisId)

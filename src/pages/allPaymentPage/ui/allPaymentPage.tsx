@@ -70,7 +70,6 @@ export const AllPaymentPage = () => {
     }, [])
 
 
-    console.log(selectedBranch, 'wweweweewe')
 
     useEffect(() => {
         if (selectedBranch)
