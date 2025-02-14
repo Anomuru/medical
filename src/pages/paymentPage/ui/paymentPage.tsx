@@ -8,33 +8,34 @@ import {Button} from "shared/ui/button";
 import {
     DynamicModuleLoader,
     ReducersList
-} from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {paymentReducer} from "../../../features/paymentFeature/model/paymentSlice";
+} from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
+import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
 import {useSelector} from "react-redux";
-import {getPaymentData, getPaymentTypeData} from "../../../features/paymentFeature/model/paymentSelector";
-import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
+import {getPaymentData, getPaymentTypeData} from "features/paymentFeature/model/paymentSelector";
+import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {
     fetchUserPaymentList,
     givePaymentThunk,
-    paymentTypeThunk, userPaymentThunk
-} from "../../../features/paymentFeature/model/paymentThunk";
-import {fetchUserAnalys} from "../../../entities/analysis/model/thunk/userAnalysisThunk";
-import {Packets} from "../../../features/pakets";
-import {userAnalysisActions, userAnalysisReducer} from "../../../entities/analysis/model/slice/userAnalysisSlice";
-import {getUserAnalysis} from "../../../entities/analysis/model/selector/userAnalySelector";
-import {UserPackets} from "../../../features/pakets/ui/userPackets";
-import {UserAnalysis} from "../../../features/pakets/ui/userAnalysis";
-import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "../../../entities/oftenUsed";
+    paymentTypeThunk, userPaymentData, userPaymentThunk
+} from "features/paymentFeature/model/paymentThunk";
+import {fetchUserAnalys} from "entities/analysis/model/thunk/userAnalysisThunk";
+
+import {userAnalysisActions, userAnalysisReducer} from "entities/analysis";
+import {getUserAnalysis} from "entities/analysis/model/selector/userAnalySelector";
+import {UserPackets} from "features/pakets/ui/userPackets";
+import {UserAnalysis} from "features/pakets/ui/userAnalysis";
+import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "entities/oftenUsed";
 import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
-import {Form} from "../../../shared/ui/form";
+import {Form} from "shared/ui/form";
 import {SubmitHandler, useForm} from "react-hook-form";
 import classNames from "classnames";
-import {givePaymentReducer} from "../../../features/paymentFeature/model/givePaymentSlice";
-import {paymentTypeReducer} from "../../../features/paymentFeature/model/paymentTypeSlice";
+import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
+import {paymentTypeReducer} from "features/paymentFeature/model/paymentTypeSlice";
 import {Table} from "shared/ui/table";
 import {Pagination} from "features/pagination";
-import {getUserPaymentData} from "features/paymentFeature/model/userPaymentSelector";
+import {getUserPaymentData, getUserPaymentList} from "features/paymentFeature/model/userPaymentSelector";
 import {userPaymentReducer} from "features/paymentFeature/model/userPaymentSlice";
+import {AllPaymentList} from "entities/allPayment";
 
 interface IPaymentData {
     payment_type: string,
@@ -75,7 +76,9 @@ export const PaymentPage = () => {
     const getPayment = useSelector(getUserPaymentData)
     const totalAnalis = analiz?.packet.map(item => item.total)
     const generalAmount = Number(totalAnalis) + Number(totalOther)
+    const userTotalPayment = useSelector(getUserPaymentList)
 
+    console.log(userTotalPayment)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (selectedLocation)
@@ -94,9 +97,12 @@ export const PaymentPage = () => {
     useEffect(() => {
         if (userId)
             dispatch(fetchUserAnalys({userId}))
-            dispatch(userPaymentThunk(userId))
+        dispatch(userPaymentThunk(userId))
     }, [userId])
 
+    useEffect(() => {
+        dispatch(userPaymentData())
+    }, [])
 
     const onChangeSearch = (e: string) => {
         setSearch(e);
@@ -149,29 +155,29 @@ export const PaymentPage = () => {
     }
 
 
-        const [selectedRadio, setSelectedRadio] = useState<string>("")
+    const [selectedRadio, setSelectedRadio] = useState<string>("")
 
-        const renderData = () => {
-            const filteredData = data?.filter(item => item?.user_id?.toString().includes(search.toLowerCase()) || item?.surname?.toLowerCase().includes(search?.toLowerCase()));
-            return filteredData?.map(item => {
-                return (
-                    <tr onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
-                        [cls.active] : userId === item.id
-                    })}>
+    const renderData = () => {
+        const filteredData = data?.filter(item => item?.user_id?.toString().includes(search.toLowerCase()) || item?.surname?.toLowerCase().includes(search?.toLowerCase()));
+        return filteredData?.map(item => {
+            return (
+                <tr onClick={() => setUserId(item.id)} key={item.user_id} className={classNames(cls.item, {
+                    [cls.active]: userId === item.id
+                })}>
 
-                        <td>{item.surname}</td>
-                        <td>{item.name}</td>
-                        <td>{item.user_id}</td>
-                        <td>{item.phone_number}</td>
-                        {/*</div>*/}
-                    </tr>
+                    <td>{item.surname}</td>
+                    <td>{item.name}</td>
+                    <td>{item.user_id}</td>
+                    <td>{item.phone_number}</td>
+                    {/*</div>*/}
+                </tr>
 
-                )
-            });
-        }
+            )
+        });
+    }
     const renderPayment = useCallback(() => {
         return getPayment?.map((item, index) => {
-            return(
+            return (
                 <tr>
                     {
                         !item.deleted &&
@@ -195,129 +201,185 @@ export const PaymentPage = () => {
     }, [getPayment])
 
 
+    // const render = useCallback(() => {
+    //     return userTotalPayment?.map((item, index) => {
+    //         return (
+    //
+    //             <tr>
+    //                 {
+    //                     !item.deleted &&
+    //                     <>
+    //                         <td>{index + 1}</td>
+    //                         <td
+    //                             // onClick={() => navigate(`../staff/profile/${item.id}`)}
+    //                         >
+    //                             <div className={cls.item}>
+    //                                 <div className={cls.item__info}>
+    //                                     <h3>{item.user}</h3>
+    //                                     <p>{item.user}</p>
+    //                                 </div>
+    //                             </div>
+    //                         </td>
+    //                         <td>{item.date}</td>
+    //
+    //                         <td>
+    //                             <div onClick={() => {
+    //                                 // setActiveEditItem(item)
+    //                                 // setActiveEdit(true)
+    //                             }} style={{background: "#edfaec"}} className={cls.check}>
+    //                                 {item.payment_type?.payment_type}
+    //                             </div>
+    //                         </td>
+    //                         <td>{item.amount}</td>
+    //                         <td>
+    //                             <div onClick={() => {
+    //                                 // setActiveDeleteItem(item)
+    //                                 // setActiveDelete(true)
+    //                             }} style={{background: "#FAECEC"}} className={cls.check}>
+    //                                 <i style={{color: "#FF0000"}} className="fas fa-times"/>
+    //                             </div>
+    //                         </td>
+    //                     </>
+    //                 }
+    //
+    //             </tr>
+    //         )
+    //     })
+    // }, [userTotalPayment])
 
-        return (
-            <DynamicModuleLoader reducers={reducers}>
-                <div className={cls.payment}>
-                    <div className={cls.patientsList}>
-                        <div className={cls.header}>
-                            <h2>Список пациентов</h2>
-                            <Input
-                                onChange={onChangeSearch}
-                                name={"search"}
-                                placeholder={"Поиск"}
-                                value={search}/>
-                        </div>
+    return (
+        <DynamicModuleLoader reducers={reducers}>
+            <div className={cls.payment}>
+                <div className={cls.header}>
+                    <h2>Список пациентов</h2>
+                    <Input
+                        onChange={onChangeSearch}
+                        name={"search"}
+                        placeholder={"Поиск"}
+                        value={search}/>
+                </div>
+                <div className={cls.patientsList}>
+                    <ClassSwitch onSwitch={() => setActiveSwitch(!activeSwitch)} isActive={activeSwitch}/>
 
-                        <div className={cls.container}>
-                            <Table>
-                                <thead>
-                                <tr>
-                                    <th>Фамилия</th>
-                                    <th>Имя</th>
-                                    <th>ID пользователя</th>
-                                    <th>Номер телефона</th>
-                                </tr>
+                    {activeSwitch ?
+                        <>
+                            <div className={cls.container}>
+                                <Table>
+                                    <thead>
+                                    <tr>
+                                        <th>Фамилия</th>
+                                        <th>Имя</th>
+                                        <th>ID пользователя</th>
+                                        <th>Номер телефона</th>
+                                    </tr>
 
-                                </thead>
-                                <tbody>
-                                {renderData()}
-                                </tbody>
-                            </Table>
+                                    </thead>
+                                    <tbody>
+                                    {renderData()}
+                                    </tbody>
+                                </Table>
 
-                        </div>
-                        <Pagination
-                            totalCount={6}
-                            onPageChange={setCurrentPage}
-                            currentPage={currentPage}
-                            pageSize={10}
-                        />
+                            </div>
+                            <Pagination
+                                totalCount={6}
+                                onPageChange={setCurrentPage}
+                                currentPage={currentPage}
+                                pageSize={10}
+                            />
+                        </>
+                        :
+                        <>
+                            <div className={cls.container}>
+                                <Table>
+                                    <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Имя и фамилия</th>
+                                        <th>Дата оплаты</th>
+                                        <th>Оплата</th>
+                                        <th>Тип оплаты</th>
+                                        <th>Сумма</th>
+                                        <th/>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {/*{render()}*/}
+
+                                    </tbody>
+                                </Table>
+                            </div>
+                        </>
+                    }
+                </div>
+
+                <div className={cls.payment__list}>
+                    <div className={cls.payment__list__header}>
+                        <h1>Общая сумма:</h1>
+                        <h1>{generalAmount}</h1>
                     </div>
-
-                    <div className={cls.payment__list}>
-                        <div className={cls.payment__list__header}>
-                            <h1>Общая сумма:</h1>
-                            <h1>{generalAmount}</h1>
-                        </div>
-                        <div className={cls.payment__list__section}>
-                            {analiz?.packet && analiz?.packet.length > 0 ? (
-                                analiz.packet.map(item => (
-                                    <UserPackets
-                                        item={item}
-                                        onDeletePacketAnalysis={onDeletePacketAnalysis}
-                                        onDeletePacketId={onDeletePacket}
-                                    />
-                                ))
-                            ) : null}
-                            {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
-                                <UserAnalysis
-                                    item={analiz.analysis_list}
-                                    total={totalOther}
-                                    onDeleteAnalysisId={onDeleteAnalysis}
-                                    onDeleteAllAnalysis={onDeleteAllAnalysis}
+                    <div className={cls.payment__list__section}>
+                        {analiz?.packet && analiz?.packet.length > 0 ? (
+                            analiz.packet.map(item => (
+                                <UserPackets
+                                    item={item}
+                                    onDeletePacketAnalysis={onDeletePacketAnalysis}
+                                    onDeletePacketId={onDeletePacket}
                                 />
-                            ) : null}
-                            {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
-                                <h1 style={{color: "#fff", alignSelf: "center", marginTop: "3rem", textAlign: "center"}}>Пожалуйста, выберите одного из пациентов 😊</h1>
-                            )}
-                        </div>
+                            ))
+                        ) : null}
+                        {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
+                            <UserAnalysis
+                                item={analiz.analysis_list}
+                                total={totalOther}
+                                onDeleteAnalysisId={onDeleteAnalysis}
+                                onDeleteAllAnalysis={onDeleteAllAnalysis}
+                            />
+                        ) : null}
+                        {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
+                            <h1 style={{
+                                color: "#fff",
+                                alignSelf: "center",
+                                marginTop: "3rem",
+                                textAlign: "center"
+                            }}>Пожалуйста, выберите одного из пациентов 😊</h1>
+                        )}
+                    </div>
+                </div>
+
+
+                <Form extraClass={cls.cashier}>
+                    <div className={cls.cashier__box}>
+                        <h1>Кассир</h1>
+
                     </div>
 
-
-
-                    <Form extraClass={cls.cashier}>
-                        <div className={cls.cashier__box}>
-                            <h1>{
-                                activeSwitch ?
-                                "Кассир" : "История платежей"
-                            }</h1>
-                            <ClassSwitch onSwitch={() => setActiveSwitch(!activeSwitch)} isActive={activeSwitch}/>
-                        </div>
+                    <div className={cls.types}>
                         {
-                            activeSwitch ? <>
-                                    <div className={cls.types}>
-                                        {
-                                            payType?.map(item => {
-                                                return (
-                                                    <Radio
-                                                        name={item.payment_type}
-                                                        value={item.id}
-                                                        onChange={setSelectedRadio}
+                            payType?.map(item => {
+                                return (
+                                    <Radio
+                                        name={item.payment_type}
+                                        value={item.id}
+                                        onChange={setSelectedRadio}
 
-                                                        checked={item.id === Number(selectedRadio)}
-                                                    >
-                                                        {item.payment_type}
-                                                    </Radio>
-                                                )
-                                            })
-                                        }
-
-                                    </div>
-
-                                    <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Добавлять</Button>
-                                </> :
-                                <>
-                                    <Table>
-                                        <thead>
-                                        <tr>
-                                            <th>№</th>
-                                            <th>Фамилия и Имя </th>
-                                            <th>Дата оплаты</th>
-                                            <th>Тип оплаты</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {renderPayment()}
-                                        </tbody>
-                                    </Table>
-                                </>
+                                        checked={item.id === Number(selectedRadio)}
+                                    >
+                                        {item.payment_type}
+                                    </Radio>
+                                )
+                            })
                         }
 
-                    </Form>
+                    </div>
+
+                    <Button extraClass={cls.submit} onClick={handleSubmit(onClick)}>Добавлять</Button>
 
 
-                </div>
-            </DynamicModuleLoader>
-        );
-    };
+                </Form>
+
+
+            </div>
+        </DynamicModuleLoader>
+    );
+};
 

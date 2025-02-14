@@ -101,3 +101,26 @@ export const userPaymentThunk = createAsyncThunk<
     }
 
 })
+
+export const userPaymentData = createAsyncThunk<
+    void,
+    number | undefined,
+    ThunkConfig<string>
+>('paymnetTypeSlice/userPaymentData', async (authData, thunkApi) => {
+    const {extra, dispatch, rejectWithValue} = thunkApi
+    try{
+        const response = await extra.api({
+            url: `account/payment/payment_list/`, method: "GET", body: null, headers: headers()
+        })
+        if (!response) {
+            throw new Error();
+        }
+        dispatch(userPaymentActions.onGetUserPaymentList(response));
+        return response.data;
+    }catch (e) {
+        console.log(e);
+        return rejectWithValue("error");
+    }
+
+})
+

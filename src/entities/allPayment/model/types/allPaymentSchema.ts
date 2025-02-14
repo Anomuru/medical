@@ -21,6 +21,7 @@ export interface IAllPaymentProps {
 
 export interface IAllPaymentSchema {
     data: IAllPayment[],
+    paymentList?: undefined,
     error?: string,
     loading: boolean
 }

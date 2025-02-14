@@ -3,9 +3,11 @@ import {userPaymentThunk} from "./paymentThunk";
 import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchema";
 
 
+
 const initialState: IAllPaymentSchema = {
     loading: false,
     data: [],
+    paymentList: undefined,
     error: undefined
 }
 
@@ -16,7 +18,12 @@ const userPaymentSlice = createSlice({
         onGetUserPaymentData: (state, action) => {
             state.data = action.payload.results
             console.log(action.payload.results, 'wssdsdsd')
-        }
+        },
+        onGetUserPaymentList: (state, action) => {
+            state.paymentList = action.payload.results
+            console.log("user data" , action.payload.results)
+
+        },
     },
     extraReducers: builder => {
         builder

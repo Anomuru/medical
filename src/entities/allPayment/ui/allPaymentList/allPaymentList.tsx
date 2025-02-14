@@ -47,16 +47,16 @@ export const AllPaymentList: FC<IPatientListProps> = (
                                 </div>
                             </td>
                             <td>{item.date}</td>
-                            <td>{item.payment_type?.payment_type}</td>
+
                             <td>
                                 <div onClick={() => {
                                     setActiveEditItem(item)
                                     setActiveEdit(true)
                                 }} style={{background: "#edfaec"}} className={cls.check}>
-                                    <i style={{color: "#5bd563"}} className="fa-solid fa-edit"/>
+                                    {item.payment_type?.payment_type}
                                 </div>
                             </td>
-                            <td>{item.amount}</td>n
+                            <td>{item.amount}</td>
                             <td>
                                 <div onClick={() => {
                                     setActiveDeleteItem(item)
