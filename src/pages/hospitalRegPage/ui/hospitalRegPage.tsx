@@ -560,7 +560,6 @@ export const HospitalRegPage = () => {
             headers: headers()
         })
             .then(res => {
-                // setErrorUserName(false)
                 dispatch(alertAction.onAddAlertOptions({
                     type: "success",
                     status: true,
@@ -572,7 +571,6 @@ export const HospitalRegPage = () => {
             })
             .catch(err => {
                 console.log(err)
-                // setErrorUserName(true)
             })
     }
 

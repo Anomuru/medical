@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import cls from "./workTable.module.sass"
 
 import {ScheduleXCalendar, useCalendarApp} from '@schedule-x/react';
@@ -24,19 +24,23 @@ import {createCalendarControlsPlugin} from "@schedule-x/calendar-controls";
 import {headers, useHttp} from "shared/api/base";
 
 import "./schedule.sass"
+import {createEventModalPlugin} from "@schedule-x/event-modal";
+import {Modal} from "shared/ui/modal";
+import {Form} from "shared/ui/form";
+import {Input} from "shared/ui/input";
 
 
 const types = [
     {
-        name: "месяц",
+        name: "month",
         value: "month-grid"
     },
     {
-        name: "день",
+        name: "day",
         value: "day"
     },
     {
-        name: "неделя",
+        name: "week",
         value: "week"
     }
 ]
@@ -53,16 +57,13 @@ interface IEvents {
     start: string;
     end: string;
     patient_name: string;
-    status: boolean
+    status: boolean;
+    back_start: string;
+    back_end: string;
 }
 
 
 export const WorkTable = () => {
-
-
-    const calendarControls = useState(() => createCalendarControlsPlugin())[0]
-    const eventsServicePlugin = useState(() => createEventsServicePlugin())[0];
-
 
 
     const today = new Date();
@@ -73,11 +74,17 @@ export const WorkTable = () => {
     const [type, setType] = useState<string>(types[2].value)
     const [date, setDate] = useState<string>(today.toISOString().split('T')[0])
 
+    const [fromDate, setFromDate] = useState<string>()
+    const [toDate, setToDate] = useState<string>()
+    const [selectedTime, setSelectedTime] = useState<{ start: string; end: string }>()
+    const [errorTimeMsg,setErrorTimeMsg] = useState<string>("")
+    const [errorTime,setErrorTime] = useState<{start:string,end:string}>()
+
+
 
 
     const [events, setEvents] = useState<IEvents[]>([])
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
 
 
     const handleClick = () => {
@@ -97,7 +104,7 @@ export const WorkTable = () => {
         localStorage.removeItem("doctorIdTable")
         localStorage.removeItem("date_calendar")
         localStorage.removeItem("timeTableIds")
-    },[])
+    }, [])
 
     useEffect(() => {
 
@@ -118,21 +125,298 @@ export const WorkTable = () => {
 
 
     useEffect(() => {
+        if (selectedDoctor)
+            localStorage.setItem("doctorIdTable", JSON.stringify(selectedDoctor))
+    }, [selectedDoctor])
+
+    // const handleDoubleClickDateTime = useCallback(() => {
+    //     setActive(prev => !prev);
+    // }, []);
+
+
+    const onChangedSelectedDoctor = (id: number) => {
+        setSelectedDoctor(id)
+    }
+
+    const navigate = useNavigate()
+
+
+    const getMinute = (minute: string) => {
+        return minute.substring(3, 5)
+    }
+    const getHour = (hour: string) => {
+        return hour.substring(0, 2)
+    }
+
+    function addOneMinute(time: string) {
+        let [hours, minutes] = time.split(":").map(Number);
+        minutes += 1;
+
+        if (minutes === 60) {
+            minutes = 0;
+            hours += 1;
+        }
+
+        return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    }
+
+    // Output: "08:51"
+
+    function getTimeDifference(start: string, end: string) {
+        let [startHour, startMin] = start.split(":").map(Number);
+        let [endHour, endMin] = end.split(":").map(Number);
+
+        // Convert everything to minutes
+        let startTotalMinutes = startHour * 60 + startMin;
+        let endTotalMinutes = endHour * 60 + endMin;
+
+        return endTotalMinutes - startTotalMinutes;
+    }
+
+    useEffect(() => {
+        if (selectedTime?.start) {
+
+            const changedHour = getHour(selectedTime.start)
+            const minute = getMinute(selectedTime.start)
+
+            const filtered = events.filter(item => {
+                const hour = getHour(item.back_start)
+                return hour === changedHour
+            })
+
+
+
+            if (!filtered.length) {
+                setFromDate(selectedTime.start)
+            } else {
+                const sortedAppointments = filtered.sort((a, b) => {
+                    return b.back_end.localeCompare(a.back_end);
+                });
+
+                const start = addOneMinute(sortedAppointments[0].back_end)
+
+                setFromDate(start)
+
+
+            }
+        }
+
+    }, [selectedTime])
+
+
+    useEffect(() => {
+        const date = JSON.parse(localStorage.getItem("date_calendar") as string);
+
+        if (fromDate && date && selectedDoctor && toDate) {
+            const minute = getTimeDifference(fromDate,toDate)
+
+
+            if (minute > 0) {
+                request({
+                    url: `user/users/get/check_doctor_time/?doctor_id=${selectedDoctor}&from_date=${fromDate}&to_date=${toDate}&date=${date}`,
+                    method: "GET",
+                })
+                    .then(res => {
+                        if (!res.available) {
+                            setErrorTimeMsg("Bu vaqtda patsient bor")
+                            setErrorTime({start : res.start, end: res.end})
+                        } else {
+                            setErrorTimeMsg("")
+                            setErrorTime(undefined)
+
+                        }
+                    })
+
+            } else {
+                setErrorTimeMsg("Vaqtlar no'tog'ri belgilangan")
+            }
+        }
+    }, [date, fromDate, selectedDoctor, toDate])
+
+
+    // useEffect(() => {
+    //     if (fromDate) {
+    //         const changedHour = getHour(fromDate)
+    //
+    //         const filtered = events.filter(item => {
+    //             const hour = getHour(item.back_start)
+    //             return hour === changedHour
+    //         })
+    //
+    //
+    //
+    //         if (!filtered.length) {
+    //             setFromDate(changedHour)
+    //         } else {
+    //             const sortedAppointments = filtered.sort((a, b) => {
+    //                 return b.back_end.localeCompare(a.back_end);
+    //             });
+    //
+    //             const start = addOneMinute(sortedAppointments[0].back_end)
+    //
+    //             setFromDate(start)
+    //
+    //
+    //         }
+    //     }
+    // },[fromDate])
+
+
+    const handleSubmit = () => {
+
+
+        const data = {
+            start: fromDate,
+            end: toDate,
+        }
+
+        localStorage.setItem("time", JSON.stringify(data))
+        navigate("../hospitalReg")
+    }
+
+
+    // useEffect(() => {
+    //     if (eventsService)
+    //         eventsService?.getAll()
+    // }, [eventsService])
+
+    // useEffect(() => {
+    //     console.log(calendarControls.getView())
+    // },[calendarControls])
+
+
+    return (
+        <>
+            <DynamicModuleLoader reducers={reducers}>
+                <div className={cls.mainBox}>
+                    <div className={cls.mainBox__leftSight}>
+                        <div className={cls.mainBox__leftSight__arounder}>
+                            <h1 className={cls.mainBox__leftSight__arounder__content}>Список персонала</h1>
+                            <Button
+                                onClick={handleClick}
+                                extraClass={cls.mainBox__leftSight__arounder__btn}
+                                children={<i className={classNames("fa-solid fa-plus")}/>}
+                            />
+                        </div>
+
+                        <div className={cls.mainBox__leftSight__staffList}>
+                            {
+                                doctors.map((item) => (
+                                    <>
+                                        <div
+                                            onClick={() => onChangedSelectedDoctor(item.id)}
+                                            className={classNames(cls.mainBox__leftSight__staffList__box, {
+                                                [cls.active]: selectedDoctor === item.id
+                                            })}
+                                        >
+                                            <div className={cls.mainBox__leftSight__staffList__box__nameBox}>
+                                                <img className={cls.mainBox__leftSight__staffList__box__nameBox__img}
+                                                     src={img}
+                                                     alt=""/>
+                                                <h1 className={cls.mainBox__leftSight__staffList__box__nameBox__content}>{item.name}</h1>
+                                            </div>
+                                            <div className={cls.mainBox__leftSight__staffList__box__typeBox}>
+                                                {
+                                                    item.jobs.map(job => {
+                                                        return (
+                                                            <>
+                                                                <h1 className={cls.mainBox__leftSight__staffList__box__typeBox__type}>{job.name}</h1>
+                                                            </>
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </div>
+                                    </>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div className={cls.mainBox__rightSight}>
+                        <Calendar
+                            type={type}
+                            date={date}
+                            events={events}
+                            setActive={setActive}
+                            setType={setType}
+                            setDate={setDate}
+                            setSelectedTime={setSelectedTime}
+                        />
+                    </div>
+
+
+                </div>
+
+            </DynamicModuleLoader>
+
+            <Modal extraClass={cls.mainBox__modal} title={"Add"} active={active} setActive={handleClick}>
+                <div className={cls.mainBox__modal__form}>
+                    <Input title={"Ot"} value={fromDate} onChange={setFromDate} name={"ot"} type={"time"}/>
+                    <Input title={"Do"} value={toDate} onChange={setToDate} name={"do"} type={"time"}/>
+
+                    {/*<Select extraClass={cls.mainBox__modal__form__select} title={"Doctors"}*/}
+                    {/*        setSelectOption={setSelected} optionsData={staffList}/>*/}
+                    {/*<Select title={"Days"} keyValue={"name"} setSelectOption={setWeek} optionsData={weekNames}/>*/}
+                    {/*<Input name={"start_time"} title={"Start time"} type={"time"} onChange={setFromDate}/>*/}
+                    {/*<Input name={"end_time"} title={"End time"} type={"time"} onChange={setToDate}/>*/}
+                    {!!errorTimeMsg && <h1 style={{color: "red"}}>{errorTimeMsg}</h1>}
+                    {!!errorTime && (
+                        <div style={{color: "red"}}>
+                            <h2>Patsient vaqtlari</h2>
+                            <h2><span>Ot: {errorTime.start}</span>-<span>Do: {errorTime.end}</span></h2>
+                        </div>
+
+                    )}
+                    <Button disabled={!!errorTimeMsg} extraClass={cls.mainBox__modal__form__select} onClick={handleSubmit}>Send</Button>
+                </div>
+
+            </Modal>
+
+        </>
+
+    );
+};
+
+interface ICalendar {
+    type: string,
+    date: string,
+    events: IEvents[],
+    setActive: React.Dispatch<React.SetStateAction<boolean>>,
+    setType: React.Dispatch<React.SetStateAction<string>>,
+    setDate: React.Dispatch<React.SetStateAction<string>>,
+    setSelectedTime: React.Dispatch<React.SetStateAction<{ start: string, end: string } | undefined>>
+
+}
+
+
+const Calendar = React.memo((props: ICalendar) => {
+
+
+    const {type, date, events, setActive, setType, setDate, setSelectedTime} = props
+
+    const calendarControls = useState(() => createCalendarControlsPlugin())[0]
+    const eventsServicePlugin = useState(() => createEventsServicePlugin())[0];
+    const eventModal = createEventModalPlugin()
+
+
+    // const handleDoubleClickDateTime = useCallback((date: any) => {
+    //     console.log(date)
+    //     setActive(prev => !prev);
+    // }, []);
+
+
+
+    useEffect(() => {
         if (eventsServicePlugin && events.length > 0) {
             eventsServicePlugin.set([...events]);  // Ensure it's initialized and events exist
         }
     }, [events]);
 
 
-    useEffect(() => {
-        if (selectedDoctor)
-        localStorage.setItem("doctorIdTable", JSON.stringify(selectedDoctor))
-    },[selectedDoctor])
-
     const calendar = useCalendarApp({
-        translations: "ru",
         defaultView: type,
         selectedDate: date,
+        locale: 'ru-RU',
 
         views: [
             createViewMonthGrid(),
@@ -145,11 +429,15 @@ export const WorkTable = () => {
                 id: 2,
                 start: '2025-02-11 08:00',
                 end: '2025-02-11 08:30',
+                back_start: "8:00",
+                back_end: "8:30",
             },
             {
                 id: 2,
                 start: '2025-02-11 08:30',
-                end: '2025-02-11 09:05',
+                end: '2025-02-11 08:45',
+                back_start: "8:30",
+                back_end: "8:45",
             }
         ],
         plugins: [
@@ -157,7 +445,7 @@ export const WorkTable = () => {
             // createDragAndDropPlugin()
             eventsServicePlugin,
             calendarControls,
-
+            eventModal
         ],
         dayBoundaries: {
             start: '08:00',
@@ -166,9 +454,9 @@ export const WorkTable = () => {
 
 
         callbacks: {
-
+            // onDoubleClickDateTime: handleDoubleClickDateTime,
             onDoubleClickDateTime(data: any) {
-                navigate("../hospitalReg")
+                // navigate("../hospitalReg")
                 const math = Number(data.substring(data.length - 5, data.length - 3)) + 1
                 const res = {
                     start: data.substring(data.length - 5, data.length - 3) + ":00",
@@ -176,23 +464,30 @@ export const WorkTable = () => {
                 }
 
 
-                localStorage.setItem("time", JSON.stringify(res))
+                // localStorage.setItem("time", JSON.stringify(res))
                 localStorage.setItem("date_calendar", JSON.stringify(data.substring(0, 10)))
                 localStorage.removeItem("changedItemTable")
+
+
+                setSelectedTime(res)
+                setActive(prev => !prev)
             },
             onDoubleClickEvent(calendarEvent: any) {
-
-
-
                 const math = Number(calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3)) + 1
                 const res = {
                     start: calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3) + ":00",
                     end: (math < 10 ? `0${math}` : math) + ":00"
                 }
                 localStorage.setItem("date_calendar", JSON.stringify(calendarEvent.date))
-                localStorage.setItem("time", JSON.stringify(res))
-                localStorage.setItem("timeTableIds",JSON.stringify({patient: calendarEvent.patient, requestId: calendarEvent.id}))
-                navigate("../hospitalReg")
+                // localStorage.setItem("time", JSON.stringify(res))
+                localStorage.setItem("timeTableIds", JSON.stringify({
+                    patient: calendarEvent.patient,
+                    requestId: calendarEvent.id
+                }))
+
+                setSelectedTime(res)
+                setActive(prev => !prev)
+                // navigate("../hospitalReg")
             },
             onRangeUpdate(range: any) {
                 if (calendarControls && calendarControls.getView) {
@@ -202,115 +497,72 @@ export const WorkTable = () => {
                     }
                 }
             },
-
             onSelectedDateUpdate(date: string) {
                 setDate((prev) => date)
             },
         }
     })
-
-    const onChangedSelectedDoctor = (id: number) => {
-        setSelectedDoctor(id)
-    }
-
-    //
-    // useEffect(() => {
-    //     // get all events
-    //     if (eventsService)
-    //         eventsService?.getAll()
-    // }, [eventsService])
-
-    // useEffect(() => {
-    //     console.log(calendarControls.getView())
-    // },[calendarControls])
-
     return (
-        <DynamicModuleLoader reducers={reducers}>
-            <div className={cls.mainBox}>
-                <div className={cls.mainBox__leftSight}>
-                    <div className={cls.mainBox__leftSight__arounder}>
-                        <h1 className={cls.mainBox__leftSight__arounder__content}>Список персонала</h1>
-                        <Button
-                            onClick={handleClick}
-                            extraClass={cls.mainBox__leftSight__arounder__btn}
-                            children={<i className={classNames("fa-solid fa-plus")}/>}
-                        />
-                    </div>
+        <ScheduleXCalendar
+            // style={{ fontSize: 25+ "px" }}
+            customComponents={{
+                timeGridEvent: CustomEvent,
+                eventModal: CustomEventModal
+                // dateGridEvent: CustomDateGridEvent,
+            }}
+            calendarApp={calendar}
+        />
+    )
 
-                    <div className={cls.mainBox__leftSight__staffList}>
-                        {
-                            doctors.map((item) => (
-                                <>
-                                    <div onClick={() => onChangedSelectedDoctor(item.id)}
-                                         className={classNames(cls.mainBox__leftSight__staffList__box, {
-                                             [cls.active]: selectedDoctor === item.id
-                                         })}>
-                                        <div className={cls.mainBox__leftSight__staffList__box__nameBox}>
-                                            <img className={cls.mainBox__leftSight__staffList__box__nameBox__img}
-                                                 src={img}
-                                                 alt=""/>
-                                            <h1 className={cls.mainBox__leftSight__staffList__box__nameBox__content}>{item.name}</h1>
-                                        </div>
-                                        <div className={cls.mainBox__leftSight__staffList__box__typeBox}>
-                                            {
-                                                item.jobs.map(job => {
-                                                    return (
-                                                        <>
-                                                            <h1 className={cls.mainBox__leftSight__staffList__box__typeBox__type}>{job.name}</h1>
-                                                        </>
-
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                </>
-
-                            ))
-                        }
-                    </div>
-                </div>
-                <div className={cls.mainBox__rightSight}>
-                    <ScheduleXCalendar
-                        style={{ fontSize: 25+ "px" }}
-                        customComponents={{
-                            timeGridEvent: CustomEvent,
-                            // dateGridEvent: CustomDateGridEvent,
-                        }}
-                        calendarApp={calendar}
-                    />
-                </div>
-                {/*<Modal extraClass={cls.mainBox__modal} title={"Add"} active={active} setActive={handleClick}>*/}
-                {/*    <Form extraClass={cls.mainBox__modal__form} onSubmit={handleSubmit}>*/}
-                {/*        /!*<Select extraClass={cls.mainBox__modal__form__select} title={"Doctors"}*!/*/}
-                {/*        /!*        setSelectOption={setSelected} optionsData={staffList}/>*!/*/}
-                {/*        <Select title={"Days"} keyValue={"name"} setSelectOption={setWeek} optionsData={weekNames}/>*/}
-                {/*        <Input name={"start_time"} title={"Start time"} type={"time"} onChange={setFromDate}/>*/}
-                {/*        <Input name={"end_time"} title={"End time"} type={"time"} onChange={setToDate}/>*/}
-                {/*        <Button extraClass={cls.mainBox__modal__form__select}>Send</Button>*/}
-                {/*    </Form>*/}
-
-                {/*</Modal>*/}
-            </div>
-
-        </DynamicModuleLoader>
-
-    );
-};
+})
 
 
 const CustomEvent = (event: any) => {
 
     const {calendarEvent} = event
 
-    const {patient_name, status} = calendarEvent
+    const {patient_name, status, start, end} = calendarEvent
+
 
     return (
         <div className={cls.customEvent}>
+            {/*<h1 className={cls.name}>{patient_name}</h1>*/}
+            <h2>
+                {start.substring(11, 16)}-{end.substring(11, 16)}
+            </h2>
+            {/*<h2*/}
+            {/*    className={classNames(cls.payment_type, {*/}
+            {/*        [cls.active] : status*/}
+            {/*    })}*/}
+            {/*>*/}
+            {/*    {status ? "оплаченный" : "неоплаченный"}*/}
+            {/*</h2>*/}
+        </div>
+    )
+}
+
+
+const CustomEventModal = (event: any) => {
+    const {calendarEvent,setTime} = event
+
+    const {patient_name, status, start, end} = calendarEvent
+
+
+    const onClickChange = () => {
+        setTime({start: calendarEvent.back_start, end: calendarEvent.back_end})
+    }
+
+    return (
+        <div className={cls.customEventModal}>
             <h1 className={cls.name}>{patient_name}</h1>
+            <i className={classNames("fas fa-pen",cls.pen)} onClick={onClickChange}></i>
+            {/*<i className={classNames("fas fa-trash",cls.trash)}></i>*/}
+            <h2>
+                {start.substring(11, 16)}-{end.substring(11, 16)}
+            </h2>
             <h2
                 className={classNames(cls.payment_type, {
-                    [cls.active] : status
+                    [cls.active]: status
                 })}
             >
                 {status ? "оплаченный" : "неоплаченный"}
@@ -318,4 +570,3 @@ const CustomEvent = (event: any) => {
         </div>
     )
 }
-

@@ -1,5 +1,5 @@
 @import "app/styles/abstracts/variables"
-
+@import "app/styles/abstracts/mixins"
 
 
 .mainBox
@@ -112,6 +112,7 @@
             padding: 1rem
             border-radius: 1.2rem
 
+
   &__rightSight
     width: 100%
     height: 100%
@@ -123,7 +124,6 @@
       max-width: 100vw
       height: 800px
       max-height: 90vh
-      font-size: 1.7rem !important
 
   &__modal
     padding: 3rem
@@ -141,29 +141,63 @@
         width: 340px
 
 
-
 .customEvent
   width: 100%
   height: 100%
-  background-color: $medical-color
-  border-left: 6px solid #000000
+  background-color: #B7E6FF
+  border-left: 3px solid #00ABB2
   padding: 1rem
   color: white
   display: flex
   flex-direction: column
-  justify-content: space-between
+  align-items: center
+  justify-content: center
+
   .payment_type
-    //width: fit-content
+    // width: fit-content
     height: fit-content
     background-color: #ff1438
     color: white
     padding: .5rem 1rem
     border-radius: 15px
     text-align: center
+
     &.active
       background-color: #02ff5c
       color: black
 
+.customEventModal
+  padding: 2rem
+  width: 100%
+  height: 100%
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 2rem
+  box-shadow: 0px 16px 32px -4px rgba(12, 12, 13, 10%), 0px 4px 4px -4px rgba(12, 12, 13, 5%)
+  border-radius: 10px
+  position: relative
+  .pen
+    position: absolute
+    top: 1rem
+    right: 1rem
+    font-size: 2rem
+    cursor: pointer
+    @include btn-active
+  .payment_type
+    width: 100%
+    // width: fit-content
+    height: fit-content
+    background-color: #ff1438
+    color: white
+    padding: .5rem 1rem
+    border-radius: 15px
+    text-align: center
+
+    &.active
+      background-color: #02ff5c
+      color: black
 
 .sx__view-container
   font-size: 1.8rem !important
+
