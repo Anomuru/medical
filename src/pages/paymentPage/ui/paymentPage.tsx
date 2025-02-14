@@ -36,6 +36,8 @@ import {Pagination} from "features/pagination";
 import {getUserPaymentData, getUserPaymentList} from "features/paymentFeature/model/userPaymentSelector";
 import {userPaymentReducer} from "features/paymentFeature/model/userPaymentSlice";
 import {AllPaymentList} from "entities/allPayment";
+import {PaymentPackets} from "../../../features/pakets";
+import {getPaymentPacketSelected, paymentPacketReducer} from "../../../entities/payment";
 
 interface IPaymentData {
     payment_type: string,
@@ -49,7 +51,8 @@ const reducers: ReducersList = {
     paymentSlice: paymentReducer,
     givePaymentSlice: givePaymentReducer,
     paymentTypeSlice: paymentTypeReducer,
-    userPaymentSlice: userPaymentReducer
+    userPaymentSlice: userPaymentReducer,
+    paymentPacketSlice: paymentPacketReducer
 }
 
 export const PaymentPage = () => {
@@ -61,6 +64,7 @@ export const PaymentPage = () => {
         deleteAllAnalysis
     } = userAnalysisActions
 
+    const selectedAnalysis= useSelector(getPaymentPacketSelected)
     const selectedLocation = useSelector(getSelectedLocationData)
     const selectedBranch = localStorage.getItem("branch")
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -78,7 +82,6 @@ export const PaymentPage = () => {
     const generalAmount = Number(totalAnalis) + Number(totalOther)
     const userTotalPayment = useSelector(getUserPaymentList)
 
-    console.log(userTotalPayment)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (selectedLocation)
@@ -320,10 +323,8 @@ export const PaymentPage = () => {
                     <div className={cls.payment__list__section}>
                         {analiz?.packet && analiz?.packet.length > 0 ? (
                             analiz.packet.map(item => (
-                                <UserPackets
+                                <PaymentPackets
                                     item={item}
-                                    onDeletePacketAnalysis={onDeletePacketAnalysis}
-                                    onDeletePacketId={onDeletePacket}
                                 />
                             ))
                         ) : null}

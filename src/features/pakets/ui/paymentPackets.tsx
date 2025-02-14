@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 
-import {packetsActions, PacketsUserList} from "entities/pakets";
+import {PacketsUserList} from "entities/pakets";
 import {ConfirmModal} from "shared/ui/confirm";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {IAnalysisProps, IUserPackets} from "../../../entities/pakets/model/paketsSchema";
@@ -31,58 +31,59 @@ export const PaymentPackets = memo(({item}: IPacketsProps) => {
         deletePacketAnalysis,
         deletePacket,
     } = userAnalysisActions
-    const {
-        getSelectedAnalysis,
-        addSelectedAnalysis,
-        deleteSelectedAnalysis
-    } = paymentPacketActions
+    // const {
+    //     getSelectedAnalysis,
+    //     addSelectedAnalysis,
+    //     deleteSelectedAnalysis
+    // } = paymentPacketActions
 
-    useEffect(() => {
-        if (packet_id)
-            dispatch(addSelectedAnalysis({packetId: packet_id, analysisIdes: []}))
-    }, [addSelectedAnalysis, dispatch, packet_id])
+    // useEffect(() => {
+    //     if (packet_id)
+    //         dispatch(addSelectedAnalysis({packetId: packet_id, analysisIdes: []}))
+    // }, [addSelectedAnalysis, dispatch, packet_id])
 
-    const selectedAnalysis = useSelector(getPaymentPacketSelected)
+    // const selectedAnalysis = useSelector(getPaymentPacketSelected)
 
     const [analysisList, setAnalysisList] = useState<ICurrentList[]>([])
     const [isDeleteAnalysis, setIsDeleteAnalysis] = useState<boolean>(false)
     const [isDeletePacket, setIsDeletePacket] = useState<boolean>(false)
     const [isActiveAnalysis, setIsActiveAnalysis] = useState<number>(NaN)
+    const [selectedAnalysis, setSelectedAnalysis] = useState<number[]>([])
 
     useEffect(() => {
         if (analysis_list.length !== analysisList.length)
             setAnalysisList(analysis_list.map(item => ({...item, isChecked: false})))
     }, [analysisList.length, analysis_list])
 
-    useEffect(() => {
-        if (selectedAnalysis) {
-            const filtered = selectedAnalysis
-                ?.filter(item => item.packetId === packet_id)[0]?.analysisIdes
-            if (!!filtered?.length) {
-                setAnalysisList(prevState =>
-                    prevState.map(item =>
-                        ({...item, isChecked: filtered.includes(item.id)}))
-                )
-            }
-        }
-    }, [analysis_list, packet_id, selectedAnalysis])
+    // useEffect(() => {
+    //     if (selectedAnalysis) {
+    //         const filtered = selectedAnalysis
+    //             ?.filter(item => item.packetId === packet_id)[0]?.analysisIdes
+    //         if (!!filtered?.length) {
+    //             setAnalysisList(prevState =>
+    //                 prevState.map(item =>
+    //                     ({...item, isChecked: filtered.includes(item.id)}))
+    //             )
+    //         }
+    //     }
+    // }, [analysis_list, packet_id, selectedAnalysis])
 
-    useEffect(() => {
-        if (!!analysisList && packet_id) {
-            const selected = analysisList
-                .filter(item => item.isChecked)
-                .map(item => item.id)
-            const notSelected = analysisList
-                .filter(item => !item.isChecked)
-                .map(item => item.id)
-            if (!!selected.length) {
-                dispatch(getSelectedAnalysis({packetId: packet_id, analysisIdes: selected}))
-            }
-            if (!!notSelected.length) {
-                dispatch(deleteSelectedAnalysis({packetId: packet_id, analysisIdes: notSelected}))
-            }
-        }
-    }, [analysisList, deleteSelectedAnalysis, dispatch, getSelectedAnalysis, packet_id])
+    // useEffect(() => {
+    //     if (!!analysisList && packet_id) {
+    //         const selected = analysisList
+    //             .filter(item => item.isChecked)
+    //             .map(item => item.id)
+    //         const notSelected = analysisList
+    //             .filter(item => !item.isChecked)
+    //             .map(item => item.id)
+    //         if (!!selected.length) {
+    //             dispatch(getSelectedAnalysis({packetId: packet_id, analysisIdes: selected}))
+    //         }
+    //         if (!!notSelected.length) {
+    //             dispatch(deleteSelectedAnalysis({packetId: packet_id, analysisIdes: notSelected}))
+    //         }
+    //     }
+    // }, [analysisList, deleteSelectedAnalysis, dispatch, getSelectedAnalysis, packet_id])
 
     const onDeleteAnalysis = () => {
         dispatch(deletePacketAnalysis({packetId: packet_id, analysisId: isActiveAnalysis}))
@@ -102,6 +103,19 @@ export const PaymentPackets = memo(({item}: IPacketsProps) => {
     const onClickPacket = () => {
         setIsDeletePacket(true)
     }
+
+    useEffect(() => {
+        if (selectedAnalysis) console.log(selectedAnalysis, "selectedAnalysis")
+    }, [selectedAnalysis])
+
+    useEffect(() => {
+        if (analysisList) {
+            const selected = analysisList
+                .filter(item => item.isChecked)
+                .map(item => item.id)
+            setSelectedAnalysis(selected)
+        }
+    }, [analysisList])
 
     const onChange = useCallback((id: number | "all") => {
         setAnalysisList(prevState => {
