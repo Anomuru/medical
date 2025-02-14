@@ -20,9 +20,10 @@ import {IPatientSchema} from "entities/patient";
 import {IPacketsSchema} from "entities/pakets";
 import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "features/paymentFeature/model/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
-import {IUserAnalysisSchema} from "../../../../entities/analysis/model/types/userAnalysisSchema";
-import {IUserProfileAnalysisSchema} from "../../../../features/profile/model/types/profileAnalysisTypes";
-import {IAllPaymentSchema} from "../../../../entities/allPayment/model/types/allPaymentSchema";
+import {IUserAnalysisSchema} from "entities/analysis/model/types/userAnalysisSchema";
+import {IUserProfileAnalysisSchema} from "features/profile/model/types/profileAnalysisTypes";
+import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchema";
+import {IPaymentPacketSchema} from "entities/payment";
 
 
 export interface StateSchema {
@@ -53,7 +54,9 @@ export interface StateSchema {
     packetsSlice?: IPacketsSchema,
     userAnalysisSlice?: IUserAnalysisSchema,
     profileAnalysisSlice?: IUserProfileAnalysisSchema
-    allPaymentSlice?: IAllPaymentSchema
+    allPaymentSlice?: IAllPaymentSchema,
+    paymentPacketSlice?: IPaymentPacketSchema,
+    userPaymentSlice?: IAllPaymentSchema
 
 }
 

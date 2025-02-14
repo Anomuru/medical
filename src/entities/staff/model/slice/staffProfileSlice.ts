@@ -13,6 +13,9 @@ const staffProfileSlice = createSlice({
     name: "staffProfileSlice",
     initialState,
     reducers: {
+        onGetProfileDetail: (state  ,action) => {
+            state.details = action.payload
+        },
         getStaffProfileId: (state, action) => {
             console.log(action.payload, "id")
             state.loading = true
@@ -20,7 +23,8 @@ const staffProfileSlice = createSlice({
         },
         onEditProfile: (state, action) => {
             state.details = {...state.details, ...action.payload}
-        }
+        },
+
     },
     extraReducers: builder =>
         builder
@@ -29,7 +33,7 @@ const staffProfileSlice = createSlice({
                 state.error = undefined
             })
             .addCase(fetchStaffProfileData.fulfilled, (state, action) => {
-                state.details = action.payload
+
                 state.loading = false
                 state.error = undefined
             })
@@ -42,7 +46,7 @@ const staffProfileSlice = createSlice({
                 state.error = undefined
             })
             .addCase(changeStaffDetails.fulfilled, (state, action) => {
-                state.details = action.payload
+
                 state.loading = false
                 state.error = undefined
             })

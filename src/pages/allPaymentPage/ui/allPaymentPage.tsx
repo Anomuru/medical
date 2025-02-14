@@ -70,7 +70,6 @@ export const AllPaymentPage = () => {
     }, [])
 
 
-    console.log(selectedBranch, 'wweweweewe')
 
     useEffect(() => {
         if (selectedBranch)
@@ -153,12 +152,7 @@ export const AllPaymentPage = () => {
                                     setActiveEditItem={setActiveEditItem}/>
 
                 </div>
-                <Pagination
-                    totalCount={6}
-                    onPageChange={setCurrentPage}
-                    currentPage={currentPage}
-                    pageSize={10}
-                />
+
                 <Modal
                     active={activeEdit}
                     setActive={setActiveEdit}
@@ -196,6 +190,12 @@ export const AllPaymentPage = () => {
                 <DeleteModal active={activeDelete} setActive={() => setActiveDelete(false)} onConfirm={onDelete}/>
 
             </div>
+            <Pagination
+                totalCount={6}
+                onPageChange={setCurrentPage}
+                currentPage={currentPage}
+                pageSize={10}
+            />
         </DynamicModuleLoader>
     );
 }

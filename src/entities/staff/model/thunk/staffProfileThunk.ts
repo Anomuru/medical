@@ -2,6 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {headers} from "shared/api/base";
 import {ThunkConfig} from "app/providers/storeProvider";
 import {Staff} from "../types/staffSchema";
+import {staffProfileActions, staffProfileReducer} from "../slice/staffProfileSlice";
 
 interface IChangeStaff {
     username: string,
@@ -16,7 +17,7 @@ export const fetchStaffProfileData = createAsyncThunk<
     string,
     ThunkConfig<string>
 >('staffProfileSlice/fetchStaffProfileData', async (authData, thunkApi) => {
-    const { extra,  rejectWithValue } = thunkApi;
+    const { extra, dispatch , rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
             url: `user/staff/crud/get_detail/${authData}`,
@@ -28,6 +29,7 @@ export const fetchStaffProfileData = createAsyncThunk<
         if (!response) {
             throw new Error();
         }
+        dispatch(staffProfileActions.onEditProfile(response))
         return response.results;
     } catch (e) {
         console.log(e);
@@ -40,7 +42,7 @@ export const changeStaffDetails = createAsyncThunk<
     {staffId: string, data:IChangeStaff},
     ThunkConfig<string>
 >('staffProfileSlice/changeStaffDetails', async (authData, thunkApi) => {
-    const { extra,  rejectWithValue } = thunkApi;
+    const { extra,  dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
             url: `user/staff/crud/update_password/${authData.staffId}`,
@@ -52,9 +54,11 @@ export const changeStaffDetails = createAsyncThunk<
         if (!response) {
             throw new Error();
         }
+        dispatch(staffProfileActions.onEditProfile(response))
         return response.results;
     } catch (e) {
         console.log(e);
+
         return rejectWithValue('error');
     }
 })

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import {AnalysisData, ProfileModal} from "features/profile";
+import {AnalysisData, PaymentsList, ProfileModal} from "features/profile";
 import {
     getStaffId,
     fetchStaffProfileData,
@@ -17,7 +17,7 @@ import {Input} from "shared/ui/input";
 import cls from './profilePage.module.sass'
 import profileImg from 'shared/assets/images/profileImage.png'
 import {useForm, useWatch} from "react-hook-form";
-import {headers, useHttp} from "shared/api/base";
+import {API_URL_DOC, headers, useHttp} from "shared/api/base";
 import {changeStaffDetails} from "../../../entities/staff/model/thunk/staffProfileThunk";
 import {
     DynamicModuleLoader,
@@ -25,7 +25,7 @@ import {
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {data, Navigate, NavLink, Outlet, Route, Routes, useNavigate, useParams} from "react-router";
 import classNames from "classnames";
-import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileAnalysisSlice";
+import {profileAnalysisReducer} from "../../../features/profile/model/slice/profileSlice";
 import {packetsReducer} from "../../../entities/pakets";
 import {ROLES} from "shared/const/roles";
 import {getUserRole} from "entities/user";
@@ -33,14 +33,16 @@ import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useDropzone} from "react-dropzone";
 import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
-import {Modal} from "../../../shared/ui/modal";
-import {alertAction} from "../../../features/alert/model/slice/alertSlice";
+import {Modal} from "shared/ui/modal";
+import {alertAction} from "features/alert/model/slice/alertSlice";
+import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
 
 
 const reducers: ReducersList = {
     packetsSlice: packetsReducer,
     staffProfileSlice: staffProfileReducer,
     profileAnalysisSlice: profileAnalysisReducer,
+    givePaymentSlice: givePaymentReducer
 
 }
 
@@ -64,6 +66,11 @@ const dataButton = [
         name: "Анализ",
         path: "analysis",
         role: [ROLES.patient]
+    },
+    {
+        name: "Платежи",
+        path: "payments",
+        role: [ROLES.patient]
     }
 ]
 
@@ -86,6 +93,7 @@ export const ProfilePage = () => {
     } = useForm<ISubmitProps>()
     const {id: staffId} = useParams()
     const details = useSelector(getStaffProfileData)
+
 
     const meRole = useSelector(getUserRole)
 
@@ -129,7 +137,7 @@ export const ProfilePage = () => {
         if (staffId) {
             dispatch(fetchStaffProfileData(staffId))
         }
-    }, [dispatch, staffId])
+    }, [staffId])
 
     const [isTimeTable, setIsTimeTable] = useState<boolean>(false)
     const [editModal, setEditModal] = useState<boolean>(false)
@@ -167,6 +175,7 @@ export const ProfilePage = () => {
         }))
     }
 
+
     const onImgChange = () => {
         if (files) {
             formData.append("photo", files[0])
@@ -177,14 +186,18 @@ export const ProfilePage = () => {
             body: formData,
             headers: headers()
         }).then(res => {
+            if (details?.job === "admin") {
+                localStorage.setItem("photo", res.photo)
+            }
             dispatch(staffProfileActions.onEditProfile(res))
+            dispatch(alertAction.onAddAlertOptions({
+                type: "success",
+                status: true,
+                msg: "Успешно изменено"
+            }))
+            setEditModal(false)
         })
-        dispatch(alertAction.onAddAlertOptions({
-            type: "success",
-            status: true,
-            msg: "Успешно изменено"
-        }))
-        setEditModal(false)
+
     }
 
     const onSubmitPassword = (data: any) => {
@@ -241,10 +254,12 @@ export const ProfilePage = () => {
             <div className={cls.profileBox}>
                 <div className={cls.profileBox__leftSide}>
                     <Box extraClass={cls.profileBox__leftSide__profileContainer}>
-                        {
-                            <img onClick={() => setEditModal(!editModal)} className={cls.profileBox__leftSide__profileContainer__img} src={details?.photo ? details.photo : profileImg} alt=""/>
+                        <div className={cls.profileBox__leftSide__profileContainer__img}>
+                            {
+                                <img onClick={() => setEditModal(!editModal)}  src={details?.photo ? details.photo : profileImg} alt=""/>
 
-                        }
+                            }
+                        </div>
                         <h1 className={cls.profileBox__leftSide__profileContainer__name}>{details?.name} {details?.surname}</h1>
                         <h2 className={cls.profileBox__leftSide__profileContainer__mail}>{details?.email}</h2>
                     </Box>
@@ -364,6 +379,7 @@ export const ProfilePage = () => {
                     </>}/>
 
                     <Route path={"analysis"} element={<AnalysisData/>}/>
+                    <Route path={"payments"} element={<PaymentsList/>}/>
 
 
                 </Routes>

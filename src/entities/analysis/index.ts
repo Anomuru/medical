@@ -21,3 +21,4 @@ export {analysisPackageAction , analysisPackageReducer} from "./model/slice/anal
 export {getAnalysisPackage} from "./model/selector/analysisPackageSelector"
 
 export {analysisGroupReducer , analysisGroupActions} from "./model/slice/analysisGroupSlice"
+export {userAnalysisActions, userAnalysisReducer} from "./model/slice/userAnalysisSlice";

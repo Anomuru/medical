@@ -93,17 +93,16 @@ export const PatientPage = () => {
                     <PatientList data={patientData} setActiveDeleteItem={setActiveDeleteItem}
                                  setActiveDelete={setActiveDelete}/>
                 </div>
-                <Pagination
-                    totalCount={6}
-                    onPageChange={setCurrentPage}
-                    currentPage={currentPage}
-                    pageSize={10}
-                />
-
 
                 <DeleteModal active={activeDelete} setActive={() => setActiveDelete(false)} onConfirm={onDelete}/>
 
             </div>
+            <Pagination
+                totalCount={6}
+                onPageChange={setCurrentPage}
+                currentPage={currentPage}
+                pageSize={10}
+            />
         </DynamicModuleLoader>
     );
 }

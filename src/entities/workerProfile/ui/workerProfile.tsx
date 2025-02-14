@@ -45,7 +45,7 @@ export const WorkerProfile = () => {
                 <div className={cls.profileBox__leftSight__listBox}>
                     <div className={cls.profileBox__leftSight__listBox__patientListBox}>
                         <div className={cls.profileBox__leftSight__listBox__patientListBox__header}>
-                            <h1 className={cls.profileBox__leftSight__listBox__patientListBox__header__content}>Patient List</h1>
+                            <h1 className={cls.profileBox__leftSight__listBox__patientListBox__header__content}>    Patient List</h1>
                             <Select
                                 title={"Nimadir"}
                                 setSelectOption={setSelected}

@@ -4,13 +4,13 @@ import cls from "./profileAnalysis.module.sass"
 
 import {useSelector} from "react-redux";
 
-import {getProfileAnalysis} from "../../model/selector/profileAnalysisSelector";
+import {getProfileAnalysis} from "../../model/selector/profileSelector";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {fetchProfileAnalysis} from "../../model/thunk/profileAnalysisThunk";
+import {fetchProfileAnalysis} from "../../model/thunk/profileThunk"
 import {useParams} from "react-router";
 
 import {UserAnalysis} from "../../../pakets/ui/userAnalysis";
-import {profileAnalysisActions} from "../../model/slice/profileAnalysisSlice";
+import {profileAnalysisActions} from "../../model/slice/profileSlice";
 import {headers, useHttp} from "shared/api/base";
 import {IAnalysis} from "entities/analysis";
 import {Button} from "shared/ui/button";

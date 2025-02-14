@@ -23,6 +23,7 @@ interface IUserAnalysis {
 interface IUserAnalysisPacket {
     packet_id: number;
     packet_name: string;
+    total: number;
     analysis_list: IUserAnalysis[];
 }
 
@@ -31,8 +32,22 @@ interface IUserAnalysisData {
     analysis_list: IUserAnalysis[];
 }
 
+export interface IUserPaymentsData {
+    amount: number;
+    branch: number;
+    date: string;
+    deleted: boolean;
+    id: number;
+    payment_type: {
+        id: number;
+        payment_type: string;
+    };
+    user: string;
+};
+
 export interface IUserProfileAnalysisSchema {
     info: IUserAnalysisData;
     loading: boolean;
     error?: string;
+    paymentsData: IUserPaymentsData[]
 }

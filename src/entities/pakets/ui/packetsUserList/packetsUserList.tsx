@@ -3,24 +3,38 @@ import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import cls from "./packetsUserList.module.sass";
 import arrowContainedSquare from "shared/assets/icon/arrowContainedSquare.svg";
 import {IAnalysisProps} from "../../model/paketsSchema";
+import {Input} from "../../../../shared/ui/input";
+
+interface ICurrentList extends IAnalysisProps {
+    isChecked?: boolean
+}
 
 interface IPacketsUser {
     packet_id?: number,
     packet_name?: string,
-    list?: IAnalysisProps[],
+    list?: ICurrentList[],
     total?: string | number,
-    onDeleteAnalysis: (arg: number) => void
-    onDeletePacket: (arg?: number) => void
+    onDeleteAnalysis: (arg: number) => void,
+    onDeletePacket: (arg?: number) => void,
+    onChange?: (arg: number | "all") => void
 }
 
 export const PacketsUserList = memo((props: IPacketsUser) => {
 
-    const {packet_id, total, packet_name, list, onDeleteAnalysis, onDeletePacket} = props
+    const {
+        packet_id,
+        total,
+        packet_name,
+        list,
+        onDeleteAnalysis,
+        onDeletePacket,
+        onChange
+    } = props
 
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false)
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const toggleDropdown = () => setIsOpen(!isOpen);
 
+    const toggleDropdown = () => setIsOpen(!isOpen);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -31,27 +45,36 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
     const formatSalary = () => {
         return Number(total).toLocaleString();
     };
 
+    function compareById(a: { id: number }, b: { id: number }) {
+        return a.id - b.id;
+    }
+
     const render = useCallback(() => {
-
-        return list?.map(item => {
-
+        return list?.sort(compareById)?.map(item => {
             return (
                 <div className={cls.analysis__item}>
                     <h1 className={cls.title}>{item.analysis.name}</h1>
                     <hr/>
                     <h2 className={cls.value}>{item?.price}</h2>
                     {/*<h2 className={cls.value}>0</h2>*/}
+                    <Input
+                        onChange={() => !!onChange && onChange(item.id)}
+                        extraClass={cls.check}
+                        name={item.analysis.name}
+                        type={"checkbox"}
+                        checked={item.isChecked}
+                    />
                     {!item.paid && <div onClick={() => onDeleteAnalysis(item.id)} className={cls.minus}>
                         <i className="fas fa-minus"></i>
                     </div>}
                 </div>
             )
         })
-
     }, [onDeleteAnalysis, list])
 
 
@@ -68,6 +91,13 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
                     <span>Списки анализа :</span>
                     <div className={cls.subrow__wrapper}>
                         <span><img onClick={toggleDropdown} src={arrowContainedSquare} alt=""/></span>
+                        <Input
+                            onChange={() => !!onChange && onChange("all")}
+                            extraClass={cls.check}
+                            checked={list?.every(item => item.isChecked)}
+                            type={"checkbox"}
+                            name={"main"}
+                        />
                         <div
                             onClick={() => packet_id && onDeletePacket(packet_id)}
                             className={cls.minus}

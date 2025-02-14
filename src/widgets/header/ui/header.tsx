@@ -43,7 +43,6 @@ export const Header = () => {
     useEffect(() => {
         if (branch)
             dispatch(onBranch(branch))
-        console.log(branch, 'data')
     }, [branch])
 
     const branchData = useSelector(getBranchesData)
@@ -58,11 +57,11 @@ export const Header = () => {
 
     return (
         <div className={cls.header}>
-            <img
-                className={cls.header__logo}
-                src={logo}
-                alt=""
-            />
+            {/*<img*/}
+            {/*    className={cls.header__logo}*/}
+            {/*    src={logo}*/}
+            {/*    alt=""*/}
+            {/*/>*/}
             <div className={cls.setting}>
                 {userRole === ROLES.mainAdmin && (
                     <>
@@ -82,11 +81,11 @@ export const Header = () => {
                     onClick={() => navigation(`/platform/staff/profile/${userId}`, {replace: true})}
                     className={cls.profile}
                 >
-                    <img
-                        className={cls.profile__image}
-                        src={profileImage}
-                        alt="profileImage"
-                    />
+                    {/*<img*/}
+                    {/*    className={cls.profile__image}*/}
+                    {/*    src={profileImage}*/}
+                    {/*    alt="profileImage"*/}
+                    {/*/>*/}
                     <h2 className={cls.profile__surname}>{userSurname} {userName}</h2>
                 </div>
             </div>
