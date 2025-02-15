@@ -13,7 +13,7 @@ import {Button} from "shared/ui/button";
 
 import {analysisPackageAction} from "entities/analysis";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
-import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {alertAction} from "../../../../entities/alert/model/slice/alertSlice";
 import {headers, useHttp} from "../../../../shared/api/base";
 import {fetchAnalysisPackageList} from "entities/analysis/index";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";

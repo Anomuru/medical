@@ -18,7 +18,7 @@ import {getOftenPaymentTypes} from "entities/oftenUsed/model/selector/oftenUsedS
 import {oftenPaymentTypes} from "entities/oftenUsed/model/thunk/oftenUsedThunk";
 import {IUserPaymentsData} from "../../model/types/profileAnalysisTypes";
 import {profileAnalysisActions} from "../../model/slice/profileSlice";
-import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {alertAction} from "../../../../entities/alert/model/slice/alertSlice";
 
 
 export const PaymentsList = () => {

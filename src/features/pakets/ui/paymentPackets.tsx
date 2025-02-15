@@ -5,8 +5,6 @@ import {ConfirmModal} from "shared/ui/confirm";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {IAnalysisProps, IUserPackets} from "entities/pakets/model/paketsSchema";
 import {userAnalysisActions} from "entities/analysis";
-import {useSelector} from "react-redux";
-import {getPaymentPacketSelected, paymentPacketActions} from "entities/payment";
 
 interface ICurrentList extends IAnalysisProps {
     isChecked?: boolean

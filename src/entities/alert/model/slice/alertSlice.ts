@@ -1,17 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-
-
-interface AlertType {
-    msg: string;
-    type: string;
-    status: boolean;
-}
-
-export interface IAlertState {
-    alert: AlertType[];
-    loading: boolean;
-    error: string | null;
-}
+import {IAlertState, AlertType} from "../schema/alertSchema";
 
 const initialState: IAlertState = {
     alert: [],

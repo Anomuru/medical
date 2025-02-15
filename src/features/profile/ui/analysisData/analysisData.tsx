@@ -16,8 +16,8 @@ import {IAnalysis} from "entities/analysis";
 import {Button} from "shared/ui/button";
 import {IPackets, PacketsList} from "entities/pakets";
 import {Packets} from "../../../pakets";
-import {Alert} from "features/alert/ui/alert";
-import {alertAction} from "features/alert/model/slice/alertSlice";
+import {Alert} from "entities/alert/ui/alert";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
 import {IAnalysisProps, IUserPackets} from "../../../../entities/pakets/model/paketsSchema";
 
 

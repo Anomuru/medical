@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {userPaymentThunk} from "./paymentThunk";
+import {userPaymentThunk} from "../thunk/paymentThunk";
 import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchema";
 
 

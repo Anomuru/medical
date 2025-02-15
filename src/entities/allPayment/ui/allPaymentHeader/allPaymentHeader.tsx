@@ -4,7 +4,7 @@ import React, {FC, memo, useEffect, useState} from 'react';
 
 import cls from "./allPaymentHeader.module.sass";
 import {Radio} from "shared/ui/radio";
-import {IPaymentType} from "features/paymentFeature/model/paymentTypes";
+import {IPaymentType} from "entities/payment/model/schema/paymentTypes";
 import {useSelector} from "react-redux";
 import {fetchBranchData, getSelectedBranchData, getSelectedLocationData} from "entities/oftenUsed";
 import {fetchAllPaymentThunk} from "entities/allPayment/model/thunk/allPaymentThunk";

@@ -14,7 +14,7 @@ import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {useSelector} from "react-redux";
 import {DeleteModal} from "features/deleteModal/ui/DeleteModal";
 import {headers, useHttp} from "shared/api/base";
-import {alertAction} from "features/alert/model/slice/alertSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
 import {paymentListActions, paymentListReducer} from "entities/allPayment/model/slice/allPaymentSlice";
 import {getAllPaymentList} from "entities/allPayment/model/selectors/allPaymentSelector";
 import {fetchAllPaymentThunk} from "entities/allPayment/model/thunk/allPaymentThunk";
@@ -24,9 +24,9 @@ import {useForm} from "react-hook-form";
 import {Modal} from "shared/ui/modal";
 import {Form} from "shared/ui/form";
 import {Button} from "shared/ui/button";
-import {getPaymentTypeData} from "features/paymentFeature/model/paymentSelector";
-import {paymentTypeThunk} from "features/paymentFeature/model/paymentThunk";
-import {paymentTypeReducer} from "features/paymentFeature/model/paymentTypeSlice";
+import {getPaymentTypeData} from "entities/payment/model/selector/paymentSelector";
+import {paymentTypeThunk} from "entities/payment/model/thunk/paymentThunk";
+import {paymentTypeReducer} from "entities/payment/model/slice/paymentTypeSlice";
 import {Radio} from "shared/ui/radio";
 
 

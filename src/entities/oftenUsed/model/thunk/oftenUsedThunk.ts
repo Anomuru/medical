@@ -4,7 +4,7 @@ import {ThunkConfig} from "../../../../app/providers/storeProvider";
 
 import {oftenUsedActions} from "../slice/oftenUsedSlice";
 import {DoctorSchema} from "shared/types/oftenUsedTypes";
-import {paymentTypeActions} from "../../../../features/paymentFeature/model/paymentTypeSlice";
+import {paymentTypeActions} from "../../../payment/model/slice/paymentTypeSlice";
 
 export const fetchJobsData = createAsyncThunk(
     "oftenUsedSlice/fetchJobsData",

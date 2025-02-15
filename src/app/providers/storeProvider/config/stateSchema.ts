@@ -1,5 +1,4 @@
-
-import {userReducer, UserSchema} from "entities/user";
+import {UserSchema} from "entities/user";
 import {EnhancedStore, Reducer, ReducersMapObject} from "@reduxjs/toolkit";
 import {OftenUsedSchemas} from "entities/oftenUsed";
 import {StaffListSchema, StaffProfileSchema} from "entities/staff";
@@ -14,17 +13,15 @@ import {
     IAnalysisGroupSchema
 } from "entities/analysis";
 import {IAnalysisPackageSchema} from "entities/analysis/model/types/analysisPackageScheme";
-import {IAlertState} from "features/alert/model/slice/alertSlice";
+import {IAlertState} from "entities/alert";
 import {IPatientSchema} from "entities/patient";
-
 import {IPacketsSchema} from "entities/pakets";
-import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "features/paymentFeature/model/paymentTypes";
+import {IGivePaymentSchema, IPaymentSchema, IPaymentTypeSchema} from "entities/payment/model/schema/paymentTypes";
 import {WorkTableSchema} from "features/workTable";
 import {IUserAnalysisSchema} from "entities/analysis/model/types/userAnalysisSchema";
 import {IUserProfileAnalysisSchema} from "features/profile/model/types/profileAnalysisTypes";
 import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchema";
-import {IPaymentPacketSchema} from "entities/payment";
-
+import {IPacketsAnalysisSchema} from "features/paymentPakets";
 
 export interface StateSchema {
 
@@ -55,8 +52,8 @@ export interface StateSchema {
     userAnalysisSlice?: IUserAnalysisSchema,
     profileAnalysisSlice?: IUserProfileAnalysisSchema
     allPaymentSlice?: IAllPaymentSchema,
-    paymentPacketSlice?: IPaymentPacketSchema,
-    userPaymentSlice?: IAllPaymentSchema
+    userPaymentSlice?: IAllPaymentSchema,
+    paymentPacketsSlice?: IPacketsAnalysisSchema
 
 }
 

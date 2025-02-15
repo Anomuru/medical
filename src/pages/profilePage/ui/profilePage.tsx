@@ -34,8 +34,8 @@ import {useDropzone} from "react-dropzone";
 import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
 import {Modal} from "shared/ui/modal";
-import {alertAction} from "features/alert/model/slice/alertSlice";
-import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
+import {givePaymentReducer} from "entities/payment/model/slice/givePaymentSlice";
 
 
 const reducers: ReducersList = {

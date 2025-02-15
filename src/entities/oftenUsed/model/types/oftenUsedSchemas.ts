@@ -1,5 +1,5 @@
 import {DoctorSchema, JobSchema} from "shared/types/oftenUsedTypes";
-import {IPaymentType} from "../../../../features/paymentFeature/model/paymentTypes";
+import {IPaymentType} from "../../../payment/model/schema/paymentTypes";
 
 
 export interface Device {

@@ -25,7 +25,7 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
-import {alertAction} from "features/alert/model/slice/alertSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
 import {useNavigate} from "react-router";
 import {getUserBranch} from "entities/user";
 

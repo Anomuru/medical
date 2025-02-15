@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {IPaymentSchema} from "./paymentTypes";
-import {fetchUserPaymentList} from "./paymentThunk";
+import {IPaymentSchema} from "../schema/paymentTypes";
+import {fetchUserPaymentList} from "../thunk/paymentThunk";
 
 const initialState : IPaymentSchema = {
     loading: false,

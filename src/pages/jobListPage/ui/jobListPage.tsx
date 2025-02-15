@@ -13,7 +13,7 @@ import {
     ReducersList
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {getJobsThunk} from "../../../entities/jobList/model/thunk/jobListThunk";
-import {alertAction} from "features/alert/model/slice/alertSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
 
 
 const reducers: ReducersList = {

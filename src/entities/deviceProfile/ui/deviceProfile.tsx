@@ -29,7 +29,7 @@ import {
 } from "../../../shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {deviceListActions} from "../../deviceList";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {alertAction} from "features/alert/model/slice/alertSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
 
 
 interface IList {

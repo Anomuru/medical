@@ -1,20 +1,20 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {paymentTypeThunk} from "./paymentThunk";
-import {IGivePaymentSchema} from "./paymentTypes";
+import {paymentTypeThunk} from "../thunk/paymentThunk";
+import {IPaymentTypeSchema} from "../schema/paymentTypes";
 
 
-const initialState: IGivePaymentSchema = {
+const initialState: IPaymentTypeSchema = {
     loading: false,
     data: [],
     error: undefined
 }
 
-const givePaymentSlice = createSlice({
-    name: "givePaymentSlice",
+const paymentTypeSlice = createSlice({
+    name: "paymentTypeSlice",
     initialState,
     reducers: {
-        onAddPayment: (state, action) => {
-            state.data = action.payload
+        onGetPaymentTypeData: (state, action) => {
+            state.data = action.payload.results
         }
     },
     extraReducers: builder => {
@@ -35,5 +35,5 @@ const givePaymentSlice = createSlice({
 
 })
 
-export const {reducer: givePaymentReducer} = givePaymentSlice
-export const {actions: givePaymentActions} = givePaymentSlice
+export const {reducer: paymentTypeReducer} = paymentTypeSlice
+export const {actions: paymentTypeActions} = paymentTypeSlice

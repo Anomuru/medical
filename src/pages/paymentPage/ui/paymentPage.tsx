@@ -9,15 +9,15 @@ import {
     DynamicModuleLoader,
     ReducersList
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
-import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
+import {paymentReducer} from "entities/payment/model/slice/paymentSlice";
 import {useSelector} from "react-redux";
-import {getPaymentData, getPaymentTypeData} from "features/paymentFeature/model/paymentSelector";
+import {getPaymentData, getPaymentTypeData} from "entities/payment/model/selector/paymentSelector";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {
     fetchUserPaymentList,
     givePaymentThunk,
     paymentTypeThunk, userPaymentData, userPaymentThunk
-} from "features/paymentFeature/model/paymentThunk";
+} from "entities/payment/model/thunk/paymentThunk";
 import {fetchUserAnalys} from "entities/analysis/model/thunk/userAnalysisThunk";
 
 import {userAnalysisActions, userAnalysisReducer} from "entities/analysis";
@@ -29,21 +29,18 @@ import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUs
 import {Form} from "shared/ui/form";
 import {SubmitHandler, useForm} from "react-hook-form";
 import classNames from "classnames";
-import {givePaymentReducer} from "features/paymentFeature/model/givePaymentSlice";
-import {paymentTypeReducer} from "features/paymentFeature/model/paymentTypeSlice";
+import {givePaymentReducer} from "entities/payment/model/slice/givePaymentSlice";
+import {paymentTypeReducer} from "entities/payment/model/slice/paymentTypeSlice";
 import {Table} from "shared/ui/table";
 import {Pagination} from "features/pagination";
-import {getUserPaymentData, getUserPaymentList} from "features/paymentFeature/model/userPaymentSelector";
-import {userPaymentReducer} from "features/paymentFeature/model/userPaymentSlice";
-import {AllPaymentList} from "entities/allPayment";
-import {PaymentPackets} from "../../../features/pakets";
-import {getPaymentPacketSelected, paymentPacketReducer} from "../../../entities/payment";
+import {getUserPaymentData, getUserPaymentList} from "entities/payment/model/selector/userPaymentSelector";
+import {userPaymentReducer} from "entities/payment/model/slice/userPaymentSlice";
+import {PaymentPackets} from "features/pakets";
+import {fetchPacketsAnalysis, getPaymentPacketsData, paymentPacketsReducer} from "features/paymentPakets";
 
 interface IPaymentData {
     payment_type: string,
     user: number,
-
-
 }
 
 const reducers: ReducersList = {
@@ -52,7 +49,7 @@ const reducers: ReducersList = {
     givePaymentSlice: givePaymentReducer,
     paymentTypeSlice: paymentTypeReducer,
     userPaymentSlice: userPaymentReducer,
-    paymentPacketSlice: paymentPacketReducer
+    paymentPacketsSlice: paymentPacketsReducer
 }
 
 export const PaymentPage = () => {
@@ -64,7 +61,6 @@ export const PaymentPage = () => {
         deleteAllAnalysis
     } = userAnalysisActions
 
-    const selectedAnalysis= useSelector(getPaymentPacketSelected)
     const selectedLocation = useSelector(getSelectedLocationData)
     const selectedBranch = localStorage.getItem("branch")
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -72,7 +68,7 @@ export const PaymentPage = () => {
     const data = useSelector(getPaymentData)
     const [userId, setUserId] = useState<number>()
     const [search, setSearch] = useState("")
-    const analiz = useSelector(getUserAnalysis)
+    const analiz = useSelector(getPaymentPacketsData)
     const prices = analiz?.analysis_list?.map(item => item.price)
     const totalOther = prices?.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     const payType = useSelector(getPaymentTypeData)
@@ -98,9 +94,10 @@ export const PaymentPage = () => {
 
 
     useEffect(() => {
-        if (userId)
-            dispatch(fetchUserAnalys({userId}))
-        dispatch(userPaymentThunk(userId))
+        if (userId) {
+            dispatch(fetchPacketsAnalysis({userId}))
+            dispatch(userPaymentThunk(userId))
+        }
     }, [userId])
 
     useEffect(() => {

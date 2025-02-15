@@ -25,7 +25,7 @@ import {getAnalysisContainer} from "entities/analysis/model/selector/analysisCon
 import {Pagination} from "../../../pagination";
 import {getAnalysisCount} from "entities/analysis/model/selector/analysisSelector";
 import {data} from "react-router";
-import {alertAction, alertReducer} from "../../../alert/model/slice/alertSlice";
+import {alertAction, alertReducer} from "../../../../entities/alert/model/slice/alertSlice";
 import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {getOftenDevice} from "entities/oftenUsed/model/selector/oftenUsedSelector";
 import {getUserBranch} from "entities/user";

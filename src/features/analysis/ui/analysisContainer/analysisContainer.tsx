@@ -274,7 +274,7 @@ import {DeleteModal} from "../../../deleteModal/ui/DeleteModal";
 import {headers, useHttp} from "../../../../shared/api/base";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import {analysisContainerThunk} from "entities/analysis/model/thunk/analysisContainerThunk";
-import {alertAction} from "../../../alert/model/slice/alertSlice";
+import {alertAction} from "../../../../entities/alert/model/slice/alertSlice";
 import {getUserBranch} from "entities/user";
 
 

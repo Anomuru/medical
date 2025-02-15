@@ -20,13 +20,13 @@ import {
 } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import {packetsActions, packetsReducer} from "entities/pakets";
 import {getPacketsData, IPackets} from "entities/pakets";
-import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
-import {getPaymentData} from "features/paymentFeature/model/paymentSelector";
+import {paymentReducer} from "entities/payment/model/slice/paymentSlice";
+import {getPaymentData} from "entities/payment/model/selector/paymentSelector";
 
 import classNames from "classnames";
 import {getUserBranch} from "entities/user";
 import {useNavigate} from "react-router";
-import {alertAction} from "features/alert/model/slice/alertSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
 
 
 interface IHospitalRegPageData {

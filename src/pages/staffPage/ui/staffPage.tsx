@@ -21,7 +21,7 @@ import {
 import {useNavigate} from "react-router";
 import {headers, useHttp} from "../../../shared/api/base";
 import {DeleteModal} from "features/deleteModal/ui/DeleteModal";
-import {alertAction} from "features/alert/model/slice/alertSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
 import {useAppDispatch} from "../../../shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 const reducers: ReducersList = {

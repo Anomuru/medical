@@ -1,12 +1,11 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ThunkConfig} from "../../../app/providers/storeProvider";
-import {headers, ParamUrl} from "../../../shared/api/base";
-import {analysisContainerActions} from "../../../entities/analysis/model/slice/analysisContainerSlice";
-import {paymentActions} from "./paymentSlice";
-import {paymentTypeActions} from "./paymentTypeSlice";
-import {givePaymentActions} from "./givePaymentSlice";
-import {alertAction} from "features/alert/model/slice/alertSlice";
-import {userPaymentActions} from "features/paymentFeature/model/userPaymentSlice";
+import {ThunkConfig} from "app/providers/storeProvider";
+import {headers} from "shared/api/base";
+import {paymentActions} from "../slice/paymentSlice";
+import {paymentTypeActions} from "../slice/paymentTypeSlice";
+import {givePaymentActions} from "../slice/givePaymentSlice";
+import {alertAction} from "entities/alert/model/slice/alertSlice";
+import {userPaymentActions} from "../slice/userPaymentSlice";
 
 interface PaymentProps {
     payment_type: string | undefined,
