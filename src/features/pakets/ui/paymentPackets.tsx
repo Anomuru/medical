@@ -3,10 +3,10 @@ import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
 import {PacketsUserList} from "entities/pakets";
 import {ConfirmModal} from "shared/ui/confirm";
 import {useAppDispatch} from "shared/lib/hooks/useAppDispatch/useAppDispatch";
-import {IAnalysisProps, IUserPackets} from "../../../entities/pakets/model/paketsSchema";
+import {IAnalysisProps, IUserPackets} from "entities/pakets/model/paketsSchema";
 import {userAnalysisActions} from "entities/analysis";
 import {useSelector} from "react-redux";
-import {getPaymentPacketSelected, paymentPacketActions} from "../../../entities/payment";
+import {getPaymentPacketSelected, paymentPacketActions} from "entities/payment";
 
 interface ICurrentList extends IAnalysisProps {
     isChecked?: boolean
@@ -30,6 +30,8 @@ export const PaymentPackets = memo(({item}: IPacketsProps) => {
     const {
         deletePacketAnalysis,
         deletePacket,
+        onCheckedPacket,
+        onCheckedPacketAnalysis
     } = userAnalysisActions
     // const {
     //     getSelectedAnalysis,

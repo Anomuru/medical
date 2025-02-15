@@ -22,9 +22,7 @@ import {packetsActions, packetsReducer} from "entities/pakets";
 import {getPacketsData, IPackets} from "entities/pakets";
 import {paymentReducer} from "features/paymentFeature/model/paymentSlice";
 import {getPaymentData} from "features/paymentFeature/model/paymentSelector";
-import {fetchUserPaymentList} from "features/paymentFeature/model/paymentThunk";
-import {getSelectedBranchData} from "entities/oftenUsed";
-import {Table} from "shared/ui/table";
+
 import classNames from "classnames";
 import {getUserBranch} from "entities/user";
 import {useNavigate} from "react-router";
@@ -72,7 +70,6 @@ export const HospitalRegPage = () => {
         addPacket,
         addMultipleAnalysis,
         addPackets,
-        clearAnalysis
     } = packetsActions
     const dispatch = useAppDispatch()
 
@@ -109,11 +106,6 @@ export const HospitalRegPage = () => {
 
 
     const list = [
-        // {
-        //     isInput: true,
-        //     name: "username",
-        //     label: "Username",
-        // },
         {
             name: "name_surname",
             isInput: true,
@@ -200,10 +192,7 @@ export const HospitalRegPage = () => {
     }, [username]);
 
 
-    useEffect(() => {
-        if (selectedBranch)
-            dispatch(fetchUserPaymentList({selectedBranch, search: ""}))
-    }, [selectedBranch])
+
 
     useEffect(() => {
         if (isActiveType === "create") {

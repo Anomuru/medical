@@ -7,6 +7,7 @@ interface IUserAnalysisPacket {
     packet_id: number;
     packet_name: string;
     total: number;
+    isChecked?: boolean,
     analysis_list: IAnalysisProps[];
 }
 

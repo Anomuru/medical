@@ -1,2 +1,2 @@
 export { Packets } from "./ui/pakets";
-export {PaymentPackets} from "./ui/paymentPackets";
+export {PaymentPackets} from "features/pakets/ui/paymentPackets";

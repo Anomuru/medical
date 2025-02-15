@@ -76,9 +76,11 @@ export const WorkTable = () => {
 
     const [fromDate, setFromDate] = useState<string>()
     const [toDate, setToDate] = useState<string>()
+    const [dateForm, setDateForm] = useState<string>()
     const [selectedTime, setSelectedTime] = useState<{ start: string; end: string }>()
     const [errorTimeMsg,setErrorTimeMsg] = useState<string>("")
     const [errorTime,setErrorTime] = useState<{start:string,end:string}>()
+    const [isChanging,setIsChanging] = useState<boolean>(false)
 
 
 
@@ -160,7 +162,6 @@ export const WorkTable = () => {
         return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
     }
 
-    // Output: "08:51"
 
     function getTimeDifference(start: string, end: string) {
         let [startHour, startMin] = start.split(":").map(Number);
@@ -174,46 +175,82 @@ export const WorkTable = () => {
     }
 
     useEffect(() => {
-        if (selectedTime?.start) {
-
+        if (selectedTime && selectedTime.start && !isChanging) {
             const changedHour = getHour(selectedTime.start)
             const minute = getMinute(selectedTime.start)
 
+
+
+
             const filtered = events.filter(item => {
-                const hour = getHour(item.back_start)
-                return hour === changedHour
+                const hour = getHour(item.back_end)
+
+
+                return hour === changedHour && item.date === dateForm
+
+
             })
 
 
 
+
+
             if (!filtered.length) {
+                console.log(selectedTime)
+
                 setFromDate(selectedTime.start)
+                setToDate("")
+
             } else {
                 const sortedAppointments = filtered.sort((a, b) => {
                     return b.back_end.localeCompare(a.back_end);
                 });
 
+
+
                 const start = addOneMinute(sortedAppointments[0].back_end)
 
+
                 setFromDate(start)
+                // setToDate("")
 
 
             }
+        } else if (selectedTime && selectedTime.start) {
+
+            const date = JSON.parse(localStorage.getItem("date_calendar") as string)
+
+
+            setFromDate(selectedTime.start)
+            setToDate(selectedTime.end)
+            setDateForm(date)
         }
 
-    }, [selectedTime])
+    }, [date, events, isChanging, selectedTime,dateForm])
 
 
     useEffect(() => {
         const date = JSON.parse(localStorage.getItem("date_calendar") as string);
+        const ids = JSON.parse(localStorage.getItem("timeTableIds") as any)
+
 
         if (fromDate && date && selectedDoctor && toDate) {
             const minute = getTimeDifference(fromDate,toDate)
-
-
             if (minute > 0) {
+
+                let url
+
+                if (isChanging) {
+                    url = `user/users/get/check_doctor_time/?doctor_id=${selectedDoctor}&from_date=${fromDate}&to_date=${toDate}&date=${dateForm}&user_request_id=${ids?.requestId}`
+
+                } else {
+                    url = `user/users/get/check_doctor_time/?doctor_id=${selectedDoctor}&from_date=${fromDate}&to_date=${toDate}&date=${date}`
+
+                }
+
+
                 request({
-                    url: `user/users/get/check_doctor_time/?doctor_id=${selectedDoctor}&from_date=${fromDate}&to_date=${toDate}&date=${date}`,
+                    url,
                     method: "GET",
                 })
                     .then(res => {
@@ -229,9 +266,10 @@ export const WorkTable = () => {
 
             } else {
                 setErrorTimeMsg("Vaqtlar no'tog'ri belgilangan")
+                setErrorTime(undefined)
             }
         }
-    }, [date, fromDate, selectedDoctor, toDate])
+    }, [date, fromDate, selectedDoctor, toDate,dateForm])
 
 
     // useEffect(() => {
@@ -264,14 +302,30 @@ export const WorkTable = () => {
 
     const handleSubmit = () => {
 
+        if (isChanging) {
+            const data = {
+                from_date: fromDate,
+                to_date: toDate,
+                date: dateForm
+            }
+            const ids = JSON.parse(localStorage.getItem("timeTableIds") as any)
 
-        const data = {
-            start: fromDate,
-            end: toDate,
+            request({
+                url: `user_request/crud/update/${ids.requestId}`,
+                method: "PUT",
+                body: JSON.stringify(data)
+            })
+        } else {
+            const data = {
+                start: fromDate,
+                end: toDate,
+            }
+            localStorage.setItem("time", JSON.stringify(data))
+            navigate("../hospitalReg")
         }
 
-        localStorage.setItem("time", JSON.stringify(data))
-        navigate("../hospitalReg")
+
+
     }
 
 
@@ -341,6 +395,8 @@ export const WorkTable = () => {
                             setType={setType}
                             setDate={setDate}
                             setSelectedTime={setSelectedTime}
+                            setIsChanging={setIsChanging}
+                            setDateForm={setDateForm}
                         />
                     </div>
 
@@ -349,10 +405,11 @@ export const WorkTable = () => {
 
             </DynamicModuleLoader>
 
-            <Modal extraClass={cls.mainBox__modal} title={"Add"} active={active} setActive={handleClick}>
+            <Modal extraClass={cls.mainBox__modal} title={isChanging ? "Change" : "Add"} active={active} setActive={handleClick}>
                 <div className={cls.mainBox__modal__form}>
                     <Input title={"Ot"} value={fromDate} onChange={setFromDate} name={"ot"} type={"time"}/>
                     <Input title={"Do"} value={toDate} onChange={setToDate} name={"do"} type={"time"}/>
+                    {isChanging && <Input title={"Sana"} value={dateForm} onChange={setDateForm} name={"date"} type={"date"}/>}
 
                     {/*<Select extraClass={cls.mainBox__modal__form__select} title={"Doctors"}*/}
                     {/*        setSelectOption={setSelected} optionsData={staffList}/>*/}
@@ -384,7 +441,9 @@ interface ICalendar {
     setActive: React.Dispatch<React.SetStateAction<boolean>>,
     setType: React.Dispatch<React.SetStateAction<string>>,
     setDate: React.Dispatch<React.SetStateAction<string>>,
-    setSelectedTime: React.Dispatch<React.SetStateAction<{ start: string, end: string } | undefined>>
+    setDateForm: React.Dispatch<React.SetStateAction<string | undefined>>,
+    setSelectedTime: React.Dispatch<React.SetStateAction<{ start: string, end: string } | undefined>>,
+    setIsChanging:  React.Dispatch<React.SetStateAction<boolean>>
 
 }
 
@@ -392,7 +451,17 @@ interface ICalendar {
 const Calendar = React.memo((props: ICalendar) => {
 
 
-    const {type, date, events, setActive, setType, setDate, setSelectedTime} = props
+    const {
+        type,
+        date,
+        events,
+        setActive,
+        setType,
+        setDate,
+        setSelectedTime,
+        setIsChanging,
+        setDateForm
+    } = props
 
     const calendarControls = useState(() => createCalendarControlsPlugin())[0]
     const eventsServicePlugin = useState(() => createEventsServicePlugin())[0];
@@ -403,6 +472,7 @@ const Calendar = React.memo((props: ICalendar) => {
     //     console.log(date)
     //     setActive(prev => !prev);
     // }, []);
+
 
 
 
@@ -469,26 +539,27 @@ const Calendar = React.memo((props: ICalendar) => {
                 localStorage.removeItem("changedItemTable")
 
 
+                setDateForm(data.substring(0, 10))
                 setSelectedTime(res)
                 setActive(prev => !prev)
+                setIsChanging(false)
             },
-            onDoubleClickEvent(calendarEvent: any) {
-                const math = Number(calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3)) + 1
-                const res = {
-                    start: calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3) + ":00",
-                    end: (math < 10 ? `0${math}` : math) + ":00"
-                }
-                localStorage.setItem("date_calendar", JSON.stringify(calendarEvent.date))
-                // localStorage.setItem("time", JSON.stringify(res))
-                localStorage.setItem("timeTableIds", JSON.stringify({
-                    patient: calendarEvent.patient,
-                    requestId: calendarEvent.id
-                }))
-
-                setSelectedTime(res)
-                setActive(prev => !prev)
-                // navigate("../hospitalReg")
-            },
+            // onDoubleClickEvent(calendarEvent: any) {
+            //     const math = Number(calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3)) + 1
+            //     const res = {
+            //         start: calendarEvent.start.substring(calendarEvent.start.length - 5, calendarEvent.start.length - 3) + ":00",
+            //         end: (math < 10 ? `0${math}` : math) + ":00"
+            //     }
+            //     localStorage.setItem("date_calendar", JSON.stringify(calendarEvent.date))
+            //     // localStorage.setItem("time", JSON.stringify(res))
+            //     localStorage.setItem("timeTableIds", JSON.stringify({
+            //         patient: calendarEvent.patient,
+            //         requestId: calendarEvent.id
+            //     }))
+            //     setSelectedTime(res)
+            //     setActive(prev => !prev)
+            //     // navigate("../hospitalReg")
+            // },
             onRangeUpdate(range: any) {
                 if (calendarControls && calendarControls.getView) {
                     const view = calendarControls.getView();
@@ -502,12 +573,19 @@ const Calendar = React.memo((props: ICalendar) => {
             },
         }
     })
+
+    const onChangeTime = (e: any) => {
+        setSelectedTime(e)
+        setActive(prev => !prev)
+        setIsChanging(true)
+    }
+
     return (
         <ScheduleXCalendar
             // style={{ fontSize: 25+ "px" }}
             customComponents={{
                 timeGridEvent: CustomEvent,
-                eventModal: CustomEventModal
+                eventModal: (e: any) =>  CustomEventModal({...e,setTime:onChangeTime})
                 // dateGridEvent: CustomDateGridEvent,
             }}
             calendarApp={calendar}
@@ -519,7 +597,7 @@ const Calendar = React.memo((props: ICalendar) => {
 
 const CustomEvent = (event: any) => {
 
-    const {calendarEvent} = event
+    const {calendarEvent,setTime} = event
 
     const {patient_name, status, start, end} = calendarEvent
 
@@ -545,28 +623,43 @@ const CustomEvent = (event: any) => {
 const CustomEventModal = (event: any) => {
     const {calendarEvent,setTime} = event
 
-    const {patient_name, status, start, end} = calendarEvent
 
+    const {patient_name, status, start, end,date,id,patient} = calendarEvent
 
+    console.log(calendarEvent)
     const onClickChange = () => {
         setTime({start: calendarEvent.back_start, end: calendarEvent.back_end})
+        localStorage.setItem("date_calendar", JSON.stringify(date))
+        localStorage.setItem("timeTableIds", JSON.stringify({
+            patient: patient,
+            requestId: id
+        }))
     }
 
+
     return (
-        <div className={cls.customEventModal}>
-            <h1 className={cls.name}>{patient_name}</h1>
-            <i className={classNames("fas fa-pen",cls.pen)} onClick={onClickChange}></i>
-            {/*<i className={classNames("fas fa-trash",cls.trash)}></i>*/}
-            <h2>
-                {start.substring(11, 16)}-{end.substring(11, 16)}
-            </h2>
-            <h2
-                className={classNames(cls.payment_type, {
-                    [cls.active]: status
-                })}
-            >
-                {status ? "оплаченный" : "неоплаченный"}
-            </h2>
-        </div>
+        <>
+            <div className={cls.customEventModal}>
+                <h1 className={cls.name}>{patient_name}</h1>
+                <i
+                    className={classNames("fas fa-pen",cls.pen)}
+                    onClick={onClickChange}
+                ></i>
+                {/*<i className={classNames("fas fa-trash",cls.trash)}></i>*/}
+                <h2>
+                    {start.substring(11, 16)}-{end.substring(11, 16)}
+                </h2>
+                <h2
+                    className={classNames(cls.payment_type, {
+                        [cls.active]: status
+                    })}
+                >
+                    {status ? "оплаченный" : "неоплаченный"}
+                </h2>
+            </div>
+
+
+        </>
+
     )
 }

@@ -15,6 +15,14 @@ const userAnalysisSlice = createSlice({
         onGetAnalysis: (state, action) => {
             state.info = action.payload.info
         },
+
+
+        onCheckedPacket: (state) => {
+            // state.packet
+        },
+        onCheckedPacketAnalysis: () => {
+
+        },
         deletePacketAnalysis: (state, action) => {
             state.info.packet =
                 state.info.packet
@@ -24,6 +32,7 @@ const userAnalysisSlice = createSlice({
                                 packet_id: item.packet_id,
                                 packet_name: item.packet_name,
                                 total: item.total,
+                                // isChecked: item.isChecked,
                                 analysis_list: item.analysis_list
                                     .filter(item =>
                                         item.id !== action.payload.analysisId)
@@ -33,9 +42,7 @@ const userAnalysisSlice = createSlice({
                     .filter(item => item.analysis_list.length !== 0)
         },
         deletePacket: (state, action) => {
-            state.info.packet =
-                state.info.packet
-                    .filter(item => item.packet_id !== action.payload)
+            state.info.packet = state.info.packet.filter(item => item.packet_id !== action.payload)
         },
         deleteAnalysis: (state, action) => {
             state.info.analysis_list =
