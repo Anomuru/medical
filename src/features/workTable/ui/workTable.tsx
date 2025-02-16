@@ -28,6 +28,7 @@ import {createEventModalPlugin} from "@schedule-x/event-modal";
 import {Modal} from "shared/ui/modal";
 import {Form} from "shared/ui/form";
 import {Input} from "shared/ui/input";
+import {alertAction} from "features/alert/model/slice/alertSlice";
 
 
 const types = [
@@ -81,6 +82,7 @@ export const WorkTable = () => {
     const [errorTimeMsg,setErrorTimeMsg] = useState<string>("")
     const [errorTime,setErrorTime] = useState<{start:string,end:string}>()
     const [isChanging,setIsChanging] = useState<boolean>(false)
+    const [isChanged,setIsChanged] = useState(false)
 
 
 
@@ -123,7 +125,7 @@ export const WorkTable = () => {
                     setEvents(res)
                 })
         }
-    }, [date, selectedDoctor, type])
+    }, [date, selectedDoctor, type,isChanged])
 
 
     useEffect(() => {
@@ -192,11 +194,7 @@ export const WorkTable = () => {
             })
 
 
-
-
-
             if (!filtered.length) {
-                console.log(selectedTime)
 
                 setFromDate(selectedTime.start)
                 setToDate("")
@@ -219,8 +217,6 @@ export const WorkTable = () => {
         } else if (selectedTime && selectedTime.start) {
 
             const date = JSON.parse(localStorage.getItem("date_calendar") as string)
-
-
             setFromDate(selectedTime.start)
             setToDate(selectedTime.end)
             setDateForm(date)
@@ -301,7 +297,6 @@ export const WorkTable = () => {
 
 
     const handleSubmit = () => {
-
         if (isChanging) {
             const data = {
                 from_date: fromDate,
@@ -315,6 +310,16 @@ export const WorkTable = () => {
                 method: "PUT",
                 body: JSON.stringify(data)
             })
+                .then(() => {
+                    dispatch(alertAction.onAddAlertOptions({
+                        type: "success",
+                        status: true,
+                        msg: "Успешно принято"
+                    }))
+                    setActive(false)
+                    setIsChanged(true)
+
+                })
         } else {
             const data = {
                 start: fromDate,
@@ -323,9 +328,6 @@ export const WorkTable = () => {
             localStorage.setItem("time", JSON.stringify(data))
             navigate("../hospitalReg")
         }
-
-
-
     }
 
 
@@ -495,20 +497,7 @@ const Calendar = React.memo((props: ICalendar) => {
         ],
         events: [
             ...events,
-            {
-                id: 2,
-                start: '2025-02-11 08:00',
-                end: '2025-02-11 08:30',
-                back_start: "8:00",
-                back_end: "8:30",
-            },
-            {
-                id: 2,
-                start: '2025-02-11 08:30',
-                end: '2025-02-11 08:45',
-                back_start: "8:30",
-                back_end: "8:45",
-            }
+
         ],
         plugins: [
             // createEventModalPlugin(),
@@ -626,7 +615,6 @@ const CustomEventModal = (event: any) => {
 
     const {patient_name, status, start, end,date,id,patient} = calendarEvent
 
-    console.log(calendarEvent)
     const onClickChange = () => {
         setTime({start: calendarEvent.back_start, end: calendarEvent.back_end})
         localStorage.setItem("date_calendar", JSON.stringify(date))

@@ -192,8 +192,6 @@ export const HospitalRegPage = () => {
     }, [username]);
 
 
-
-
     useEffect(() => {
         if (isActiveType === "create") {
             setUserId(undefined)
@@ -207,35 +205,35 @@ export const HospitalRegPage = () => {
 
         const ids = JSON.parse(localStorage.getItem("timeTableIds") as any)
         const doctor_id = JSON.parse(localStorage.getItem("doctorIdTable") as string)
-        if (ids?.patient) {
-            request({
-                url: `user/users/get/time_table_profile/${ids.patient}?request_id=${ids.requestId}`,
-                method: "GET",
-                // headers: headers()
-            })
-                .then(res => {
-                    dispatch(addMultipleAnalysis({
-                        analysis: res.analysis_list.individuals,
-                        price: res.analysis_list.individual_total_price
-                    }))
-                    dispatch(addPackets(res.analysis_list.packets))
-                    setValue("username", res.username);
-                    setValue("name", res.name);
-                    setValue("surname", res.surname);
-                    setValue("address", res.address);
-                    setValue("passport_series", res.passport_series);
-                    setValue("passport_number", res.passport_number);
-                    setValue("birth_date", res.birth_date);
-                    setValue("phone_number", res.phone_number);
-                    setValue("email", res.email);
-                    setValue("password", "12345678");
-                    setSelectedRadio(res.sex)
-                    setIsChanging(true)
-                    setChangingData(ids.patient)
-                    setUserId(ids.requestId)
-
-                })
-        }
+        // if (ids?.patient) {
+        //     request({
+        //         url: `user/users/get/time_table_profile/${ids.patient}?request_id=${ids.requestId}`,
+        //         method: "GET",
+        //         // headers: headers()
+        //     })
+        //         .then(res => {
+        //             dispatch(addMultipleAnalysis({
+        //                 analysis: res.analysis_list.individuals,
+        //                 price: res.analysis_list.individual_total_price
+        //             }))
+        //             dispatch(addPackets(res.analysis_list.packets))
+        //             setValue("username", res.username);
+        //             setValue("name", res.name);
+        //             setValue("surname", res.surname);
+        //             setValue("address", res.address);
+        //             setValue("passport_series", res.passport_series);
+        //             setValue("passport_number", res.passport_number);
+        //             setValue("birth_date", res.birth_date);
+        //             setValue("phone_number", res.phone_number);
+        //             setValue("email", res.email);
+        //             setValue("password", "12345678");
+        //             setSelectedRadio(res.sex)
+        //             setIsChanging(true)
+        //             setChangingData(ids.patient)
+        //             setUserId(ids.requestId)
+        //
+        //         })
+        // }
         setDoctor(doctor_id)
     }, [])
 
