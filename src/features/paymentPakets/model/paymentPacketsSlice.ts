@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IPacketsAnalysisSchema} from "./paymentPacketsSchema";
 import {fetchPacketsAnalysis} from "./paymentPacketsThunk";
+import {stat} from "fs";
 
 const initialState: IPacketsAnalysisSchema = {
     data: {packet: [], analysis_list: []},
@@ -44,6 +45,48 @@ const paymentPacketsSlice = createSlice({
         },
         deleteAllAnalysis: (state) => {
             state.data.analysis_list = []
+        },
+        onChangePacket: (state, action) => {
+            state.data.packet =
+                state.data.packet
+                    .map(item => {
+                        if (item.packet_id === action.payload.id) {
+                            return {
+                                ...item,
+                                analysis_list: item.analysis_list.map(item => ({
+                                    ...item,
+                                    isChecked: action.payload.status
+                                }))
+                            }
+                        } else return item
+                    })
+        },
+        onChangeAllAnalysis: (state, action) => {
+            state.data.analysis_list =
+                state.data.analysis_list.map(item => ({...item, isChecked: action.payload}))
+        },
+        onChangePacketAnalysis: (state, action) => {
+            state.data.packet =
+                state.data.packet
+                    .map(item => {
+                        if (item.packet_id === action.payload.packetId) {
+                            return {
+                                ...item, analysis_list: item.analysis_list.map(item => {
+                                    if (item.id === action.payload.id) {
+                                        return {...item, isChecked: action.payload.status}
+                                    } else return item
+                                })
+                            }
+                        } else return item
+                    })
+        },
+        onChangeAnalysis: (state, action) => {
+            state.data.analysis_list =
+                state.data.analysis_list.map(item => {
+                    if (item.id === action.payload.id) {
+                        return {...item, isChecked: action.payload.status}
+                    } else return item
+                })
         }
     },
     extraReducers: builder =>

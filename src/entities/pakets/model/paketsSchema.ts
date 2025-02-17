@@ -17,6 +17,7 @@ export interface IAnalysisProps {
             name: string
         }
     },
+    isChecked?: boolean
 }
 
 export interface IPackets {

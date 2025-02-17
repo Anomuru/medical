@@ -18,12 +18,8 @@ import {
     givePaymentThunk,
     paymentTypeThunk, userPaymentData, userPaymentThunk
 } from "entities/payment/model/thunk/paymentThunk";
-import {fetchUserAnalys} from "entities/analysis/model/thunk/userAnalysisThunk";
 
 import {userAnalysisActions, userAnalysisReducer} from "entities/analysis";
-import {getUserAnalysis} from "entities/analysis/model/selector/userAnalySelector";
-import {UserPackets} from "features/pakets/ui/userPackets";
-import {UserAnalysis} from "features/pakets/ui/userAnalysis";
 import {fetchBranchData, getSelectedBranchData, oftenUsedReducer} from "entities/oftenUsed";
 import {getSelectedLocationData} from "entities/oftenUsed/model/selector/oftenUsedSelector";
 import {Form} from "shared/ui/form";
@@ -35,8 +31,13 @@ import {Table} from "shared/ui/table";
 import {Pagination} from "features/pagination";
 import {getUserPaymentData, getUserPaymentList} from "entities/payment/model/selector/userPaymentSelector";
 import {userPaymentReducer} from "entities/payment/model/slice/userPaymentSlice";
-import {PaymentPackets} from "features/pakets";
-import {fetchPacketsAnalysis, getPaymentPacketsData, paymentPacketsReducer} from "features/paymentPakets";
+import {
+    fetchPacketsAnalysis,
+    getPaymentPacketsData,
+    paymentPacketsReducer,
+    PaymentPackets
+} from "features/paymentPakets";
+import {itemsEqual} from "@dnd-kit/sortable/dist/utilities";
 
 interface IPaymentData {
     payment_type: string,
@@ -126,13 +127,29 @@ export const PaymentPage = () => {
 
 
     const onClick: SubmitHandler<IPaymentData> = () => {
-        const data = {
-            payment_type: selectedRadio,
-            user: userId,
-            branch: selectedBranch
-        }
+        if (analiz) {
+            let packetSelected: number[] = []
+            analiz.packet
+                .map(item => item.analysis_list
+                    .map(item => {
+                        if (item.isChecked) {
+                            packetSelected = [...packetSelected, item.id]
+                        }
+                    }))
+            const data = {
+                payment_type: selectedRadio,
+                user: userId,
+                branch: selectedBranch,
+                analysis_list: [
+                    ...packetSelected,
+                    ...analiz.analysis_list
+                        .filter(item => item.isChecked)
+                        .map(item => item.id)
+                ]
+            }
 
-        dispatch(givePaymentThunk(data))
+            dispatch(givePaymentThunk(data))
+        }
     }
 
     const ClassSwitch = ({isActive, onSwitch}: { isActive: boolean, onSwitch: (isActive: boolean) => void }) => {
@@ -318,21 +335,22 @@ export const PaymentPage = () => {
                         <h1>{generalAmount}</h1>
                     </div>
                     <div className={cls.payment__list__section}>
-                        {analiz?.packet && analiz?.packet.length > 0 ? (
-                            analiz.packet.map(item => (
-                                <PaymentPackets
-                                    item={item}
-                                />
-                            ))
-                        ) : null}
-                        {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
-                            <UserAnalysis
-                                item={analiz.analysis_list}
-                                total={totalOther}
-                                onDeleteAnalysisId={onDeleteAnalysis}
-                                onDeleteAllAnalysis={onDeleteAllAnalysis}
-                            />
-                        ) : null}
+                        {/*{analiz?.packet && analiz?.packet.length > 0 ? (*/}
+                        {/*    analiz.packet.map(item => (*/}
+                        {/*        <PaymentPackets*/}
+                        {/*            item={item}*/}
+                        {/*        />*/}
+                        {/*    ))*/}
+                        {/*) : null}*/}
+                        {/*{analiz?.analysis_list && analiz.analysis_list.length > 0 ? (*/}
+                        {/*    <UserAnalysis*/}
+                        {/*        item={analiz.analysis_list}*/}
+                        {/*        total={totalOther}*/}
+                        {/*        onDeleteAnalysisId={onDeleteAnalysis}*/}
+                        {/*        onDeleteAllAnalysis={onDeleteAllAnalysis}*/}
+                        {/*    />*/}
+                        {/*) : null}*/}
+                        <PaymentPackets/>
                         {(!analiz?.packet || analiz.packet.length === 0) && (!analiz?.analysis_list || analiz.analysis_list.length === 0) && (
                             <h1 style={{
                                 color: "#fff",

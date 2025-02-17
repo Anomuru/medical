@@ -14,9 +14,9 @@ interface IPacketsUser {
     packet_name?: string,
     list?: ICurrentList[],
     total?: string | number,
-    onDeleteAnalysis: (arg: number) => void,
+    onDeleteAnalysis: (arg: number, arg2: number) => void,
     onDeletePacket: (arg?: number) => void,
-    onChange?: (arg: number | "all") => void
+    onChange?: (arg: number | "all", arg2: number | "another") => void
 }
 
 export const PacketsUserList = memo((props: IPacketsUser) => {
@@ -63,15 +63,16 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
                     <h2 className={cls.value}>{item?.price}</h2>
                     {/*<h2 className={cls.value}>0</h2>*/}
                     <Input
-                        onChange={() => !!onChange && onChange(item.id)}
+                        onChange={() => (!!onChange && packet_id) && onChange(item.id, packet_id)}
                         extraClass={cls.check}
                         name={item.analysis.name}
                         type={"checkbox"}
                         checked={item.isChecked}
                     />
-                    {!item.paid && <div onClick={() => onDeleteAnalysis(item.id)} className={cls.minus}>
-                        <i className="fas fa-minus"></i>
-                    </div>}
+                    {(!item.paid && packet_id) &&
+                        <div onClick={() => onDeleteAnalysis(item.id, packet_id)} className={cls.minus}>
+                            <i className="fas fa-minus"></i>
+                        </div>}
                 </div>
             )
         })
@@ -92,7 +93,7 @@ export const PacketsUserList = memo((props: IPacketsUser) => {
                     <div className={cls.subrow__wrapper}>
                         <span><img onClick={toggleDropdown} src={arrowContainedSquare} alt=""/></span>
                         <Input
-                            onChange={() => !!onChange && onChange("all")}
+                            onChange={() => (!!onChange && packet_id) && onChange("all", packet_id)}
                             extraClass={cls.check}
                             checked={list?.every(item => item.isChecked)}
                             type={"checkbox"}
