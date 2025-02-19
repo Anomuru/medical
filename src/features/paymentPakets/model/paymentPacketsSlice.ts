@@ -87,6 +87,24 @@ const paymentPacketsSlice = createSlice({
                         return {...item, isChecked: action.payload.status}
                     } else return item
                 })
+        },
+        deletePaidAnalysis: (state, action) => {
+            state.data.packet =
+                state.data.packet
+                    .map(item => {
+                        return {
+                            ...item,
+                            analysis_list: item.analysis_list
+                                .filter(item => !action.payload.includes(item.id))
+                        }
+                    })
+                    .filter(item => item.analysis_list.length !== 0)
+            state.data.analysis_list =
+                state.data.analysis_list
+                    .filter(item => !action.payload.includes(item.id))
+                    .length <= 0 ? [] :
+                    state.data.analysis_list
+                        .filter(item => !action.payload.includes(item.id))
         }
     },
     extraReducers: builder =>

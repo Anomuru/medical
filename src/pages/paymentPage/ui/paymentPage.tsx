@@ -37,7 +37,6 @@ import {
     paymentPacketsReducer,
     PaymentPackets
 } from "features/paymentPakets";
-import {itemsEqual} from "@dnd-kit/sortable/dist/utilities";
 
 interface IPaymentData {
     payment_type: string,
@@ -54,13 +53,6 @@ const reducers: ReducersList = {
 }
 
 export const PaymentPage = () => {
-
-    const {
-        deletePacketAnalysis,
-        deletePacket,
-        deleteAnalysis,
-        deleteAllAnalysis
-    } = userAnalysisActions
 
     const selectedLocation = useSelector(getSelectedLocationData)
     const selectedBranch = localStorage.getItem("branch")
@@ -109,23 +101,6 @@ export const PaymentPage = () => {
         setSearch(e);
     }
 
-    const onDeletePacketAnalysis = (id: number, packetId: number) => {
-        dispatch(deletePacketAnalysis({packetId: packetId, analysisId: id}))
-    }
-
-    const onDeletePacket = (id: number) => {
-        dispatch(deletePacket(id))
-    }
-
-    const onDeleteAnalysis = (id: number) => {
-        dispatch(deleteAnalysis(id))
-    }
-
-    const onDeleteAllAnalysis = () => {
-        dispatch(deleteAllAnalysis())
-    }
-
-
     const onClick: SubmitHandler<IPaymentData> = () => {
         if (analiz) {
             let packetSelected: number[] = []
@@ -166,11 +141,9 @@ export const PaymentPage = () => {
                     {isActive ? <i style={{color: "#02B2B9FF"}} className="fa-solid fa-credit-card"></i> :
                         <i style={{color: "green"}} className="fa-solid fa-circle-check"></i>}
                 </div>
-
             </div>
         );
     }
-
 
     const [selectedRadio, setSelectedRadio] = useState<string>("")
 
@@ -273,7 +246,8 @@ export const PaymentPage = () => {
                         onChange={onChangeSearch}
                         name={"search"}
                         placeholder={"Поиск"}
-                        value={search}/>
+                        value={search}
+                    />
                 </div>
                 <div className={cls.patientsList}>
                     <ClassSwitch onSwitch={() => setActiveSwitch(!activeSwitch)} isActive={activeSwitch}/>
