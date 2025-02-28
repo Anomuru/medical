@@ -24,6 +24,8 @@ import {IUserAnalysisSchema} from "entities/analysis/model/types/userAnalysisSch
 import {IUserProfileAnalysisSchema} from "features/profile/model/types/profileAnalysisTypes";
 import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchema";
 import {IPaymentPacketSchema} from "entities/payment";
+import {overheadSlice} from "entities/overheadEntities/model/slice/overheadSlice";
+import {OverheadInterface} from "entities/overheadEntities/model/types/overheadType";
 
 
 export interface StateSchema {
@@ -56,7 +58,8 @@ export interface StateSchema {
     profileAnalysisSlice?: IUserProfileAnalysisSchema
     allPaymentSlice?: IAllPaymentSchema,
     paymentPacketSlice?: IPaymentPacketSchema,
-    userPaymentSlice?: IAllPaymentSchema
+    userPaymentSlice?: IAllPaymentSchema,
+    overheadSlice?: OverheadInterface
 
 }
 

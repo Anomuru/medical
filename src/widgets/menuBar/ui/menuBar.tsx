@@ -47,7 +47,9 @@ export const MenuBar = () => {
                 <div onClick={() => navigation(`/platform/staff/profile/${userId}`, {replace: true})} className={cls.menu__header}>
                     <img src={`${API_URL_DOC}${userPhoto}`} alt=""/>
                 </div>
-                {renderMenuItems()}
+                <div>
+                    {renderMenuItems()}
+                </div>
             </div>
             <Link
                 onClick={() => {

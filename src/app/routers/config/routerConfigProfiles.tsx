@@ -32,8 +32,9 @@ import {
     getAnalysisRoute,
     getWorkerProfile,
     getPaymentRoute,
-    getAllPaymentsPageRoute
+    getAllPaymentsPageRoute, getOverhead
 } from "shared/const/routers";
+import {OverheadPage} from "pages/overheadPage";
 
 interface IRouterConfigProfiles {
     name: string,
@@ -122,5 +123,10 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "allPayment",
         element: <AllPaymentPage/>,
         path: getAllPaymentsPageRoute()
+    },
+    {
+        name: "accountant",
+        element: <OverheadPage/>,
+        path: getOverhead()
     }
 ]

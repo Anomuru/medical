@@ -5,6 +5,7 @@ import staffImage from "shared/assets/icon/staffList.png";
 import analysisImage from "shared/assets/icon/analysis.png";
 import patientImage from "shared/assets/icon/patient.png";
 import deviceImage from "shared/assets/icon/deviceList.png";
+import overhead from "shared/assets/icon/accountant.svg";
 import {ROLES} from "shared/const/roles";
 
 export const menuConfig = [
@@ -79,6 +80,12 @@ export const menuConfig = [
         to: "allPayment",
         image: deviceImage,
         label: "Платежи",
+        roles: [ROLES.admin]
+    },
+    {
+        to: "accountant",
+        image: overhead,
+        label: "Бухгалтер",
         roles: [ROLES.admin]
     }
 ]

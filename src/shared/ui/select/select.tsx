@@ -12,7 +12,8 @@ interface ISelectProps {
     optionsData?: any[],
     keyValue?: string,
     status?: string,
-    autoSelect?: boolean
+    autoSelect?: boolean,
+
 }
 
 export const Select: React.FC<ISelectProps> = (props) => {
@@ -39,7 +40,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
     const renderOptionsOfSelect = useCallback(() => {
         return optionsData?.map((item, index) => {
             const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
-            const key = item.name || item.id;
+            const key = item.name ||  item.payment_type || item.id;
             return (
                 <option
                     disabled={item.disabled}
@@ -56,7 +57,7 @@ export const Select: React.FC<ISelectProps> = (props) => {
     useEffect(() => {
         if (autoSelect && optionsData?.length === 1) {
             const item = optionsData[0];
-            const value = (keyValue && item[keyValue]) || item.id || item.value || item.name;
+            const value = (keyValue && item[keyValue])  || item.id || item.value || item.name;
             setSelectOption(value);
         }
     }, [optionsData, keyValue, setSelectOption, autoSelect]);

@@ -17,3 +17,6 @@ export const getWorkerProfile = (id?:string) => `table/workerProfile`
 export const getPatientRoute = (id?:string) => "patient"
 
 export const getAllPaymentsPageRoute = () => "allPayment"
+
+
+export const getOverhead = () => "accountant/*"
