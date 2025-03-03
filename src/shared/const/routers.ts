@@ -20,3 +20,5 @@ export const getAllPaymentsPageRoute = () => "allPayment"
 
 
 export const getOverhead = () => "accountant/*"
+
+export const getStoragePageRoute = () => "storage"

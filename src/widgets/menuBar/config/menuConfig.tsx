@@ -87,5 +87,11 @@ export const menuConfig = [
         image: overhead,
         label: "Бухгалтер",
         roles: [ROLES.admin]
+    },
+    {
+        to: "storage",
+        image: overhead,
+        label: "Склад",
+        roles: [ROLES.admin]
     }
 ]
