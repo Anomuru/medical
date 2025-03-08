@@ -39,9 +39,10 @@ export const PatientPage = () => {
 
     const patientData = useSelector(getPatientData)
     const [activeType, setActiveType] = useState<string>("")
+    const branchId = localStorage.getItem("branch_id")
 
     useEffect(() => {
-        dispatch(fetchPatientList({branchId: 1 , filter: activeType}))
+        dispatch(fetchPatientList({branchId: Number(branchId) , filter: activeType}))
     }, [activeType])
 
     const {request} = useHttp()

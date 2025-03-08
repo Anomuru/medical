@@ -28,7 +28,7 @@ export const MenuBar = () => {
                 return (
                     <Link extraClass={cls.item} to={item.to}>
                         <img
-                            style={{color: "white"}}
+                            style={{color: "white" , width: "2.5rem", height: "2.5rem"}}
                             src={item.image}
                             alt={item.to}
                         />

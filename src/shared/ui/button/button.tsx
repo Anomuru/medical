@@ -9,7 +9,7 @@ import classNames from "classnames";
 
 
 interface buttonProps {
-    children: string | JSX.Element,
+    children: React.ReactNode,
     id?: string,
     extraClass?: string,
     onClick?: SetStateAction<any> | React.MouseEventHandler<HTMLButtonElement>

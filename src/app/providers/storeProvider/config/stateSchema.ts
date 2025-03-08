@@ -26,6 +26,9 @@ import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchem
 import {IPaymentPacketSchema} from "entities/payment";
 import {overheadSlice} from "entities/overheadEntities/model/slice/overheadSlice";
 import {OverheadInterface} from "entities/overheadEntities/model/types/overheadType";
+import {GroupFilterTypes} from "entities/group/model/type/groupFilterTypes";
+import {GroupListType} from "entities/group/model/type/groupListType";
+
 
 
 export interface StateSchema {
@@ -59,7 +62,9 @@ export interface StateSchema {
     allPaymentSlice?: IAllPaymentSchema,
     paymentPacketSlice?: IPaymentPacketSchema,
     userPaymentSlice?: IAllPaymentSchema,
-    overheadSlice?: OverheadInterface
+    overheadSlice?: OverheadInterface,
+    groupFilterSlice?: GroupFilterTypes,
+    groupListSlice?: GroupListType
 
 }
 

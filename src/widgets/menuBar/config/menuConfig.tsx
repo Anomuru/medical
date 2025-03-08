@@ -6,6 +6,7 @@ import analysisImage from "shared/assets/icon/analysis.png";
 import patientImage from "shared/assets/icon/patient.png";
 import deviceImage from "shared/assets/icon/deviceList.png";
 import overhead from "shared/assets/icon/accountant.svg";
+import group from "shared/assets/icon/vial-virus-solid (1).svg";
 import {ROLES} from "shared/const/roles";
 
 export const menuConfig = [
@@ -86,6 +87,12 @@ export const menuConfig = [
         to: "accountant",
         image: overhead,
         label: "Бухгалтер",
+        roles: [ROLES.admin]
+    },
+    {
+        to: "group",
+        image: group,
+        label: "Группа",
         roles: [ROLES.admin]
     }
 ]

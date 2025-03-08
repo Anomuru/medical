@@ -13,7 +13,6 @@ interface ISelectProps {
     keyValue?: string,
     status?: string,
     autoSelect?: boolean,
-
 }
 
 export const Select: React.FC<ISelectProps> = (props) => {
@@ -29,7 +28,6 @@ export const Select: React.FC<ISelectProps> = (props) => {
         status,
         autoSelect = true
     } = props
-
 
     useEffect(() => {
         if (selectOption) {
