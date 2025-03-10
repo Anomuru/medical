@@ -26,6 +26,7 @@ import {IAllPaymentSchema} from "entities/allPayment/model/types/allPaymentSchem
 import {IPaymentPacketSchema} from "entities/payment";
 import {overheadSlice} from "entities/overheadEntities/model/slice/overheadSlice";
 import {OverheadInterface} from "entities/overheadEntities/model/types/overheadType";
+import {IAllStorageSchema, IStorageSchema} from "features/storage/model/storageTypes";
 
 
 export interface StateSchema {
@@ -59,7 +60,9 @@ export interface StateSchema {
     allPaymentSlice?: IAllPaymentSchema,
     paymentPacketSlice?: IPaymentPacketSchema,
     userPaymentSlice?: IAllPaymentSchema,
-    overheadSlice?: OverheadInterface
+    overheadSlice?: OverheadInterface,
+    storageSlice?: IStorageSchema,
+    getStorageSlice?: IAllStorageSchema
 
 }
 
