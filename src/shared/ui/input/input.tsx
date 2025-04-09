@@ -31,7 +31,8 @@ export interface InputProps extends HTMLInputProps {
     rules?: RegisterOptions,
     required?: boolean,
     error?: ErrorType,
-    canChange?: boolean
+    canChange?: boolean,
+    disabled?: boolean
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -51,7 +52,8 @@ export const Input: React.FC<InputProps> = (props) => {
         onChangeState,
         value,
         canChange= true,
-        checked
+        checked,
+        disabled
     } = props
 
     const textField = register && register(name, rules)
@@ -67,6 +69,7 @@ export const Input: React.FC<InputProps> = (props) => {
                 {...textField}
                 required={required}
                 id={name}
+                disabled={disabled}
                 checked={checked}
                 className={classNames(cls.label__input, extraClass)}
                 type={(type === "password" && passwordActive) ? "text" : type}

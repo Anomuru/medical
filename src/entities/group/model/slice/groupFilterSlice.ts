@@ -5,10 +5,11 @@ const initialState : GroupFilterTypes = {
     filterSelectResearch: [],
     filterSelectWorkplace: [],
     filterRadioItem :[
-        {id: 1 , name: "Tasdiqlangan"},
-        {id: 2 , name: "Tasdiqlanmagan"},
-        {id: 3 , name: "Tayyormas"},
-        {id: 4 , name: "Hammasi"},
+        {id: 4 , name: "Все"},
+        {id: 1 , name: "Черный"},
+        {id: 2 , name: "Зеленый"},
+        {id: 3 , name: "Синий"},
+
     ],
     loading: false,
     error: undefined

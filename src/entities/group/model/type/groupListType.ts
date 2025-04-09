@@ -5,32 +5,37 @@ interface Packet {
 }
 
 interface Container {
+    branch: number;
+    color: string;
+    id: number;
+    name: string;
+    size: string;
+}
+
+interface Device {
     branch: number
-    color: string
+    can_delete: boolean
     id: number
-    name: string
-    size: string
+    img: string
+    ip_address: number
+    name: number
 }
 
 interface Analysis {
-    code_name: string
-    container: Container
-    id: number
-    name: string
-    packet: Packet
-    price: number
-}
-
-interface AnalysisDetail {
+    code_name: string;
+    container: Container;
+    device: Device;
+    id: number;
     name: string;
-    surname: string;
-    analysis: Analysis;
+    packet: Packet;
+    price: number;
 }
 
 export interface GroupListInterface {
     id: number;
-    analysis_details: AnalysisDetail[];
-    status: number;
+    name: string;
+    surname: string;
+    status: number | string;
     expected_result: any;
     paid: boolean;
     by_packet: boolean;
@@ -38,13 +43,20 @@ export interface GroupListInterface {
     urgent: boolean;
     user: number;
     request: number;
-    payment: number;
+    payment: number | null;
     branch: number;
-    analysis: number[];
-}
+    start_branch: string;
+    end_branch: string;
 
+    analysis: Analysis;
+}
+interface GroupListItemData {
+    name: string
+}
 export interface GroupListType{
     groupListData: GroupListInterface[],
     loading: boolean,
-    error: boolean
+    error: boolean,
+
+    groupListItemData: GroupListItemData[]
 }

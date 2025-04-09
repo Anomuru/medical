@@ -149,30 +149,43 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
         setSelectedItems(prev => prev.filter(i => i !== item));
         setSelectedItemId(prev => prev.filter(i => i !== item.id));
     };
+
     const handleAddItem = (item: IAnalysis) => {
         setSelectedItems(prev => {
             return [...prev, item];
         });
         setSelectedItemId(prev => [...prev, item.id]);
     }
+
+
     const handleSelect = (item: IPackets) => {
+
         setSelectedPacketItems(prev => {
             return [...prev, item]
         })
+
+
         setSelectedPacketItemsId(prev => [
             ...prev,
             ...item.analysis.map(analysisItem => analysisItem.id)
         ]);
+
+
     };
+
+
     const onClickPacket = (id: number) => {
         setSelectedPacketItems(prev => {
             return prev.filter(item => item.id !== id)
         })
         setSelectedPacketItemsId(prev => prev.filter(i => i !== id))
     }
+
     return (
         <>
+
             <div className={cls.wrapper__analysis}>
+
                 <div className={cls.oldAnalysis__basic}>
                     <div className={cls.collection}>
                         <h1>Пакет</h1>
@@ -191,8 +204,11 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
                                     )
                                 })
                             }
+
+
                         </div>
                     </div>
+
                     {selectedPacketItems.length ? <div className={cls.oldAnalysis__main}>
                         {
                             selectedPacketItems?.map(item => {
@@ -207,7 +223,9 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
                         }
                     </div> : null
                     }
+
                 </div>
+
                 <div className={cls.oldAnalysis__basic}>
                     <div className={cls.collection}>
                         <h1>Анализ</h1>
@@ -231,6 +249,7 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
                             }
                         </div>
                     </div>
+
                     {selectedItems.length ? <div className={cls.oldAnalysis__main}>
                         {selectedItems.map(item => (
                             <div className={cls.oldAnalysis__main_list}>
@@ -244,19 +263,29 @@ const OldAnalysis = ({setActiveSwitch}: { setActiveSwitch: (isActive: boolean) =
                             </div>
                         ))}
                     </div> : null}
+
                 </div>
             </div>
+
+
             <Button onClick={onPostSelectedAnalysis} extraClass={cls.button}>Добавлять</Button>
         </>
+
     )
 }
+
+
 interface IProfileDataProps {packet: IUserPackets[], analysis_list:IAnalysisProps[]}
+
 const ProfileUserAnalysis = () => {
     const profileData = useSelector(getProfileAnalysis) as IProfileDataProps
+
     const dispatch = useAppDispatch()
     const {request} = useHttp()
+
     const {id} = useParams()
     const onDeletePacketAnalysis = (analysisID: number, packetId: number) => {
+
         dispatch(profileAnalysisActions.onDeletePacketAnalysis({packetId: packetId, analysisId: analysisID}))
     }
     const onDeletePacket = (packet_id: number) => {
@@ -320,6 +349,7 @@ const ProfileUserAnalysis = () => {
             <div className={cls.analysis}>
 
                 <UserAnalysis
+
                     total={totalPrice}
                     item={profileData?.analysis_list}
                     onDeleteAnalysisId={onDeleteAnalysis}

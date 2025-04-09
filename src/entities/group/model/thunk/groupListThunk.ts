@@ -6,13 +6,16 @@ import {groupListActions} from "entities/group/model/slice/groupListSlice";
 
 export const fetchGroupListData = createAsyncThunk<
     void,
-    number,
+    { branchId: number, type?: number | string},
     ThunkConfig<string>
->('groupListSlice/fetchGroupListData', async (branchId, thunkApi) => {
+>('groupListSlice/fetchGroupListData', async ({branchId, type}, thunkApi) => {
     const {extra, dispatch, rejectWithValue} = thunkApi;
     try {
         const response = await extra.api({
-            url: `analysis/laboratory/list/?branch=${branchId}`, method: "GET", body: null, headers: headers()
+            url: `analysis/laboratory/list/?branch=${branchId}${type ? `&status=${type}` : ""}`,
+            method: "GET",
+            body: null,
+            headers: headers()
         })
 
 

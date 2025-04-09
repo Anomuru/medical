@@ -42,7 +42,7 @@ export const GroupHeader: FC<IGroupHeaderProps> = ({setActiveCheck , filterRadio
             })
                 .then(res => {
                     console.log(res)
-                    dispatch(groupListActions.onUpdateList(res))
+                    dispatch(groupListActions.onUpdateList({id: activeItem[i] , data: res}))
                 })
         }
 

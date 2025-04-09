@@ -95,7 +95,10 @@ export const UserAnalysis = memo((props: IUserAnalysis) => {
         setIsDeletePacket(true)
     }
 
+
+    console.log(currentList , "curr")
     const onChange = (id: number | "all") => {
+
         if (id === "all") {
             if (currentList.every(item => item.isChecked)) {
                 setCurrentList(prevState =>

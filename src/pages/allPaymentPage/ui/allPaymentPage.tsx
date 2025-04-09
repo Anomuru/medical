@@ -52,7 +52,7 @@ export const AllPaymentPage = () => {
     const [activeEditItem, setActiveEditItem] = useState<any>()
     const selectedLocation = useSelector(getSelectedLocationData)
     // const selectedBranch = useSelector(getSelectedBranchData)
-    const selectedBranch = localStorage.getItem("branch")
+    const selectedBranch = localStorage.getItem("branch_id")
     const patientData = useSelector(getAllPaymentList)
     const [activeType, setActiveType] = useState("")
     const payType = useSelector(getPaymentTypeData)

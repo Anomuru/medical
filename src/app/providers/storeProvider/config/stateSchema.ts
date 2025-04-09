@@ -28,6 +28,7 @@ import {overheadSlice} from "entities/overheadEntities/model/slice/overheadSlice
 import {OverheadInterface} from "entities/overheadEntities/model/types/overheadType";
 import {GroupFilterTypes} from "entities/group/model/type/groupFilterTypes";
 import {GroupListType} from "entities/group/model/type/groupListType";
+import {IUserPatientData} from "entities/patientData/model/types/profileAnalysisTypes";
 
 
 
@@ -65,6 +66,7 @@ export interface StateSchema {
     overheadSlice?: OverheadInterface,
     groupFilterSlice?: GroupFilterTypes,
     groupListSlice?: GroupListType
+    patientPaymentSlice?: IUserPatientData
 
 }
 

@@ -62,7 +62,7 @@ export const PaymentPage = () => {
     } = userAnalysisActions
 
     const selectedLocation = useSelector(getSelectedLocationData)
-    const selectedBranch = localStorage.getItem("branch")
+    const selectedBranch = localStorage.getItem("branch_id")
     const [currentPage, setCurrentPage] = useState<number>(1);
     const {register, setValue, handleSubmit} = useForm<IPaymentData>()
     const data = useSelector(getPaymentData)
@@ -78,7 +78,6 @@ export const PaymentPage = () => {
     const generalAmount = Number(totalAnalis) + Number(totalOther)
     const userTotalPayment = useSelector(getUserPaymentList)
 
-    console.log(userTotalPayment)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (selectedLocation)
@@ -247,6 +246,9 @@ export const PaymentPage = () => {
     //     })
     // }, [userTotalPayment])
 
+    const [selectedAnalysis , setSelectedAnalysis] = useState<number[]>([])
+
+    console.log(selectedAnalysis , "log")
     return (
         <DynamicModuleLoader reducers={reducers}>
             <div className={cls.payment}>
@@ -321,6 +323,7 @@ export const PaymentPage = () => {
                         {analiz?.packet && analiz?.packet.length > 0 ? (
                             analiz.packet.map(item => (
                                 <UserPackets
+
                                     item={item}
                                     onDeletePacketAnalysis={onDeletePacketAnalysis}
                                     onDeletePacketId={onDeletePacket}
@@ -329,6 +332,7 @@ export const PaymentPage = () => {
                         ) : null}
                         {analiz?.analysis_list && analiz.analysis_list.length > 0 ? (
                             <UserAnalysis
+                                selectedAnalysis={selectedAnalysis}
                                 item={analiz.analysis_list}
                                 total={totalOther}
                                 onDeleteAnalysisId={onDeleteAnalysis}

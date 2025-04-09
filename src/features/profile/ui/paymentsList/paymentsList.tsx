@@ -43,7 +43,7 @@ export const PaymentsList = () => {
                     <td>{i + 1}</td>
                     <td>{item.amount}</td>
                     <td>{item.date}</td>
-                    <td>{item.payment_type.payment_type}</td>
+                    <td>{item?.payment_type?.payment_type}</td>
                     <td><i onClick={() => {
                         setActive(true)
                         setActiveItem(item)

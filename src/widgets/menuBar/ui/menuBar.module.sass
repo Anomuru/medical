@@ -1,4 +1,5 @@
 .menu
+  //display: none
   min-width: 9rem
   height: 100%
   display: flex
@@ -46,3 +47,53 @@
     p
       font-size: 1.2rem
       color: white
+.bars
+  display: none
+  justify-content: center
+  color: white
+  background-color: rgba(0, 0, 0, 0.4)
+  backdrop-filter: blur(4px)
+  font-size: 2rem
+  padding: .7rem
+
+  //padding: 1rem
+  border-radius: 5px
+  box-shadow:  0 0 5px 0 #8B8B8B
+  position: absolute
+  bottom: 4rem
+  right: 4rem
+  z-index: 10000
+  &__exit
+    position: absolute
+    color: white
+    font-size: 1.6rem
+    display: flex
+    align-items: center
+    bottom: 30px
+    gap: 1rem
+.unActive
+  top: 0
+  width: 100%
+  height: 100%
+  //left: 0
+  position: absolute
+  background-color: rgba(0, 0, 0, 0.38)
+  backdrop-filter: blur(4px)
+  display: none
+  z-index: 1000
+  padding-left: 1rem
+  padding-top: 1rem
+  transition: 1s all
+  left: -400%
+
+@media (max-width: 700px)
+  .menu
+    display: none
+  .bars
+    display: flex
+  .unActive
+    display: flex
+  .active
+    left: 0
+  .barsMenu
+    display: flex

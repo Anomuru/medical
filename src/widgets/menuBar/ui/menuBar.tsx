@@ -21,14 +21,18 @@ export const MenuBar = () => {
     const userId = useSelector(getUserId)
     const userPhoto = localStorage.getItem("photo")
 
+    const [active, setActive] = React.useState(false)
+
 
     const renderMenuItems = useCallback(() => {
         return menuConfig.map(item => {
             if (userRole && item.roles.includes(userRole))
                 return (
-                    <Link extraClass={cls.item} to={item.to}>
+                    <Link onClick={() => {
+                        setActive(!active)
+                    }} extraClass={cls.item} to={item.to}>
                         <img
-                            style={{color: "white" , width: "2.5rem", height: "2.5rem"}}
+                            style={{color: "white", width: "2.5rem", height: "2.5rem"}}
                             src={item.image}
                             alt={item.to}
                         />
@@ -36,32 +40,57 @@ export const MenuBar = () => {
                     </Link>
                 )
         })
-    }, [userRole])
+    }, [userRole , active])
 
 
     return (
-        <div className={cls.menu}>
-
-
-            <div className={cls.menu__items}>
-                <div onClick={() => navigation(`/platform/staff/profile/${userId}`, {replace: true})} className={cls.menu__header}>
-                    <img src={`${API_URL_DOC}${userPhoto}`} alt=""/>
-                </div>
-                <div>
-                    {renderMenuItems()}
-                </div>
+        <>
+             <div onClick={() => setActive(!active)} className={cls.bars}>
+                <i className="fa-solid fa-bars"></i>
             </div>
-            <Link
-                onClick={() => {
-                    localStorage.clear()
-                    sessionStorage.clear()
-                }}
-                extraClass={classNames(cls.menu__exit)}
-                to={"/login"}
-            >
-                <i className="fas fa-sign-out-alt"/>
-                <p>Выйти</p>
-            </Link>
-        </div>
+            <div className={cls.menu}>
+                <div className={cls.menu__items}>
+
+                    <div onClick={() => navigation(`/platform/staff/profile/${userId}`, {replace: true})}
+                         className={cls.menu__header}>
+                        <img src={`${API_URL_DOC}${userPhoto}`} alt=""/>
+                    </div>
+                    <div>
+                        {renderMenuItems()}
+                    </div>
+                </div>
+                <Link
+                    onClick={() => {
+                        localStorage.clear()
+                        sessionStorage.clear()
+                    }}
+                    extraClass={classNames(cls.menu__exit)}
+                    to={"/login"}
+                >
+                    <i className="fas fa-sign-out-alt"/>
+                    <p>Выйти</p>
+                </Link>
+            </div>
+            <div className={classNames(cls.unActive , {[cls.active] : active})}>
+                <div className={cls.menu__items}>
+                    <div>
+                        {renderMenuItems()}
+                    </div>
+                    <Link
+                        onClick={() => {
+                            localStorage.clear()
+                            sessionStorage.clear()
+                        }}
+                        extraClass={classNames(cls.bars__exit)}
+                        to={"/login"}
+                    >
+                        <i className="fas fa-sign-out-alt"/>
+                        <p>Выйти</p>
+                    </Link>
+                </div>
+
+            </div>
+
+        </>
     );
 }

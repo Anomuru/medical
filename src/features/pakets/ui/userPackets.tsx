@@ -113,6 +113,7 @@ export const UserPackets = memo((props: IPacketsProps) => {
     }
 
     const onChange = useCallback((id: number | "all") => {
+
         setAnalysisList(prevState => {
             if (id === "all") {
                 const allChecked = prevState.every(item => item.isChecked);

@@ -35,6 +35,7 @@ const userSlice = createSlice({
 
 
             localStorage.setItem("branch_id" , String(action.payload.branch_id))
+            localStorage.setItem("user_id" , String(action.payload.user_id))
         }
 
 

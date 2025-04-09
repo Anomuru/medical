@@ -54,39 +54,41 @@ export const LogInPage = () => {
 
     return (
         <DynamicModuleLoader reducers={initialReducers} removeAfterUnmount={false}>
-            <div className={cls.loginPage}>
-                <div className={cls.loginPage__content}>
-                    <img className={cls.loginPage__logo} src={logo} alt=""/>
-                    <h1 className={cls.loginPage__title}>Авторизоваться</h1>
-                    <Form
-                        extraClass={cls.loginPage__form}
-                        onSubmit={handleSubmit(onSubmit)}
-                    >
-                        <div className={cls.loginPage__wrapper}>
-                            <Input
-                                title={"Имя пользователя"}
-                                placeholder={"Введите свое имя пользователя"}
-                                register={register}
-                                name={"username"}
-                            />
-                            <Input
-                                type={"password"}
-                                title={"Пароль"}
-
-                                placeholder={"Введите свой пароль"}
-                                register={register}
-                                name={"password"}
-                            />
-                        </div>
-                        <Button
-                            extraClass={cls.loginPage__btn}
+            <div className={cls.login}>
+                <div className={cls.loginPage}>
+                    <div className={cls.loginPage__content}>
+                        <img className={cls.loginPage__logo} src={logo} alt=""/>
+                        <h1 className={cls.loginPage__title}>Авторизоваться</h1>
+                        <Form
+                            extraClass={cls.loginPage__form}
+                            onSubmit={handleSubmit(onSubmit)}
                         >
-                            Авторизоваться
-                        </Button>
-                    </Form>
-                </div>
-                <div className={cls.loginPage__image}>
-                    <img src={image} alt=""/>
+                            <div className={cls.loginPage__wrapper}>
+                                <Input
+                                    title={"Имя пользователя"}
+                                    placeholder={"Введите свое имя пользователя"}
+                                    register={register}
+                                    name={"username"}
+                                />
+                                <Input
+                                    type={"password"}
+                                    title={"Пароль"}
+
+                                    placeholder={"Введите свой пароль"}
+                                    register={register}
+                                    name={"password"}
+                                />
+                            </div>
+                            <Button
+                                extraClass={cls.loginPage__btn}
+                            >
+                                Авторизоваться
+                            </Button>
+                        </Form>
+                    </div>
+                    <div className={cls.loginPage__image}>
+                        <img src={image} alt=""/>
+                    </div>
                 </div>
             </div>
         </DynamicModuleLoader>

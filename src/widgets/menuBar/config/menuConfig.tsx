@@ -69,7 +69,7 @@ export const menuConfig = [
     // },
     // {
     //     to: "pricePage",
-    //     image: dashboardImage
+    //     image: dashboardImage     
     // },
     {
         to: "devicePage",
@@ -94,5 +94,17 @@ export const menuConfig = [
         image: group,
         label: "Группа",
         roles: [ROLES.admin]
+    },
+    {
+        to: "patientPayments",
+        image: paymentImage,
+        label: "Платежи пациентов",
+        roles: [ROLES.patient]
+    },
+    {
+        to: "patientAnalysis",
+        image: analysisImage,
+        label: "Анализ пациента",
+        roles: [ROLES.patient]
     }
 ]

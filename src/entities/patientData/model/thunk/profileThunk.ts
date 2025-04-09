@@ -7,8 +7,8 @@ export const fetchProfileAnalysis = createAsyncThunk<
     void,
     string,
     ThunkConfig<string>
->('patientPaymentSlice/fetchProfileAnalysis', async (id, thunkApi) => {
-    const {extra, dispatch, rejectWithValue} = thunkApi;
+>('profileAnalysisSlice/fetchProfileAnalysis', async (id, thunkApi) => {
+    const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
             url: `user/user_analysis_get/?user=${id}`, method: "GET", body: null, headers: headers()
@@ -16,9 +16,6 @@ export const fetchProfileAnalysis = createAsyncThunk<
         if (!response) {
             throw new Error();
         }
-        console.log(response, "res")
-
-
         dispatch(profileAnalysisActions.onGetProfileAnalysis(response));
         return response.data;
     } catch (e) {
@@ -28,12 +25,13 @@ export const fetchProfileAnalysis = createAsyncThunk<
 });
 
 
+
 export const fetchProfilePaymentsData = createAsyncThunk<
     void,
     string,
     ThunkConfig<string>
->('patientPaymentSlice/fetchProfileAnalysis', async (id, thunkApi) => {
-    const {extra, dispatch, rejectWithValue} = thunkApi;
+>('profileAnalysisSlice/fetchProfileAnalysis', async (id, thunkApi) => {
+    const { extra, dispatch, rejectWithValue } = thunkApi;
     try {
         const response = await extra.api({
             url: `account/payment/payment_list/${id}/`, method: "GET", body: null, headers: headers()

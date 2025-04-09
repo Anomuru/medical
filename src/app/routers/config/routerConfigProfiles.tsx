@@ -37,6 +37,7 @@ import {
 } from "shared/const/routers";
 import {OverheadPage} from "pages/overheadPage";
 import {GroupPage} from "pages/groupPage";
+import {PatientAnalysis, PatientPaymentsPage} from "pages/patientData";
 
 interface IRouterConfigProfiles {
     name: string,
@@ -135,5 +136,16 @@ export const routersConfigProfile: IRouterConfigProfiles[] = [
         name: "group",
         element: <GroupPage/>,
         path: getGroupPage()
+    },
+    {
+        name: "patientPayments",
+        element: <PatientPaymentsPage/>,
+        path: "patientPayments"
+    },
+
+    {
+        name: "patientAnalysis",
+        element: <PatientAnalysis/>,
+        path: "patientAnalysis"
     }
 ]

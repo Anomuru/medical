@@ -1,3 +1,12 @@
+.group
+  display: flex
+  flex-direction: column
+
+  gap: 2rem
+  &__list
+    height: 40rem
+    overflow: auto
+
 .table
   &__input
     min-width: fit-content!important
@@ -18,3 +27,23 @@
     padding: 1rem
     transform: translate(-30% )
     background-color: #FFFFFF
+.footer
+  display: flex
+  flex-direction: column
+  gap: 2rem
+  &__table
+    display: flex
+    gap: 2rem
+    &_left
+      display: flex
+      flex-direction: column
+      gap: 2rem
+      width: 100%
+    &_right
+      width: 40rem
+      display: flex
+      flex-direction: column
+      gap: 2rem
+      &_info
+        height: 30rem
+        overflow: auto
